@@ -1,6 +1,6 @@
 Package: glmmSeq
 Title: General Mixed Model for all genes returning all statistics
-Version: 0.0.0.9000
+Version: 0.0.82.9000
 Authors@R:
     c(person(given = "Myles",family = "Lewis", role = c("aut", "cre"), email = "myles.lewis@qmul.ac.uk"),
     person(given = "Katriona",family = "Goldmann", role = c("aut"), email = "k.goldmann@qmul.ac.uk"),
