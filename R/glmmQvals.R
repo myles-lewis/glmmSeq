@@ -1,0 +1,49 @@
+#' Glmm Sequencing qvalues
+#'
+#' Add qvalue columns to the glmmSeq dataframe
+#' @param result output from glmmSeq or glmmResults
+#' @param cutoff Prints a table showning the number of probes considered
+#' significant by the pvalue cutoff (default=0.05)
+#' @param pi0 It is recommended not to input an estimate of pi0. Experienced
+#' users can use their own methodology to estimate the proportion of true nulls
+#' or set it equal to 1 for the BH procedure (default = NULL).
+#' @param verbose Logical whether to print the number of significant probes
+#' (default=TRUE)
+#' @return Returns dataframe with results for gene-wise glm with qvalue columns
+#' @importFrom qvalue qvalue
+#' @export
+
+glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=T) {
+  if(class(result)=="GlmmSeq"){ # glmmSeq outputs
+    resultStats <- data.frame(result@stats, check.names=F)
+    for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
+      q_cn <- gsub('P_', 'q_', cn)
+      resultStats[, q_cn] <- NA
+      resultStats[!is.na(resultStats[, cn]), q_cn] <-
+        qvalue(resultStats[!is.na(resultStats[, cn]), cn], pi0=pi0)$qvalues
+      if(verbose){
+        cat(paste0("\n", q_cn, "\n"))
+        cat(paste(rep("-", nchar(q_cn)), collapse=""))
+        print(table(ifelse(resultStats[, q_cn] < cutoff,
+                           "Significant", "Not Significant")))
+      }
+    }
+    result@stats <- as.matrix(resultStats)
+  } else{ # glmmResults output
+    result <- data.frame(result)
+    for (cn in colnames(result)[grepl('P_', colnames(result))]) {
+      q_cn <- gsub('P_', 'q_', cn)
+      result[, q_cn] <- NA
+      result[!is.na(result[, cn]), q_cn] <-
+        qvalue(result[!is.na(result[, cn]), cn], pi0=pi0)$qvalues
+      if(verbose){
+        cat(paste0("\n", q_cn, "\n"))
+        cat(paste(rep("-", nchar(q_cn)), collapse=""))
+        print(table(ifelse(result[, q_cn] < cutoff,
+                           "Significant", "Not Significant")))
+      }
+    }
+  }
+  return(result)
+}
+
