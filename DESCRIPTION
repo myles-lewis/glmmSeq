@@ -1,0 +1,15 @@
+Package: glmmSeq
+Title: General Mixed Model for all genes returning all statistics
+Version: 0.0.0.9000
+Authors@R:
+    c(person(given = "Myles",family = "Lewis", role = c("aut", "cre"), email = "myles.lewis@qmul.ac.uk"),
+    person(given = "Katriona",family = "Goldmann", role = c("aut"), email = "k.goldmann@qmul.ac.uk"),
+    person(given = "Cankut",family = "Cubuk", role = c("aut"), email = "c.cubuk@qmul.ac.uk") ,
+    person(given = "Elisabetta",family = "Sciacca", role = c("aut"), email = "e.sciacca@qmul.ac.uk"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to
+    pick a license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
