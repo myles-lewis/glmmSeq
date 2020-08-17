@@ -9,7 +9,7 @@ fcPlot(
   groupCol,
   colourCutoff = 0.01,
   labels,
-  useAdjusted = F,
+  useAdjusted = FALSE,
   plotCutoff = 0.05
 )
 }
@@ -18,11 +18,12 @@ fcPlot(
 
 \item{groupCol}{The grouping column}
 
-\item{colourCutoff}{The significance cutoff for colour-coding (default=0.01)}
+\item{colourCutoff}{The significance cut-off for colour-coding
+(default=0.01)}
 
 \item{labels}{Genes to label on plot}
 
-\item{plotCutoff}{Which probes to include by significance cutoff
+\item{plotCutoff}{Which probes to include by significance cut-off
 (default=0.05)}
 
 \item{useAdjust}{whether to use adjusted pvalues

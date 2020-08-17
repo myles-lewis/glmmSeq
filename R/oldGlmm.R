@@ -14,14 +14,14 @@
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl
 #' @importFrom stats update.formula model.matrix predict setNames
-#' @importFrom parallel mclapply
+#' @importFrom parallel mclapply detectCores
 #' @importFrom car Anova
 #' @importFrom methods slot
 #' @keywords hplot
 #' @export
 #'
 
-glmmGenes <- function(countdata,
+oldGlmm <- function(countdata,
                         id,
                         time,
                         group,
@@ -58,8 +58,9 @@ glmmGenes <- function(countdata,
   }
 
   # Check numbers
-  if(! all(sapply(list(length(id), length(time)), FUN=identical,
-                  length(group)))) stop("Alignment error")
+  if(! all(lapply(list(length(id), length(time)), function(x) {
+    identical(x, length(group))
+    }))) stop("Alignment error")
   if(! identical(length(dispersions), nrow(countdata))) {
     stop("Dispersion length must match nrow in countdata")
   }
@@ -71,7 +72,7 @@ glmmGenes <- function(countdata,
   designmat <- model.matrix( ~ time * group, modelData)
   start <- Sys.time()
 
-  geneList = lapply(rownames(countdata), function(i) {
+  geneList <- lapply(rownames(countdata), function(i) {
     list(y=as.numeric(countdata[i,]), dispersion=dispersions[i])
   })
   cat(paste(length(geneList), "genes"))
@@ -83,7 +84,7 @@ glmmGenes <- function(countdata,
             data=data,
             glmerControl(optimizer="bobyqa"),
             family= MASS::negative.binomial(theta=1/ylist$dispersion)),
-      silent=F)
+      silent=FALSE)
     if (class(fit)!='try-error') {
       wald <- car::Anova(fit)
       newY <- predict(fit, newdata=modelData, re.form=NA)
@@ -111,7 +112,7 @@ glmmGenes <- function(countdata,
   # Output results
   resultData <- data.frame(t(simplify2array(resultList)))
   rownames(resultData) <- rownames(countdata)
-  maxY <- max(as.numeric(droplevels(factor(group))), na.rm=T) * 2
+  maxY <- max(as.numeric(droplevels(factor(group))), na.rm=TRUE) * 2
   colnames(resultData) <- c('Wald_time', paste0('Wald_', col),
                           paste0('Wald_', col, ':time'),
                           'P_time', paste0('P_', col),

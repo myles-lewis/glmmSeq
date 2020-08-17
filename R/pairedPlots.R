@@ -9,8 +9,8 @@
 #' @param datatype The type of expression data. Options include c("VST", "TPM")
 #' @param plottype The plot type. Options "1"=plot all samples, "2"=plot mean
 #' @param pch The marker shape (default=21)
-#' @param bg='red' The marker colour (default='red')
-#' @param pairedonly Logical whether to only plot paired samples (default=T)
+#' @param bg The marker colour (default='red')
+#' @param pairedonly Logical whether to only plot paired samples (default=TRUE)
 #' @param xlab Character vector for the label on the x axis
 #' @param graphics Which graphic system to use (options = "base" or "ggplot")
 #' @return Returns a paired plot
@@ -22,6 +22,8 @@
 #' @importFrom ggplot2 ggplot geom_boxplot geom_point geom_line theme_classic
 #' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
 #' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous
+#' scale_x_continuous aes_string
+#' @importFrom graphics arrows axis lines mtext plot
 #' @keywords hplot
 #' @export
 
@@ -35,7 +37,7 @@ pairedPlot <- function(id,
                        plab='drug',
                        pch=21,
                        bg='red',
-                       pairedonly=T,
+                       pairedonly=TRUE,
                        xlab="",
                        ylab="",
                        title="",
@@ -60,12 +62,12 @@ pairedPlot <- function(id,
   } else if (!is.na(dispersion)) {
     fit <- try( glmer(gene_exp ~ time * f + (1 | id), data=df_long,
                       family= negative.binomial( theta=1/dispersion),
-                      control=glmerControl(optimizer="bobyqa")), silent=T)
+                      control=glmerControl(optimizer="bobyqa")), silent=TRUE)
   }
   suffix <- ""
   if (class(fit) != 'try-error') {
     pval <- Anova(fit)[,3]
-    pval <- sapply(pval, format, digits=2)
+    pval <- vapply(pval, format, FUN.VALUE="character", digits=2)
     if (isSingular(fit)) suffix <- "s"
     if (plottype=="2") {
       # http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html
@@ -88,10 +90,10 @@ pairedPlot <- function(id,
     }
   }
   df_long$f <- as.numeric(factor(df_long$f))
-  maxf <- max(as.numeric(df_long$f), na.rm=T)
+  maxf <- max(as.numeric(df_long$f), na.rm=TRUE)
   df_long$time2 <- df_long$time + (df_long$f -1) * 2
-  if (length(pch)==1) pch=rep(pch, maxf)
-  if (length(bg)==1) bg=rep(bg, maxf)
+  if (length(pch)==1) pch<-rep(pch, maxf)
+  if (length(bg)==1) bg<-rep(bg, maxf)
 
   # Generate base plots
   if(graphics == "base"){
@@ -127,7 +129,7 @@ pairedPlot <- function(id,
     }
     axis(1, 1:(2*maxf), labels=rep(time_labs, maxf), cex.axis=1.6)
     if (length(labs)==3) labs <- gsub('\\..*', '', labs)
-    axis(1, 1:maxf*2-0.5, labels=labs, line=1.5, cex.axis=1.4, tick=F)
+    axis(1, 1:maxf*2-0.5, labels=labs, line=1.5, cex.axis=1.4, tick=FALSE)
     if (xlab!="") mtext(xlab, 1, line=5, cex=1.2)
     if (ylab!="") mtext(ylab, 2, line=3, cex=1.4)
     if(title!="") mtext(title, side=3, adj=0, padj=-3, cex=1.5)
@@ -143,10 +145,13 @@ pairedPlot <- function(id,
     }
 
   } else{ # Generate ggplot plots
+    df_long$y <- df_long$gene_exp + 0.1
+    df_long$time2 <- factor(df_long$time2)
+    df_long$f <- factor(df_long$f)
     if (plottype=="1" | class(fit)=='try-error') {
-      p <- ggplot(df_long, aes(x=factor(time2), y=gene_exp + 0.1, group=id,
-                               shape=factor(f), fill=factor(f),
-                               color=factor(f))) +
+      p <- ggplot(df_long, aes_string(x="time2", y="y", group="id",
+                               shape="f", fill="f",
+                               color="f")) +
         geom_point(size=3) +
         geom_line(color="black") +
         theme_classic() +
@@ -158,33 +163,35 @@ pairedPlot <- function(id,
         scale_x_discrete(labels=setNames(rep(time_labs, 2), 1:4)) +
         geom_text(data=data.frame(label = labs, x = c(1.5, 3.5),
                                   y = min(df_long$gene_exp + 0.1)),
-                  mapping=aes(label=label, x=x, y=y), hjust = 0.5,
-                  vjust=5, nudge_x=0,  inherit.aes=F)  +
+                  mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
+                  vjust=5, nudge_x=0,  inherit.aes=FALSE)  +
         coord_cartesian(clip = 'off')
 
       if(addBox) {
-        p <- p + geom_boxplot(mapping=aes(x=time2, y=gene_exp + 0.1, group=time2),
+        p <- p +
+          geom_boxplot(mapping=aes_string(x="time2", y="y", group="time2"),
                               color="black",  fill=NA)
       }
 
 
     } else{
 
-      p <- ggplot(newdata, aes(x=time, y=gene_exp,
-                               shape=factor(f), fill=factor(f),
-                               color=factor(f))) +
+      p <- ggplot(newdata, aes_string(x="time", y="gene_exp",
+                               shape="f", fill="f",
+                               color="f")) +
         geom_point(size=3) +
         geom_line(color="black") +
         theme_classic() +
         scale_fill_manual(values=bg) + scale_color_manual(values=bg) +
         scale_shape_manual(values=pch) +
-        labs(x=xlab, y=ylab, title=title) + theme(legend.position = "none") +
+        labs(x=xlab, y=ylab, title=title) +
+        theme(legend.position = "none") +
         scale_x_continuous(labels=setNames(rep(time_labs, 2), 1:4)) +
         geom_text(data=data.frame(label = labs, x = c(1.5, 3.5),
                                   y = min(df_long$gene_exp + 0.1)),
-                  mapping=aes(label=label, x=x, y=y), hjust = 0.5,
-                  vjust=5, nudge_x=0,  inherit.aes=F)  +
-        coord_cartesian(clip = 'off') #+ lims(y=gene_explim)
+                  mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
+                  vjust=5, nudge_x=0,  inherit.aes=FALSE)  +
+        coord_cartesian(clip = 'off')
     }
 
     if(datatype == "TPM") p <- p + scale_y_continuous(trans='log10')
@@ -193,12 +200,12 @@ pairedPlot <- function(id,
 
     if (suffix!="") suffix <- paste0(" [", suffix, "]")
     if (datatype!='VST' & is.na(dispersion)) {
-      p = p + labs(title= "Dispersion NA")
+      p <- p + labs(title= "Dispersion NA")
     } else if (class(fit)=='try-error') {
-      p = p + labs(title= "Model error")
+      p <- p + labs(title= "Model error")
       mtext("Model error", side=3, adj=0.04)
     } else {
-      p = p + labs(subtitle= bquote(
+      p <- p + labs(subtitle= bquote(
         paste("P"["time"]*"=", .(pval[1]),
               ", P"[.(plab)]*"=", .(pval[2]),
               ", P"["time:"*.(plab)]*"=",

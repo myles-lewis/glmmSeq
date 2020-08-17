@@ -2,8 +2,8 @@
 #'
 #' Add qvalue columns to the glmmSeq dataframe
 #' @param result output from glmmSeq or glmmResults
-#' @param cutoff Prints a table showning the number of probes considered
-#' significant by the pvalue cutoff (default=0.05)
+#' @param cutoff Prints a table showing the number of probes considered
+#' significant by the pvalue cut-off (default=0.05)
 #' @param pi0 It is recommended not to input an estimate of pi0. Experienced
 #' users can use their own methodology to estimate the proportion of true nulls
 #' or set it equal to 1 for the BH procedure (default = NULL).
@@ -13,9 +13,9 @@
 #' @importFrom qvalue qvalue
 #' @export
 
-glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=T) {
+glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=TRUE) {
   if(class(result)=="GlmmSeq"){ # glmmSeq outputs
-    resultStats <- data.frame(result@stats, check.names=F)
+    resultStats <- data.frame(result@stats, check.names=FALSE)
     for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
       q_cn <- gsub('P_', 'q_', cn)
       resultStats[, q_cn] <- NA
