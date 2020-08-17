@@ -1,0 +1,16 @@
+---
+title: "glmmSeq"
+author: "Myles Lewis, Katriona Goldmann, Cankut Cubuk, Elisabetta Sciacca, Anna Surace"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Put the title of your vignette here}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is where the vignette will go

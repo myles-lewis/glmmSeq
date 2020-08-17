@@ -2,8 +2,9 @@
 #'
 #' @param glmmResults output from glmmQvals or glmmSeq
 #' @param groupCol The grouping column
-#' @param colourCutoff The significance cutoff for colour-coding (default=0.01)
-#' @param plotCutoff Which probes to include by significance cutoff
+#' @param colourCutoff The significance cut-off for colour-coding
+#' (default=0.01)
+#' @param plotCutoff Which probes to include by significance cut-off
 #' (default=0.05)
 #' @param labels Genes to label on plot
 #' @param useAdjust whether to use adjusted pvalues
@@ -18,7 +19,7 @@ fcPlot <- function(glmmResults,
                    groupCol,
                    colourCutoff=0.01,
                    labels,
-                   useAdjusted=F,
+                   useAdjusted=FALSE,
                    plotCutoff=0.05){
 
   predict <- glmmResults@predict
@@ -26,7 +27,7 @@ fcPlot <- function(glmmResults,
   adj <- ifelse(useAdjusted, "q_", "P_")
 
   plotData <- data.frame(cbind(predict[, c('y1', 'y2', 'y3', 'y4')], stats),
-                         check.names = F)
+                         check.names = FALSE)
 
   if(length(grep(adj, colnames(plotData))) < 3) {
     stop(paste("there must be at least 3", adj, "columns"))
@@ -72,10 +73,11 @@ fcPlot <- function(glmmResults,
   print(table(plotData$col))
 
   if(any(! labels %in% rownames(plotData))){
-    warning(paste(paste(labels[! labels %in% rownames(plotData)], collapse=", "),
-            "are not in the glmmResults or do not meet the plotting cutoff so",
-            "will not be included in labeling."))
-    labels = labels[labels %in% rownames(plotData)]
+    warning(paste(
+      paste(labels[! labels %in% rownames(plotData)], collapse=", "),
+      "are not in the glmmResults or do not meet the plotting cutoff so",
+      "will not be included in labeling."))
+    labels <- labels[labels %in% rownames(plotData)]
   }
 
   if (length(labels)!=0) {

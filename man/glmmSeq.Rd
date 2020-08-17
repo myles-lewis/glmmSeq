@@ -15,8 +15,8 @@ glmmSeq(
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
   cores = detectCores()/2,
-  removeSingles = T,
-  verbose = T
+  removeSingles = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ in pairing}
 
 \item{sizeFactors}{size factors (default=NULL)}
 
-\item{reducedFormula}{Reduced design fomula (default="")}
+\item{reducedFormula}{Reduced design formula (default="")}
 
 \item{modelData}{something something}
 

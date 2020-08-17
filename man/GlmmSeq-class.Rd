@@ -18,7 +18,7 @@ An S4 class to define the glmmSeq output
 
 \item{\code{reducedFormula}}{The reduced formula with removed random effects}
 
-\item{\code{modelData}}{the modeldata}
+\item{\code{modelData}}{the model data}
 
 \item{\code{optinfo}}{the optional info}
 

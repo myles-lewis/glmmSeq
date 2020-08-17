@@ -2,15 +2,17 @@
 #'
 #' @param glmmResults output from glmmQvals or glmmSeq
 #' @param groupCol The grouping column
-#' @param colourCutoff The significance cutoff for colour-coding (default=0.01)
-#' @param plotCutoff Which probes to include by significance cutoff
+#' @param colourCutoff The significance cut-off for colour-coding (default=0.01)
+#' @param plotCutoff Which probes to include by significance cut-off
 #' (default=0.05)
 #' @param colours Colour scheme
 #' @param labels Genes to label on plot
 #' @param useAdjust whether to use adjusted pvalues
 #' (must have q_ columns in glmmResults)
+#' @param transpose Logical whether FC is time or group based (in this case
+#' groupCol should be the time parameter)
 #' @return List of plot options
-#' @importFrom plotly layout config plot_ly subplot
+#' @importFrom plotly layout config plot_ly subplot %>%
 #' @keywords hplot
 #' @export
 #'
@@ -21,24 +23,31 @@ maPlotly <- function(glmmResults,
                      plotCutoff = 0.05,
                      colours=c('grey' , 'orange', 'red', 'blue'),
                      labels=c(),
-                     useAdjusted=F){
+                     transpose=FALSE,
+                     useAdjusted=FALSE){
 
   predict <- glmmResults@predict
   stats <- glmmResults@stats
   adj <- ifelse(useAdjusted, "q_", "P_")
 
   plotData <- data.frame(cbind(predict[, c('y1', 'y2', 'y3', 'y4')], stats),
-                         check.names = F)
+                         check.names = FALSE)
 
   if(length(grep(adj, colnames(plotData))) < 3) {
     stop(paste("there must be at least 3", adj, "columns"))
   }
 
 
-  groupVars <- levels(glmmResults@modelData[, groupCol])
+  groupVars <- levels(factor(glmmResults@modelData[, groupCol]))
 
-  plotData$x <- log2(plotData$y1+1) - log2(plotData$y2+1) # x -> groupVars[1]
-  plotData$y <- log2(plotData$y3+1) - log2(plotData$y4+1) # y -> groupVars[2]
+  if(! transpose){
+    # x -> delta GE groupVars[1], y -> delta GE groupVars[2]
+    plotData$x <- log2(plotData$y1+1) - log2(plotData$y2+1)
+    plotData$y <- log2(plotData$y3+1) - log2(plotData$y4+1)
+  } else{
+    plotData$x <- log2(plotData$y1+1) - log2(plotData$y3+1)
+    plotData$y <- log2(plotData$y2+1) - log2(plotData$y4+1)
+  }
   plotData$maxGroup <- ifelse(abs(plotData$x) > abs(plotData$y),
                               groupVars[1],
                               groupVars[2])
@@ -73,7 +82,7 @@ maPlotly <- function(glmmResults,
       })
 
 
-  plotGenes <- apply(plotData[, grep(adj, colnames(plotData))], 1, function(x) {
+  plotGenes <- apply(plotData[, grep(adj, colnames(plotData))], 1, function(x){
     any(x < plotCutoff)
   })
   plotData <- plotData[plotGenes, ]
@@ -110,6 +119,9 @@ maPlotly <- function(glmmResults,
   } else {annot1 <- annot2 <- list()}
 
 
+  xlab <- paste0("log2 fold change \n(", timeVar,
+                 glmmResults@modelData[1, timeVar],
+                 " vs ", timeVar, glmmResults@modelData[2, timeVar], ")")
   ma1 <- plot_ly(data=plotData, x=~meanexp, y=~x,
                  type='scatter',
                  mode='markers',
@@ -121,7 +133,7 @@ maPlotly <- function(glmmResults,
                  legendgroup = ~col) %>%
     layout(title = groupVars[1], annotations=annot1,
            xaxis=list(title="Mean log2 gene expr + 1", color='black'),
-           yaxis=list(title="log2 fold change", color='black'),
+           yaxis=list(title=xlab, color='black'),
            legend = list(x = 0.65, y = 0.04, font=list(color='black')))
 
   ma2 <- plot_ly(data=plotData, x=~meanexp, y=~y,
@@ -133,35 +145,23 @@ maPlotly <- function(glmmResults,
                  text=rownames(plotData),
                  hoverinfo='text',
                  legendgroup = ~col) %>%
-    layout(title = groupVars[2],annotations=annot2,
+    layout(title = groupVars[2], annotations=annot2,
            xaxis=list(title="Mean log2 gene expr + 1", color='black'),
-           yaxis=list(title="log2 fold change", color='black'),
+           yaxis=list(title=xlab, color='black'),
            legend = list(x = 0.65, y = 0.04, font=list(color='black')))
 
-  ma2Dummy <- plot_ly(data=plotData, x=~meanexp, y=~y,
-                      type='scatter',
-                      mode='markers',
-                      color=~col,
-                      colors=colours,
-                      marker=list(size=8, line=list(width=0.5, color='white')),
-                      text=rownames(plotData),
-                      hoverinfo='text',
-                      legendgroup = ~col,
-                      showlegend=F) %>%
-    layout(annotations=annot2,
-           xaxis=list(title="Mean log2 gene expr + 1", color='black'),
-           yaxis=list(title="log2 fold change", color='black'),
-           legend = list(x = 0.65, y = 0.04, font=list(color='black')))
 
-  combined <- plotly::subplot(ma1 %>% layout(title=""), ma2Dummy, nrows=2,
-                              shareX=F, titleY = T, titleX=T, margin=0.1) %>%
-    layout(
-      annotations = list(
-        list(x = 0.5 , y = 0.45, text = groupVars[1], showarrow = F,
-             xref='paper', yref='paper', font=list(size=20)),
-        list(x = 0.5 , y = 1, text = groupVars[2], showarrow = F,
-             xref='paper', yref='paper', font=list(size=20)))
-    )
+
+  combined <- plotly::subplot(ma1, ma2, nrows=2,
+                              shareX=FALSE, titleY = TRUE,
+                              titleX=TRUE, margin=0.1) %>%
+  layout(
+    annotations = list(
+      list(x = 0.5 , y = 0.45, text = groupVars[1], showarrow = FALSE,
+           xref='paper', yref='paper', font=list(size=20)),
+      list(x = 0.5 , y = 1, text = groupVars[2], showarrow = FALSE,
+           xref='paper', yref='paper', font=list(size=20)))
+  )
 
   outputList <- list(first = ma1, second=ma2, combined=combined)
   names(outputList)[1:2] <- groupVars

@@ -15,7 +15,7 @@ pairedPlot(
   plab = "drug",
   pch = 21,
   bg = "red",
-  pairedonly = T,
+  pairedonly = TRUE,
   xlab = "",
   ylab = "",
   title = "",
@@ -39,15 +39,15 @@ pairedPlot(
 
 \item{pch}{The marker shape (default=21)}
 
-\item{pairedonly}{Logical whether to only plot paired samples (default=T)}
+\item{bg}{The marker colour (default='red')}
+
+\item{pairedonly}{Logical whether to only plot paired samples (default=TRUE)}
 
 \item{xlab}{Character vector for the label on the x axis}
 
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
 
 \item{x}{A character vector for groups}
-
-\item{bg='red'}{The marker colour (default='red')}
 }
 \value{
 Returns a paired plot

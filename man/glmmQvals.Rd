@@ -4,13 +4,13 @@
 \alias{glmmQvals}
 \title{Glmm Sequencing qvalues}
 \usage{
-glmmQvals(result, cutoff = 0.05, pi0 = NULL, verbose = T)
+glmmQvals(result, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
 }
 \arguments{
 \item{result}{output from glmmSeq or glmmResults}
 
-\item{cutoff}{Prints a table showning the number of probes considered
-significant by the pvalue cutoff (default=0.05)}
+\item{cutoff}{Prints a table showing the number of probes considered
+significant by the pvalue cut-off (default=0.05)}
 
 \item{pi0}{It is recommended not to input an estimate of pi0. Experienced
 users can use their own methodology to estimate the proportion of true nulls

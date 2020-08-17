@@ -11,7 +11,8 @@ maPlotly(
   plotCutoff = 0.05,
   colours = c("grey", "orange", "red", "blue"),
   labels = c(),
-  useAdjusted = F
+  transpose = FALSE,
+  useAdjusted = FALSE
 )
 }
 \arguments{
@@ -19,14 +20,17 @@ maPlotly(
 
 \item{groupCol}{The grouping column}
 
-\item{colourCutoff}{The significance cutoff for colour-coding (default=0.01)}
+\item{colourCutoff}{The significance cut-off for colour-coding (default=0.01)}
 
-\item{plotCutoff}{Which probes to include by significance cutoff
+\item{plotCutoff}{Which probes to include by significance cut-off
 (default=0.05)}
 
 \item{colours}{Colour scheme}
 
 \item{labels}{Genes to label on plot}
+
+\item{transpose}{Logical whether FC is time or group based (in this case
+groupCol should be the time parameter)}
 
 \item{useAdjust}{whether to use adjusted pvalues
 (must have q_ columns in glmmResults)}
