@@ -7,9 +7,12 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 #' @slot stats the stats
 #' @slot predict The predicted values
 #' @slot reducedFormula The reduced formula with removed random effects
+#' @slot countdata The expression data
+#' @slot metadata The metadata
 #' @slot modelData the model data
 #' @slot optinfo the optional info
 #' @slot errors errors
+#' @slot variables The variables used in the formula
 
 setClass("GlmmSeq", slots = list(
   formula = "formula",
@@ -17,9 +20,11 @@ setClass("GlmmSeq", slots = list(
   predict = "df_or_matrix",
   reducedFormula = "formula",
   countdata = "df_or_matrix",
+  metadata = "df_or_matrix",
   modelData = "df_or_matrix",
-  optinfo = "matrix",
-  errors = "character_or_list"
+  optInfo = "matrix",
+  errors = "character_or_list",
+  variables = "character_or_list"
 ))
 
 
@@ -37,6 +42,8 @@ setClass("GlmmSeq", slots = list(
 #' @param control the glmer control (default=glmerControl(optimizer="bobyqa"))
 #' @param cores number of cores to use. Default=detectCores()/2
 #' @param removeSingles whether to remove unpaired individuals (default=TRUE)
+#' @param zeroCount numerical value to offset zeroes for the purpose of log
+#' (default=0.125)
 #' @param verbose Logical whether to display messaging (default=TRUE)
 #' @return Returns dataframe with results for gene-wise glm
 #' @importFrom MASS negative.binomial
@@ -46,7 +53,6 @@ setClass("GlmmSeq", slots = list(
 #' @importFrom car Anova
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov
-#' @keywords hplot
 #' @export
 #'
 
@@ -61,6 +67,7 @@ glmmSeq <- function(modelFormula,
                     control=glmerControl(optimizer="bobyqa"),
                     cores=detectCores()/2,
                     removeSingles=TRUE,
+                    zeroCount=0.125,
                     verbose=TRUE) {
 
   # Catch errors
@@ -73,7 +80,9 @@ glmmSeq <- function(modelFormula,
   if (!is.null(sizeFactors) & ncol(countdata) != length(sizeFactors)) {
     stop("Different sizeFactors length")
   }
-
+  if (! is.numeric(zeroCount)) stop("zeroCount must be numeric")
+  if (zeroCount < 0) stop("zeroCount must be >= 0")
+  if (zeroCount > 0) countdata[countdata==0] <- zeroCount
 
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
@@ -82,6 +91,28 @@ glmmSeq <- function(modelFormula,
   subsetMetadata <- metadata[, variables]  # restrict metadata to save memory
   ids <- as.character(metadata[, id])
   sf <- sizeFactors
+
+  # Check the distribution for duplicates
+  check <- data.frame(table(subsetMetadata))
+  check <- check[! check$Freq %in% c(0, 1), ]
+  if(nrow(check) > 0){
+    mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
+      paste(as.character(x), collapse=" ")
+      }))
+    cCheck <- as.character(apply(check[, variables], 1, function(x) {
+      paste(as.character(x), collapse=" ")
+    }))
+    countdata <- countdata[, mCheck != cCheck]
+    subsetMetadata <- subsetMetadata[mCheck != cCheck, ]
+    ids <- ids[ids %in% subsetMetadata[, id]]
+    warning(paste0(paste(check[, id], collapse=", "),
+                  " has multiple entries for identical ",
+                  paste0(colnames(check)[! colnames(check) %in% c(id, "Freq")],
+                         collapse=" and "),
+                  ". These will be removed."))
+  }
+
+  # Option to subset to paired samples only
   if (removeSingles) {
     paired <- names(table(ids)[table(ids) > 1])
     pairedIndex <- as.character(ids) %in% paired
@@ -91,7 +122,7 @@ glmmSeq <- function(modelFormula,
     sf <- sizeFactors[pairedIndex]
   }
 
-  # Check numbers
+  # Check numbers and alignment
   if(! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN=identical,
                   FUN.VALUE=TRUE, ncol(countdata)))) {
     stop("Alignment error")
@@ -101,7 +132,7 @@ glmmSeq <- function(modelFormula,
   }
 
   if (!is.null(sizeFactors)) offset <- log(sf) else offset <- NULL
-  if (verbose) cat(paste0('n=', length(ids), ' samples, ',
+  if (verbose) cat(paste0('\nn=', length(ids), ' samples, ',
                           length(unique(ids)), ' individuals\n'))
 
 
@@ -123,6 +154,7 @@ glmmSeq <- function(modelFormula,
     list(y=countdata[i,], dispersion=dispersions[i])
   })
 
+  # For each gene perform a fit
   resultlist <- mclapply(geneList, function(ylist) {
     data <- subsetMetadata
     data[, 'count'] <- as.numeric(ylist$y)
@@ -132,7 +164,7 @@ glmmSeq <- function(modelFormula,
       silent=TRUE)
 
     if (class(fit)!='try-error') {
-      # intercept dropped columns
+      # intercept dropped genes
       if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
         return( list(stats=NA, predict=NA, optinfo=NA,
                      tryErrors=attr(fit@pp$X, "msgRankdrop")) )
@@ -155,8 +187,10 @@ glmmSeq <- function(modelFormula,
       singular <- as.numeric(isSingular(fit))
       conv <- length(slot(fit, 'optinfo')$conv$lme4$messages)
       rm(fit, data)
-      return( list(stats=c(stats, fixedEffects, waldtest), predict=predictdf,
-                   optinfo=c(singular, conv), tryErrors="") )
+      return( list(stats=c(stats, fixedEffects, waldtest), 
+                   predict=predictdf,
+                   optinfo=c(singular, conv), 
+                   tryErrors="") )
     } else {
       return( list(stats=NA, predict=NA, optinfo=NA, tryErrors=fit[1]) )
     }
@@ -177,9 +211,10 @@ glmmSeq <- function(modelFormula,
                                paste0('UCI', 1:ny))
 
   if (sum(!noErr)!=0) {
-    if (verbose) cat(paste("Errors in", sum(!noErr), "genes\n"))
-    outputErrors <- vapply(resultlist[!noErr], function(x) x$try.errors,
-                           FUN.VALUE="character")
+    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):", 
+                           paste0(names(noErr)[! noErr], collapse=", ")))
+    outputErrors <- vapply(resultlist[!noErr], function(x) {x$tryErrors}, 
+                           FUN.VALUE = c("test"))
   } else {outputErrors<-c('No errors')}
 
   optInfo <- t(vapply(resultlist[noErr], function(x) {
@@ -188,15 +223,18 @@ glmmSeq <- function(modelFormula,
 
   s <- t(vapply(resultlist[noErr], function(x) {x$stats}, FUN.VALUE=rep(1, 13)))
 
+  # Create GlmmSeq object with results
   new("GlmmSeq",
       formula = fullFormula,
       stats = s,
       predict = outputPredict,
       reducedFormula = reducedFormula,
       countdata = countdata,
+      metadata = subsetMetadata,
       modelData = modelData,
-      optinfo = optInfo,
-      errors = outputErrors
+      optInfo = optInfo,
+      errors = outputErrors,
+      variables = id
   )
 }
 

@@ -16,12 +16,14 @@ RoxygenNote: 7.1.1
 Language: en-gb
 URL: https://github.com/KatrionaGoldmann/glmmSeq
 BugReports: https://github.com/KatrionaGoldmann/glmmSeq/issues
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, kableExtra
 VignetteBuilder: knitr
+Depends: R (>= 3.5.0)
 Imports:
     MASS,
     car,
     stats,
+    gghalves,
     ggplot2,
     ggpubr,
     graphics,

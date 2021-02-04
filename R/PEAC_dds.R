@@ -1,0 +1,6 @@
+#' Distribution
+#'
+#' Dummy dist
+"disp"
+
+
