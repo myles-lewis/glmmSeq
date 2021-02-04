@@ -5,49 +5,71 @@
 \title{Paired plots}
 \usage{
 pairedPlot(
-  id,
-  time,
-  gene_exp,
-  f,
-  dispersion,
-  datatype,
-  plottype,
-  plab = "drug",
-  pch = 21,
-  bg = "red",
-  pairedonly = TRUE,
-  xlab = "",
-  ylab = "",
+  glmmResult,
+  geneName = NULL,
+  x1Label = NULL,
+  x2Label = NULL,
+  IDColumn = "ID",
+  xTitle = NULL,
+  logTransform = FALSE,
+  shapes = 21,
+  colours = "red",
+  lineColour = "grey60",
+  alpha = 0.7,
+  pairedOnly = TRUE,
   title = "",
   graphics = "base",
-  addBox = TRUE,
+  addModel = TRUE,
+  modSize = 1.5,
+  modColour = "black",
+  modLineColour = "black",
+  addBox = FALSE,
+  addViolins = TRUE,
+  violinWidth = 0.5,
   ...
 )
 }
 \arguments{
-\item{id}{A character vector of subjects ids for pairing over time.}
+\item{glmmResult}{A GlmmSeq object from \code{glmmSeq}.}
 
-\item{time}{The time point}
+\item{geneName}{The gene name to be plotted.}
 
-\item{gene_exp}{The gene expression}
+\item{x1Label}{The name of the first (inner) x parameter. This must be able
+to be paired using the ID.}
 
-\item{dispersion}{The dispersion}
+\item{x2Label}{The name of the second (outer) x parameter}
 
-\item{datatype}{The type of expression data. Options include c("VST", "TPM")}
+\item{xTitle}{Title for the x axis}
 
-\item{plottype}{The plot type. Options "1"=plot all samples, "2"=plot mean}
+\item{logTransform}{Whether to perform a log10 transform on the y axis}
 
-\item{pch}{The marker shape (default=21)}
+\item{shapes}{The marker shapes (default=21)}
 
-\item{bg}{The marker colour (default='red')}
+\item{colours}{The marker colours (default='red')}
 
-\item{pairedonly}{Logical whether to only plot paired samples (default=TRUE)}
+\item{lineColour}{The line colours (default='grey60')}
 
-\item{xlab}{Character vector for the label on the x axis}
+\item{alpha}{Line and marker opacity (default=0.7)}
+
+\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
+
+\item{title}{Plot title}
 
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
 
-\item{x}{A character vector for groups}
+\item{addModel}{Whether to add the fit model with markers}
+
+\item{modSize}{Size of model points and line}
+
+\item{modColour}{Colour of model fit markers}
+
+\item{modLineColour}{Colour of model fit lines}
+
+\item{addBox}{Logical whether to add boxplots.}
+
+\item{addViolins}{Logical whether to add half violins (ggplot only)}
+
+\item{violinWidth}{Width of violin plots}
 }
 \value{
 Returns a paired plot
@@ -55,4 +77,3 @@ Returns a paired plot
 \description{
 Paired plots to show differences between groups and over time
 }
-\keyword{hplot}

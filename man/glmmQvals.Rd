@@ -7,7 +7,7 @@
 glmmQvals(result, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
 }
 \arguments{
-\item{result}{output from glmmSeq or glmmResults}
+\item{result}{output from glmmSeq}
 
 \item{cutoff}{Prints a table showing the number of probes considered
 significant by the pvalue cut-off (default=0.05)}
