@@ -5,29 +5,41 @@
 \title{Plotly Fold Change plot}
 \usage{
 fcPlot(
-  glmmResults,
-  groupCol,
-  colourCutoff = 0.01,
+  glmmResult,
+  x1Label,
+  x2Label,
+  pCutoff = 0.01,
   labels,
   useAdjusted = FALSE,
-  plotCutoff = 0.05
+  plotCutoff = 1,
+  graphics = "ggplot",
+  colours = c("grey", "lightseagreen", "red", "blue"),
+  verbose = FALSE
 )
 }
 \arguments{
-\item{glmmResults}{output from glmmQvals or glmmSeq}
+\item{glmmResult}{output from glmmQvals or glmmSeq}
 
-\item{groupCol}{The grouping column}
+\item{x1Label}{The name of the first (inner) x parameter}
 
-\item{colourCutoff}{The significance cut-off for colour-coding
+\item{x2Label}{The name of the second (outer) x parameter}
+
+\item{pCutoff}{The significance cut-off for colour-coding
 (default=0.01)}
 
 \item{labels}{Genes to label on plot}
 
 \item{plotCutoff}{Which probes to include by significance cut-off
-(default=0.05)}
+(default=1 for all markers)}
+
+\item{graphics}{Graphics system to use: "ggplot" or "plotly"}
+
+\item{colours}{Colour vector for significance}
+
+\item{verbose}{Whether to print statistics}
 
 \item{useAdjust}{whether to use adjusted pvalues
-(must have q_ columns in glmmResults)}
+(must have q_ columns in glmmResult)}
 }
 \value{
 Returns dataframe with results for gene-wise glm

@@ -1,7 +1,7 @@
 #' Glmm Sequencing qvalues
 #'
 #' Add qvalue columns to the glmmSeq dataframe
-#' @param result output from glmmSeq or glmmResults
+#' @param result output from glmmSeq 
 #' @param cutoff Prints a table showing the number of probes considered
 #' significant by the pvalue cut-off (default=0.05)
 #' @param pi0 It is recommended not to input an estimate of pi0. Experienced
@@ -14,36 +14,25 @@
 #' @export
 
 glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=TRUE) {
-  if(class(result)=="GlmmSeq"){ # glmmSeq outputs
-    resultStats <- data.frame(result@stats, check.names=FALSE)
-    for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
-      q_cn <- gsub('P_', 'q_', cn)
-      resultStats[, q_cn] <- NA
-      resultStats[!is.na(resultStats[, cn]), q_cn] <-
-        qvalue(resultStats[!is.na(resultStats[, cn]), cn], pi0=pi0)$qvalues
-      if(verbose){
-        cat(paste0("\n", q_cn, "\n"))
-        cat(paste(rep("-", nchar(q_cn)), collapse=""))
-        print(table(ifelse(resultStats[, q_cn] < cutoff,
-                           "Significant", "Not Significant")))
-      }
-    }
-    result@stats <- as.matrix(resultStats)
-  } else{ # glmmResults output
-    result <- data.frame(result)
-    for (cn in colnames(result)[grepl('P_', colnames(result))]) {
-      q_cn <- gsub('P_', 'q_', cn)
-      result[, q_cn] <- NA
-      result[!is.na(result[, cn]), q_cn] <-
-        qvalue(result[!is.na(result[, cn]), cn], pi0=pi0)$qvalues
-      if(verbose){
-        cat(paste0("\n", q_cn, "\n"))
-        cat(paste(rep("-", nchar(q_cn)), collapse=""))
-        print(table(ifelse(result[, q_cn] < cutoff,
-                           "Significant", "Not Significant")))
-      }
+  
+  
+  if(class(result) !="GlmmSeq") stop("result must be a GlmmSeq object")
+  
+  resultStats <- data.frame(result@stats, check.names=FALSE)
+  for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
+    q_cn <- gsub('P_', 'q_', cn)
+    resultStats[, q_cn] <- NA
+    resultStats[!is.na(resultStats[, cn]), q_cn] <-
+      qvalue(resultStats[!is.na(resultStats[, cn]), cn], pi0=pi0)$qvalues
+    if(verbose){
+      cat(paste0("\n", q_cn, "\n"))
+      cat(paste(rep("-", nchar(q_cn)), collapse=""))
+      print(table(ifelse(resultStats[, q_cn] < cutoff,
+                         "Significant", "Not Significant")))
     }
   }
+  result@stats <- as.matrix(resultStats)
+  
   return(result)
 }
 

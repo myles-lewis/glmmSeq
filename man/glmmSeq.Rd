@@ -16,6 +16,7 @@ glmmSeq(
   control = glmerControl(optimizer = "bobyqa"),
   cores = detectCores()/2,
   removeSingles = TRUE,
+  zeroCount = 0.125,
   verbose = TRUE
 )
 }
@@ -43,6 +44,9 @@ in pairing}
 
 \item{removeSingles}{whether to remove unpaired individuals (default=TRUE)}
 
+\item{zeroCount}{numerical value to offset zeroes for the purpose of log
+(default=0.125)}
+
 \item{verbose}{Logical whether to display messaging (default=TRUE)}
 }
 \value{
@@ -51,4 +55,3 @@ Returns dataframe with results for gene-wise glm
 \description{
 Glmm for sequencing results
 }
-\keyword{hplot}

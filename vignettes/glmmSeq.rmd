@@ -4,13 +4,359 @@ author: "Myles Lewis, Katriona Goldmann, Cankut Cubuk, Elisabetta Sciacca, Anna 
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Put the title of your vignette here}
+  %\VignetteIndexEntry{glmmSeq}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.width = 7, fig.height = 8)
+library(kableExtra)
 ```
 
-This is where the vignette will go
+# Help from code review
+
+For the purposes of the code review I think we can ignore the mathematical part
+and focus on some other aspects:
+
+- [ ] Check style guide ?
+- [ ] Thoughts about the package as a whole?
+- [ ] Documentation ?
+- [ ] Any plots you think would be interesting
+- [ ] Improvements on variable names ?
+- [ ] Thoughts: the glmmGene is really legacy code since you can run glmmSeq with just
+one gene, should I remove it? Or just leave it out of the documentation ?
+- [ ] Thoughts: if we allow further flexibility in the model then the plotting functions will not always apply. Should we do this and just add in catch errors is people try to use the functions incorrectly? Or is it better to keep the package simple for now and stick to our intended model use?
+
+# Outstanding tasks for developers
+
+- [ ] allow further flexibility in the models - right now only tested with
+2x2-factor terms and an interaction term (Elisabetta is looking at more timepoints)
+- [ ] add more options for plot legends (e.g. highlight model fit and paired colours)
+- [ ] add more commenting so its clearer to others what I am doing
+- [ ] allow glm models (without random effects)
+
+# Purpose
+
+The aim of this package is to model gene expression with a general linear mixed
+model (glmm). This allows us to include random effects as well as mixed effects.
+For the purpose of the package we use the `glmer` function in `lme4`
+package which fits glmm via REML or maximum likelihood.
+
+# Differences between other packages
+
+| Package | Differences/Limitations |
+|-|-|
+| Limma | Inflexible cannot return interactions |
+| DESeq | No possibility for time/longitudinal analysis |
+| Dream | ... |
+| MCMseq | ... |
+| rmRNA-seq | voom-like, shrinkage estimate |
+
+# Installing
+
+To load the package as a library you can run the code in ./package_creator then:
+
+```{r, eval=FALSE}
+library(glmmSeq)
+```
+
+Else you can source the functions individually:
+
+```{r, eval=FALSE}
+functions = list.files(paste0(path_package, "/R"), full.names = TRUE)
+invisible(lapply(functions, source))
+```
+
+But you will need to load in the additional libraries then:
+
+```{r, eval=FALSE}
+library(MASS)
+library(car)
+library(ggplot2)
+library(ggpubr)
+library(lme4)
+library(methods)
+library(parallel)
+library(plotly)
+library(qvalue)
+library(stats)
+```
+
+# Overview
+
+To get started first we load in the package
+
+```{r, message=FALSE, warning=FALSE}
+library(glmmSeq)
+```
+
+Then we can load in the example data set:
+
+```{r}
+data(PEAC_minimal_load)
+data(PEAC_dds)
+
+metadata$EULAR_bin  = NA
+metadata$EULAR_bin[metadata$EULAR_6m %in% c("Good responder", "Moderate responder" )] = "responder"
+metadata$EULAR_bin[metadata$EULAR_6m %in% c("Non responder")] = "non_responder"
+metadata = metadata[! is.na(metadata$EULAR_bin), ]
+
+tpm = tpm[, metadata$SAMID]
+```
+
+The metadata contains the following, where EULAR is a rheumatoid arthritis response metric:
+
+```{r}
+kable(head(metadata), row.names = F) %>% kable_styling()
+```
+
+
+# Individual Genes
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+
+To model one gene over time using the model:
+
+>  gene expression ~ fixed effects + random effects
+
+In R the formula is defined by both the fixed-effects and randomeffects part
+of the model, with the response on the left of a ~ operator and the
+terms, separated by + operators, on the right. Random-effects terms are
+distinguished by vertical bars ("|") separating expressions for design matrices
+from grouping factors.
+
+<div class = "blue">
+
+We want to use time and response as fixed effects and the patients as random
+effects:
+
+> gene expression ~ time + response + (1 | patient)
+
+</div>
+
+To achieve this we use a negative binomial model with gene dispersions passed in. 
+These dispersions were previously created using DESeq2
+
+# Modelling a gene
+
+For a specific gene, say _MS4A1_, we view the lmer fit using `glmmGene`:
+
+```{r, warning=FALSE}
+MS4A1fit <- glmmGene(~ Timepoint * EULAR_bin + (1 | PATID),
+                     gene = "MS4A1",
+                     id = 'PATID',
+                     countdata = tpm,
+                     metadata = metadata,
+                     dispersion = disp["MS4A1"])
+
+MS4A1fit
+```
+
+Or to create a GlmmSeq object, we can use `glmmSeq`, which contains the following slots:
+
+```{r, warning=FALSE}
+MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_bin + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm["MS4A1", ],
+                     metadata = metadata,
+                     dispersion = disp["MS4A1"], 
+                     verbose=FALSE)
+
+names(attributes(MS4A1glmm))
+```
+
+# Overall Model
+
+To fit for all genes we can use the `glmmSeq` function. This creates an
+object of class GlmmSeq.
+
+
+Note that this analysis can take some time:
+
+- 100 genes takes a couple of seconds
+- 1000 genes takes about 19 seconds
+- All ~20000 genes takes about 9 mins
+
+Therefore I will only run it for 1000 genes here.
+
+```{r, warning=FALSE}
+genes = intersect(rownames(tpm), names(disp))
+
+resultTable <- glmmSeq(~ Timepoint * EULAR_bin + (1 | PATID),
+                       id = 'PATID',
+                       countdata = tpm[genes, ],
+                       metadata = metadata,
+                       dispersions = disp[genes])
+```
+
+The variables used by the model are in the `@modeldata` slot
+
+```{r}
+kable(resultTable@modelData) %>% kable_styling()
+```
+
+The model fit statistics can be viewed in the `@stats` slot:
+
+```{r}
+stats = data.frame(resultTable@stats)
+kable(stats[order(stats$P_Timepoint.EULAR_bin), ]) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+And the final model output in the `@predict` slot:
+
+```{r}
+predict = data.frame(resultTable@predict)
+kable(predict) %>%
+  kable_styling() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+Finally the qvalues from each of the pvalues can be calculated. This will output
+a significance table based on the cutoff (default p=0.05):
+
+```{r}
+resultTable <- glmmQvals(resultTable)
+```
+
+# Paired Plots
+
+For variables which are paired according to an ID, we can view the model using 
+paired plots. In this case the samples can be paired over time. 
+
+Plots can be viewed either in base graphics:
+
+```{r, fig.height=5}
+pairedPlot(glmmResult=resultTable,
+           geneName = "MS4A1",
+           x1Label = "Timepoint",
+           x2Label="EULAR_bin",
+           IDColumn = 'PATID',
+           graphics = 'ggplot',
+           colours = c('skyblue', 'goldenrod'),
+           logTransform=TRUE, 
+           addViolins = TRUE)
+```
+
+Or using ggplot, with or without the model fit overlaid:
+
+```{r, fig.height=5}
+library(ggpubr)
+
+p1 = pairedPlot(glmmResult=resultTable,
+                geneName = "ADAM12",
+                x1Label = "Timepoint",
+                x2Label="EULAR_bin",
+                IDColumn = "PATID",
+                shape=c(21, 24),
+                graphics="ggplot",
+                colours=c('purple', 'springgreen4'),
+                modSize = 1)
+
+p2 = pairedPlot(glmmResult=resultTable,
+                geneName = "ADAM12",
+                x1Label = "Timepoint",
+                x2Label="EULAR_bin",
+                IDColumn = "PATID",
+                shape=c(21, 24),
+                addModel=FALSE,
+                graphics="ggplot",
+                colours=c('purple', 'springgreen4'))
+
+ggarrange(p1 + theme(plot.subtitle=element_text(size=8)), 
+          p2 + theme(plot.subtitle=element_text(size=8)), ncol=2)
+```
+
+
+# Model plots
+
+Alternatively to plot the model fits alone you can use the modelPlot function:
+
+```{r}
+ggarrange(
+  modelPlot(MS4A1glmm, "MS4A1", x1Label="Timepoint", x2Label="EULAR_bin", 
+            graphics="ggplot") + theme(plot.subtitle=element_text(size=9)),
+  modelPlot(resultTable, "ADAM12", x1Label="Timepoint", x2Label="EULAR_bin", 
+            graphics="ggplot") + theme(plot.subtitle=element_text(size=9)),
+  ncol=2)
+```
+
+
+# Fold Change Plots
+
+The fold change all genes can be plotted on fold change plots to highlight significance. Genes on the x-y plane are associated in the same direction. Genes on the x=-y axis have association in opposite directions. 
+
+This can be plotted with plotly or ggplot: 
+
+```{r}
+labels = genes[1:10]
+
+fcPlot(glmmResult=resultTable,
+       x1Label="Timepoint",
+       x2Label="EULAR_bin",
+       pCutoff=0.01,
+       labels=labels,
+       useAdjusted = F,
+       plotCutoff = 1,
+       graphics="plotly")
+```
+
+Or flipping the x1 and x2 labels we can look at the fold change between response at different
+timepoints. This might be interesting to see if there are differences at certain
+timepoints which to not present at others.
+
+```{r}
+fcPlot(glmmResult=resultTable,
+       x2Label="Timepoint",
+       x1Label="EULAR_bin",
+       labels=c("ACTA1", "ACKR3"),
+       pCutoff=0.01,
+       useAdjusted = F,
+       plotCutoff = 1,
+       graphics="plotly")
+```
+
+This has a allowed us to pick out genes of potential interest we can then have
+another closer look at:
+
+```{r, fig.height=6}
+p1 <- pairedPlot(glmmResult=resultTable,
+           geneName = "ACTA1",
+           x1Label = "Timepoint",
+           x2Label="EULAR_bin",
+           IDColumn = "PATID",
+           graphics="ggplot",
+           colours = c("blue"),
+           logTransform=T) + theme(plot.subtitle=element_text(size=9))
+
+p2 <- pairedPlot(glmmResult=resultTable,
+           geneName = "ACKR3",
+           x1Label = "Timepoint",
+           x2Label="EULAR_bin",
+           IDColumn = "PATID",
+           graphics="ggplot",
+           logTransform=T) + theme(plot.subtitle=element_text(size=9))
+
+ggarrange(p1, p2, ncol=2)
+```
+
+
+# MA plots
+
+An MA plot is an application of a Bland–Altman plot. The plot visualizes the 
+differences between measurements taken in
+two samples, by transforming the data onto M (log ratio) and A (mean average)
+scales, then plotting these values.
+
+```{r}
+maPlots <- maPlot(resultTable,
+                  x1Label="Timepoint",
+                  x2Label="EULAR_bin",
+                  labels=c("AKR1C2", "ACADVL", "ACTR3", "ADAM28", "ADIRF"))
+
+maPlots$combined
+```

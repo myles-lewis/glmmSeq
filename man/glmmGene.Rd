@@ -11,10 +11,11 @@ glmmGene(
   metadata,
   id,
   dispersion,
-  sizeFactor = NULL,
+  sizeFactors = NULL,
   reducedFormula = "",
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
+  zeroCount = 0.125,
   removeSingles = TRUE
 )
 }
@@ -32,13 +33,16 @@ in pairing}
 
 \item{dispersion}{a numeric for the gene dispersion}
 
-\item{sizeFactor}{the gene size factor (default=NULL)}
+\item{sizeFactors}{the gene size factor (default=NULL)}
 
 \item{reducedFormula}{Reduced design formula (default="")}
 
 \item{modelData}{something something}
 
 \item{control}{the glmer control (default=glmerControl(optimizer="bobyqa"))}
+
+\item{zeroCount}{numerical value to offset zeroes for the purpose of log
+(default=0.125)}
 
 \item{removeSingles}{whether to remove unpaired individuals (default=TRUE)}
 }
@@ -48,4 +52,3 @@ Returns the fit for the general linear mixed model of a single gene
 \description{
 Glmm for sequencing results of a single gene
 }
-\keyword{hplot}

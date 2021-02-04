@@ -4,16 +4,34 @@
 \alias{modelPlot}
 \title{Model plot}
 \usage{
-modelPlot(result, gene, pch = 21, bg = c("red", "blue"), graphics = "ggplot")
+modelPlot(
+  glmmResult,
+  geneName,
+  x1Label = "Timepoint",
+  x2Label,
+  xTitle = NULL,
+  logTransform = FALSE,
+  shapes = 21,
+  colours = c("red", "blue"),
+  graphics = "ggplot"
+)
 }
 \arguments{
-\item{result}{A glmmSeq object}
+\item{glmmResult}{A glmmSeq object}
 
-\item{gene}{Gene name to plot}
+\item{geneName}{Gene name to plot}
 
-\item{pch}{The marker shape (default=21)}
+\item{x1Label}{The name of the first (inner) x parameter}
 
-\item{bg}{The marker colour, default=c('red', 'blue')}
+\item{x2Label}{The name of the second (outer) x parameter}
+
+\item{xTitle}{Title for the x axis}
+
+\item{logTransform}{Whether to perform a log10 transform on the y axis}
+
+\item{shapes}{The marker shape (default=21)}
+
+\item{colours}{The marker colour, default=c('red', 'blue')}
 
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
 }
@@ -23,4 +41,3 @@ Returns a model plot
 \description{
 Model plots to show the overall differences between groups and over time
 }
-\keyword{hplot}
