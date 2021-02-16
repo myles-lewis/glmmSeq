@@ -8,6 +8,13 @@
 
 <title>Glmm for sequencing results — glmmSeq • glmmSeq</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -41,6 +48,7 @@
 
 <meta property="og:title" content="Glmm for sequencing results — glmmSeq" />
 <meta property="og:description" content="Glmm for sequencing results" />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -72,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.82.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -125,15 +133,16 @@
   <span class='va'>countdata</span>,
   <span class='va'>metadata</span>,
   <span class='va'>id</span>,
-  <span class='va'>dispersions</span>,
+  <span class='va'>dispersion</span>,
   sizeFactors <span class='op'>=</span> <span class='cn'>NULL</span>,
   reducedFormula <span class='op'>=</span> <span class='st'>""</span>,
   modelData <span class='op'>=</span> <span class='cn'>NULL</span>,
   control <span class='op'>=</span> <span class='fu'>glmerControl</span><span class='op'>(</span>optimizer <span class='op'>=</span> <span class='st'>"bobyqa"</span><span class='op'>)</span>,
-  cores <span class='op'>=</span> <span class='fu'>detectCores</span><span class='op'>(</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span>,
-  removeSingles <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>,
+  pairedOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
   zeroCount <span class='op'>=</span> <span class='fl'>0.125</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -141,11 +150,12 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>modelFormula</th>
-      <td><p>the formula</p></td>
+      <td><p>the model formula. For more information of formula
+structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
     </tr>
     <tr>
       <th>countdata</th>
-      <td><p>the sequencing data</p></td>
+      <td><p>the sequencing count data</p></td>
     </tr>
     <tr>
       <th>metadata</th>
@@ -154,15 +164,17 @@
     <tr>
       <th>id</th>
       <td><p>Column name in metadata which contains the sample IDs to be used
-in pairing</p></td>
+in pairing samples</p></td>
     </tr>
     <tr>
-      <th>dispersions</th>
-      <td><p>a numeric vector of gene dispersions</p></td>
+      <th>dispersion</th>
+      <td><p>a numeric vector of gene dispersion</p></td>
     </tr>
     <tr>
       <th>sizeFactors</th>
-      <td><p>size factors (default=NULL)</p></td>
+      <td><p>size factors (default=NULL). If provided the glmer offset
+is set to log(sizeFactors). For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
     </tr>
     <tr>
       <th>reducedFormula</th>
@@ -170,18 +182,20 @@ in pairing</p></td>
     </tr>
     <tr>
       <th>modelData</th>
-      <td><p>something something</p></td>
+      <td><p>Expanded design matrix</p></td>
     </tr>
     <tr>
       <th>control</th>
-      <td><p>the glmer control (default=glmerControl(optimizer="bobyqa"))</p></td>
+      <td><p>the glmer control (default=glmerControl(optimizer="bobyqa")).
+For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/lmerControl.html'>lme4::glmerControl()</a></code>.</p></td>
     </tr>
     <tr>
       <th>cores</th>
       <td><p>number of cores to use. Default=detectCores()/2</p></td>
     </tr>
     <tr>
-      <th>removeSingles</th>
+      <th>pairedOnly</th>
       <td><p>whether to remove unpaired individuals (default=TRUE)</p></td>
     </tr>
     <tr>
@@ -193,12 +207,36 @@ in pairing</p></td>
       <th>verbose</th>
       <td><p>Logical whether to display messaging (default=TRUE)</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other parameters to pass to
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns dataframe with results for gene-wise glm</p>
+    <p>Returns a GlmmSeq object with results for gene-wise general linear
+mixed models</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>PEAC_minimal_load</span><span class='op'>)</span>
+
+<span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>tpm</span>, <span class='fl'>1</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span> 
+<span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span> 
+<span class='op'>}</span><span class='op'>)</span>
+
+<span class='va'>MS4A1glmm</span> <span class='op'>&lt;-</span> <span class='fu'>glmmSeq</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,
+                     id <span class='op'>=</span> <span class='st'>'PATID'</span>,
+                     countdata <span class='op'>=</span> <span class='va'>tpm</span><span class='op'>[</span><span class='st'>'MS4A1'</span>, <span class='op'>]</span>,
+                     metadata <span class='op'>=</span> <span class='va'>metadata</span>,
+                     dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='st'>'MS4A1'</span><span class='op'>]</span>,
+                     verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='input'>                     
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>MS4A1glmm</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "formula"        "stats"          "predict"        "reducedFormula"
+#&gt;  [5] "countdata"      "metadata"       "modelData"      "optInfo"       
+#&gt;  [9] "errors"         "variables"      "class"         </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -240,7 +278,7 @@ in pairing</p></td>
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
   .bladge:after{
@@ -254,7 +292,7 @@ in pairing</p></td>
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
 </style>
@@ -264,19 +302,19 @@ Developed by the <a href="https://www.qmul.ac.uk/whri/emr/">Centre for Experimen
 </div>
 
 <div id="right">
-<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff5050">
+<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff3333">
 </a><span style="margin-left:1rem"></span>
 
-<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff5050"></i></a>
+<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff3333"></i></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff5050"></i></a>
+<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff3333"></i></a>
 </div>
 
       </footer>

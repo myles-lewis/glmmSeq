@@ -8,6 +8,13 @@
 
 <title>An S4 class to define the glmmSeq output — GlmmSeq-class • glmmSeq</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -41,6 +48,7 @@
 
 <meta property="og:title" content="An S4 class to define the glmmSeq output — GlmmSeq-class" />
 <meta property="og:description" content="An S4 class to define the glmmSeq output" />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -72,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.82.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -129,21 +137,21 @@
 <dl>
 <dt><code>formula</code></dt><dd><p>The model formula</p></dd>
 
-<dt><code>stats</code></dt><dd><p>the stats</p></dd>
+<dt><code>stats</code></dt><dd><p>the statistics from the glmm fit</p></dd>
 
-<dt><code>predict</code></dt><dd><p>The predicted values</p></dd>
+<dt><code>predict</code></dt><dd><p>The predicted interception values</p></dd>
 
 <dt><code>reducedFormula</code></dt><dd><p>The reduced formula with removed random effects</p></dd>
 
-<dt><code>countdata</code></dt><dd><p>The expression data</p></dd>
+<dt><code>countdata</code></dt><dd><p>The input expression data</p></dd>
 
-<dt><code>metadata</code></dt><dd><p>The metadata</p></dd>
+<dt><code>metadata</code></dt><dd><p>The input metadata</p></dd>
 
-<dt><code>modelData</code></dt><dd><p>the model data</p></dd>
+<dt><code>modelData</code></dt><dd><p>the model data for the glmm</p></dd>
 
-<dt><code>optinfo</code></dt><dd><p>the optional info</p></dd>
+<dt><code>optInfo</code></dt><dd><p>Information on whether the model was singular or converged</p></dd>
 
-<dt><code>errors</code></dt><dd><p>errors</p></dd>
+<dt><code>errors</code></dt><dd><p>Any errors</p></dd>
 
 <dt><code>variables</code></dt><dd><p>The variables used in the formula</p></dd>
 
@@ -190,7 +198,7 @@
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
   .bladge:after{
@@ -204,7 +212,7 @@
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
 </style>
@@ -214,19 +222,19 @@ Developed by the <a href="https://www.qmul.ac.uk/whri/emr/">Centre for Experimen
 </div>
 
 <div id="right">
-<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff5050">
+<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff3333">
 </a><span style="margin-left:1rem"></span>
 
-<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff5050"></i></a>
+<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff3333"></i></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff5050"></i></a>
+<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff3333"></i></a>
 </div>
 
       </footer>

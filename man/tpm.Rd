@@ -5,12 +5,13 @@
 \alias{tpm}
 \title{TPM count data from PEAC}
 \format{
-An object of class \code{data.frame} with 3000 rows and 162 columns.
+An object of class \code{data.frame} with 348 rows and 162 columns.
 }
 \usage{
 tpm
 }
 \description{
-A dataset containing the count data
+Transcripts Per Million (TPM) count data for PEAC synovial
+biopsies.
 }
 \keyword{datasets}

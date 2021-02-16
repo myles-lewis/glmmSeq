@@ -16,11 +16,14 @@ glmmGene(
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
   zeroCount = 0.125,
-  removeSingles = TRUE
+  pairedOnly = TRUE,
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
-\item{modelFormula}{the formula}
+\item{modelFormula}{the model formula. For more information of formula
+structure see \code{\link[lme4:glmer]{lme4::glmer()}}.}
 
 \item{countdata}{the sequencing data}
 
@@ -33,22 +36,50 @@ in pairing}
 
 \item{dispersion}{a numeric for the gene dispersion}
 
-\item{sizeFactors}{the gene size factor (default=NULL)}
+\item{sizeFactors}{size factors (default=NULL). If provided the glmer offset
+is set to log(sizeFactors).For more information see
+\code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{reducedFormula}{Reduced design formula (default="")}
 
 \item{modelData}{something something}
 
-\item{control}{the glmer control (default=glmerControl(optimizer="bobyqa"))}
+\item{control}{the glmer control
+(default=glmerControl(optimizer="bobyqa")).
+For more information see
+\code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
 (default=0.125)}
 
-\item{removeSingles}{whether to remove unpaired individuals (default=TRUE)}
+\item{pairedOnly}{whether to remove unpaired individuals (default=TRUE)}
+
+\item{verbose}{Logical whether to display messaging (default=FALSE)}
+
+\item{...}{Other parameters to pass to
+\code{\link[lme4:glmer]{lme4::glmer()}}.}
 }
 \value{
 Returns the fit for the general linear mixed model of a single gene
 }
 \description{
 Glmm for sequencing results of a single gene
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
+                      gene = 'MS4A1',
+                      id = 'PATID',
+                      countdata = tpm,
+                      metadata = metadata,
+                      dispersion = disp['MS4A1'], 
+                      pairedOnly=TRUE, 
+                      verbose=FALSE)
+                      
+MS4A1fit
 }
