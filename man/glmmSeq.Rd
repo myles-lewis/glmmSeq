@@ -9,49 +9,75 @@ glmmSeq(
   countdata,
   metadata,
   id,
-  dispersions,
+  dispersion,
   sizeFactors = NULL,
   reducedFormula = "",
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
-  cores = detectCores()/2,
-  removeSingles = TRUE,
+  cores = 1,
+  pairedOnly = TRUE,
   zeroCount = 0.125,
-  verbose = TRUE
+  verbose = TRUE,
+  ...
 )
 }
 \arguments{
-\item{modelFormula}{the formula}
+\item{modelFormula}{the model formula. For more information of formula
+structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
 
-\item{countdata}{the sequencing data}
+\item{countdata}{the sequencing count data}
 
 \item{metadata}{a data frame of sample information}
 
 \item{id}{Column name in metadata which contains the sample IDs to be used
-in pairing}
+in pairing samples}
 
-\item{dispersions}{a numeric vector of gene dispersions}
+\item{dispersion}{a numeric vector of gene dispersion}
 
-\item{sizeFactors}{size factors (default=NULL)}
+\item{sizeFactors}{size factors (default=NULL). If provided the glmer offset
+is set to log(sizeFactors). For more information see
+\code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{reducedFormula}{Reduced design formula (default="")}
 
-\item{modelData}{something something}
+\item{modelData}{Expanded design matrix}
 
-\item{control}{the glmer control (default=glmerControl(optimizer="bobyqa"))}
+\item{control}{the glmer control (default=glmerControl(optimizer="bobyqa")).
+For more information see
+\code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
 \item{cores}{number of cores to use. Default=detectCores()/2}
 
-\item{removeSingles}{whether to remove unpaired individuals (default=TRUE)}
+\item{pairedOnly}{whether to remove unpaired individuals (default=TRUE)}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
 (default=0.125)}
 
 \item{verbose}{Logical whether to display messaging (default=TRUE)}
+
+\item{...}{Other parameters to pass to
+\code{\link[lme4:glmer]{lme4::glmer()}}}
 }
 \value{
-Returns dataframe with results for gene-wise glm
+Returns a GlmmSeq object with results for gene-wise general linear
+mixed models
 }
 \description{
 Glmm for sequencing results
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm['MS4A1', ],
+                     metadata = metadata,
+                     dispersion = disp['MS4A1'],
+                     verbose=FALSE)
+                     
+names(attributes(MS4A1glmm))
 }

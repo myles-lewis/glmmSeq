@@ -4,14 +4,14 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 #' An S4 class to define the glmmSeq output
 #'
 #' @slot formula The model formula
-#' @slot stats the stats
-#' @slot predict The predicted values
+#' @slot stats the statistics from the glmm fit
+#' @slot predict The predicted interception values
 #' @slot reducedFormula The reduced formula with removed random effects
-#' @slot countdata The expression data
-#' @slot metadata The metadata
-#' @slot modelData the model data
-#' @slot optinfo the optional info
-#' @slot errors errors
+#' @slot countdata The input expression data
+#' @slot metadata The input metadata
+#' @slot modelData the model data for the glmm
+#' @slot optInfo Information on whether the model was singular or converged
+#' @slot errors Any errors
 #' @slot variables The variables used in the formula
 
 setClass("GlmmSeq", slots = list(
@@ -30,45 +30,69 @@ setClass("GlmmSeq", slots = list(
 
 #' Glmm for sequencing results
 #'
-#' @param modelFormula the formula
-#' @param countdata the sequencing data
+#' @param modelFormula the model formula. For more information of formula 
+#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}  
+#' @param countdata the sequencing count data
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
-#' in pairing
-#' @param dispersions a numeric vector of gene dispersions
-#' @param sizeFactors size factors (default=NULL)
+#' in pairing samples
+#' @param dispersion a numeric vector of gene dispersion
+#' @param sizeFactors size factors (default=NULL). If provided the glmer offset
+#' is set to log(sizeFactors). For more information see
+#'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default="")
-#' @param modelData something something
-#' @param control the glmer control (default=glmerControl(optimizer="bobyqa"))
+#' @param modelData Expanded design matrix
+#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")). 
+#' For more information see 
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
 #' @param cores number of cores to use. Default=detectCores()/2
-#' @param removeSingles whether to remove unpaired individuals (default=TRUE)
+#' @param pairedOnly whether to remove unpaired individuals (default=TRUE)
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
 #' @param verbose Logical whether to display messaging (default=TRUE)
-#' @return Returns dataframe with results for gene-wise glm
+#' @param ... Other parameters to pass to 
+#' \code{\link[lme4:glmer]{lme4::glmer()}}
+#' @return Returns a GlmmSeq object with results for gene-wise general linear 
+#' mixed models
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars
 #' @importFrom stats update.formula model.matrix predict setNames
-#' @importFrom parallel mclapply detectCores
+#' @importFrom parallel mclapply detectCores parLapply
 #' @importFrom car Anova
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov
 #' @export
-#'
+#' @examples 
+#' data(PEAC_minimal_load)
+#' 
+#' disp <- apply(tpm, 1, function(x){ 
+#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#' })
+#' 
+#' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#'                      id = 'PATID',
+#'                      countdata = tpm['MS4A1', ],
+#'                      metadata = metadata,
+#'                      dispersion = disp['MS4A1'],
+#'                      verbose=FALSE)
+#'                      
+#' names(attributes(MS4A1glmm))
+
 
 glmmSeq <- function(modelFormula,
                     countdata,
                     metadata,
                     id,
-                    dispersions,
+                    dispersion,
                     sizeFactors=NULL,
                     reducedFormula="",
                     modelData=NULL,
                     control=glmerControl(optimizer="bobyqa"),
-                    cores=detectCores()/2,
-                    removeSingles=TRUE,
+                    cores=1,
+                    pairedOnly=TRUE,
                     zeroCount=0.125,
-                    verbose=TRUE) {
+                    verbose=TRUE, 
+                    ...) {
 
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
@@ -86,40 +110,41 @@ glmmSeq <- function(modelFormula,
 
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
-  nf <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nf), 'factors'))  # extract variable names
-  subsetMetadata <- metadata[, variables]  # restrict metadata to save memory
+  nonRandomFormula <- subbars(modelFormula)
+  variables <- rownames(attr(terms(nonRandomFormula), 'factors'))  
+  subsetMetadata <- metadata[, variables]  
   ids <- as.character(metadata[, id])
-  sf <- sizeFactors
 
-  # Check the distribution for duplicates
-  check <- data.frame(table(subsetMetadata))
-  check <- check[! check$Freq %in% c(0, 1), ]
-  if(nrow(check) > 0){
-    mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
-      paste(as.character(x), collapse=" ")
-      }))
-    cCheck <- as.character(apply(check[, variables], 1, function(x) {
-      paste(as.character(x), collapse=" ")
-    }))
-    countdata <- countdata[, mCheck != cCheck]
-    subsetMetadata <- subsetMetadata[mCheck != cCheck, ]
-    ids <- ids[ids %in% subsetMetadata[, id]]
-    warning(paste0(paste(check[, id], collapse=", "),
-                  " has multiple entries for identical ",
-                  paste0(colnames(check)[! colnames(check) %in% c(id, "Freq")],
-                         collapse=" and "),
-                  ". These will be removed."))
-  }
 
   # Option to subset to paired samples only
-  if (removeSingles) {
+  if (pairedOnly) {
+    # Check the distribution for duplicates
+    check <- data.frame(table(subsetMetadata))
+    check <- check[! check$Freq %in% c(0, 1), ]
+    if(nrow(check) > 0){
+      mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
+        paste(as.character(x), collapse=" ")
+      }))
+      cCheck <- as.character(apply(check[, variables], 1, function(x) {
+        paste(as.character(x), collapse=" ")
+      }))
+      countdata <- countdata[, ! mCheck %in% cCheck]
+      subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
+      ids <- subsetMetadata[, id]
+      warning(paste0(paste(check[, id], collapse=", "),
+                     " has multiple entries for identical ",
+                     paste0(colnames(check)[! colnames(check) %in% 
+                                              c(id, "Freq")],
+                            collapse=" and "),
+                     ". These will be removed."))
+    }
+    
     paired <- names(table(ids)[table(ids) > 1])
     pairedIndex <- as.character(ids) %in% paired
     countdata <- countdata[, pairedIndex]
     subsetMetadata <- subsetMetadata[pairedIndex, ]
     ids <- ids[pairedIndex]
-    sf <- sizeFactors[pairedIndex]
+    sizeFactors <- sizeFactors[pairedIndex]
   }
 
   # Check numbers and alignment
@@ -127,11 +152,11 @@ glmmSeq <- function(modelFormula,
                   FUN.VALUE=TRUE, ncol(countdata)))) {
     stop("Alignment error")
   }
-  if(! identical(length(dispersions), nrow(countdata))) {
+  if(! all(rownames(countdata) %in% names(dispersion), nrow(countdata))) {
     stop("Dispersion length must match nrow in countdata")
   }
 
-  if (!is.null(sizeFactors)) offset <- log(sf) else offset <- NULL
+  if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
   if (verbose) cat(paste0('\nn=', length(ids), ' samples, ',
                           length(unique(ids)), ' individuals\n'))
 
@@ -141,8 +166,9 @@ glmmSeq <- function(modelFormula,
   if (is.null(modelData)) {
     reducedVars <- rownames(attr(terms(reducedFormula), 'factors'))
     varLevels <- lapply(reducedVars, function(x) {
-      if (class(metadata[, x])=='factor') return(levels(metadata[, x]))
-      sort(unique(metadata[, x]))
+      if (class(metadata[, x])=='factor') {
+        return(levels(subsetMetadata[, x]))
+      } else {sort(unique(subsetMetadata[, x]))}
     })
     modelData <- expand.grid(varLevels)
     colnames(modelData) <- reducedVars
@@ -150,78 +176,57 @@ glmmSeq <- function(modelFormula,
   designMatrix <- model.matrix(reducedFormula, modelData)
 
   start <- Sys.time()
-  geneList <- lapply(rownames(countdata), function(i) {
-    list(y=countdata[i,], dispersion=dispersions[i])
+  fullList <- lapply(rownames(countdata), function(i) {
+    list(y=countdata[i,], dispersion=dispersion[i])
   })
-
+  
   # For each gene perform a fit
-  resultlist <- mclapply(geneList, function(ylist) {
-    data <- subsetMetadata
-    data[, 'count'] <- as.numeric(ylist$y)
-    fit <- try(suppressMessages(
-      glmer(fullFormula, data=data, control=control, offset=offset,
-            family=MASS::negative.binomial( theta=1/ylist$dispersion))),
-      silent=TRUE)
-
-    if (class(fit)!='try-error') {
-      # intercept dropped genes
-      if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
-        return( list(stats=NA, predict=NA, optinfo=NA,
-                     tryErrors=attr(fit@pp$X, "msgRankdrop")) )
-      }
-      stats <- setNames(c(ylist$dispersion, AIC(fit), as.numeric(logLik(fit))),
-                        c('Dispersion', 'AIC', 'logLik'))
-      fixedEffects <- fixef(fit)
-      wald <- Anova(fit)
-      waldtest <- setNames(c(wald[,1], wald[,3]),
-                           c(paste0('Chisq_', rownames(wald)),
-                             paste0('P_', rownames(wald))))
-      newY <- predict(fit, newdata=modelData, re.form=NA)
-      a <- designMatrix %*% vcov(fit)
-      b <- as.matrix(a %*% t(designMatrix))
-      predVar <- diag(b)
-      newSE <- sqrt(predVar)
-      newLCI <- exp(newY - newSE * 1.96)
-      newUCI <- exp(newY + newSE * 1.96)
-      predictdf <- c(exp(newY), newLCI, newUCI)
-      singular <- as.numeric(isSingular(fit))
-      conv <- length(slot(fit, 'optinfo')$conv$lme4$messages)
-      rm(fit, data)
-      return( list(stats=c(stats, fixedEffects, waldtest), 
-                   predict=predictdf,
-                   optinfo=c(singular, conv), 
-                   tryErrors="") )
-    } else {
-      return( list(stats=NA, predict=NA, optinfo=NA, tryErrors=fit[1]) )
-    }
-  }, mc.cores=cores)
+  if(Sys.info()['sysname'] == "Windows"){
+    resultList <- parLapply(fullList, function(geneList) {
+      fitModel(geneList, fullFormula=fullFormula, data=subsetMetadata, 
+               control=control, modelData=modelData, offset=offset,
+               designMatrix=designMatrix, ...)
+    }, mc.cores=cores)
+  } else{
+    resultList <- mclapply(fullList, function(geneList) {
+      fitModel(geneList, fullFormula=fullFormula, data=subsetMetadata, 
+               control=control, modelData=modelData, offset=offset,
+               designMatrix=designMatrix, ...)
+      }, mc.cores=cores)
+  }
 
   # Print timing if verbose
   end <- Sys.time()
   if (verbose) print(end - start)
 
   # Output
-  names(resultlist) <- rownames(countdata)
-  noErr <- vapply(resultlist, function(x) x$tryErrors=="", FUN.VALUE=TRUE)
-  outputPredict <- t(vapply(resultlist[noErr], function(x) x$predict,
-                            FUN.VALUE=rep(1, 12)))
-  ny <- nrow(modelData)
-  colnames(outputPredict) <- c(paste0('y', 1:ny),
-                               paste0('LCI', 1:ny),
-                               paste0('UCI', 1:ny))
+  names(resultList) <- rownames(countdata)
+  noErr <- vapply(resultList, function(x) x$tryErrors=="", FUN.VALUE=TRUE)
+  if(length(which(noErr)) == 0) stop("All genes returned an error")
+  
+  nCheat <- resultList[noErr][[1]]$predict 
+  outputPredict <- t(vapply(resultList[noErr], function(x) x$predict,
+                            FUN.VALUE=rep(1, length(nCheat))))
+ 
+  outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
+  colnames(outputPredict) <- c(paste0("y_", outLabels),
+                               paste0("LCI_", outLabels),
+                               paste0("UCI_", outLabels))
 
   if (sum(!noErr)!=0) {
-    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):", 
+    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):",
                            paste0(names(noErr)[! noErr], collapse=", ")))
-    outputErrors <- vapply(resultlist[!noErr], function(x) {x$tryErrors}, 
+    outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
                            FUN.VALUE = c("test"))
   } else {outputErrors<-c('No errors')}
 
-  optInfo <- t(vapply(resultlist[noErr], function(x) {
+  optInfo <- t(vapply(resultList[noErr], function(x) {
     setNames(x$optinfo, c('Singular', 'Conv'))
   }, FUN.VALUE=c(1,1)))
 
-  s <- t(vapply(resultlist[noErr], function(x) {x$stats}, FUN.VALUE=rep(1, 13)))
+  nCheat <- resultList[noErr][[1]]$stats 
+  s <- t(vapply(resultList[noErr], function(x) {x$stats}, 
+                FUN.VALUE=rep(1, length(nCheat))))
 
   # Create GlmmSeq object with results
   new("GlmmSeq",
@@ -239,5 +244,72 @@ glmmSeq <- function(modelFormula,
 }
 
 
-
-
+#' Fit a glmer model for an individual gene
+#'
+#' @param geneList List with gene expression and dispersion
+#' @param fullFormula the model formula. For more information of formula 
+#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}  
+#' @param modelData Expanded design matrix
+#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")). 
+#' For more information see 
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
+#' @param offset this can be used to specify an a priori known component to be
+#'  included in the linear predictor during fitting. For more information see
+#'  \code{\link[lme4:glmer]{lme4::glmer()}}. 
+#' @param ... Other parameters to pass to 
+#' \code{\link[lme4:glmer]{lme4::glmer()}}
+#' @return Returns a GlmmSeq object with results for gene-wise general linear 
+#' mixed models
+#' @importFrom MASS negative.binomial
+#' @importFrom lme4 glmer fixef
+#' @importFrom stats update.formula model.matrix predict setNames
+#' @importFrom car Anova
+#' @importFrom stats AIC complete.cases logLik reshape terms vcov predict
+#' @keywords internal
+#' @export
+fitModel <- function(geneList, 
+                     fullFormula, 
+                     data, 
+                     control,
+                     modelData, 
+                     designMatrix, 
+                     offset,
+                     ...) {
+  data[, 'count'] <- as.numeric(geneList$y)
+  fit <- try(suppressMessages(
+    glmer(fullFormula, data=data, control=control, offset=offset,
+          family=MASS::negative.binomial(theta=1/geneList$dispersion)), ...),
+    silent=TRUE)
+  
+  if (class(fit)!='try-error') {
+    # intercept dropped genes
+    if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
+      return( list(stats=NA, predict=NA, optinfo=NA,
+                   tryErrors=attr(fit@pp$X, "msgRankdrop")) )
+    }
+    stats <- setNames(c(geneList$dispersion, AIC(fit), as.numeric(logLik(fit))),
+                      c('Dispersion', 'AIC', 'logLik'))
+    fixedEffects <- fixef(fit)
+    wald <- Anova(fit)
+    waldtest <- setNames(c(wald[,"Chisq"], wald[,"Pr(>Chisq)"]),
+                         c(paste0('Chisq_', rownames(wald)),
+                           paste0('P_', rownames(wald))))
+    newY <- predict(fit, newdata=modelData, re.form=NA)
+    a <- designMatrix %*% vcov(fit)
+    b <- as.matrix(a %*% t(designMatrix))
+    predVar <- diag(b)
+    newSE <- sqrt(predVar)
+    newLCI <- exp(newY - newSE * 1.96)
+    newUCI <- exp(newY + newSE * 1.96)
+    predictdf <- c(exp(newY), newLCI, newUCI)
+    singular <- as.numeric(isSingular(fit))
+    conv <- length(slot(fit, 'optinfo')$conv$lme4$messages)
+    rm(fit, data)
+    return( list(stats=c(stats, fixedEffects, waldtest),
+                 predict=predictdf,
+                 optinfo=c(singular, conv),
+                 tryErrors="") )
+  } else {
+    return( list(stats=NA, predict=NA, optinfo=NA, tryErrors=fit[1]) )
+  }
+}

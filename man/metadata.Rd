@@ -17,6 +17,6 @@ A data frame
 metadata
 }
 \description{
-Metadata with columns required
+Minimal metadata for paired longitudinal response analysis.
 }
 \keyword{datasets}

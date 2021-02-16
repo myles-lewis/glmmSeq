@@ -12,21 +12,21 @@ An S4 class to define the glmmSeq output
 \describe{
 \item{\code{formula}}{The model formula}
 
-\item{\code{stats}}{the stats}
+\item{\code{stats}}{the statistics from the glmm fit}
 
-\item{\code{predict}}{The predicted values}
+\item{\code{predict}}{The predicted interception values}
 
 \item{\code{reducedFormula}}{The reduced formula with removed random effects}
 
-\item{\code{countdata}}{The expression data}
+\item{\code{countdata}}{The input expression data}
 
-\item{\code{metadata}}{The metadata}
+\item{\code{metadata}}{The input metadata}
 
-\item{\code{modelData}}{the model data}
+\item{\code{modelData}}{the model data for the glmm}
 
-\item{\code{optinfo}}{the optional info}
+\item{\code{optInfo}}{Information on whether the model was singular or converged}
 
-\item{\code{errors}}{errors}
+\item{\code{errors}}{Any errors}
 
 \item{\code{variables}}{The variables used in the formula}
 }}

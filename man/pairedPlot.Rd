@@ -11,18 +11,23 @@ pairedPlot(
   x2Label = NULL,
   IDColumn = "ID",
   xTitle = NULL,
+  yTitle = "Gene Expression",
+  title = NULL,
   logTransform = FALSE,
   shapes = 21,
   colours = "red",
   lineColour = "grey60",
+  markerSize = 2,
+  fontSize = NULL,
   alpha = 0.7,
-  pairedOnly = TRUE,
-  title = "",
+  x2Offset = 6,
+  pairedOnly = FALSE,
   graphics = "base",
   addModel = TRUE,
-  modSize = 1.5,
-  modColour = "black",
-  modLineColour = "black",
+  modelSize = 3,
+  modelColour = "black",
+  modelLineSize = 1,
+  modelLineColour = "black",
   addBox = FALSE,
   addViolins = TRUE,
   violinWidth = 0.5,
@@ -30,7 +35,8 @@ pairedPlot(
 )
 }
 \arguments{
-\item{glmmResult}{A GlmmSeq object from \code{glmmSeq}.}
+\item{glmmResult}{A glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 
 \item{geneName}{The gene name to be plotted.}
 
@@ -40,6 +46,10 @@ to be paired using the ID.}
 \item{x2Label}{The name of the second (outer) x parameter}
 
 \item{xTitle}{Title for the x axis}
+
+\item{yTitle}{Title for the y axis}
+
+\item{title}{Plot title. If NULL gene name is used}
 
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
@@ -51,29 +61,57 @@ to be paired using the ID.}
 
 \item{alpha}{Line and marker opacity (default=0.7)}
 
-\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
+\item{x2Offset}{Vertical adjustment to secondary x-axis (default=3)}
 
-\item{title}{Plot title}
+\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
 
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
 
 \item{addModel}{Whether to add the fit model with markers}
 
-\item{modSize}{Size of model points and line}
+\item{modelSize}{Size of model points}
 
-\item{modColour}{Colour of model fit markers}
+\item{modelColour}{Colour of model fit markers}
 
-\item{modLineColour}{Colour of model fit lines}
+\item{modelLineSize}{Size of model points}
+
+\item{modelLineColour}{Colour of model fit lines}
 
 \item{addBox}{Logical whether to add boxplots.}
 
 \item{addViolins}{Logical whether to add half violins (ggplot only)}
 
 \item{violinWidth}{Width of violin plots}
+
+\item{...}{Other parameters to pass to
+\code{\link[graphics:plot]{graphics::plot()}} or
+\code{\link[ggplot2:theme]{ggplot2::theme()}}.}
 }
 \value{
-Returns a paired plot
+Returns a paired plot for samples
 }
 \description{
 Paired plots to show differences between groups and over time
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm['MS4A1', ],
+                     metadata = metadata,
+                     dispersion = disp['MS4A1'],
+                     verbose=FALSE)
+                     
+pairedPlot(glmmResult=MS4A1glmm,
+           geneName = 'MS4A1',
+           x1Label = 'Timepoint',
+           x2Label='EULAR_6m',
+           IDColumn = 'PATID',
+           colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
+           graphics = 'ggplot')                      
 }

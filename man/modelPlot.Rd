@@ -10,14 +10,24 @@ modelPlot(
   x1Label = "Timepoint",
   x2Label,
   xTitle = NULL,
+  yTitle = "Gene Expression",
+  title = NULL,
   logTransform = FALSE,
   shapes = 21,
-  colours = c("red", "blue"),
-  graphics = "ggplot"
+  colours = c("blue"),
+  x2Offset = 6,
+  lineWidth = 1,
+  markerSize = 5,
+  fontSize = 10,
+  overlap = TRUE,
+  addErrorbars = TRUE,
+  graphics = "ggplot",
+  ...
 )
 }
 \arguments{
-\item{glmmResult}{A glmmSeq object}
+\item{glmmResult}{A glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}..}
 
 \item{geneName}{Gene name to plot}
 
@@ -27,17 +37,53 @@ modelPlot(
 
 \item{xTitle}{Title for the x axis}
 
+\item{yTitle}{Title for the y axis}
+
+\item{title}{Plot title. If NULL gene name is used.}
+
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
 \item{shapes}{The marker shape (default=21)}
 
 \item{colours}{The marker colour, default=c('red', 'blue')}
 
+\item{x2Offset}{Vertical adjustment to secondary x-axis (default=3)}
+
+\item{overlap}{Logical whether x2Label fits should be plotted overlapping one
+another.}
+
+\item{addErrorbars}{Logical whether to add error bars.}
+
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
+
+\item{...}{Other parameters to pass to
+\code{\link[graphics:plot]{graphics::plot()}} or
+\code{\link[ggplot2:theme]{ggplot2::theme()}}.}
 }
 \value{
-Returns a model plot
+Returns a plot with the glmm fit for a given gene
 }
 \description{
 Model plots to show the overall differences between groups and over time
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+MS4A1Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm['MS4A1', ],
+                     metadata = metadata,
+                     dispersion = disp['MS4A1'],
+                     verbose=FALSE)
+                     
+modelPlot(MS4A1Fit,
+          "MS4A1", 
+          x1Label="Timepoint", 
+          x2Label="EULAR_6m", 
+          colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
+          xTitle="Time")
 }

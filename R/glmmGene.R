@@ -1,19 +1,28 @@
 #' Glmm for sequencing results of a single gene
 #'
-#' @param modelFormula the formula
+#' @param modelFormula the model formula. For more information of formula 
+#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}.
 #' @param countdata the sequencing data
 #' @param gene the gene name
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
 #' in pairing
 #' @param dispersion a numeric for the gene dispersion
-#' @param sizeFactors the gene size factor (default=NULL)
+#' @param sizeFactors size factors (default=NULL). If provided the glmer offset
+#' is set to log(sizeFactors).For more information see
+#'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default="")
 #' @param modelData something something
-#' @param control the glmer control (default=glmerControl(optimizer="bobyqa"))
+#' @param control  the glmer control 
+#' (default=glmerControl(optimizer="bobyqa")). 
+#' For more information see 
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}. 
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
-#' @param removeSingles whether to remove unpaired individuals (default=TRUE)
+#' @param pairedOnly whether to remove unpaired individuals (default=TRUE)
+#' @param verbose Logical whether to display messaging (default=FALSE)
+#' @param ... Other parameters to pass to 
+#' \code{\link[lme4:glmer]{lme4::glmer()}}. 
 #' @return Returns the fit for the general linear mixed model of a single gene
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars
@@ -22,7 +31,23 @@
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov
 #' @export
-#'
+#' @examples 
+#' data(PEAC_minimal_load)
+#' 
+#' disp <- apply(tpm, 1, function(x){ 
+#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#' })
+#' 
+#' MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
+#'                       gene = 'MS4A1',
+#'                       id = 'PATID',
+#'                       countdata = tpm,
+#'                       metadata = metadata,
+#'                       dispersion = disp['MS4A1'], 
+#'                       pairedOnly=TRUE, 
+#'                       verbose=FALSE)
+#'                       
+#' MS4A1fit
 
 glmmGene <- function(modelFormula,
                      countdata,
@@ -35,11 +60,19 @@ glmmGene <- function(modelFormula,
                      modelData=NULL,
                      control=glmerControl(optimizer="bobyqa"),
                      zeroCount=0.125,
-                     removeSingles=TRUE) {
+                     pairedOnly=TRUE, 
+                     verbose=FALSE, 
+                     ...) {
 
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
+  }
+  if(class(dispersion) != "numeric" | length(dispersion) != 1){
+    stop("dispersion must be a single number")
+  }
+  if(class(dispersion) != "numeric" | length(dispersion) != 1){
+    stop("dispersion must be a single number")
   }
   if (ncol(countdata) != nrow(metadata)) {
     stop("countdata columns different size to metadata rows")
@@ -56,40 +89,40 @@ glmmGene <- function(modelFormula,
 
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
-  nf <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nf), 'factors'))  # extract variable names
-  subsetMetadata <- metadata[, variables]  # restrict metadata to save memory
+  nonRandomFormula <- subbars(modelFormula)
+  variables <- rownames(attr(terms(nonRandomFormula), 'factors')) 
+  subsetMetadata <- metadata[, variables] 
   ids <- as.character(metadata[, id])
-  sf <- sizeFactors
-
-  # Check the distribution for duplicates
-  check <- data.frame(table(subsetMetadata))
-  check <- check[! check$Freq %in% c(0, 1), ]
-  if(nrow(check) > 0){
-    mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
-      paste(as.character(x), collapse=" ")
-    }))
-    cCheck <- as.character(apply(check[, variables], 1, function(x) {
-      paste(as.character(x), collapse=" ")
-    }))
-    countdata <- countdata[, mCheck != cCheck]
-    subsetMetadata <- subsetMetadata[ mCheck != cCheck, ]
-    ids <- ids[ids %in% subsetMetadata[, id]]
-    warning(paste0(paste(check[, id], collapse=", "),
-                   " has multiple entries for identical ",
-                   paste0(colnames(check)[! colnames(check) %in% c(id, "Freq")],
-                          collapse=" and "),
-                   ". These will be removed."))
-  }
 
   # Option to subset to paired samples only
-  if (removeSingles) {
+  if (pairedOnly) {
+    # Check the distribution for duplicates
+    check <- data.frame(table(subsetMetadata))
+    check <- check[! check$Freq %in% c(0, 1), ]
+    if(nrow(check) > 0){
+      mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
+        paste(as.character(x), collapse=" ")
+      }))
+      cCheck <- as.character(apply(check[, variables], 1, function(x) {
+        paste(as.character(x), collapse=" ")
+      }))
+      countdata <- countdata[, ! mCheck %in% cCheck]
+      subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
+      ids <- subsetMetadata[, id]
+      warning(paste0(paste(check[, id], collapse=", "),
+                     " has multiple entries for identical ",
+                     paste0(colnames(check)[! colnames(check) %in% 
+                                              c(id, "Freq")],
+                            collapse=" and "),
+                     ". These will be removed."))
+    }
+    
     paired <- names(table(ids)[table(ids) > 1])
     pairedIndex <- as.character(ids) %in% paired
     countdata <- countdata[, pairedIndex]
     subsetMetadata <- subsetMetadata[pairedIndex, ]
     ids <- ids[pairedIndex]
-    sf <- sizeFactors[pairedIndex]
+    sizeFactors <- sizeFactors[pairedIndex]
   }
 
   # Check numbers and alignment
@@ -97,12 +130,10 @@ glmmGene <- function(modelFormula,
                   FUN.VALUE=TRUE, ncol(countdata)))) {
     stop("Alignment error")
   }
+  if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
+  if (verbose) cat(paste0('\nn=', length(ids), ' samples, ',
+                          length(unique(ids)), ' individuals\n'))
 
-
-  if (!is.null(sizeFactors)) offset <- log(sf) else offset <- NULL
-  cat(paste0('\nn=', length(ids), ' samples, ', length(unique(ids)),
-             ' individuals\n'))
-  
   # setup model prediction
   if (reducedFormula=="") {reducedFormula <- nobars(modelFormula)}
   if (is.null(modelData)) {
@@ -120,13 +151,9 @@ glmmGene <- function(modelFormula,
   data[, 'count'] <- as.numeric(countdata[gene,])
   fit <- try(
     glmer(fullFormula, data=data, control=control, offset=offset,
-          family=MASS::negative.binomial( theta=1/dispersion)),
+          family=MASS::negative.binomial( theta=1/dispersion), ...),
     silent=FALSE)
 
   return(fit)
 
 }
-
-
-
-

@@ -1,11 +1,12 @@
 #' TPM count data from PEAC
 #'
-#' A dataset containing the count data
+#' Transcripts Per Million (TPM) count data for PEAC synovial 
+#' biopsies. 
 "tpm"
 
 #' Minimal metadata from PEAC
 #'
-#' Metadata with columns required
+#' Minimal metadata for paired longitudinal response analysis. 
 #'
 #' @format A data frame
 #' \describe{

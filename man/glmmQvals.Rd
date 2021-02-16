@@ -7,8 +7,6 @@
 glmmQvals(result, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
 }
 \arguments{
-\item{result}{output from glmmSeq}
-
 \item{cutoff}{Prints a table showing the number of probes considered
 significant by the pvalue cut-off (default=0.05)}
 
@@ -18,10 +16,30 @@ or set it equal to 1 for the BH procedure (default = NULL).}
 
 \item{verbose}{Logical whether to print the number of significant probes
 (default=TRUE)}
+
+\item{resultA}{glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 }
 \value{
-Returns dataframe with results for gene-wise glm with qvalue columns
+Returns a GlmmSeq object with results for gene-wise general linear
+mixed models with adjusted p-values using the qvalue function
 }
 \description{
 Add qvalue columns to the glmmSeq dataframe
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm[1:10, ],
+                     metadata = metadata,
+                     dispersion = disp[1:10],
+                     verbose=FALSE)
+
+MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)                    
 }
