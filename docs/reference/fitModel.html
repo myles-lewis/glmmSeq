@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>An S4 class to define the glmmSeq output — GlmmSeq-class • glmmSeq</title>
+<title>Fit a glmer model for an individual gene — fitModel • glmmSeq</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="An S4 class to define the glmmSeq output — GlmmSeq-class" />
-<meta property="og:description" content="An S4 class to define the glmmSeq output" />
+<meta property="og:title" content="Fit a glmer model for an individual gene — fitModel" />
+<meta property="og:description" content="Fit a glmer model for an individual gene" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -119,43 +119,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>An S4 class to define the glmmSeq output</h1>
+    <h1>Fit a glmer model for an individual gene</h1>
     <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/glmmSeq.R'><code>R/glmmSeq.R</code></a></small>
-    <div class="hidden name"><code>GlmmSeq-class.Rd</code></div>
+    <div class="hidden name"><code>fitModel.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>An S4 class to define the glmmSeq output</p>
+    <p>Fit a glmer model for an individual gene</p>
     </div>
 
+    <pre class="usage"><span class='fu'>fitModel</span><span class='op'>(</span>
+  <span class='va'>geneList</span>,
+  <span class='va'>fullFormula</span>,
+  <span class='va'>data</span>,
+  <span class='va'>control</span>,
+  <span class='va'>modelData</span>,
+  <span class='va'>designMatrix</span>,
+  <span class='va'>offset</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>geneList</th>
+      <td><p>List with gene expression and dispersion</p></td>
+    </tr>
+    <tr>
+      <th>fullFormula</th>
+      <td><p>the model formula. For more information of formula
+structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>control</th>
+      <td><p>the glmer control (default=glmerControl(optimizer="bobyqa")).
+For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/lmerControl.html'>lme4::glmerControl()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>modelData</th>
+      <td><p>Expanded design matrix</p></td>
+    </tr>
+    <tr>
+      <th>offset</th>
+      <td><p>this can be used to specify an a priori known component to be
+included in the linear predictor during fitting. For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other parameters to pass to
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-<dl>
-<dt><code>formula</code></dt><dd><p>The model formula</p></dd>
-
-<dt><code>stats</code></dt><dd><p>the statistics from the glmm fit</p></dd>
-
-<dt><code>predict</code></dt><dd><p>The predicted interception values</p></dd>
-
-<dt><code>reducedFormula</code></dt><dd><p>The reduced formula with removed random effects</p></dd>
-
-<dt><code>countdata</code></dt><dd><p>The input expression data</p></dd>
-
-<dt><code>metadata</code></dt><dd><p>The input metadata</p></dd>
-
-<dt><code>modelData</code></dt><dd><p>the model data for the glmm</p></dd>
-
-<dt><code>optInfo</code></dt><dd><p>Information on whether the model was singular or converged</p></dd>
-
-<dt><code>errors</code></dt><dd><p>Any errors</p></dd>
-
-<dt><code>variables</code></dt><dd><p>The variables used in the formula</p></dd>
-
-</dl>
+    <p>Returns a GlmmSeq object with results for gene-wise general linear
+mixed models</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -1,11 +1,11 @@
 Package: glmmSeq
 Title: General Mixed Model for all genes returning all statistics
-Version: 0.0.82.9000
+Version: 0.0.1
 Authors@R:
-    c(person(given = "Myles",family = "Lewis", role = c("aut", "cre"), email = "myles.lewis@qmul.ac.uk"),
-    person(given = "Katriona",family = "Goldmann", role = c("aut"), email = "k.goldmann@qmul.ac.uk"),
-    person(given = "Cankut",family = "Cubuk", role = c("aut"), email = "c.cubuk@qmul.ac.uk") ,
+    c(person(given = "Myles",family = "Lewis", role = c("aut"), email = "myles.lewis@qmul.ac.uk"),
+    person(given = "Katriona",family = "Goldmann", role = c("aut", "cre"), email = "k.goldmann@qmul.ac.uk"),
     person(given = "Elisabetta",family = "Sciacca", role = c("aut"), email = "e.sciacca@qmul.ac.uk"),
+    person(given = "Cankut",family = "Cubuk", role = c("aut"), email = "c.cubuk@qmul.ac.uk") ,
     person(given = "Anna", family = "Surace", role = c("aut"), email = "a.surace@qmul.ac.uk"))
 Description: What the package does (one paragraph).
 License: GPL-2
@@ -16,9 +16,12 @@ RoxygenNote: 7.1.1
 Language: en-gb
 URL: https://github.com/KatrionaGoldmann/glmmSeq
 BugReports: https://github.com/KatrionaGoldmann/glmmSeq/issues
-Suggests: knitr, rmarkdown, kableExtra
+Suggests:
+    knitr,
+    rmarkdown,
+    kableExtra
 VignetteBuilder: knitr
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.6.0)
 Imports:
     MASS,
     car,

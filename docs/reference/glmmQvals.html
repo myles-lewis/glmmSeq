@@ -8,6 +8,13 @@
 
 <title>Glmm Sequencing qvalues — glmmQvals • glmmSeq</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -41,6 +48,7 @@
 
 <meta property="og:title" content="Glmm Sequencing qvalues — glmmQvals" />
 <meta property="og:description" content="Add qvalue columns to the glmmSeq dataframe" />
+<meta property="og:image" content="/logo.png" />
 
 
 
@@ -72,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.82.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -126,10 +134,6 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>result</th>
-      <td><p>output from glmmSeq</p></td>
-    </tr>
-    <tr>
       <th>cutoff</th>
       <td><p>Prints a table showing the number of probes considered
 significant by the pvalue cut-off (default=0.05)</p></td>
@@ -145,12 +149,48 @@ or set it equal to 1 for the BH procedure (default = NULL).</p></td>
       <td><p>Logical whether to print the number of significant probes
 (default=TRUE)</p></td>
     </tr>
+    <tr>
+      <th>resultA</th>
+      <td><p>glmmSeq object created by
+<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns dataframe with results for gene-wise glm with qvalue columns</p>
+    <p>Returns a GlmmSeq object with results for gene-wise general linear
+mixed models with adjusted p-values using the qvalue function</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>PEAC_minimal_load</span><span class='op'>)</span>
+
+<span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>tpm</span>, <span class='fl'>1</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>{</span> 
+<span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span> 
+<span class='op'>}</span><span class='op'>)</span>
+
+<span class='va'>MS4A1glmm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='glmmSeq.html'>glmmSeq</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,
+                     id <span class='op'>=</span> <span class='st'>'PATID'</span>,
+                     countdata <span class='op'>=</span> <span class='va'>tpm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>,
+                     metadata <span class='op'>=</span> <span class='va'>metadata</span>,
+                     dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>,
+                     verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='input'>
+<span class='va'>MS4A1glmm</span> <span class='op'>&lt;-</span> <span class='fu'>glmmQvals</span><span class='op'>(</span><span class='va'>MS4A1glmm</span>, pi0<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>                    
+</div><div class='output co'>#&gt; 
+#&gt; q_Timepoint
+#&gt; -----------
+#&gt; Not Significant 
+#&gt;               9 
+#&gt; 
+#&gt; q_EULAR_6m
+#&gt; ----------
+#&gt; Not Significant 
+#&gt;               9 
+#&gt; 
+#&gt; q_Timepoint:EULAR_6m
+#&gt; --------------------
+#&gt; Not Significant 
+#&gt;               9 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -192,7 +232,7 @@ or set it equal to 1 for the BH procedure (default = NULL).</p></td>
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
   .bladge:after{
@@ -206,7 +246,7 @@ or set it equal to 1 for the BH procedure (default = NULL).</p></td>
     text-align: center;
     line-height: 1rem;;
     font-size: 1rem;
-    color: #ff5050;
+    color: #ff3333;
     border-radius: 10%;
   }
 </style>
@@ -216,19 +256,19 @@ Developed by the <a href="https://www.qmul.ac.uk/whri/emr/">Centre for Experimen
 </div>
 
 <div id="right">
-<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff5050"></j></a>
+<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff3333"></j></a>
 <span style="margin-left:1rem"></span>
 
-<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff5050">
+<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff3333">
 </a><span style="margin-left:1rem"></span>
 
-<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff5050"></i></a>
+<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff3333"></i></a>
 <span style="margin-left:1rem"></span>
 
-<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff5050"></i></a>
+<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff3333"></i></a>
 </div>
 
       </footer>

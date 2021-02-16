@@ -8,6 +8,8 @@ maPlot(
   glmmResult,
   x1Label,
   x2Label,
+  x1Values = NULL,
+  x2Values = NULL,
   pCutoff = 0.01,
   plotCutoff = 1,
   zeroCountCutoff = 50,
@@ -20,11 +22,17 @@ maPlot(
 )
 }
 \arguments{
-\item{glmmResult}{output from glmmQvals or glmmSeq}
+\item{glmmResult}{A glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 
 \item{x1Label}{The name of the first (inner) x parameter}
 
 \item{x2Label}{The name of the second (outer) x parameter}
+
+\item{x1Values}{to be used to calculate fold change. If NULL the first two
+levels in x1Label are used.}
+
+\item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding (default=0.01)}
 
@@ -46,9 +54,30 @@ x2Label should be the time parameter)}
 (must have q_ columns in glmmResult)}
 }
 \value{
-List of plot options
+List of three plots. One plot for each x2Value and one combined
+figure
 }
 \description{
 MA plots
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+genes = rownames(tpm)[1:10]
+resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                       id = "PATID",
+                       countdata = tpm[genes, ],
+                       metadata = metadata,
+                       pairedOnly=TRUE,
+                       dispersion = disp[genes])
+
+maPlot(resultTable,
+       x1Label='Timepoint',
+       x2Label='EULAR_6m',
+       x2Values=c('Good responder', 'Non responder'))
 }
 \keyword{hplot}

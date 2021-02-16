@@ -1,6 +1,0 @@
-#' Distribution
-#'
-#' Dummy dist
-"disp"
-
-

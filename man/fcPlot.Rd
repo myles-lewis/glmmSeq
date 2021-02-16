@@ -8,21 +8,29 @@ fcPlot(
   glmmResult,
   x1Label,
   x2Label,
+  x1Values = NULL,
+  x2Values = NULL,
   pCutoff = 0.01,
-  labels,
+  labels = c(),
   useAdjusted = FALSE,
   plotCutoff = 1,
   graphics = "ggplot",
-  colours = c("grey", "lightseagreen", "red", "blue"),
+  colours = c("grey", "goldenrod1", "red", "blue"),
   verbose = FALSE
 )
 }
 \arguments{
-\item{glmmResult}{output from glmmQvals or glmmSeq}
+\item{glmmResult}{A glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 
 \item{x1Label}{The name of the first (inner) x parameter}
 
 \item{x2Label}{The name of the second (outer) x parameter}
+
+\item{x1Values}{to be used to calculate fold change. If NULL the first two
+levels in x1Label are used.}
+
+\item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding
 (default=0.01)}
@@ -42,9 +50,33 @@ fcPlot(
 (must have q_ columns in glmmResult)}
 }
 \value{
-Returns dataframe with results for gene-wise glm
+Returns a plot for fold change between x1Values in one x2Value
+subset on x axis and fold change in the other x2Value on the y axis.
 }
 \description{
 Plotly Fold Change plot
+}
+\examples{
+data(PEAC_minimal_load)
+
+disp <- apply(tpm, 1, function(x){ 
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+})
+
+glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     id = 'PATID',
+                     countdata = tpm[1:10, ],
+                     metadata = metadata,
+                     dispersion = disp,
+                     verbose=FALSE)
+                     
+fcPlot(glmmResult=glmmFit,
+      x1Label="Timepoint",
+      x2Label="EULAR_6m",
+      x2Values=c("Good responder", "Non responder"),
+      pCutoff=0.05,
+      useAdjusted = FALSE,
+      plotCutoff = 1,
+      graphics="ggplot")
 }
 \keyword{hplot}
