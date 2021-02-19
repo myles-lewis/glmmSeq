@@ -150,7 +150,7 @@ glmmSeq <- function(modelFormula,
   # Check numbers and alignment
   if(! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN=identical,
                   FUN.VALUE=TRUE, ncol(countdata)))) {
-    stop("Alignment error")
+    stop("Alignment error: metadata rownames must match countdata colnames")  
   }
   if(! all(rownames(countdata) %in% names(dispersion), nrow(countdata))) {
     stop("Dispersion length must match nrow in countdata")
@@ -182,11 +182,19 @@ glmmSeq <- function(modelFormula,
   
   # For each gene perform a fit
   if(Sys.info()['sysname'] == "Windows"){
-    resultList <- parLapply(fullList, function(geneList) {
-      fitModel(geneList, fullFormula=fullFormula, data=subsetMetadata, 
-               control=control, modelData=modelData, offset=offset,
-               designMatrix=designMatrix, ...)
-    }, mc.cores=cores)
+    cl <-makeCluster(cores)
+    clusterEvalQ(cl, {
+      library(lme4)
+      library(car)
+    })
+    clusterExport(cl, varlist = c("fitModel", "fullList", "fullFormula", "subsetMetadata", "control", "modelData", "offset", "designMatrix", ...), 
+                  envir=environment())
+    resultList <- parLapply(cl, fullList, function(geneList) {
+      fitModel(geneList, fullFormula = fullFormula, data = subsetMetadata, 
+               control = control, modelData = modelData, offset = offset, 
+               designMatrix = designMatrix, ...)
+    })
+    stopCluster(cl)
   } else{
     resultList <- mclapply(fullList, function(geneList) {
       fitModel(geneList, fullFormula=fullFormula, data=subsetMetadata, 
