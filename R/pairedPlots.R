@@ -4,6 +4,7 @@
 #' @param glmmResult A glmmSeq object created by 
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
 #' @param geneName The gene name to be plotted.
+#' @param IDColumn Column name of sample IDs for pairing
 #' @param x1Label The name of the first (inner) x parameter. This must be able
 #' to be paired using the ID.
 #' @param x2Label The name of the second (outer) x parameter
@@ -13,7 +14,9 @@
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shapes (default=21)
 #' @param colours The marker colours (default='red')
+#' @param markerSize Size of markers (default=2)
 #' @param lineColour The line colours (default='grey60')
+#' @param fontSize Plot font size
 #' @param alpha Line and marker opacity (default=0.7)
 #' @param x2Offset Vertical adjustment to secondary x-axis (default=3)
 #' @param pairedOnly Logical whether to only plot paired samples (default=TRUE)
@@ -64,6 +67,10 @@
 #'            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
 #'            graphics = 'ggplot')                      
 
+
+ 
+
+ 
 
 pairedPlot <- function(glmmResult,
                        geneName = NULL,
