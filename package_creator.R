@@ -20,7 +20,7 @@ devtools::document()
 devtools::build(vignettes=FALSE)
 
 # Install
-devtools::install()
+#devtools::install()
 devtools::build_vignettes()
 
 library(glmmSeq)
@@ -44,4 +44,19 @@ spelling::update_wordlist()
 # pkgdown
 pkgdown::build_site()
 
+
+?rhub::check
+rhub::check(
+  platform="windows-x86_64-devel",
+  env_vars=c(R_COMPILE_AND_INSTALL_PACKAGES = "always")
+)
+rhub::check(
+  platform="ubuntu-gcc-devel",
+  env_vars=c(R_COMPILE_AND_INSTALL_PACKAGES = "always")
+)
+rhub::check(
+  platform="macos-highsierra-release-cran",
+  env_vars=c(R_COMPILE_AND_INSTALL_PACKAGES = "always")
+)
+rhub::check_for_cran()
 

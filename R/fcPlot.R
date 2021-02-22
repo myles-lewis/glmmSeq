@@ -10,7 +10,7 @@
 #' @param pCutoff The significance cut-off for colour-coding
 #' (default=0.01)
 #' @param labels Genes to label on plot
-#' @param useAdjust whether to use adjusted pvalues
+#' @param useAdjusted whether to use adjusted pvalues
 #' (must have q_ columns in glmmResult)
 #' @param plotCutoff Which probes to include by significance cut-off
 #' (default=1 for all markers)
