@@ -4,9 +4,12 @@
 \alias{glmmQvals}
 \title{Glmm Sequencing qvalues}
 \usage{
-glmmQvals(result, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
+glmmQvals(glmmResult, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
 }
 \arguments{
+\item{glmmResult}{A glmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
+
 \item{cutoff}{Prints a table showing the number of probes considered
 significant by the pvalue cut-off (default=0.05)}
 
@@ -16,9 +19,6 @@ or set it equal to 1 for the BH procedure (default = NULL).}
 
 \item{verbose}{Logical whether to print the number of significant probes
 (default=TRUE)}
-
-\item{resultA}{glmmSeq object created by
-\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 }
 \value{
 Returns a GlmmSeq object with results for gene-wise general linear

@@ -49,6 +49,12 @@ modelPlot(
 
 \item{x2Offset}{Vertical adjustment to secondary x-axis (default=3)}
 
+\item{lineWidth}{Plot line size (default=1)}
+
+\item{markerSize}{Size of markers (default=5)}
+
+\item{fontSize}{Plot font size (default=10)}
+
 \item{overlap}{Logical whether x2Label fits should be plotted overlapping one
 another.}
 

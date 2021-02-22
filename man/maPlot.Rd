@@ -39,6 +39,8 @@ levels in x1Label are used.}
 \item{plotCutoff}{Which probes to include by significance cut-off
 (default=1 for all markers)}
 
+\item{zeroCountCutoff}{Which probes to include by minimum counts cut-off}
+
 \item{colours}{Colour scheme}
 
 \item{labels}{Genes to label on plot}
@@ -46,12 +48,12 @@ levels in x1Label are used.}
 \item{transpose}{Logical whether FC is time or group based (in this case
 x2Label should be the time parameter)}
 
+\item{useAdjusted}{whether to use adjusted pvalues
+(must have q_ columns in glmmResult)}
+
 \item{graphics}{Either "ggplot" or "plotly"}
 
 \item{verbose}{Whether to print statistics}
-
-\item{useAdjust}{whether to use adjusted pvalues
-(must have q_ columns in glmmResult)}
 }
 \value{
 List of three plots. One plot for each x2Value and one combined

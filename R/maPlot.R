@@ -10,11 +10,12 @@
 #' @param pCutoff The significance cut-off for colour-coding (default=0.01)
 #' @param plotCutoff Which probes to include by significance cut-off
 #' (default=1 for all markers)
+#' @param zeroCountCutoff Which probes to include by minimum counts cut-off
 #' @param colours Colour scheme
 #' @param labels Genes to label on plot
 #' @param transpose Logical whether FC is time or group based (in this case
 #' x2Label should be the time parameter)
-#' @param useAdjust whether to use adjusted pvalues
+#' @param useAdjusted whether to use adjusted pvalues
 #' (must have q_ columns in glmmResult)
 #' @param graphics Either "ggplot" or "plotly"
 #' @param verbose Whether to print statistics
@@ -135,7 +136,7 @@ maPlot <- function(glmmResult,
       sum(x < 1)
     })
   
-  # Subset by the plotting cutoff and count cutoff
+  # Subset by the plotting cut-off and count cut-off
   plotGenes <- apply(plotData[, grep(adj, colnames(plotData))], 1, function(x){
     any(x < plotCutoff)
   })
