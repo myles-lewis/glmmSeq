@@ -37,6 +37,9 @@ levels in x1Label are used.}
 
 \item{labels}{Genes to label on plot}
 
+\item{useAdjusted}{whether to use adjusted pvalues
+(must have q_ columns in glmmResult)}
+
 \item{plotCutoff}{Which probes to include by significance cut-off
 (default=1 for all markers)}
 
@@ -45,9 +48,6 @@ levels in x1Label are used.}
 \item{colours}{Colour vector for significance}
 
 \item{verbose}{Whether to print statistics}
-
-\item{useAdjust}{whether to use adjusted pvalues
-(must have q_ columns in glmmResult)}
 }
 \value{
 Returns a plot for fold change between x1Values in one x2Value
