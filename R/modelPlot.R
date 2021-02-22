@@ -9,6 +9,9 @@
 #' @param xTitle Title for the x axis
 #' @param yTitle Title for the y axis
 #' @param title Plot title. If NULL gene name is used. 
+#' @param markerSize Size of markers (default=5)
+#' @param fontSize Plot font size (default=10)
+#' @param lineWidth Plot line size (default=1)
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shape (default=21)
 #' @param x2Offset Vertical adjustment to secondary x-axis (default=3)

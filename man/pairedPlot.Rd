@@ -45,6 +45,8 @@ to be paired using the ID.}
 
 \item{x2Label}{The name of the second (outer) x parameter}
 
+\item{IDColumn}{Column name of sample IDs for pairing}
+
 \item{xTitle}{Title for the x axis}
 
 \item{yTitle}{Title for the y axis}
@@ -58,6 +60,10 @@ to be paired using the ID.}
 \item{colours}{The marker colours (default='red')}
 
 \item{lineColour}{The line colours (default='grey60')}
+
+\item{markerSize}{Size of markers (default=2)}
+
+\item{fontSize}{Plot font size}
 
 \item{alpha}{Line and marker opacity (default=0.7)}
 

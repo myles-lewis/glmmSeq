@@ -1,7 +1,7 @@
 #' Glmm Sequencing qvalues
 #'
 #' Add qvalue columns to the glmmSeq dataframe
-#' @param resultA glmmSeq object created by 
+#' @param glmmResult A glmmSeq object created by 
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
 #' @param cutoff Prints a table showing the number of probes considered
 #' significant by the pvalue cut-off (default=0.05)
@@ -30,12 +30,12 @@
 #' 
 #' MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)                    
 
-glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=TRUE) {
+glmmQvals <- function(glmmResult, cutoff=0.05, pi0=NULL, verbose=TRUE) {
   
   
-  if(class(result) !="GlmmSeq") stop("result must be a GlmmSeq object")
+  if(class(glmmResult) !="GlmmSeq") stop("glmmResult must be a GlmmSeq object")
   
-  resultStats <- data.frame(result@stats, check.names=FALSE)
+  resultStats <- data.frame(glmmResult@stats, check.names=FALSE)
   for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
     q_cn <- gsub('P_', 'q_', cn)
     resultStats[, q_cn] <- NA
@@ -48,8 +48,8 @@ glmmQvals <- function(result, cutoff=0.05, pi0=NULL, verbose=TRUE) {
                          "Significant", "Not Significant")))
     }
   }
-  result@stats <- as.matrix(resultStats)
+  glmmResult@stats <- as.matrix(resultStats)
   
-  return(result)
+  return(glmmResult)
 }
 
