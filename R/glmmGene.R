@@ -19,7 +19,10 @@
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}. 
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
-#' @param pairedOnly whether to remove unpaired individuals (default=TRUE)
+#' @param removeDuplicatedMeasures whether to remove duplicated 
+#' conditions/repeated measurements for a given timepoint (default=FALSE). 
+#' @param removeSingles whether to remove individuals with only one measurement
+#' (default=FALSE)
 #' @param verbose Logical whether to display messaging (default=FALSE)
 #' @param ... Other parameters to pass to 
 #' \code{\link[lme4:glmer]{lme4::glmer()}}. 
@@ -44,7 +47,6 @@
 #'                       countdata = tpm,
 #'                       metadata = metadata,
 #'                       dispersion = disp['MS4A1'], 
-#'                       pairedOnly=TRUE, 
 #'                       verbose=FALSE)
 #'                       
 #' MS4A1fit
@@ -60,7 +62,8 @@ glmmGene <- function(modelFormula,
                      modelData=NULL,
                      control=glmerControl(optimizer="bobyqa"),
                      zeroCount=0.125,
-                     pairedOnly=TRUE, 
+                     removeDuplicatedMeasures=FALSE, 
+                     removeSingles=FALSE,
                      verbose=FALSE, 
                      ...) {
 
@@ -94,10 +97,11 @@ glmmGene <- function(modelFormula,
   subsetMetadata <- metadata[, variables] 
   ids <- as.character(metadata[, id])
 
-  # Option to subset to paired samples only
-  if (pairedOnly) {
+  
+  # Option to subset to remove duplicated timepoints
+  if (removeDuplicatedMeasures) {
     # Check the distribution for duplicates
-    check <- data.frame(table(subsetMetadata))
+    check <- data.frame(table(droplevels(subsetMetadata)))
     check <- check[! check$Freq %in% c(0, 1), ]
     if(nrow(check) > 0){
       mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
@@ -107,22 +111,28 @@ glmmGene <- function(modelFormula,
         paste(as.character(x), collapse=" ")
       }))
       countdata <- countdata[, ! mCheck %in% cCheck]
+      sizeFactors <- sizeFactors[! mCheck %in% cCheck]
       subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
-      ids <- subsetMetadata[, id]
+      ids <- droplevels(subsetMetadata[, id])
       warning(paste0(paste(check[, id], collapse=", "),
                      " has multiple entries for identical ",
                      paste0(colnames(check)[! colnames(check) %in% 
                                               c(id, "Freq")],
                             collapse=" and "),
-                     ". These will be removed."))
+                     ". These will all be removed."))
     }
+  }
+  
+  
+  # Option to subset to remove unpaired samples
+  if (removeSingles) {
+    singles <- names(table(ids)[table(ids) %in% c(0, 1)])
+    nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
     
-    paired <- names(table(ids)[table(ids) > 1])
-    pairedIndex <- as.character(ids) %in% paired
-    countdata <- countdata[, pairedIndex]
-    subsetMetadata <- subsetMetadata[pairedIndex, ]
-    ids <- ids[pairedIndex]
-    sizeFactors <- sizeFactors[pairedIndex]
+    countdata <- countdata[, nonSingleIDs]
+    sizeFactors <- sizeFactors[nonSingleIDs]
+    subsetMetadata <- subsetMetadata[nonSingleIDs, ]
+    ids <- droplevels(subsetMetadata[, id])
   }
 
   # Check numbers and alignment

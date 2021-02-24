@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotly Fold Change plot — fcPlot • glmmSeq</title>
+<title>Plotly or ggplot fold change plots — fcPlot • glmmSeq</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Plotly Fold Change plot — fcPlot" />
-<meta property="og:description" content="Plotly Fold Change plot" />
+<meta property="og:title" content="Plotly or ggplot fold change plots — fcPlot" />
+<meta property="og:description" content="Plotly or ggplot fold change plots" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -119,13 +119,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotly Fold Change plot</h1>
+    <h1>Plotly or ggplot fold change plots</h1>
     <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/fcPlot.R'><code>R/fcPlot.R</code></a></small>
     <div class="hidden name"><code>fcPlot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plotly Fold Change plot</p>
+    <p>Plotly or ggplot fold change plots</p>
     </div>
 
     <pre class="usage"><span class='fu'>fcPlot</span><span class='op'>(</span>
@@ -178,6 +178,11 @@ levels in x1Label are used.</p></td>
       <td><p>Genes to label on plot</p></td>
     </tr>
     <tr>
+      <th>useAdjusted</th>
+      <td><p>whether to use adjusted pvalues
+(must have q_ columns in glmmResult)</p></td>
+    </tr>
+    <tr>
       <th>plotCutoff</th>
       <td><p>Which probes to include by significance cut-off
 (default=1 for all markers)</p></td>
@@ -193,11 +198,6 @@ levels in x1Label are used.</p></td>
     <tr>
       <th>verbose</th>
       <td><p>Whether to print statistics</p></td>
-    </tr>
-    <tr>
-      <th>useAdjust</th>
-      <td><p>whether to use adjusted pvalues
-(must have q_ columns in glmmResult)</p></td>
     </tr>
     </table>
 
@@ -215,11 +215,14 @@ subset on x axis and fold change in the other x2Value on the y axis.</p>
 
 <span class='va'>glmmFit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='glmmSeq.html'>glmmSeq</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,
                      id <span class='op'>=</span> <span class='st'>'PATID'</span>,
-                     countdata <span class='op'>=</span> <span class='va'>tpm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>,
+                     countdata <span class='op'>=</span> <span class='va'>tpm</span>,
                      metadata <span class='op'>=</span> <span class='va'>metadata</span>,
                      dispersion <span class='op'>=</span> <span class='va'>disp</span>,
                      verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='input'>                     
+</div><div class='output co'>#&gt; <span class='warning'>Warning: unable to evaluate scaled gradient</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge with max|grad| = 0.0120573 (tol = 0.002, component 1)</span></div><div class='input'>                     
 <span class='fu'>fcPlot</span><span class='op'>(</span>glmmResult<span class='op'>=</span><span class='va'>glmmFit</span>,
       x1Label<span class='op'>=</span><span class='st'>"Timepoint"</span>,
       x2Label<span class='op'>=</span><span class='st'>"EULAR_6m"</span>,
@@ -227,8 +230,8 @@ subset on x axis and fold change in the other x2Value on the y axis.</p>
       pCutoff<span class='op'>=</span><span class='fl'>0.05</span>,
       useAdjusted <span class='op'>=</span> <span class='cn'>FALSE</span>,
       plotCutoff <span class='op'>=</span> <span class='fl'>1</span>,
-      graphics<span class='op'>=</span><span class='st'>"ggplot"</span><span class='op'>)</span>
-</div><div class='img'><img src='fcPlot-1.png' alt='' width='700' height='433' /></div></pre>
+      graphics<span class='op'>=</span><span class='st'>"plotly"</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

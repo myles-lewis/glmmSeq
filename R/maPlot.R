@@ -34,18 +34,19 @@
 #' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
 #' })
 #' 
-#' genes = rownames(tpm)[1:10]
 #' resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                        id = "PATID",
-#'                        countdata = tpm[genes, ],
+#'                        countdata = tpm,
 #'                        metadata = metadata,
-#'                        pairedOnly=TRUE,
-#'                        dispersion = disp[genes])
+#'                        dispersion = disp)
 #'
-#' maPlot(resultTable,
-#'        x1Label='Timepoint',
-#'        x2Label='EULAR_6m',
-#'        x2Values=c('Good responder', 'Non responder'))
+#' plots <- maPlot(resultTable,
+#'                 x1Label='Timepoint',
+#'                 x2Label='EULAR_6m',
+#'                 x2Values=c('Good responder', 'Non responder'), 
+#'                 graphics="plotly")
+#' 
+#' plots$combined
 
 maPlot <- function(glmmResult,
                    x1Label,

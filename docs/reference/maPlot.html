@@ -180,6 +180,10 @@ levels in x1Label are used.</p></td>
 (default=1 for all markers)</p></td>
     </tr>
     <tr>
+      <th>zeroCountCutoff</th>
+      <td><p>Which probes to include by minimum counts cut-off</p></td>
+    </tr>
+    <tr>
       <th>colours</th>
       <td><p>Colour scheme</p></td>
     </tr>
@@ -193,17 +197,17 @@ levels in x1Label are used.</p></td>
 x2Label should be the time parameter)</p></td>
     </tr>
     <tr>
+      <th>useAdjusted</th>
+      <td><p>whether to use adjusted pvalues
+(must have q_ columns in glmmResult)</p></td>
+    </tr>
+    <tr>
       <th>graphics</th>
       <td><p>Either "ggplot" or "plotly"</p></td>
     </tr>
     <tr>
       <th>verbose</th>
       <td><p>Whether to print statistics</p></td>
-    </tr>
-    <tr>
-      <th>useAdjust</th>
-      <td><p>whether to use adjusted pvalues
-(must have q_ columns in glmmResult)</p></td>
     </tr>
     </table>
 
@@ -219,24 +223,25 @@ figure</p>
 <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span> 
 <span class='op'>}</span><span class='op'>)</span>
 
-<span class='va'>genes</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>tpm</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>
 <span class='va'>resultTable</span> <span class='op'>&lt;-</span> <span class='fu'><a href='glmmSeq.html'>glmmSeq</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,
                        id <span class='op'>=</span> <span class='st'>"PATID"</span>,
-                       countdata <span class='op'>=</span> <span class='va'>tpm</span><span class='op'>[</span><span class='va'>genes</span>, <span class='op'>]</span>,
+                       countdata <span class='op'>=</span> <span class='va'>tpm</span>,
                        metadata <span class='op'>=</span> <span class='va'>metadata</span>,
-                       pairedOnly<span class='op'>=</span><span class='cn'>TRUE</span>,
-                       dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='va'>genes</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='output co'>#&gt; 
-#&gt; n=92 samples, 46 individuals
-#&gt; Time difference of 1.588753 secs
-#&gt; Errors in 1 gene(s):CARMIL3</div><div class='input'>
-<span class='fu'>maPlot</span><span class='op'>(</span><span class='va'>resultTable</span>,
-       x1Label<span class='op'>=</span><span class='st'>'Timepoint'</span>,
-       x2Label<span class='op'>=</span><span class='st'>'EULAR_6m'</span>,
-       x2Values<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Good responder'</span>, <span class='st'>'Non responder'</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $`Good responder`</div><div class='img'><img src='maPlot-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; $`Non responder`</div><div class='img'><img src='maPlot-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; $combined</div><div class='img'><img src='maPlot-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div></pre>
+                       dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; n=149 samples, 105 individuals</div><div class='output co'>#&gt; <span class='warning'>Warning: unable to evaluate scaled gradient</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge with max|grad| = 0.0120573 (tol = 0.002, component 1)</span></div><div class='output co'>#&gt; Time difference of 7.929289 secs
+#&gt; Errors in 4 gene(s):IL12A, FGF12, VIL1, IL26</div><div class='input'>
+<span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>maPlot</span><span class='op'>(</span><span class='va'>resultTable</span>,
+                x1Label<span class='op'>=</span><span class='st'>'Timepoint'</span>,
+                x2Label<span class='op'>=</span><span class='st'>'EULAR_6m'</span>,
+                x2Values<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Good responder'</span>, <span class='st'>'Non responder'</span><span class='op'>)</span>, 
+                graphics<span class='op'>=</span><span class='st'>"plotly"</span><span class='op'>)</span>
+
+<span class='va'>plots</span><span class='op'>$</span><span class='va'>combined</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

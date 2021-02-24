@@ -16,7 +16,8 @@ glmmGene(
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
   zeroCount = 0.125,
-  pairedOnly = TRUE,
+  removeDuplicatedMeasures = FALSE,
+  removeSingles = FALSE,
   verbose = FALSE,
   ...
 )
@@ -52,7 +53,11 @@ For more information see
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
 (default=0.125)}
 
-\item{pairedOnly}{whether to remove unpaired individuals (default=TRUE)}
+\item{removeDuplicatedMeasures}{whether to remove duplicated
+conditions/repeated measurements for a given timepoint (default=FALSE).}
+
+\item{removeSingles}{whether to remove individuals with only one measurement
+(default=FALSE)}
 
 \item{verbose}{Logical whether to display messaging (default=FALSE)}
 
@@ -78,7 +83,6 @@ MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
                       countdata = tpm,
                       metadata = metadata,
                       dispersion = disp['MS4A1'], 
-                      pairedOnly=TRUE, 
                       verbose=FALSE)
                       
 MS4A1fit
