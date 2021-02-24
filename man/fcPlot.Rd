@@ -2,7 +2,7 @@
 % Please edit documentation in R/fcPlot.R
 \name{fcPlot}
 \alias{fcPlot}
-\title{Plotly Fold Change plot}
+\title{Plotly or ggplot fold change plots}
 \usage{
 fcPlot(
   glmmResult,
@@ -54,7 +54,7 @@ Returns a plot for fold change between x1Values in one x2Value
 subset on x axis and fold change in the other x2Value on the y axis.
 }
 \description{
-Plotly Fold Change plot
+Plotly or ggplot fold change plots
 }
 \examples{
 data(PEAC_minimal_load)
@@ -65,7 +65,7 @@ disp <- apply(tpm, 1, function(x){
 
 glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      id = 'PATID',
-                     countdata = tpm[1:10, ],
+                     countdata = tpm,
                      metadata = metadata,
                      dispersion = disp,
                      verbose=FALSE)
@@ -77,6 +77,6 @@ fcPlot(glmmResult=glmmFit,
       pCutoff=0.05,
       useAdjusted = FALSE,
       plotCutoff = 1,
-      graphics="ggplot")
+      graphics="plotly")
 }
 \keyword{hplot}

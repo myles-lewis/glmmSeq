@@ -18,7 +18,7 @@ modelPlot(
   x2Offset = 6,
   lineWidth = 1,
   markerSize = 5,
-  fontSize = 10,
+  fontSize = NULL,
   overlap = TRUE,
   addErrorbars = TRUE,
   graphics = "ggplot",
@@ -74,22 +74,21 @@ Model plots to show the overall differences between groups and over time
 }
 \examples{
 data(PEAC_minimal_load)
-
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
-
-MS4A1Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      id = 'PATID',
-                     countdata = tpm['MS4A1', ],
+                     countdata = tpm['ADAM12', ],
                      metadata = metadata,
-                     dispersion = disp['MS4A1'],
+                     dispersion = disp,
                      verbose=FALSE)
-                     
-modelPlot(MS4A1Fit,
-          "MS4A1", 
-          x1Label="Timepoint", 
-          x2Label="EULAR_6m", 
+modelPlot(Fit,
+          "ADAM12",
+          x1Label="Timepoint",
+          x2Label="EULAR_6m",
           colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
-          xTitle="Time")
+          xTitle="Time",
+          markerSize=3,
+          graphics="base")
 }

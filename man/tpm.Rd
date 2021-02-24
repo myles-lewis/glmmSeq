@@ -5,7 +5,7 @@
 \alias{tpm}
 \title{TPM count data from PEAC}
 \format{
-An object of class \code{data.frame} with 348 rows and 162 columns.
+An object of class \code{data.frame} with 50 rows and 149 columns.
 }
 \usage{
 tpm

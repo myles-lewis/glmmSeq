@@ -102,8 +102,8 @@ Paired plots to show differences between groups and over time
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
 
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -111,13 +111,14 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      countdata = tpm['MS4A1', ],
                      metadata = metadata,
                      dispersion = disp['MS4A1'],
+                     removeDuplicatedMeasures=TRUE,
                      verbose=FALSE)
-                     
+
 pairedPlot(glmmResult=MS4A1glmm,
            geneName = 'MS4A1',
            x1Label = 'Timepoint',
            x2Label='EULAR_6m',
            IDColumn = 'PATID',
            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
-           graphics = 'ggplot')                      
+           graphics = 'base')
 }

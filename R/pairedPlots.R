@@ -35,9 +35,6 @@
 #' @return Returns a paired plot for samples 
 #' @importFrom ggpubr compare_means ggboxplot stat_pvalue_manual
 #' stat_compare_means
-#' @importFrom lme4 lmer isSingular glmerControl glmer
-#' @importFrom MASS negative.binomial
-#' @importFrom car Anova
 #' @importFrom ggplot2 ggplot geom_boxplot geom_point geom_line theme_classic
 #' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
 #' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous
@@ -45,32 +42,28 @@
 #' @importFrom graphics arrows axis lines mtext plot segments points boxplot
 #' @importFrom gghalves geom_half_violin
 #' @export
-#' @examples 
+#' @examples
 #' data(PEAC_minimal_load)
-#' 
-#' disp <- apply(tpm, 1, function(x){ 
-#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#'
+#' disp <- apply(tpm, 1, function(x){
+#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 #' })
-#' 
+#'
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      id = 'PATID',
 #'                      countdata = tpm['MS4A1', ],
 #'                      metadata = metadata,
 #'                      dispersion = disp['MS4A1'],
+#'                      removeDuplicatedMeasures=TRUE,
 #'                      verbose=FALSE)
-#'                      
+#'
 #' pairedPlot(glmmResult=MS4A1glmm,
 #'            geneName = 'MS4A1',
 #'            x1Label = 'Timepoint',
 #'            x2Label='EULAR_6m',
 #'            IDColumn = 'PATID',
 #'            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
-#'            graphics = 'ggplot')                      
-
-
- 
-
- 
+#'            graphics = 'base')
 
 pairedPlot <- function(glmmResult,
                        geneName = NULL,
@@ -100,7 +93,6 @@ pairedPlot <- function(glmmResult,
                        violinWidth=0.5,
                        ...) {
   
-  suffix <- ""
   if(class(alpha) != "numeric" | alpha > 1 | alpha < 0) {
     stop("alpha must be a numer between 1 and 0")
   }
@@ -157,8 +149,6 @@ pairedPlot <- function(glmmResult,
       (df_long$x2-1) * length(unique(df_long[, x1Label]))
     df_long$id <- df_long[, glmmResult@variables]
     
-    # Catch if singular
-    if (glmmResult@optInfo[geneName, "Singular"] == 1) suffix <- "singular"
     
     # Set up model fit data
     modelData <- glmmResult@modelData
@@ -174,9 +164,28 @@ pairedPlot <- function(glmmResult,
     stop("glmmResult must be an output from either glmmGene or glmmSeq")
   }
   
+  # Check for duplicated measurements
+  checkColumns <-  c(IDColumn, x1Label, x2Label)
+  duplicatedMeasures <- df_long[duplicated(df_long[, checkColumns]), ]
+  
+  if(nrow(duplicatedMeasures) > 0){
+    keepMeasures <- apply(df_long[, checkColumns], 1, function(x) {
+      ! paste(x, collapse="-") %in% 
+        apply(duplicatedMeasures[ , checkColumns], 1 , paste , collapse = "-" )
+    })
+    df_long <- df_long[keepMeasures, ]
+    str <- apply(duplicatedMeasures[, c(x1Label, x2Label)], 1, function(x){
+      paste0(x1Label, "=", x[1], "; ", x2Label, "=", x[2])
+    })
+    
+    warning(paste0(paste(duplicatedMeasures[, IDColumn], collapse=", "),
+                   " has multiple entries for: ", str,
+                   ". These will all be removed from plotting."))
+  }
+  
   # Convert to wide format
-  df <- reshape(df_long[, c('id', 'x1', 'geneExp')], timevar='x1',
-                idvar='id', v.names='geneExp', direction='wide')
+  df <- stats::reshape(df_long[, c('id', 'x1', 'geneExp')], timevar='x1',
+                       idvar='id', v.names='geneExp', direction='wide')
   
   
   if (length(shapes)==1) shapes <- rep(shapes, maxX2)
@@ -196,7 +205,7 @@ pairedPlot <- function(glmmResult,
     if(is.null(xTitle)) xTitle <- NA
     
     plot(as.numeric(df_long$x1Factors), df_long$geneExp,
-         type='p', bty='l', las=1,
+         type='p', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
          pch=shapes[df_long$x2], bg=colours[df_long$x2],
          cex=markerSize, xlab=xTitle, ylab=yTitle,
@@ -238,7 +247,7 @@ pairedPlot <- function(glmmResult,
             ", P"[.(x2Label)]*"=", .(pval[2]),
             ", P"[paste(.(x1Label), ":", .(x2Label))]*"=",
             .(pval[3]))), cex=fontSize,
-      side=3, adj=0.04)
+      side=3, adj=0)
     
     
   } else{ # Generate ggplot plots
@@ -326,13 +335,12 @@ pairedPlot <- function(glmmResult,
     
     if(logTransform) p <- p + scale_y_continuous(trans='log10')
     
-    if (suffix!="") suffix <- paste0(" [", suffix, "]")
     
     p <- p + labs(subtitle= bquote(
       paste("P"[.(x1Label)]*"=", .(pval[1]),
             ", P"[.(x2Label)]*"=", .(pval[2]),
             ", P"[paste(.(x1Label), ":", .(x2Label))]*"=",
-            .(pval[3]), .(suffix))))
+            .(pval[3]))))
     
     return(p)
   }

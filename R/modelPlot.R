@@ -32,24 +32,23 @@
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)
-#' 
-#' disp <- apply(tpm, 1, function(x){ 
-#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#' disp <- apply(tpm, 1, function(x){
+#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 #' })
-#' 
-#' MS4A1Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#' Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      id = 'PATID',
-#'                      countdata = tpm['MS4A1', ],
+#'                      countdata = tpm['ADAM12', ],
 #'                      metadata = metadata,
-#'                      dispersion = disp['MS4A1'],
+#'                      dispersion = disp,
 #'                      verbose=FALSE)
-#'                      
-#' modelPlot(MS4A1Fit,
-#'           "MS4A1", 
-#'           x1Label="Timepoint", 
-#'           x2Label="EULAR_6m", 
+#' modelPlot(Fit,
+#'           "ADAM12",
+#'           x1Label="Timepoint",
+#'           x2Label="EULAR_6m",
 #'           colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
-#'           xTitle="Time")
+#'           xTitle="Time",
+#'           markerSize=3,
+#'           graphics="base")
 
 
 modelPlot <- function(glmmResult,
@@ -65,7 +64,7 @@ modelPlot <- function(glmmResult,
                       x2Offset=6, 
                       lineWidth=1, 
                       markerSize=5,
-                      fontSize=10,
+                      fontSize=NULL,
                       overlap=TRUE,
                       addErrorbars=TRUE, 
                       graphics="ggplot", 
@@ -109,6 +108,8 @@ modelPlot <- function(glmmResult,
                             labels=levels(factor(
                               glmmResult@metadata[, x2Label])))
   modelData$x1Numeric <- as.numeric(modelData[, x1Label])
+  modelData$x2 <- factor(modelData[, x2Label])
+  modelData$x1 <- factor(modelData[, x1Label])
   modelData$x <- x
   
   if(is.null(title)) title <- geneName
@@ -117,10 +118,15 @@ modelPlot <- function(glmmResult,
     minLabel <- min(c(modelData$LCI, modelData$y), na.rm=TRUE)
   } else { minLabel <- min(modelData$y, na.rm=TRUE) } 
   
+  modelData$xFactor <- factor(seq_along(modelData[, 1]))
+  if(overlap) {
+    xUse <- as.numeric(factor(modelData[, x1Label])) 
+  } else {xUse <- as.numeric(modelData$xFactor)}
+  
+  
   # Plot base graphics
   if(graphics == "base"){
     if(logTransform) log <- "y" else log <- ""
-    if(overlap) xUse <- as.numeric(factor(modelData[, x1Label])) else xUse <- x
     
     plot(xUse, modelData$y, type='p', bty='l', las=1, xaxt='n',
          cex.axis=fontSize, cex.lab=fontSize,
@@ -129,10 +135,10 @@ modelPlot <- function(glmmResult,
          bg=colours[modelData[,x2Label]], 
          xlab=xTitle,
          ylim=yLim, ylab=yTitle, log=log,
-         ...,
+         #...,
          panel.first={
            for (i in 1:maxX2) {
-             lines(xUse[modelData[,2]==i], 
+             lines(xUse[modelData[,2]==i],
                    modelData$y[modelData[,2]==i],
                    col=colours[i], lwd=2)
            }
@@ -143,18 +149,20 @@ modelPlot <- function(glmmResult,
                       y1=modelData$UCI[modelData[,x2Label]==i],
                       angle=90, code=3, length=0.08, col=colours[i])
              }}
-         })
+         }
+    )
     
     if (length(x2Values)==3) x2Values <- gsub('\\..*', '', x2Values)
     if(! overlap){
-      axis(1, length(x1Values)*(seq_along(x2Values)-1) +
-             length(x1Values)/2+0.5, 
+      axis(1, unique(as.numeric(as.factor(modelData$x2))*2 - 0.5), 
            labels=levels(factor(glmmResult@metadata[, x2Label])), 
            line=1.5, cex.axis=fontSize, tick=FALSE)
-      axis(1, modelData$x, labels=modelData[, x1Label], cex.axis=fontSize)
+      axis(1, xUse, 
+           labels=modelData[, x1Label], cex.axis=fontSize)
     } else{
       axis(1, unique(xUse), labels=levels(factor(modelData[, x1Label])), 
            cex.axis=fontSize)
+      if(is.null(fontSize)) fontSize <- 1
       legend("top", legend=levels(modelData$group),
              col=colours, lty=1, cex=fontSize, box.lwd=0)
     }
@@ -165,7 +173,7 @@ modelPlot <- function(glmmResult,
             ", P"[.(x2Label)]*"=", .(pval[2]),
             ", P"[paste(.(x1Label), ":", .(x2Label))]*"=",
             .(pval[3]))),
-      side=3, adj=0.04, cex=fontSize)
+      side=3, adj=0, cex=fontSize)
     
     # Plot ggplot
   } else{
@@ -177,28 +185,29 @@ modelPlot <- function(glmmResult,
                                         color="group")) +
         geom_line(size=lineWidth) +
         geom_point(size=markerSize) +
-        scale_x_continuous(labels=levels(modelData[, x1Label]), 
+        scale_x_continuous(labels=levels(factor(modelData[, x1Label])), 
                            breaks=unique(modelData$x1Numeric)) +
         theme_classic() +
-        theme(plot.margin=margin(7,0,14,0), text=element_text(size=fontSize), 
-              ...) 
+        theme(plot.margin=margin(7,0,14+x2Offset,0), 
+              ..., 
+              text=element_text(size=fontSize)) 
     } else{
-      p <- ggplot(modelData, aes_string(x="x", y="y", fill="group", 
+      p <- ggplot(modelData, aes_string(x="xFactor", y="y", fill="group", 
+                                        group="EULAR_6m",
                                         shape="group", color="group")) +
         geom_line(size=lineWidth) +
         geom_point(size=markerSize) +
-        scale_x_continuous(labels=modelData[, x1Label], 
-                           breaks=modelData$x, name="") +
+        scale_x_discrete(labels=factor(modelData[, x1Label]), 
+                         breaks=modelData$xFactor, name="") +
         geom_text(data=data.frame(
           label=levels(factor(glmmResult@metadata[, x2Label])),
-          x=length(x1Values)*(seq_along(x2Values)-1) +
-            length(x1Values)/2+0.5,
+          x=unique(as.numeric(as.factor(modelData$x2))*2 - 0.5),
           y = minLabel), size=rel(3),
           mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
           vjust=x2Offset, inherit.aes=FALSE)  +
         
         theme_classic() +
-        theme(legend.position = "none", plot.margin=margin(7,0,14,0), 
+        theme(legend.position = "none", plot.margin=margin(7,0,14+x2Offset,0), 
               text=element_text(size=fontSize), ...)  +
         coord_cartesian(clip = 'off', expand=TRUE)
     }

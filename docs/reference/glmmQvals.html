@@ -128,11 +128,16 @@
     <p>Add qvalue columns to the glmmSeq dataframe</p>
     </div>
 
-    <pre class="usage"><span class='fu'>glmmQvals</span><span class='op'>(</span><span class='va'>result</span>, cutoff <span class='op'>=</span> <span class='fl'>0.05</span>, pi0 <span class='op'>=</span> <span class='cn'>NULL</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>glmmQvals</span><span class='op'>(</span><span class='va'>glmmResult</span>, cutoff <span class='op'>=</span> <span class='fl'>0.05</span>, pi0 <span class='op'>=</span> <span class='cn'>NULL</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>glmmResult</th>
+      <td><p>A glmmSeq object created by
+<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code>.</p></td>
+    </tr>
     <tr>
       <th>cutoff</th>
       <td><p>Prints a table showing the number of probes considered
@@ -148,11 +153,6 @@ or set it equal to 1 for the BH procedure (default = NULL).</p></td>
       <th>verbose</th>
       <td><p>Logical whether to print the number of significant probes
 (default=TRUE)</p></td>
-    </tr>
-    <tr>
-      <th>resultA</th>
-      <td><p>glmmSeq object created by
-<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -174,23 +174,26 @@ mixed models with adjusted p-values using the qvalue function</p>
                      metadata <span class='op'>=</span> <span class='va'>metadata</span>,
                      dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>,
                      verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: unable to evaluate scaled gradient</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='input'>
 <span class='va'>MS4A1glmm</span> <span class='op'>&lt;-</span> <span class='fu'>glmmQvals</span><span class='op'>(</span><span class='va'>MS4A1glmm</span>, pi0<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>                    
 </div><div class='output co'>#&gt; 
 #&gt; q_Timepoint
 #&gt; -----------
-#&gt; Not Significant 
-#&gt;               9 
+#&gt; Not Significant     Significant 
+#&gt;               7               3 
 #&gt; 
 #&gt; q_EULAR_6m
 #&gt; ----------
-#&gt; Not Significant 
-#&gt;               9 
+#&gt; Not Significant     Significant 
+#&gt;               8               2 
 #&gt; 
 #&gt; q_Timepoint:EULAR_6m
 #&gt; --------------------
 #&gt; Not Significant 
-#&gt;               9 </div></pre>
+#&gt;              10 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

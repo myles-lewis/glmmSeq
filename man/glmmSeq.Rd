@@ -15,7 +15,8 @@ glmmSeq(
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
   cores = 1,
-  pairedOnly = TRUE,
+  removeDuplicatedMeasures = FALSE,
+  removeSingles = FALSE,
   zeroCount = 0.125,
   verbose = TRUE,
   ...
@@ -48,7 +49,11 @@ For more information see
 
 \item{cores}{number of cores to use. Default=detectCores()/2}
 
-\item{pairedOnly}{whether to remove unpaired individuals (default=TRUE)}
+\item{removeDuplicatedMeasures}{whether to remove duplicated
+conditions/repeated measurements for a given timepoint (default=FALSE).}
+
+\item{removeSingles}{whether to remove individuals with only one measurement
+(default=FALSE)}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
 (default=0.125)}
@@ -68,8 +73,8 @@ Glmm for sequencing results
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
 
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -78,6 +83,6 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      metadata = metadata,
                      dispersion = disp['MS4A1'],
                      verbose=FALSE)
-                     
+
 names(attributes(MS4A1glmm))
 }

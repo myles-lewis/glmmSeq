@@ -140,7 +140,8 @@
   modelData <span class='op'>=</span> <span class='cn'>NULL</span>,
   control <span class='op'>=</span> <span class='fu'>glmerControl</span><span class='op'>(</span>optimizer <span class='op'>=</span> <span class='st'>"bobyqa"</span><span class='op'>)</span>,
   zeroCount <span class='op'>=</span> <span class='fl'>0.125</span>,
-  pairedOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  removeDuplicatedMeasures <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  removeSingles <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -201,8 +202,14 @@ For more information see
 (default=0.125)</p></td>
     </tr>
     <tr>
-      <th>pairedOnly</th>
-      <td><p>whether to remove unpaired individuals (default=TRUE)</p></td>
+      <th>removeDuplicatedMeasures</th>
+      <td><p>whether to remove duplicated
+conditions/repeated measurements for a given timepoint (default=FALSE).</p></td>
+    </tr>
+    <tr>
+      <th>removeSingles</th>
+      <td><p>whether to remove individuals with only one measurement
+(default=FALSE)</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -232,29 +239,28 @@ For more information see
                       countdata <span class='op'>=</span> <span class='va'>tpm</span>,
                       metadata <span class='op'>=</span> <span class='va'>metadata</span>,
                       dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='st'>'MS4A1'</span><span class='op'>]</span>, 
-                      pairedOnly<span class='op'>=</span><span class='cn'>TRUE</span>, 
                       verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: PAT359 has multiple entries for identical Timepoint and EULAR_6m. These will be removed.</span></div><div class='input'>                      
+                      
 <span class='va'>MS4A1fit</span>
 </div><div class='output co'>#&gt; Generalized linear mixed model fit by maximum likelihood (Laplace
 #&gt;   Approximation) [glmerMod]
-#&gt;  Family: Negative Binomial(0.2896)  ( log )
+#&gt;  Family: Negative Binomial(0.2865)  ( log )
 #&gt; Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m
 #&gt;    Data: data
 #&gt;  Offset: offset
 #&gt;       AIC       BIC    logLik  deviance  df.resid 
-#&gt;  647.5836  667.2184 -315.7918  631.5836        78 
+#&gt;  898.2008  920.7630 -441.1004  882.2008       116 
 #&gt; Random effects:
 #&gt;  Groups Name        Std.Dev.
-#&gt;  PATID  (Intercept) 0.1353  
-#&gt; Number of obs: 86, groups:  PATID, 43
+#&gt;  PATID  (Intercept) 0.2038  
+#&gt; Number of obs: 124, groups:  PATID, 82
 #&gt; Fixed Effects:
-#&gt;                           (Intercept)                             Timepoint6  
-#&gt;                                2.8551                                 0.3181  
-#&gt;            EULAR_6mModerate responder                  EULAR_6mNon responder  
-#&gt;                                0.1583                                -1.0217  
-#&gt; Timepoint6:EULAR_6mModerate responder       Timepoint6:EULAR_6mNon responder  
-#&gt;                               -1.1561                                 0.3050  </div></pre>
+#&gt;                          (Intercept)                             Timepoint  
+#&gt;                              2.69088                               0.03668  
+#&gt;           EULAR_6mModerate responder                 EULAR_6mNon responder  
+#&gt;                              0.22723                              -1.69489  
+#&gt; Timepoint:EULAR_6mModerate responder       Timepoint:EULAR_6mNon responder  
+#&gt;                             -0.20100                               0.17747  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
