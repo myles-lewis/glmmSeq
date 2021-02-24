@@ -78,5 +78,4 @@ invisible(lapply(bioconductorPackages, function(p) {
 
 # Example script
 
-For examples see [Getting started](./articles/GlmmSeq.html). 
-
+For examples see [Get started](https://katrionagoldmann.github.io/glmmSeq/articles/glmmSeq.html). 

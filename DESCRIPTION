@@ -7,7 +7,7 @@ Authors@R:
     person(given = "Elisabetta",family = "Sciacca", role = c("aut"), email = "e.sciacca@qmul.ac.uk"),
     person(given = "Cankut",family = "Cubuk", role = c("aut"), email = "c.cubuk@qmul.ac.uk") ,
     person(given = "Anna", family = "Surace", role = c("aut"), email = "a.surace@qmul.ac.uk"))
-Description: What the package does (one paragraph).
+Description: This package models gene expression with a general linear mixed model (glmm). The most widely used mainstream differential gene expression analysis tools are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level enables random effect, as as well as mixed effects, to be modelled. The particularly useful for investigating the changes in gene expression between groups of individuals over time.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -33,5 +33,4 @@ Imports:
     lme4,
     methods,
     plotly,
-    qvalue,
-    remotes
+    qvalue
