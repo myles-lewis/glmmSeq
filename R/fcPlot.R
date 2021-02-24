@@ -1,4 +1,4 @@
-#' Plotly Fold Change plot
+#' Plotly or ggplot fold change plots
 #'
 #' @param glmmResult A glmmSeq object created by 
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
@@ -33,7 +33,7 @@
 #' 
 #' glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      id = 'PATID',
-#'                      countdata = tpm[1:10, ],
+#'                      countdata = tpm,
 #'                      metadata = metadata,
 #'                      dispersion = disp,
 #'                      verbose=FALSE)
@@ -45,7 +45,7 @@
 #'       pCutoff=0.05,
 #'       useAdjusted = FALSE,
 #'       plotCutoff = 1,
-#'       graphics="ggplot")
+#'       graphics="plotly")
 
 fcPlot <- function(glmmResult,
                    x1Label, 
