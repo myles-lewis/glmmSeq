@@ -107,7 +107,7 @@ This data contains:
 and six-month EULAR response. Where 
 [EULAR](https://www.das-score.nl/en/das-and-das28/das28-why/eular-response-criteria) 
 is a rheumatoid arthritis response metric based on composite 
-[DAS scores](https://www.das-score.nl/en/).
+[DAS28 scores](https://www.das-score.nl/en/).
 - tpm: the transcript per million RNA-seq count data
 
 These are outlined in the following subsections.
@@ -288,7 +288,7 @@ view the model using paired plots. In this case the samples can be paired over
 time.
 
 Plots can be viewed using either ggplot or base graphics. We can start looking 
-at the gene with the most significant interaction 'IGHV3-23':
+at the gene with the most significant interaction _IGHV3-23_:
 
 ```{r, fig.height=6, warning=FALSE}
 plotColours <- c("skyblue", "goldenrod1", "mediumseagreen")
@@ -374,7 +374,7 @@ ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 
 # Fold Change Plots
 
-The comparitive fold change (for x1Label variables) between conditions 
+The comparative fold change (for x1Label variables) between conditions 
 (x2Label and x2Values variables) can be plotted using fcPlots 
 for all genes to highlight significance. 
 
@@ -397,9 +397,9 @@ fcPlot(glmmResult=results,
        plotCutoff = 1)
 ```
 
-Genes on the x-y plane, such as IGHJ6, will have associations in the same 
+Genes on the x-y plane, such as _IGHJ6_, will have associations in the same 
 direction whereas 
-genes on the x=-y axis have association in _opposite_ directions, such as ADAM12.
+genes on the x=-y axis have association in _opposite_ directions, such as _ADAM12_.
 This allows us to pick out genes of potential interest which we can have
 another closer look at:
 
@@ -433,8 +433,8 @@ ggarrange(p1, p2, ncol=2)
 ```
 
 Or flipping the x1 and x2 labels we can look at the fold change between response at different
-timepoints. This might be interesting to see if there are differences at certain
-timepoints which are not present at others. 
+time points. This might be interesting to see if there are differences at certain
+time points which are not present at others. 
 
 ```{r}
 fcPlot(glmmResult=results,

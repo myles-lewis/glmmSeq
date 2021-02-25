@@ -20,7 +20,7 @@
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
 #' @param removeDuplicatedMeasures whether to remove duplicated 
-#' conditions/repeated measurements for a given timepoint (default=FALSE). 
+#' conditions/repeated measurements for a given time point (default=FALSE). 
 #' @param removeSingles whether to remove individuals with only one measurement
 #' (default=FALSE)
 #' @param verbose Logical whether to display messaging (default=FALSE)
