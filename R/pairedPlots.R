@@ -32,9 +32,7 @@
 #' @param ... Other parameters to pass to 
 #' \code{\link[graphics:plot]{graphics::plot()}} or 
 #' \code{\link[ggplot2:theme]{ggplot2::theme()}}.
-#' @return Returns a paired plot for samples 
-#' @importFrom ggpubr compare_means ggboxplot stat_pvalue_manual
-#' stat_compare_means
+#' @return Returns a paired plot for matched samples.
 #' @importFrom ggplot2 ggplot geom_boxplot geom_point geom_line theme_classic
 #' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
 #' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous

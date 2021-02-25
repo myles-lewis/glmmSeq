@@ -94,7 +94,7 @@ to be paired using the ID.}
 \code{\link[ggplot2:theme]{ggplot2::theme()}}.}
 }
 \value{
-Returns a paired plot for samples
+Returns a paired plot for matched samples.
 }
 \description{
 Paired plots to show differences between groups and over time

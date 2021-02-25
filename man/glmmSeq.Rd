@@ -50,7 +50,7 @@ For more information see
 \item{cores}{number of cores to use. Default=detectCores()/2}
 
 \item{removeDuplicatedMeasures}{whether to remove duplicated
-conditions/repeated measurements for a given timepoint (default=FALSE).}
+conditions/repeated measurements for a given time point (default=FALSE).}
 
 \item{removeSingles}{whether to remove individuals with only one measurement
 (default=FALSE)}
