@@ -46,3 +46,4 @@ vignettes/*.pdf
 doc
 Meta
 .DS_Store
+package_creator.R

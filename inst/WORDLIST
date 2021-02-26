@@ -1,7 +1,9 @@
 Altman
 BH
+Bolker
 DAS
 DESeq
+Dabney
 EULAR
 FC
 Github
@@ -12,13 +14,16 @@ IGHJ
 IGHV
 Lifecycle
 Limma
+Maechler
 PEAC
 Plotly
 Qvalues
 TPM
 Timepoint
+Weisberg
 bobyqa
 detectCores
+doi
 edgeR
 estimateCommonDisp
 estimateDispersions
@@ -28,6 +33,8 @@ glmer
 glmerControl
 glmm
 glmmResult
+jss
+lme
 lmer
 modelPlot
 plotly
