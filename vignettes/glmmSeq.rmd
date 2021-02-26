@@ -498,10 +498,10 @@ citation("glmmSeq")
 
 Statistical software used in this package: 
 
-1. [lme4](doi:10.18637/jss.v067.i01): Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01.
+1. [lme4](https://dx.doi.org/10.18637/jss.v067.i01): Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi: 10.18637/jss.v067.i01.
 
 2. [car](https://socialsciences.mcmaster.ca/jfox/Books/Companion/): John Fox and Sanford Weisberg (2019). An {R} Companion to Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL: https://socialsciences.mcmaster.ca/jfox/Books/Companion/
   
 3. [MASS](https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf): Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
 
-4. [qvalue](https://github.com/jdstorey/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/jdstorey/qvalue
+4. [qvalue](https://github.com/StoreyLab/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/StoreyLab/qvalue
