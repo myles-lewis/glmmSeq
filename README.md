@@ -1,4 +1,4 @@
-[![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-mediumpurple.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://cran.r-project.org/package=glmmSeq)
 [![HitCount](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg)](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq)
@@ -6,11 +6,13 @@
 [![GitHub
 tag](https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/)
 
-# glmmSeq <img src="logo.png" align="right" alt="" width="200" hspace="20" />
+# glmmSeq 
+
+<img src="logo.png" align="right" alt="" width="200" hspace="20" />
 
 
 
-This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)
+This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://cran.rstudio.com/package=lme4)
 package which fits a glmm.
 
 This package focuses in particular on changes in genes expression between different response or treatment groups over time. 
