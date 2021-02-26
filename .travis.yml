@@ -3,5 +3,9 @@ r:
   - oldrel
   - release
   - devel
+  - bioc-release
+  
+bioc_packages:
+  - qvalue
 
 warnings_are_errors: false
