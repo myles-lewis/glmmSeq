@@ -1,5 +1,5 @@
 Package: glmmSeq
-Title: General Mixed Model for all genes returning all statistics
+Title: General Linear Mixed Models for Gene-level Differential Expression
 Version: 0.0.1
 Authors@R:
     c(person(given = "Myles",family = "Lewis", role = c("aut"), email = "myles.lewis@qmul.ac.uk"),
@@ -7,7 +7,7 @@ Authors@R:
     person(given = "Elisabetta",family = "Sciacca", role = c("aut"), email = "e.sciacca@qmul.ac.uk"),
     person(given = "Cankut",family = "Cubuk", role = c("aut"), email = "c.cubuk@qmul.ac.uk") ,
     person(given = "Anna", family = "Surace", role = c("aut"), email = "a.surace@qmul.ac.uk"))
-Description: This package models gene expression with a general linear mixed model (glmm). The most widely used mainstream differential gene expression analysis tools are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level enables random effect, as as well as mixed effects, to be modelled. The particularly useful for investigating the changes in gene expression between groups of individuals over time.
+Description: models gene expression with a general linear mixed model. The most widely used mainstream differential gene expression analysis tools are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level enables random effect, as as well as mixed effects, to be modelled. The particularly useful for investigating the changes in gene expression between groups of individuals over time.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

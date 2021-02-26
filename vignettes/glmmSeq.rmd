@@ -20,7 +20,7 @@ library(kableExtra)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://cran.r-project.org/package=glmmSeq)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://cran.rstudio.com/package=glmmSeq)
 `r paste0("[![", Sys.Date(),"]","(",paste0("https://img.shields.io/badge/last%20git%20commit-", gsub('-', '--', Sys.Date()),"-turquoise.svg"), ")]","(",'https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md',")")`
-[![HitCount](http://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg)](http://hits.dwyl.com/KatrionaGoldmann/glmmSeq)
+[![HitCount](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg)](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq)
 [![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
 
 
@@ -38,21 +38,20 @@ effects models at individual gene level using the `negative.binomial` function
 from `MASS` and the `glmer` function in `lme4` which enables random 
 effect, as as well as mixed effects, to be modelled.
 
+### Installing from CRAN
+
+```{r, eval=FALSE}
+install.packages("glmmSeq")
+```
+
+
 ### Installing From Github
 
 ```{r, eval=FALSE}
-devtools::install_github("KatrionaGoldmann/glmmSeq",
-                        auth_token = "57fa8679959c164aa8ecdd88860d6d1b7265313e")
+devtools::install_github("KatrionaGoldmann/glmmSeq")
 ```
 
 ### Installing locally
-
-To load the package as a library you can run the code in ./package_creator then:
-
-```{r, eval=FALSE}
-library(glmmSeq)
-set.seed(1234)
-```
 
 Or you can source the functions individually:
 
@@ -90,6 +89,7 @@ To get started, first we load in the package:
 
 ```{r, message=FALSE, warning=FALSE}
 library(glmmSeq)
+set.seed(1234)
 ```
 
 
@@ -483,3 +483,25 @@ maPlots <- maPlot(results,
 
 maPlots$combined
 ```
+
+# Citing glmmSeq
+
+glmmSeq was developed by the bioinformatics team at the [Experimental Medicine & Rheumatology department](https://www.qmul.ac.uk/whri/emr/) and [Centre for Translational Bioinformatics](https://www.qmul.ac.uk/c4tb/) at Queen Mary University London.
+
+If you use this package please cite as:
+
+```{r, warning=FALSE}
+citation("glmmSeq")
+```
+
+# References
+
+Statistical software used in this package: 
+
+1. [lme4](doi:10.18637/jss.v067.i01): Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01.
+
+2. [car](https://socialsciences.mcmaster.ca/jfox/Books/Companion/): John Fox and Sanford Weisberg (2019). An {R} Companion to Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL: https://socialsciences.mcmaster.ca/jfox/Books/Companion/
+  
+3. [MASS](https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf): Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
+
+4. [qvalue](https://github.com/jdstorey/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/jdstorey/qvalue
