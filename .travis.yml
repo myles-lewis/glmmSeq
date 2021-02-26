@@ -9,3 +9,8 @@ bioc_packages:
   - qvalue
 
 warnings_are_errors: false
+
+os:
+  - linux
+  - osx
+  - windows
