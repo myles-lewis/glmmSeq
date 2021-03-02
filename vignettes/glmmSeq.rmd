@@ -2,7 +2,9 @@
 title: "glmmSeq"
 author: "Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+      self_contained: no
 vignette: >
   %\VignetteIndexEntry{glmmSeq}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,8 +19,8 @@ library(kableExtra)
 
 [![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-mediumpurple.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://cran.r-project.org/package=glmmSeq)
-[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://cran.rstudio.com/package=glmmSeq)
+[![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://CRAN.R-project.org/package=glmmSeq)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://CRAN.R-project.org/package=glmmSeq)
 `r paste0("[![", Sys.Date(),"]","(",paste0("https://img.shields.io/badge/last%20git%20commit-", gsub('-', '--', Sys.Date()),"-turquoise.svg"), ")]","(",'https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md',")")`
 [![HitCount](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg)](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq)
 [![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
@@ -26,7 +28,7 @@ library(kableExtra)
 
 # glmmSeq 
 
-<img src="../logo.png" align="right" alt="" width="200" hspace="20" />
+<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20" />
 
 
 The aim of this package is to model gene expression with a general linear mixed

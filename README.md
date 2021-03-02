@@ -5,14 +5,16 @@
 [![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
 [![GitHub
 tag](https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/)
+[![Travis](https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg)](https://github.com/KatrionaGoldmann/glmmSeq)
 
 # glmmSeq 
 
-<img src="logo.png" align="right" alt="" width="200" hspace="20" />
+<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20" />
 
 
 
-This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://cran.rstudio.com/package=lme4)
+This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`]
+(https://CRAN.R-project.org/package=lme4)
 package which fits a glmm.
 
 This package focuses in particular on changes in genes expression between different response or treatment groups over time. 
