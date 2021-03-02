@@ -36,7 +36,7 @@
 #' 
 #' resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                        id = "PATID",
-#'                        countdata = tpm,
+#'                        countdata = tpm[1:5, ],
 #'                        metadata = metadata,
 #'                        dispersion = disp)
 #'

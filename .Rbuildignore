@@ -3,3 +3,10 @@
 ^doc$
 ^Meta$
 ^package_creater$
+.travis.yml
+_pkgdown.yml
+^docs$
+^graphics$
+logo.png
+package_creator.R
+^pkgdown$
