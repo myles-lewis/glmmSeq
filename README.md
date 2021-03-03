@@ -13,8 +13,7 @@ tag](https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg)](https://Gi
 
 
 
-This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`]
-(https://CRAN.R-project.org/package=lme4)
+This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as fixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://CRAN.R-project.org/package=lme4)
 package which fits a glmm.
 
 This package focuses in particular on changes in genes expression between different response or treatment groups over time. 
