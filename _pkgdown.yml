@@ -5,15 +5,33 @@ template:
 
 authors:
   Myles Lewis:
-    href: https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html
+    href: https://www.qmul.ac.uk/c4tb/our-team/profiles/myles-lewis.html
   Katriona Goldmann:
-    href: https://github.com/KatrionaGoldmann
-  Cankut Cubuk:
-    href: https://www.qmul.ac.uk/whri/people/research-staff/
+    href: https://www.qmul.ac.uk/c4tb/our-team/profiles/goldmann-katriona.html
   Elisabetta Sciacca:
     href: https://www.qmul.ac.uk/c4tb/our-team/profiles/sciacca-elisabetta-.html
+  Cankut Cubuk:
+    href: https://www.qmul.ac.uk/whri/people/research-staff/
   Anna Surace:
     href: https://www.qmul.ac.uk/whri/people/research-staff/
 
 toc:
   depth: 5
+
+navbar:
+  left:
+    - icon: fa-home
+      href: index.html
+  right:
+    - text: "Get Started"
+      icon: fas fa-book
+      href: articles/glmmSeq.html
+    - icon: fas fa-newspaper
+      text: "News"
+      href: news/index.html
+    - icon: far fa-file-code
+      text: "Reference Manual"
+      href: reference/index.html
+    - icon: fab fa-github
+      text: "Github"
+      href: https://github.com/KatrionaGoldmann/glmmSeq

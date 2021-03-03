@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>General Linear Mixed Models for Gene-level Differential Expression • glmmSeq</title>
+<title>General Linear Mixed Models for Gene-Level Differential Expression • glmmSeq</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,8 +17,8 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="General Linear Mixed Models for Gene-level Differential Expression">
-<meta property="og:description" content="models gene expression with a general linear mixed model. The most widely used mainstream differential gene expression analysis tools are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level enables random effect, as as well as mixed effects, to be modelled. The particularly useful for investigating the changes in gene expression between groups of individuals over time.">
+<script src="pkgdown.js"></script><meta property="og:title" content="General Linear Mixed Models for Gene-Level Differential Expression">
+<meta property="og:description" content="Using random and fixed effects to model expression at an individual gene level can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, therefore do not capture interaction terms. This package uses negative binomial mixed effects models to fit gene expression with matched samples. This is particularly useful for investigating  changes in gene expression between groups of individuals over time.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -46,22 +46,38 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa-home"></span>
      
   </a>
-</li>
-<li>
-  <a href="articles/glmmSeq.html">Get started</a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/KatrionaGoldmann/glmmSeq/">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="articles/glmmSeq.html">
+    <span class="fas fa-book"></span>
      
+    Get Started
+  </a>
+</li>
+<li>
+  <a href="news/index.html">
+    <span class="fas fa-newspaper"></span>
+     
+    News
+  </a>
+</li>
+<li>
+  <a href="reference/index.html">
+    <span class="far fa-file-code"></span>
+     
+    Reference Manual
+  </a>
+</li>
+<li>
+  <a href="https://github.com/KatrionaGoldmann/glmmSeq">
+    <span class="fab fa-github"></span>
+     
+    Github
   </a>
 </li>
       </ul>
@@ -81,8 +97,8 @@
 <div id="glmmseq" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#glmmseq" class="anchor"></a>glmmSeq</h1></div>
-<p><img src="logo.png" align="right" alt="" width="200" hspace="20"></p>
-<p>This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the <code>glmer</code> function from the <a href="https://cran.r-project.org/web/packages/lme4/index.html"><code>lme4</code></a> package which fits a glmm.</p>
+<p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20"></p>
+<p>This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as mixed effects. For the purpose of the package we use the <code>glmer</code> function from the <a href="https://CRAN.R-project.org/package=lme4"><code>lme4</code></a> package which fits a glmm.</p>
 <p>This package focuses in particular on changes in genes expression between different response or treatment groups over time.</p>
 </div>
 <div id="loading-the-package" class="section level1">
@@ -176,15 +192,12 @@ invisible(lapply(c("qvalue"), function(p){
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html">Myles Lewis</a> <br><small class="roles"> Author </small>  </li>
+<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/myles-lewis.html">Myles Lewis</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9365-5345" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://github.com/KatrionaGoldmann">Katriona Goldmann</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/goldmann-katriona.html">Katriona Goldmann</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9073-6323" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/sciacca-elisabetta-.html">Elisabetta Sciacca</a> <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="https://www.qmul.ac.uk/whri/people/research-staff/">Cankut Cubuk</a> <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="https://www.qmul.ac.uk/whri/people/research-staff/">Anna Surace</a> <br><small class="roles"> Author </small>  </li>
+<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/sciacca-elisabetta-.html">Elisabetta Sciacca</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-7525-1558" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
@@ -197,6 +210,7 @@ invisible(lapply(c("qvalue"), function(p){
 <li><a href="https://hits.dwyl.com/KatrionaGoldmann/glmmSeq"><img src="https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg" alt="HitCount"></a></li>
 <li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a></li>
 <li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/"><img src="https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg" alt="GitHub tag"></a></li>
+<li><a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></li>
 </ul>
 </div>
 </div>

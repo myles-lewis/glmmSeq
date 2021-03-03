@@ -36,9 +36,9 @@ disp <- apply(tpm, 1, function(x){
 
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      id = 'PATID',
-                     countdata = tpm[1:10, ],
+                     countdata = tpm[1:5, ],
                      metadata = metadata,
-                     dispersion = disp[1:10],
+                     dispersion = disp[1:5],
                      verbose=FALSE)
 
 MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)                    
