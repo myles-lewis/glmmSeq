@@ -15,7 +15,8 @@ maPlot(
   zeroCountCutoff = 50,
   colours = c("grey", "midnightblue", "mediumvioletred", "goldenrod"),
   labels = c(),
-  transpose = FALSE,
+  fontSize = 12,
+  labelFontSize = 5,
   useAdjusted = FALSE,
   graphics = "ggplot",
   verbose = FALSE
@@ -45,8 +46,9 @@ levels in x1Label are used.}
 
 \item{labels}{Genes to label on plot}
 
-\item{transpose}{Logical whether FC is time or group based (in this case
-x2Label should be the time parameter)}
+\item{fontSize}{Font size}
+
+\item{labelFontSize}{Font size for labels}
 
 \item{useAdjusted}{whether to use adjusted pvalues
 (must have q_ columns in glmmResult)}

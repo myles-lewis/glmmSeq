@@ -49,3 +49,4 @@ Meta
 .DS_Store
 package_creator.R
 ./logo.png
+*.Rproj

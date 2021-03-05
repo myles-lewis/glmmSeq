@@ -13,8 +13,8 @@
 #' @param zeroCountCutoff Which probes to include by minimum counts cut-off
 #' @param colours Colour scheme
 #' @param labels Genes to label on plot
-#' @param transpose Logical whether FC is time or group based (in this case
-#' x2Label should be the time parameter)
+#' @param fontSize Font size
+#' @param labelFontSize Font size for labels
 #' @param useAdjusted whether to use adjusted pvalues
 #' (must have q_ columns in glmmResult)
 #' @param graphics Either "ggplot" or "plotly"
@@ -59,7 +59,8 @@ maPlot <- function(glmmResult,
                    colours=c('grey', 'midnightblue', 
                              'mediumvioletred', 'goldenrod'),
                    labels=c(),
-                   transpose=FALSE,
+                   fontSize=12,
+                   labelFontSize=5,
                    useAdjusted=FALSE,
                    graphics="ggplot", 
                    verbose=FALSE){
@@ -170,7 +171,7 @@ maPlot <- function(glmmResult,
       z <- x^2 + y^2
       list(x=x, y=y,
            text=i, textangle=0, ax=x/z*75, ay=-y/z*75,
-           font=list(color="black", size=12),
+           font=list(color="black", size=labelFontSize),
            arrowcolor="black", arrowwidth=1, arrowhead=0, arrowsize=1.5,
            xanchor="auto", yanchor="auto")
     })
@@ -190,11 +191,13 @@ maPlot <- function(glmmResult,
       labs(x=bquote(paste("Mean log"[2], "(gene expression + 1)")), y=yLab,
            title=paste0("MA plot (", x2Label, " = ", x2Values[1], ")")) +
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
-      theme(legend.position=c(1, 0), #
+      theme(legend.position=c(1, 0), 
+            text=element_text(size=fontSize),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1,-0.1)) +
       annotate("text", x=unlist(lapply(annot1, function(x) x$x)),
                y=unlist(lapply(annot1, function(x) x$y)), vjust=1,
+               size=labelFontSize,
                label= unlist(lapply(annot1, function(x) x$text)))
     
     ma2 <- ggplot(data=plotData, aes_string(x="meanexp", y="y", color="col")) +
@@ -205,10 +208,12 @@ maPlot <- function(glmmResult,
            title=paste0("MA plot (", x2Label, " = ", x2Values[2], ")")) +
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
       theme(legend.position=c(1, 0),
+            text=element_text(size=fontSize),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1,-0.1)) +
       annotate("text", x=unlist(lapply(annot2, function(x) x$x)),
                y=unlist(lapply(annot2, function(x) x$y)), vjust=1,
+               size=labelFontSize,
                label= unlist(lapply(annot2, function(x) x$text)))
     
     combined <- ggarrange(ma1, ma2, ncol=1, nrow=2, common.legend = TRUE)
@@ -225,6 +230,7 @@ maPlot <- function(glmmResult,
                    hoverinfo='text') %>%
       layout(title = paste0("MA plot (", x2Label, " = ", x2Values[1], ")"), 
              annotations=annot1,
+             font=list(size=fontSize),
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),
              yaxis=list(title=yLab, color='black'),
              legend = list(x = 0.65, y = 0.04, font=list(color='black')))
@@ -242,6 +248,7 @@ maPlot <- function(glmmResult,
              annotations=annot1,
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),
              yaxis=list(title=yLab, color='black'),
+             font=list(size=fontSize),
              legend = list(x = 0.65, y = 0.04, font=list(color='black')))
     
     ma2 <- plot_ly(data=plotData, x=~meanexp, y=~y,
@@ -254,6 +261,7 @@ maPlot <- function(glmmResult,
                    hoverinfo='text') %>%
       layout(title = paste0("MA plot (", x2Label, " = ", x2Values[2], ")"), 
              annotations=annot2,
+             font=list(size=fontSize),
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),
              yaxis=list(title=yLab, color='black'),
              legend = list(x = 0.65, y = 0.04, font=list(color='black')))
@@ -267,6 +275,7 @@ maPlot <- function(glmmResult,
                xref='paper', yref='paper', font=list(size=15)),
           list(x = 0, y = 1.01, text = x2Values[2], showarrow = FALSE,
                xref='paper', yref='paper', font=list(size=15))), 
+        font=list(size=fontSize),
         legend = list(x = 1, y = 0.5, xanchor="right", yanchor="center")
       )
     
