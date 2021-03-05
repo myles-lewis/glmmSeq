@@ -193,7 +193,7 @@ modelPlot <- function(glmmResult,
               text=element_text(size=fontSize)) 
     } else{
       p <- ggplot(modelData, aes_string(x="xFactor", y="y", fill="group", 
-                                        group="EULAR_6m",
+                                        group="group",
                                         shape="group", color="group")) +
         geom_line(size=lineWidth) +
         geom_point(size=markerSize) +

@@ -97,7 +97,7 @@
       <h1 data-toc-skip>glmmSeq</h1>
                         <h4 class="author">Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 class="date">2021-03-02</h4>
+            <h4 class="date">2021-03-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/vignettes/glmmSeq.rmd"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="hidden name"><code>glmmSeq.rmd</code></div>
@@ -106,12 +106,12 @@
 
     
     
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"><img src="https://img.shields.io/badge/License-GPL%20v2-mediumpurple.svg" alt="License: GPL v2"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--03--02-turquoise.svg" alt="2021-03-02"></a> <a href="https://hits.dwyl.com/KatrionaGoldmann/glmmSeq"><img src="https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg" alt="HitCount"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--03--05-turquoise.svg" alt="2021-03-05"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
 <div id="glmmseq" class="section level1">
 <h1 class="hasAnchor">
 <a href="#glmmseq" class="anchor"></a>glmmSeq</h1>
 <p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20"></p>
-<p>The aim of this package is to model gene expression with a general linear mixed model (glmm). The most widely used mainstream differential gene expression analysis tools (e.g <a href="https://doi.org/10.1093/nar/gkv007">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616">edgeR</a>) are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level using the <code>negative.binomial</code> function from <code>MASS</code> and the <code>glmer</code> function in <code>lme4</code> which enables random effect, as as well as mixed effects, to be modelled.</p>
+<p>The aim of this package is to model gene expression with a general linear mixed model (glmm). The most widely used mainstream differential gene expression analysis tools (e.g <a href="https://doi.org/10.1093/nar/gkv007">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616">edgeR</a>) are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level using the <code>negative.binomial</code> function from <code>MASS</code> and the <code>glmer</code> function in <a href="https://CRAN.R-project.org/package=lme4"><code>lme4</code></a> which enables random effect, as as well as mixed effects, to be modelled.</p>
 <div id="installing-from-cran" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installing-from-cran" class="anchor"></a>Installing from CRAN</h3>
@@ -120,13 +120,13 @@
 </div>
 <div id="installing-from-github" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installing-from-github" class="anchor"></a>Installing From Github</h3>
+<a href="#installing-from-github" class="anchor"></a>Installing from Github</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"KatrionaGoldmann/glmmSeq"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="installing-locally" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installing-locally" class="anchor"></a>Installing locally</h3>
+<a href="#installing-locally" class="anchor"></a>Installing Locally</h3>
 <p>Or you can source the functions individually:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">functions</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"./R"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -3004,7 +3004,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n=124 samples, 82 individuals
-## Time difference of 6.839922 secs
+## Time difference of 8.701833 secs
 ## Errors in 4 gene(s):IL12A, FGF12, VIL1, IL26</code></pre>
 <p>or alternatively using two-factor classification with EULAR_binary:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -3018,7 +3018,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n=124 samples, 82 individuals
-## Time difference of 6.048854 secs
+## Time difference of 8.980682 secs
 ## Errors in 4 gene(s):IL12A, FGF12, VIL1, IL26</code></pre>
 <div id="outputs" class="section level2">
 <h2 class="hasAnchor">
@@ -8333,7 +8333,8 @@ LILRB3
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-19-1.png" width="768"></p>
 <p>Or using base graphics, with or without the model fit overlaid:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">p1</span> <span class="op">=</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results2</span>,
                 geneName <span class="op">=</span> <span class="st">"FGF14"</span>,
@@ -8355,15 +8356,17 @@ LILRB3
                 fontSize<span class="op">=</span><span class="fl">0.65</span>,
                 colours<span class="op">=</span><span class="va">plotColours</span><span class="op">)</span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-20-1.png" width="768"></p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="model-plots" class="section level1">
 <h1 class="hasAnchor">
 <a href="#model-plots" class="anchor"></a>Model plots</h1>
 <p>Alternatively to plot the model fits alone you can use the modelPlot function:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/modelPlot.html">modelPlot</a></span><span class="op">(</span><span class="va">results</span>,
                 <span class="st">"ADAM12"</span>,
                 x1Label<span class="op">=</span><span class="st">"Timepoint"</span>,
@@ -8395,7 +8398,7 @@ LILRB3
 <a href="#fold-change-plots" class="anchor"></a>Fold Change Plots</h1>
 <p>The comparative fold change (for x1Label variables) between conditions (x2Label and x2Values variables) can be plotted using fcPlots for all genes to highlight significance.</p>
 <p>(By setting graphics=“plotly” this can be viewed interactively)</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Genes to label:</span>
 <span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'FGF14'</span>, <span class="st">'IL2RG'</span>, <span class="st">'IGHV3-23'</span>, <span class="st">'ADAM12'</span>, <span class="st">'FGFRL1'</span>, <span class="st">'IL36G'</span>, 
            <span class="st">'BLK'</span>, <span class="st">'SAA1'</span>, <span class="st">'CILP'</span>, <span class="st">'EMILIN3'</span>, <span class="st">'EMILIN2'</span>, <span class="st">'IGHJ6'</span>, 
@@ -8411,7 +8414,7 @@ LILRB3
        plotCutoff <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 <p>Genes on the x-y plane, such as <em>IGHJ6</em>, will have associations in the same direction whereas genes on the x=-y axis have association in <em>opposite</em> directions, such as <em>ADAM12</em>. This allows us to pick out genes of potential interest which we can have another closer look at:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
                  geneName <span class="op">=</span> <span class="st">"ADAM12"</span>,
                  x1Label <span class="op">=</span> <span class="st">"Timepoint"</span>,
@@ -8440,7 +8443,7 @@ LILRB3
 <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-23-1.png" width="768"></p>
 <p>Or flipping the x1 and x2 labels we can look at the fold change between response at different time points. This might be interesting to see if there are differences at certain time points which are not present at others.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/fcPlot.html">fcPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
        x2Label<span class="op">=</span><span class="st">"Timepoint"</span>,
        x1Label<span class="op">=</span><span class="st">"EULAR_6m"</span>,
@@ -8456,7 +8459,7 @@ LILRB3
 <h1 class="hasAnchor">
 <a href="#ma-plots" class="anchor"></a>MA plots</h1>
 <p>An MA plot is an application of a Bland–Altman plot. The plot visualizes the differences between measurements taken in two samples, by transforming the data onto M (log ratio) and A (mean average) scales, then plotting these values.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,
                   x1Label<span class="op">=</span><span class="st">"Timepoint"</span>,
                   x2Label<span class="op">=</span><span class="st">"EULAR_6m"</span>,
@@ -8468,7 +8471,7 @@ LILRB3
 
 <span class="va">maPlots</span><span class="op">$</span><span class="va">combined</span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,
                   x2Label<span class="op">=</span><span class="st">"Timepoint"</span>,
                   x1Label<span class="op">=</span><span class="st">"EULAR_6m"</span>,
@@ -8486,7 +8489,7 @@ LILRB3
 <a href="#citing-glmmseq" class="anchor"></a>Citing glmmSeq</h1>
 <p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/">Experimental Medicine &amp; Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/">Centre for Translational Bioinformatics</a> at Queen Mary University London.</p>
 <p>If you use this package please cite as:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## To cite package 'glmmSeq' in publications use:

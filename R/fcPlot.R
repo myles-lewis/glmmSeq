@@ -15,6 +15,8 @@
 #' @param plotCutoff Which probes to include by significance cut-off
 #' (default=1 for all markers)
 #' @param graphics Graphics system to use: "ggplot" or "plotly"
+#' @param fontSize Font size
+#' @param labelFontSize Font size for labels
 #' @param colours Colour vector for significance
 #' @param verbose Whether to print statistics
 #' @return Returns a plot for fold change between x1Values in one x2Value 
@@ -56,6 +58,8 @@ fcPlot <- function(glmmResult,
                    labels=c(),
                    useAdjusted=FALSE,
                    plotCutoff=1, 
+                   fontSize=12,
+                   labelFontSize=5,
                    graphics="ggplot", 
                    colours=c('grey', 'goldenrod1', 'red', 'blue'), 
                    verbose=FALSE){
@@ -154,7 +158,7 @@ fcPlot <- function(glmmResult,
       z <- sqrt(x^2 + y^2)
       list(x=x, y=y,
            text=i, textangle=0, ax=x/z*75, ay=-y/z*75,
-           font=list(color="black", size=12),
+           font=list(color="black", size=labelFontSize),
            arrowcolor="black", arrowwidth=1, arrowhead=0, arrowsize=1.5,
            xanchor="auto", yanchor="auto")
     })
@@ -176,11 +180,13 @@ fcPlot <- function(glmmResult,
                           .(x2Values[2]), ")")),
            title="") +
       theme(legend.position=c(0, 1),
+            text=element_text(size=fontSize),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(-0.1,1.1), 
             plot.margin = unit(c(7, 0, 3, 0), units="mm")) +
       annotate("text", x=unlist(lapply(annot, function(x) x$x)),
                y=unlist(lapply(annot, function(x) x$y)), vjust=1,
+               size=labelFontSize,
                label= unlist(lapply(annot, function(x) x$text)))
     
     # Plotly
@@ -199,6 +205,7 @@ fcPlot <- function(glmmResult,
                                      x1Values[1], " vs ", x1Values[2], 
                                      " (", x2Label, "=", x2Values[2], ")"),
                         color='black'),
+             font=list(size=fontSize),
              legend = list(x = 0, y = 1, font=list(color='black'))) %>%
       config(edits = list(annotationPosition = TRUE,
                           annotationTail = TRUE,

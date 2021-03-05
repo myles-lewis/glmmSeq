@@ -14,6 +14,8 @@ fcPlot(
   labels = c(),
   useAdjusted = FALSE,
   plotCutoff = 1,
+  fontSize = 12,
+  labelFontSize = 5,
   graphics = "ggplot",
   colours = c("grey", "goldenrod1", "red", "blue"),
   verbose = FALSE
@@ -42,6 +44,10 @@ levels in x1Label are used.}
 
 \item{plotCutoff}{Which probes to include by significance cut-off
 (default=1 for all markers)}
+
+\item{fontSize}{Font size}
+
+\item{labelFontSize}{Font size for labels}
 
 \item{graphics}{Graphics system to use: "ggplot" or "plotly"}
 

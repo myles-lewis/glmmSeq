@@ -155,7 +155,8 @@
   zeroCountCutoff <span class='op'>=</span> <span class='fl'>50</span>,
   colours <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grey"</span>, <span class='st'>"midnightblue"</span>, <span class='st'>"mediumvioletred"</span>, <span class='st'>"goldenrod"</span><span class='op'>)</span>,
   labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>,
-  transpose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  fontSize <span class='op'>=</span> <span class='fl'>12</span>,
+  labelFontSize <span class='op'>=</span> <span class='fl'>5</span>,
   useAdjusted <span class='op'>=</span> <span class='cn'>FALSE</span>,
   graphics <span class='op'>=</span> <span class='st'>"ggplot"</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
@@ -208,9 +209,12 @@ levels in x1Label are used.</p></td>
       <td><p>Genes to label on plot</p></td>
     </tr>
     <tr>
-      <th>transpose</th>
-      <td><p>Logical whether FC is time or group based (in this case
-x2Label should be the time parameter)</p></td>
+      <th>fontSize</th>
+      <td><p>Font size</p></td>
+    </tr>
+    <tr>
+      <th>labelFontSize</th>
+      <td><p>Font size for labels</p></td>
     </tr>
     <tr>
       <th>useAdjusted</th>
@@ -248,7 +252,7 @@ figure</p>
 #&gt; n=149 samples, 105 individuals</div><div class='output co'>#&gt; <span class='warning'>Warning: unable to evaluate scaled gradient</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
 #&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
 #&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; <span class='warning'>Warning: variance-covariance matrix computed from finite-difference Hessian is</span>
-#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; Time difference of 0.8138561 secs</div><div class='input'>
+#&gt; <span class='warning'>not positive definite or contains NA values: falling back to var-cov estimated from RX</span></div><div class='output co'>#&gt; Time difference of 1.058778 secs</div><div class='input'>
 <span class='va'>plots</span> <span class='op'>&lt;-</span> <span class='fu'>maPlot</span><span class='op'>(</span><span class='va'>resultTable</span>,
                 x1Label<span class='op'>=</span><span class='st'>'Timepoint'</span>,
                 x2Label<span class='op'>=</span><span class='st'>'EULAR_6m'</span>,

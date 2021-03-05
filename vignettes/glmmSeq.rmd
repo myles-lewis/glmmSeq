@@ -18,12 +18,12 @@ library(kableExtra)
 
 
 [![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-mediumpurple.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-mediumpurple.svg)](https://choosealicense.com/licenses/mit/)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://CRAN.R-project.org/package=glmmSeq)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://CRAN.R-project.org/package=glmmSeq)
 `r paste0("[![", Sys.Date(),"]","(",paste0("https://img.shields.io/badge/last%20git%20commit-", gsub('-', '--', Sys.Date()),"-turquoise.svg"), ")]","(",'https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md',")")`
-[![HitCount](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq.svg)](https://hits.dwyl.com/KatrionaGoldmann/glmmSeq)
 [![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
+[![Travis](https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg)](https://github.com/KatrionaGoldmann/glmmSeq)
 
 
 # glmmSeq 
@@ -37,7 +37,8 @@ model (glmm). The most widely used mainstream differential gene expression analy
 [edgeR](https://doi.org/10.1093/bioinformatics/btp616)) are all unable to fit 
 mixed effects linear models. This package however fits negative binomial mixed 
 effects models at individual gene level using the `negative.binomial` function
-from `MASS` and the `glmer` function in `lme4` which enables random 
+from `MASS` and the `glmer` function in 
+[`lme4`](https://CRAN.R-project.org/package=lme4) which enables random 
 effect, as as well as mixed effects, to be modelled.
 
 ### Installing from CRAN
@@ -47,13 +48,13 @@ install.packages("glmmSeq")
 ```
 
 
-### Installing From Github
+### Installing from Github
 
 ```{r, eval=FALSE}
 devtools::install_github("KatrionaGoldmann/glmmSeq")
 ```
 
-### Installing locally
+### Installing Locally
 
 Or you can source the functions individually:
 
@@ -316,6 +317,7 @@ pairedPlot(glmmResult=results,
 Or using base graphics, with or without the model fit overlaid:
 
 ```{r, fig.height=6, warning=FALSE}
+oldpar <- par()
 par(mfrow=c(1, 2))
 
 p1 = pairedPlot(glmmResult=results2,
@@ -337,6 +339,8 @@ p2 = pairedPlot(glmmResult=results,
                 graphics="base",
                 fontSize=0.65,
                 colours=plotColours)
+
+par(oldpar)
 ```
 
 
