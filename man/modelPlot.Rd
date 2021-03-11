@@ -29,7 +29,7 @@ modelPlot(
 \item{glmmResult}{A glmmSeq object created by
 \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}..}
 
-\item{geneName}{Gene name to plot}
+\item{geneName}{Gene/row name to plot}
 
 \item{x1Label}{The name of the first (inner) x parameter}
 
@@ -43,11 +43,11 @@ modelPlot(
 
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
-\item{shapes}{The marker shape (default=21)}
+\item{shapes}{The marker shapes, default=21}
 
-\item{colours}{The marker colour, default=c('red', 'blue')}
+\item{colours}{The marker colours, default=c('blue')}
 
-\item{x2Offset}{Vertical adjustment to secondary x-axis (default=3)}
+\item{x2Offset}{Vertical adjustment to secondary x-axis (default=6)}
 
 \item{lineWidth}{Plot line size (default=1)}
 
@@ -56,7 +56,7 @@ modelPlot(
 \item{fontSize}{Plot font size (default=10)}
 
 \item{overlap}{Logical whether x2Label fits should be plotted overlapping one
-another.}
+another (default=TRUE).}
 
 \item{addErrorbars}{Logical whether to add error bars.}
 
@@ -67,7 +67,7 @@ another.}
 \code{\link[ggplot2:theme]{ggplot2::theme()}}.}
 }
 \value{
-Returns a plot with the glmm fit for a given gene
+Returns a plot with the glmm fit for a given gene/row
 }
 \description{
 Model plots to show the overall differences between groups and over time

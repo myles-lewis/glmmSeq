@@ -30,8 +30,8 @@ maPlot(
 
 \item{x2Label}{The name of the second (outer) x parameter}
 
-\item{x1Values}{to be used to calculate fold change. If NULL the first two
-levels in x1Label are used.}
+\item{x1Values}{Subpopulations in x1Label to be used to calculate fold
+change. If NULL the first two levels in x1Label are used.}
 
 \item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
 
@@ -40,11 +40,12 @@ levels in x1Label are used.}
 \item{plotCutoff}{Which probes to include by significance cut-off
 (default=1 for all markers)}
 
-\item{zeroCountCutoff}{Which probes to include by minimum counts cut-off}
+\item{zeroCountCutoff}{Which probes to include by minimum counts cut-off
+(default = 50)}
 
-\item{colours}{Colour scheme}
+\item{colours}{Vector of colours to use for significance groups}
 
-\item{labels}{Genes to label on plot}
+\item{labels}{Row names or indices to label on plot}
 
 \item{fontSize}{Font size}
 
@@ -67,8 +68,8 @@ MA plots
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
 
 resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -80,7 +81,7 @@ resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 plots <- maPlot(resultTable,
                 x1Label='Timepoint',
                 x2Label='EULAR_6m',
-                x2Values=c('Good responder', 'Non responder'), 
+                x2Values=c('Good responder', 'Non responder'),
                 graphics="plotly")
 
 plots$combined

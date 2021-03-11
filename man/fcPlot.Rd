@@ -14,9 +14,9 @@ fcPlot(
   labels = c(),
   useAdjusted = FALSE,
   plotCutoff = 1,
+  graphics = "ggplot",
   fontSize = 12,
   labelFontSize = 5,
-  graphics = "ggplot",
   colours = c("grey", "goldenrod1", "red", "blue"),
   verbose = FALSE
 )
@@ -29,29 +29,29 @@ fcPlot(
 
 \item{x2Label}{The name of the second (outer) x parameter}
 
-\item{x1Values}{to be used to calculate fold change. If NULL the first two
-levels in x1Label are used.}
+\item{x1Values}{Subpopulations in x1Label to be used to calculate fold
+change. If NULL the first two levels in x1Label are used.}
 
 \item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding
 (default=0.01)}
 
-\item{labels}{Genes to label on plot}
+\item{labels}{Row names or indices to label on plot}
 
 \item{useAdjusted}{whether to use adjusted pvalues
-(must have q_ columns in glmmResult)}
+(must have q_ columns in glmmResult). Default = FALSE}
 
-\item{plotCutoff}{Which probes to include by significance cut-off
-(default=1 for all markers)}
+\item{plotCutoff}{Which probes to include on plot by significance cut-off
+(default=1, for all markers)}
+
+\item{graphics}{Graphics system to use: "ggplot" or "plotly"}
 
 \item{fontSize}{Font size}
 
 \item{labelFontSize}{Font size for labels}
 
-\item{graphics}{Graphics system to use: "ggplot" or "plotly"}
-
-\item{colours}{Colour vector for significance}
+\item{colours}{Vector of colours to use for significance groups}
 
 \item{verbose}{Whether to print statistics}
 }
@@ -65,8 +65,8 @@ Plotly or ggplot fold change plots
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
 
 glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -75,7 +75,7 @@ glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      metadata = metadata,
                      dispersion = disp,
                      verbose=FALSE)
-                     
+
 fcPlot(glmmResult=glmmFit,
       x1Label="Timepoint",
       x2Label="EULAR_6m",

@@ -30,8 +30,8 @@ setClass("GlmmSeq", slots = list(
 
 #' Glmm for sequencing results
 #'
-#' @param modelFormula the model formula. For more information of formula 
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}  
+#' @param modelFormula the model formula. For more information of formula
+#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param countdata the sequencing count data
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
@@ -42,25 +42,25 @@ setClass("GlmmSeq", slots = list(
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default="")
 #' @param modelData Expanded design matrix
-#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")). 
-#' For more information see 
+#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")).
+#' For more information see
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
-#' @param cores number of cores to use. Default=detectCores()/2
-#' @param removeDuplicatedMeasures whether to remove duplicated 
-#' conditions/repeated measurements for a given time point (default=FALSE). 
+#' @param cores number of cores to use. Default=1. 
+#' @param removeDuplicatedMeasures whether to remove duplicated
+#' conditions/repeated measurements for a given time point (default=FALSE).
 #' @param removeSingles whether to remove individuals with only one measurement
 #' (default=FALSE)
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
 #' @param verbose Logical whether to display messaging (default=TRUE)
-#' @param ... Other parameters to pass to 
+#' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a GlmmSeq object with results for gene-wise general linear 
+#' @return Returns a GlmmSeq object with results for gene-wise general linear
 #' mixed models
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
 #' @importFrom stats update.formula model.matrix predict setNames
-#' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ 
+#' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #' clusterExport stopCluster
 #' @importFrom car Anova
 #' @importFrom methods slot new
@@ -96,9 +96,9 @@ glmmSeq <- function(modelFormula,
                     removeDuplicatedMeasures=FALSE,
                     removeSingles=FALSE,
                     zeroCount=0.125,
-                    verbose=TRUE, 
+                    verbose=TRUE,
                     ...) {
-  
+
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
@@ -112,15 +112,15 @@ glmmSeq <- function(modelFormula,
   if (! is.numeric(zeroCount)) stop("zeroCount must be numeric")
   if (zeroCount < 0) stop("zeroCount must be >= 0")
   if (zeroCount > 0) countdata[countdata==0] <- zeroCount
-  
+
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
   nonRandomFormula <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nonRandomFormula), 'factors'))  
-  subsetMetadata <- metadata[, variables]  
+  variables <- rownames(attr(terms(nonRandomFormula), 'factors'))
+  subsetMetadata <- metadata[, variables]
   ids <- as.character(metadata[, id])
-  
-  
+
+
   # Option to subset to remove duplicated timepoints
   if (removeDuplicatedMeasures) {
     # Check the distribution for duplicates
@@ -139,39 +139,39 @@ glmmSeq <- function(modelFormula,
       ids <- droplevels(subsetMetadata[, id])
       warning(paste0(paste(check[, id], collapse=", "),
                      " has multiple entries for identical ",
-                     paste0(colnames(check)[! colnames(check) %in% 
+                     paste0(colnames(check)[! colnames(check) %in%
                                               c(id, "Freq")],
                             collapse=" and "),
                      ". These will all be removed."))
     }
   }
-  
-  
+
+
   # Option to subset to remove unpaired samples
   if (removeSingles) {
     singles <- names(table(ids)[table(ids) %in% c(0, 1)])
     nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
-    
+
     countdata <- countdata[, nonSingleIDs]
     sizeFactors <- sizeFactors[nonSingleIDs]
     subsetMetadata <- subsetMetadata[nonSingleIDs, ]
     ids <- droplevels(subsetMetadata[, id])
   }
-  
+
   # Check numbers and alignment
   if(! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN=identical,
                   FUN.VALUE=TRUE, ncol(countdata)))) {
-    stop("Alignment error: metadata rownames must match countdata colnames")  
+    stop("Alignment error: metadata rownames must match countdata colnames")
   }
   if(! all(rownames(countdata) %in% names(dispersion), nrow(countdata))) {
     stop("Dispersion length must match nrow in countdata")
   }
-  
+
   if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
   if (verbose) cat(paste0('\nn=', length(ids), ' samples, ',
                           length(unique(ids)), ' individuals\n'))
-  
-  
+
+
   # setup model prediction
   if (reducedFormula=="") {reducedFormula <- nobars(modelFormula)}
   if (is.null(modelData)) {
@@ -185,66 +185,66 @@ glmmSeq <- function(modelFormula,
     colnames(modelData) <- reducedVars
   }
   designMatrix <- model.matrix(reducedFormula, modelData)
-  
+
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
     list(y=countdata[i,], dispersion=dispersion[i])
   })
-  
+
   # For each gene perform a fit
   if(Sys.info()['sysname'] == "Windows"){
     cl <-makeCluster(cores)
-    clusterExport(cl, varlist = c("glmerApply", "fullList", "fullFormula", 
-                                  "subsetMetadata", "control", "modelData", 
-                                  "offset", "designMatrix", ...), 
+    clusterExport(cl, varlist = c("glmerApply", "fullList", "fullFormula",
+                                  "subsetMetadata", "control", "modelData",
+                                  "offset", "designMatrix", ...),
                   envir=environment())
     resultList <- parLapply(cl, fullList, function(geneList) {
-      glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata, 
-                 control = control, modelData = modelData, offset = offset, 
+      glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata,
+                 control = control, modelData = modelData, offset = offset,
                  designMatrix = designMatrix, ...)
     })
     stopCluster(cl)
   } else{
     resultList <- mclapply(fullList, function(geneList) {
-      glmerApply(geneList, fullFormula=fullFormula, data=subsetMetadata, 
+      glmerApply(geneList, fullFormula=fullFormula, data=subsetMetadata,
                  control=control, modelData=modelData, offset=offset,
                  designMatrix=designMatrix, ...)
     }, mc.cores=cores)
   }
-  
+
   # Print timing if verbose
   end <- Sys.time()
   if (verbose) print(end - start)
-  
+
   # Output
   names(resultList) <- rownames(countdata)
   noErr <- vapply(resultList, function(x) x$tryErrors=="", FUN.VALUE=TRUE)
   if(length(which(noErr)) == 0) stop("All genes returned an error")
-  
-  nCheat <- resultList[noErr][[1]]$predict 
+
+  nCheat <- resultList[noErr][[1]]$predict
   outputPredict <- t(vapply(resultList[noErr], function(x) x$predict,
                             FUN.VALUE=rep(1, length(nCheat))))
-  
+
   outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
   colnames(outputPredict) <- c(paste0("y_", outLabels),
                                paste0("LCI_", outLabels),
                                paste0("UCI_", outLabels))
-  
+
   if (sum(!noErr)!=0) {
     if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):",
                             paste0(names(noErr)[! noErr], collapse=", ")))
     outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
                            FUN.VALUE = c("test"))
   } else {outputErrors<-c('No errors')}
-  
+
   optInfo <- t(vapply(resultList[noErr], function(x) {
     setNames(x$optinfo, c('Singular', 'Conv'))
   }, FUN.VALUE=c(1,1)))
-  
-  nCheat <- resultList[noErr][[1]]$stats 
-  s <- t(vapply(resultList[noErr], function(x) {x$stats}, 
+
+  nCheat <- resultList[noErr][[1]]$stats
+  s <- t(vapply(resultList[noErr], function(x) {x$stats},
                 FUN.VALUE=rep(1, length(nCheat))))
-  
+
   # Create GlmmSeq object with results
   new("GlmmSeq",
       formula = fullFormula,
@@ -264,20 +264,20 @@ glmmSeq <- function(modelFormula,
 #' Fit a glmer model for an individual gene
 #'
 #' @param geneList List with gene expression and dispersion
-#' @param fullFormula the model formula. For more information of formula 
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}  
+#' @param fullFormula the model formula. For more information of formula
+#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param modelData Expanded design matrix
-#' @param data The sample data or metadata. 
+#' @param data The sample data or metadata.
 #' @param designMatrix The design matrix
-#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")). 
-#' For more information see 
+#' @param control the glmer control (default=glmerControl(optimizer="bobyqa")).
+#' For more information see
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
 #' @param offset this can be used to specify an a priori known component to be
 #'  included in the linear predictor during fitting. For more information see
-#'  \code{\link[lme4:glmer]{lme4::glmer()}}. 
-#' @param ... Other parameters to pass to 
+#'  \code{\link[lme4:glmer]{lme4::glmer()}}.
+#' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a GlmmSeq object with results for gene-wise general linear 
+#' @return Returns a GlmmSeq object with results for gene-wise general linear
 #' mixed models
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 glmer fixef isSingular
@@ -286,28 +286,28 @@ glmmSeq <- function(modelFormula,
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov predict
 #' @keywords internal
 #' @export
-glmerApply <- function(geneList, 
-                       fullFormula, 
-                       data, 
+glmerApply <- function(geneList,
+                       fullFormula,
+                       data,
                        control,
-                       modelData, 
-                       designMatrix, 
+                       modelData,
+                       designMatrix,
                        offset,
                        ...) {
   data[, 'count'] <- as.numeric(geneList$y)
   fit <- try(suppressMessages(
     lme4::glmer(fullFormula, data=data, control=control, offset=offset,
-                family=MASS::negative.binomial(theta=1/geneList$dispersion)), 
+                family=MASS::negative.binomial(theta=1/geneList$dispersion)),
     ...),
     silent=TRUE)
-  
+
   if (class(fit)!='try-error') {
     # intercept dropped genes
     if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
       return( list(stats=NA, predict=NA, optinfo=NA,
                    tryErrors=attr(fit@pp$X, "msgRankdrop")) )
     }
-    stats <- setNames(c(geneList$dispersion, AIC(fit), 
+    stats <- setNames(c(geneList$dispersion, AIC(fit),
                         as.numeric(logLik(fit))),
                       c('Dispersion', 'AIC', 'logLik'))
     fixedEffects <- lme4::fixef(fit)

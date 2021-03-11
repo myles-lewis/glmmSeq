@@ -6,7 +6,6 @@ DAS
 DESeq
 Dabney
 EULAR
-FC
 Fossati
 Giorli
 Github
@@ -30,7 +29,7 @@ Thorborn
 Timepoint
 Weisberg
 bobyqa
-detectCores
+countdata
 doi
 edgeR
 estimateCommonDisp
@@ -53,4 +52,3 @@ qvalues
 seq
 sizeFactors
 tpm
-ubuk

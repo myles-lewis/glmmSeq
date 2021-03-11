@@ -21,7 +21,7 @@ pairedPlot(
   fontSize = NULL,
   alpha = 0.7,
   x2Offset = 6,
-  pairedOnly = FALSE,
+  pairedOnly = TRUE,
   graphics = "base",
   addModel = TRUE,
   modelSize = 3,
@@ -36,9 +36,9 @@ pairedPlot(
 }
 \arguments{
 \item{glmmResult}{A glmmSeq object created by
-\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}}
 
-\item{geneName}{The gene name to be plotted.}
+\item{geneName}{The gene/row name to be plotted}
 
 \item{x1Label}{The name of the first (inner) x parameter. This must be able
 to be paired using the ID.}
@@ -67,27 +67,28 @@ to be paired using the ID.}
 
 \item{alpha}{Line and marker opacity (default=0.7)}
 
-\item{x2Offset}{Vertical adjustment to secondary x-axis (default=3)}
+\item{x2Offset}{Vertical adjustment to secondary x-axis (default=6)}
 
 \item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
 
 \item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
 
-\item{addModel}{Whether to add the fit model with markers}
+\item{addModel}{Whether to add the fit model with markers (default=TRUE)}
 
-\item{modelSize}{Size of model points}
+\item{modelSize}{Size of model points (default=3)}
 
-\item{modelColour}{Colour of model fit markers}
+\item{modelColour}{Colour of model fit markers (default="black")}
 
-\item{modelLineSize}{Size of model points}
+\item{modelLineSize}{Size of model points (default=1)}
 
-\item{modelLineColour}{Colour of model fit lines}
+\item{modelLineColour}{Colour of model fit lines (default="black")}
 
-\item{addBox}{Logical whether to add boxplots.}
+\item{addBox}{Logical whether to add boxplots for mean and IQR.}
 
-\item{addViolins}{Logical whether to add half violins (ggplot only)}
+\item{addViolins}{Logical whether to add half violin-plots (ggplot only),
+default=TRUE}
 
-\item{violinWidth}{Width of violin plots}
+\item{violinWidth}{Width of violin plots (default=0.5)}
 
 \item{...}{Other parameters to pass to
 \code{\link[graphics:plot]{graphics::plot()}} or

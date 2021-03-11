@@ -14,7 +14,7 @@ Authors@R:
     role = c("aut"),
     email = "e.sciacca@qmul.ac.uk",
     comment = c(ORCID = "0000-0001-7525-1558")),
-    person(given = "Cankut",family = "\u00C7ubuk",
+    person(given = "Cankut",family = "Cubuk",
     role = c("ctb"),
     email = "c.cubuk@qmul.ac.uk",
     comment = c(ORCID = "0000-0003-4646-0849")),
@@ -22,7 +22,7 @@ Authors@R:
     role = c("ctb"),
     email = "a.surace@qmul.ac.uk",
     comment = c(ORCID = "0000-0001-9589-3005")))
-Description: Using random and fixed effects to model expression at an individual gene level can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, therefore do not capture interaction terms. This package uses negative binomial mixed effects models to fit gene expression with matched samples. This is particularly useful for investigating  changes in gene expression between groups of individuals over time, as seen in: Rivellese F., Surace A.E.A.,  Goldmann K., Sciacca E., Giorli G., \c{C}ubuk C., John C.R.,  Nerviani A., Fossati-Jimack L., Thorborn G., Humby F., Bombardieri M.,  Lewis M.J.,  Pitzalis C. (2021) "Molecular Pathology Profiling of Synovial Tissue Predicts Response to Biologic Treatment in Rheumatoid Arthritis" [Manuscript in preparation].
+Description: Using random and fixed effects to model expression at an individual gene level can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, therefore do not capture interaction terms. This package uses negative binomial mixed effects models to fit gene expression with matched samples. This is particularly useful for investigating  changes in gene expression between groups of individuals over time, as seen in: Rivellese F., Surace A.E.A.,  Goldmann K., Sciacca E., Giorli G., Cubuk C., John C.R.,  Nerviani A., Fossati-Jimack L., Thorborn G., Humby F., Bombardieri M.,  Lewis M.J.,  Pitzalis C. (2021) "Molecular Pathology Profiling of Synovial Tissue Predicts Response to Biologic Treatment in Rheumatoid Arthritis" [Manuscript in preparation].
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

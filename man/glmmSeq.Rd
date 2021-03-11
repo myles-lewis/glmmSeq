@@ -47,7 +47,7 @@ is set to log(sizeFactors). For more information see
 For more information see
 \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
-\item{cores}{number of cores to use. Default=detectCores()/2}
+\item{cores}{number of cores to use. Default=1.}
 
 \item{removeDuplicatedMeasures}{whether to remove duplicated
 conditions/repeated measurements for a given time point (default=FALSE).}

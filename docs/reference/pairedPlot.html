@@ -161,7 +161,7 @@
   fontSize <span class='op'>=</span> <span class='cn'>NULL</span>,
   alpha <span class='op'>=</span> <span class='fl'>0.7</span>,
   x2Offset <span class='op'>=</span> <span class='fl'>6</span>,
-  pairedOnly <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  pairedOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
   graphics <span class='op'>=</span> <span class='st'>"base"</span>,
   addModel <span class='op'>=</span> <span class='cn'>TRUE</span>,
   modelSize <span class='op'>=</span> <span class='fl'>3</span>,
@@ -180,11 +180,11 @@
     <tr>
       <th>glmmResult</th>
       <td><p>A glmmSeq object created by
-<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code>.</p></td>
+<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code></p></td>
     </tr>
     <tr>
       <th>geneName</th>
-      <td><p>The gene name to be plotted.</p></td>
+      <td><p>The gene/row name to be plotted</p></td>
     </tr>
     <tr>
       <th>x1Label</th>
@@ -241,7 +241,7 @@ to be paired using the ID.</p></td>
     </tr>
     <tr>
       <th>x2Offset</th>
-      <td><p>Vertical adjustment to secondary x-axis (default=3)</p></td>
+      <td><p>Vertical adjustment to secondary x-axis (default=6)</p></td>
     </tr>
     <tr>
       <th>pairedOnly</th>
@@ -253,35 +253,36 @@ to be paired using the ID.</p></td>
     </tr>
     <tr>
       <th>addModel</th>
-      <td><p>Whether to add the fit model with markers</p></td>
+      <td><p>Whether to add the fit model with markers (default=TRUE)</p></td>
     </tr>
     <tr>
       <th>modelSize</th>
-      <td><p>Size of model points</p></td>
+      <td><p>Size of model points (default=3)</p></td>
     </tr>
     <tr>
       <th>modelColour</th>
-      <td><p>Colour of model fit markers</p></td>
+      <td><p>Colour of model fit markers (default="black")</p></td>
     </tr>
     <tr>
       <th>modelLineSize</th>
-      <td><p>Size of model points</p></td>
+      <td><p>Size of model points (default=1)</p></td>
     </tr>
     <tr>
       <th>modelLineColour</th>
-      <td><p>Colour of model fit lines</p></td>
+      <td><p>Colour of model fit lines (default="black")</p></td>
     </tr>
     <tr>
       <th>addBox</th>
-      <td><p>Logical whether to add boxplots.</p></td>
+      <td><p>Logical whether to add boxplots for mean and IQR.</p></td>
     </tr>
     <tr>
       <th>addViolins</th>
-      <td><p>Logical whether to add half violins (ggplot only)</p></td>
+      <td><p>Logical whether to add half violin-plots (ggplot only),
+default=TRUE</p></td>
     </tr>
     <tr>
       <th>violinWidth</th>
-      <td><p>Width of violin plots</p></td>
+      <td><p>Width of violin plots (default=0.5)</p></td>
     </tr>
     <tr>
       <th>...</th>

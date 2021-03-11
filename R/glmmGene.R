@@ -1,9 +1,9 @@
 #' Glmm for sequencing results of a single gene
 #'
-#' @param modelFormula the model formula. For more information of formula 
+#' @param modelFormula the model formula. For more information of formula
 #' structure see \code{\link[lme4:glmer]{lme4::glmer()}}.
 #' @param countdata the sequencing data
-#' @param gene the gene name
+#' @param gene the row name in countdata to be used
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
 #' in pairing
@@ -13,19 +13,19 @@
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default="")
 #' @param modelData something something
-#' @param control  the glmer control 
-#' (default=glmerControl(optimizer="bobyqa")). 
-#' For more information see 
-#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}. 
+#' @param control  the glmer control
+#' (default=glmerControl(optimizer="bobyqa")).
+#' For more information see
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
-#' @param removeDuplicatedMeasures whether to remove duplicated 
-#' conditions/repeated measurements for a given time point (default=FALSE). 
+#' @param removeDuplicatedMeasures whether to remove duplicated
+#' conditions/repeated measurements for a given time point (default=FALSE).
 #' @param removeSingles whether to remove individuals with only one measurement
 #' (default=FALSE)
 #' @param verbose Logical whether to display messaging (default=FALSE)
-#' @param ... Other parameters to pass to 
-#' \code{\link[lme4:glmer]{lme4::glmer()}}. 
+#' @param ... Other parameters to pass to
+#' \code{\link[lme4:glmer]{lme4::glmer()}}.
 #' @return Returns the fit for the general linear mixed model of a single gene
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars
@@ -34,21 +34,21 @@
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov
 #' @export
-#' @examples 
+#' @examples
 #' data(PEAC_minimal_load)
-#' 
-#' disp <- apply(tpm, 1, function(x){ 
-#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#'
+#' disp <- apply(tpm, 1, function(x){
+#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 #' })
-#' 
+#'
 #' MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                       gene = 'MS4A1',
 #'                       id = 'PATID',
 #'                       countdata = tpm,
 #'                       metadata = metadata,
-#'                       dispersion = disp['MS4A1'], 
+#'                       dispersion = disp['MS4A1'],
 #'                       verbose=FALSE)
-#'                       
+#'
 #' MS4A1fit
 
 glmmGene <- function(modelFormula,
@@ -62,9 +62,9 @@ glmmGene <- function(modelFormula,
                      modelData=NULL,
                      control=glmerControl(optimizer="bobyqa"),
                      zeroCount=0.125,
-                     removeDuplicatedMeasures=FALSE, 
+                     removeDuplicatedMeasures=FALSE,
                      removeSingles=FALSE,
-                     verbose=FALSE, 
+                     verbose=FALSE,
                      ...) {
 
   # Catch errors
@@ -93,11 +93,11 @@ glmmGene <- function(modelFormula,
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
   nonRandomFormula <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nonRandomFormula), 'factors')) 
-  subsetMetadata <- metadata[, variables] 
+  variables <- rownames(attr(terms(nonRandomFormula), 'factors'))
+  subsetMetadata <- metadata[, variables]
   ids <- as.character(metadata[, id])
 
-  
+
   # Option to subset to remove duplicated timepoints
   if (removeDuplicatedMeasures) {
     # Check the distribution for duplicates
@@ -116,19 +116,19 @@ glmmGene <- function(modelFormula,
       ids <- droplevels(subsetMetadata[, id])
       warning(paste0(paste(check[, id], collapse=", "),
                      " has multiple entries for identical ",
-                     paste0(colnames(check)[! colnames(check) %in% 
+                     paste0(colnames(check)[! colnames(check) %in%
                                               c(id, "Freq")],
                             collapse=" and "),
                      ". These will all be removed."))
     }
   }
-  
-  
+
+
   # Option to subset to remove unpaired samples
   if (removeSingles) {
     singles <- names(table(ids)[table(ids) %in% c(0, 1)])
     nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
-    
+
     countdata <- countdata[, nonSingleIDs]
     sizeFactors <- sizeFactors[nonSingleIDs]
     subsetMetadata <- subsetMetadata[nonSingleIDs, ]

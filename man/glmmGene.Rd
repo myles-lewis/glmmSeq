@@ -28,7 +28,7 @@ structure see \code{\link[lme4:glmer]{lme4::glmer()}}.}
 
 \item{countdata}{the sequencing data}
 
-\item{gene}{the gene name}
+\item{gene}{the row name in countdata to be used}
 
 \item{metadata}{a data frame of sample information}
 
@@ -73,8 +73,8 @@ Glmm for sequencing results of a single gene
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){ 
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+disp <- apply(tpm, 1, function(x){
+(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
 
 MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -82,8 +82,8 @@ MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
                       id = 'PATID',
                       countdata = tpm,
                       metadata = metadata,
-                      dispersion = disp['MS4A1'], 
+                      dispersion = disp['MS4A1'],
                       verbose=FALSE)
-                      
+
 MS4A1fit
 }
