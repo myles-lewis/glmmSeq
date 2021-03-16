@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <h1 data-toc-skip>glmmSeq</h1>
                         <h4 class="author">Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 class="date">2021-03-09</h4>
+            <h4 class="date">2021-03-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/vignettes/glmmSeq.rmd"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="hidden name"><code>glmmSeq.rmd</code></div>
@@ -106,11 +106,18 @@
 
     
     
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--03--09-turquoise.svg" alt="2021-03-09"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
+<style type="text/css">
+.main-container {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--03--16-turquoise.svg" alt="2021-03-16"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
 <div id="glmmseq" class="section level1">
 <h1 class="hasAnchor">
 <a href="#glmmseq" class="anchor"></a>glmmSeq</h1>
-<p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20"></p>
+<p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"></p>
 <p>The aim of this package is to model gene expression with a general linear mixed model (glmm). The most widely used mainstream differential gene expression analysis tools (e.g <a href="https://doi.org/10.1093/nar/gkv007">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616">edgeR</a>) are all unable to fit mixed effects linear models. This package however fits negative binomial mixed effects models at individual gene level using the <code>negative.binomial</code> function from <code>MASS</code> and the <code>glmer</code> function in <a href="https://CRAN.R-project.org/package=lme4"><code>lme4</code></a> which enables random effect, as as well as mixed effects, to be modelled.</p>
 <div id="installing-from-cran" class="section level3">
 <h3 class="hasAnchor">
@@ -308,7 +315,9 @@ responder
 <a href="#count-data" class="anchor"></a>Count data</h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tpm</span> <span class="op">=</span> <span class="va">tpm</span><span class="op">[</span>, <span class="va">metadata</span><span class="op">$</span><span class="va">SAMID</span><span class="op">]</span>
-<span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">
@@ -2952,6 +2961,7 @@ ADAM12.1
 </tbody>
 </table>
 </div>
+</div>
 <div id="dispersion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dispersion" class="anchor"></a>Dispersion</h2>
@@ -3001,10 +3011,11 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
                   dispersion <span class="op">=</span> <span class="va">disp</span>,
                   removeDuplicatedMeasures <span class="op">=</span> <span class="cn">FALSE</span>,
                   removeSingles<span class="op">=</span><span class="cn">FALSE</span>,
+                  progress<span class="op">=</span><span class="cn">TRUE</span>,
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
-## n=124 samples, 82 individuals
-## Time difference of 7.006712 secs
+## n = 124 samples, 82 individuals
+## Time difference of 7.963207 secs
 ## Errors in 4 gene(s):IL12A, FGF12, VIL1, IL26</code></pre>
 <p>or alternatively using two-factor classification with EULAR_binary:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -3017,8 +3028,8 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
                   removeSingles<span class="op">=</span><span class="cn">FALSE</span>,
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
-## n=124 samples, 82 individuals
-## Time difference of 14.31549 secs
+## n = 124 samples, 82 individuals
+## Time difference of 7.457034 secs
 ## Errors in 4 gene(s):IL12A, FGF12, VIL1, IL26</code></pre>
 <div id="outputs" class="section level2">
 <h2 class="hasAnchor">
@@ -3026,9 +3037,9 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
 <p>This creates a GlmmSeq object which contains the following slots:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "formula"        "stats"          "predict"        "reducedFormula"
-##  [5] "countdata"      "metadata"       "modelData"      "optInfo"       
-##  [9] "errors"         "variables"      "class"</code></pre>
+<pre><code>##  [1] "formula"        "stats"          "predict"        "reducedFormula" "countdata"     
+##  [6] "metadata"       "modelData"      "optInfo"        "errors"         "variables"     
+## [11] "class"</code></pre>
 <p>The variables used by the model are in the <code>@modeldata</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">kable</span><span class="op">(</span><span class="va">results</span><span class="op">@</span><span class="va">modelData</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -8283,8 +8294,7 @@ LILRB3
 <pre><code>## boundary (singular) fit: see ?isSingular</code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">MS4A1fit</span></code></pre></div>
-<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
-##   Approximation) [glmerMod]
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
 ##  Family: Negative Binomial(0.2625)  ( log )
 ## Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m
 ##    Data: data
@@ -8494,16 +8504,16 @@ LILRB3
 <pre><code>## 
 ## To cite package 'glmmSeq' in publications use:
 ## 
-##   Myles Lewis, Katriona Goldmann and Elisabetta Sciacca (NA). glmmSeq:
-##   General Linear Mixed Models for Gene-Level Differential Expression. R
-##   package version 0.0.1. https://github.com/KatrionaGoldmann/glmmSeq
+##   Myles Lewis, Katriona Goldmann and Elisabetta Sciacca (NA). glmmSeq: General Linear
+##   Mixed Models for Gene-Level Differential Expression. R package version 0.1.0.
+##   https://github.com/KatrionaGoldmann/glmmSeq
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
 ##   @Manual{,
 ##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},
 ##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},
-##     note = {R package version 0.0.1},
+##     note = {R package version 0.1.0},
 ##     url = {https://github.com/KatrionaGoldmann/glmmSeq},
 ##   }</code></pre>
 </div>

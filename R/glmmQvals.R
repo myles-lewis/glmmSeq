@@ -16,34 +16,33 @@
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)
-#' 
-#' disp <- apply(tpm, 1, function(x){ 
-#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2) 
+#' disp <- apply(tpm, 1, function(x) { 
+#' (var(x, na.rm=TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2) 
 #' })
-#' 
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      id = 'PATID',
+#'                      id = "PATID",
 #'                      countdata = tpm[1:5, ],
 #'                      metadata = metadata,
 #'                      dispersion = disp[1:5],
 #'                      verbose=FALSE)
-#' 
 #' MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)                    
 
-glmmQvals <- function(glmmResult, cutoff=0.05, pi0=NULL, verbose=TRUE) {
+glmmQvals <- function(glmmResult, cutoff = 0.05, pi0 = NULL, verbose = TRUE) {
   
   
-  if(class(glmmResult) !="GlmmSeq") stop("glmmResult must be a GlmmSeq object")
+  if (class(glmmResult) != "GlmmSeq") {
+    stop("glmmResult must be a GlmmSeq object")
+  }
   
-  resultStats <- data.frame(glmmResult@stats, check.names=FALSE)
-  for(cn in colnames(resultStats)[grep('P_', colnames(resultStats))]) {
-    q_cn <- gsub('P_', 'q_', cn)
+  resultStats <- data.frame(glmmResult@stats, check.names = FALSE)
+  for (cn in colnames(resultStats)[grep("P_", colnames(resultStats))]) {
+    q_cn <- gsub("P_", "q_", cn)
     resultStats[, q_cn] <- NA
     resultStats[!is.na(resultStats[, cn]), q_cn] <-
-      qvalue(resultStats[!is.na(resultStats[, cn]), cn], pi0=pi0)$qvalues
-    if(verbose){
+      qvalue(resultStats[!is.na(resultStats[, cn]), cn], pi0 = pi0)$qvalues
+    if (verbose) {
       cat(paste0("\n", q_cn, "\n"))
-      cat(paste(rep("-", nchar(q_cn)), collapse=""))
+      cat(paste(rep("-", nchar(q_cn)), collapse = ""))
       print(table(ifelse(resultStats[, q_cn] < cutoff,
                          "Significant", "Not Significant")))
     }
@@ -52,4 +51,3 @@ glmmQvals <- function(glmmResult, cutoff=0.05, pi0=NULL, verbose=TRUE) {
   
   return(glmmResult)
 }
-

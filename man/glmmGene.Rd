@@ -72,17 +72,15 @@ Glmm for sequencing results of a single gene
 }
 \examples{
 data(PEAC_minimal_load)
-
-disp <- apply(tpm, 1, function(x){
+disp <- apply(tpm, 1, function(x) {
 (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
-
 MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
-                      gene = 'MS4A1',
-                      id = 'PATID',
+                      gene = "MS4A1",
+                      id = "PATID",
                       countdata = tpm,
                       metadata = metadata,
-                      dispersion = disp['MS4A1'],
+                      dispersion = disp["MS4A1"],
                       verbose=FALSE)
 
 MS4A1fit

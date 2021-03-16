@@ -211,7 +211,7 @@ maPlot <- function(glmmResult,
       theme(legend.position=c(1, 0),
             text=element_text(size=fontSize),
             legend.background = element_rect(fill=NA, color=NA),
-            legend.justification=c(1.1,-0.1)) +
+            legend.justification=c(1.1, -0.1)) +
       annotate("text", x=unlist(lapply(annot2, function(x) x$x)),
                y=unlist(lapply(annot2, function(x) x$y)), vjust=1,
                size=labelFontSize,

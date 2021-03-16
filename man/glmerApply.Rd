@@ -23,8 +23,8 @@ structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{data}{The sample data or metadata.}
 
-\item{control}{the glmer control (default=glmerControl(optimizer="bobyqa")).
-For more information see
+\item{control}{the glmer control (default = glmerControl(optimizer =
+"bobyqa")). For more information see
 \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
 \item{modelData}{Expanded design matrix}

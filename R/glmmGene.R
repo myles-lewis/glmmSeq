@@ -36,17 +36,15 @@
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)
-#'
-#' disp <- apply(tpm, 1, function(x){
+#' disp <- apply(tpm, 1, function(x) {
 #' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 #' })
-#'
 #' MS4A1fit <- glmmGene(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                       gene = 'MS4A1',
-#'                       id = 'PATID',
+#'                       gene = "MS4A1",
+#'                       id = "PATID",
 #'                       countdata = tpm,
 #'                       metadata = metadata,
-#'                       dispersion = disp['MS4A1'],
+#'                       dispersion = disp["MS4A1"],
 #'                       verbose=FALSE)
 #'
 #' MS4A1fit
@@ -60,21 +58,21 @@ glmmGene <- function(modelFormula,
                      sizeFactors=NULL,
                      reducedFormula="",
                      modelData=NULL,
-                     control=glmerControl(optimizer="bobyqa"),
+                     control=glmerControl(optimizer = "bobyqa"),
                      zeroCount=0.125,
                      removeDuplicatedMeasures=FALSE,
                      removeSingles=FALSE,
                      verbose=FALSE,
-                     ...) {
+                     ...){
 
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
   }
-  if(class(dispersion) != "numeric" | length(dispersion) != 1){
+  if (class(dispersion) != "numeric" | length(dispersion) != 1) {
     stop("dispersion must be a single number")
   }
-  if(class(dispersion) != "numeric" | length(dispersion) != 1){
+  if (class(dispersion) != "numeric" | length(dispersion) != 1) {
     stop("dispersion must be a single number")
   }
   if (ncol(countdata) != nrow(metadata)) {
@@ -83,17 +81,17 @@ glmmGene <- function(modelFormula,
   if (!is.null(sizeFactors) & ncol(countdata) != length(sizeFactors)) {
     stop("Different sizeFactors length")
   }
-  if(! gene %in% rownames(countdata)){
+  if (! gene %in% rownames(countdata)) {
     stop("gene must be in rownames(countdata)")
   }
   if (! is.numeric(zeroCount)) stop("zeroCount must be numeric")
   if (zeroCount < 0) stop("zeroCount must be >= 0")
-  if (zeroCount > 0) countdata[countdata==0] <- zeroCount
+  if (zeroCount > 0) countdata[countdata == 0] <- zeroCount
 
   # Manipulate formulae
-  fullFormula <- update.formula(modelFormula, count ~ ., simplify=FALSE)
+  fullFormula <- update.formula(modelFormula, count ~ ., simplify = FALSE)
   nonRandomFormula <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nonRandomFormula), 'factors'))
+  variables <- rownames(attr(terms(nonRandomFormula), "factors"))
   subsetMetadata <- metadata[, variables]
   ids <- as.character(metadata[, id])
 
@@ -103,22 +101,22 @@ glmmGene <- function(modelFormula,
     # Check the distribution for duplicates
     check <- data.frame(table(droplevels(subsetMetadata)))
     check <- check[! check$Freq %in% c(0, 1), ]
-    if(nrow(check) > 0){
+    if (nrow(check) > 0) {
       mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
-        paste(as.character(x), collapse=" ")
+        paste(as.character(x), collapse = " ")
       }))
       cCheck <- as.character(apply(check[, variables], 1, function(x) {
-        paste(as.character(x), collapse=" ")
+        paste(as.character(x), collapse = " ")
       }))
       countdata <- countdata[, ! mCheck %in% cCheck]
       sizeFactors <- sizeFactors[! mCheck %in% cCheck]
       subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
       ids <- droplevels(subsetMetadata[, id])
-      warning(paste0(paste(check[, id], collapse=", "),
+      warning(paste0(paste(check[, id], collapse = ", "),
                      " has multiple entries for identical ",
                      paste0(colnames(check)[! colnames(check) %in%
                                               c(id, "Freq")],
-                            collapse=" and "),
+                            collapse = " and "),
                      ". These will all be removed."))
     }
   }
@@ -136,32 +134,31 @@ glmmGene <- function(modelFormula,
   }
 
   # Check numbers and alignment
-  if(! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN=identical,
-                  FUN.VALUE=TRUE, ncol(countdata)))) {
+  if (! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN = identical,
+                  FUN.VALUE = TRUE, ncol(countdata)))) {
     stop("Alignment error")
   }
   if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
-  if (verbose) cat(paste0('\nn=', length(ids), ' samples, ',
-                          length(unique(ids)), ' individuals\n'))
+  if (verbose) cat(paste0("\nn=", length(ids), " samples, ",
+                          length(unique(ids)), " individuals\n"))
 
   # setup model prediction
-  if (reducedFormula=="") {reducedFormula <- nobars(modelFormula)}
+  if (reducedFormula == "") reducedFormula <- nobars(modelFormula)
   if (is.null(modelData)) {
-    reducedVars <- rownames(attr(terms(reducedFormula), 'factors'))
+    reducedVars <- rownames(attr(terms(reducedFormula), "factors"))
     varLevels <- lapply(reducedVars, function(x) {
-      if (class(metadata[, x])=='factor') return(levels(metadata[, x]))
+      if (class(metadata[, x]) == "factor") return(levels(metadata[, x]))
       sort(unique(metadata[, x]))
     })
     modelData <- expand.grid(varLevels)
     colnames(modelData) <- reducedVars
   }
-  designMatrix <- model.matrix(reducedFormula, modelData)
 
   data <- subsetMetadata
-  data[, 'count'] <- as.numeric(countdata[gene,])
+  data[, "count"] <- as.numeric(countdata[gene, ])
   fit <- try(
-    glmer(fullFormula, data=data, control=control, offset=offset,
-          family=MASS::negative.binomial( theta=1/dispersion), ...),
+    glmer(fullFormula, data = data, control = control, offset = offset,
+          family=MASS::negative.binomial(theta = 1/dispersion), ...),
     silent=FALSE)
 
   return(fit)

@@ -35,7 +35,7 @@ change. If NULL the first two levels in x1Label are used.}
 \item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding
-(default=0.01)}
+(default = 0.01)}
 
 \item{labels}{Row names or indices to label on plot}
 
@@ -43,7 +43,7 @@ change. If NULL the first two levels in x1Label are used.}
 (must have q_ columns in glmmResult). Default = FALSE}
 
 \item{plotCutoff}{Which probes to include on plot by significance cut-off
-(default=1, for all markers)}
+(default = 1, for all markers)}
 
 \item{graphics}{Graphics system to use: "ggplot" or "plotly"}
 
@@ -65,8 +65,8 @@ Plotly or ggplot fold change plots
 \examples{
 data(PEAC_minimal_load)
 
-disp <- apply(tpm, 1, function(x){
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
+disp <- apply(tpm, 1, function(x) {
+(var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 })
 
 glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
@@ -74,15 +74,15 @@ glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      countdata = tpm[1:5, ],
                      metadata = metadata,
                      dispersion = disp,
-                     verbose=FALSE)
+                     verbose = FALSE)
 
-fcPlot(glmmResult=glmmFit,
-      x1Label="Timepoint",
-      x2Label="EULAR_6m",
-      x2Values=c("Good responder", "Non responder"),
-      pCutoff=0.05,
+fcPlot(glmmResult = glmmFit,
+      x1Label = "Timepoint",
+      x2Label = "EULAR_6m",
+      x2Values = c("Good responder", "Non responder"),
+      pCutoff = 0.05,
       useAdjusted = FALSE,
       plotCutoff = 1,
-      graphics="plotly")
+      graphics = "plotly")
 }
 \keyword{hplot}

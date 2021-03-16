@@ -2,17 +2,24 @@
 title: "glmmSeq"
 author: "Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette:
-      self_contained: no
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{glmmSeq}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
   
+<style type="text/css">
+.main-container {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>  
+  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.width = 8, fig.height = 6)
+options(width=96)
 library(kableExtra)
 ```
 
@@ -28,7 +35,7 @@ library(kableExtra)
 
 # glmmSeq 
 
-<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20" />
+<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"/>
 
 
 The aim of this package is to model gene expression with a general linear mixed
@@ -131,7 +138,8 @@ kable(head(metadata), row.names = F) %>% kable_styling()
 
 ```{r}
 tpm = tpm[, metadata$SAMID]
-kable(head(tpm)) %>% kable_styling()
+kable(head(tpm)) %>% kable_styling() %>%
+  scroll_box(width = "100%")
 ```
 
 ## Dispersion
@@ -195,6 +203,7 @@ results <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                   dispersion = disp,
                   removeDuplicatedMeasures = FALSE,
                   removeSingles=FALSE,
+                  progress=TRUE,
                   cores = 1)
 ```
 

@@ -19,6 +19,7 @@ glmmSeq(
   removeSingles = FALSE,
   zeroCount = 0.125,
   verbose = TRUE,
+  progress = TRUE,
   ...
 )
 }
@@ -35,30 +36,32 @@ in pairing samples}
 
 \item{dispersion}{a numeric vector of gene dispersion}
 
-\item{sizeFactors}{size factors (default=NULL). If provided the glmer offset
-is set to log(sizeFactors). For more information see
+\item{sizeFactors}{size factors (default = NULL). If provided the glmer
+offset is set to log(sizeFactors). For more information see
 \code{\link[lme4:glmer]{lme4::glmer()}}}
 
-\item{reducedFormula}{Reduced design formula (default="")}
+\item{reducedFormula}{Reduced design formula (default = "")}
 
 \item{modelData}{Expanded design matrix}
 
-\item{control}{the glmer control (default=glmerControl(optimizer="bobyqa")).
-For more information see
+\item{control}{the glmer control (default = glmerControl(optimizer =
+"bobyqa")). For more information see
 \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
-\item{cores}{number of cores to use. Default=1.}
+\item{cores}{number of cores to use. Default = 1.}
 
 \item{removeDuplicatedMeasures}{whether to remove duplicated
-conditions/repeated measurements for a given time point (default=FALSE).}
+conditions/repeated measurements for a given time point (default = FALSE).}
 
 \item{removeSingles}{whether to remove individuals with only one measurement
-(default=FALSE)}
+(default = FALSE)}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
-(default=0.125)}
+(default = 0.125)}
 
-\item{verbose}{Logical whether to display messaging (default=TRUE)}
+\item{verbose}{Logical whether to display messaging (default = TRUE)}
+
+\item{progress}{Logical whether to display a progress bar}
 
 \item{...}{Other parameters to pass to
 \code{\link[lme4:glmer]{lme4::glmer()}}}
@@ -72,17 +75,14 @@ Glmm for sequencing results
 }
 \examples{
 data(PEAC_minimal_load)
-
-disp <- apply(tpm, 1, function(x){
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
+disp <- apply(tpm, 1, function(x) {
+(var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 })
-
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = 'PATID',
-                     countdata = tpm['MS4A1', ],
+                     id = "PATID",
+                     countdata = tpm["MS4A1", ],
                      metadata = metadata,
-                     dispersion = disp['MS4A1'],
-                     verbose=FALSE)
-
+                     dispersion = disp["MS4A1"],
+                     verbose = FALSE)
 names(attributes(MS4A1glmm))
 }
