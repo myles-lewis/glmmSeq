@@ -162,13 +162,52 @@ disp <- apply(tpm, 1, function(x){
 head(disp)
 ```
 
-Alternatively DESeq2 (estimateDispersions) and edgeR (estimateCommonDisp) provide
-their own dispersion calculations which can also be passed in as a named vector.
+Alternatively, we recommend using _edgeR_ to estimate of the common, trended and 
+tagwise dispersions across all tags:
+
+```{r, message=FALSE}
+disp  <- setNames(edgeR::estimateDisp(tpm)$tagwise.dispersion, rownames(tpm))
+
+head(disp)
+```
+
+or with _DESeq2_ using the raw counts:
+
+```{r, eval=FALSE}
+dds <- DESeqDataSetFromTximport(txi = txi, colData = metadata, design = ~ 1)
+dds <- DESeq(dds)
+dispersions <- setNames(dispersions(dds), rownames(txi$counts))
+```
+
+
+## Size Factors
+
+There is also an option to include size factors for each gene. Again this can be 
+estimated using:
+
+```{r}
+sizeFactors <- colSums(tpm)  
+sizeFactors <- sizeFactors / mean(sizeFactors)  # normalise
+
+head(sizeFactors)
+```
+
+Or using edgeR these can be calculated from the raw read counts: 
+
+```{r, eval=FALSE}
+sizeFactors <- calcNormFactors(counts, method="TMM")
+```
+
+Similarly, with DESeq2: 
+
+```{r, eval=FALSE}
+sizeFactors <- estimateSizeFactorsForMatrix(counts)
+```
 
 # Fitting Models
 
 <style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px;}
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-align:center;}
 </style>
 
 To fit a model for one gene over time we use a formula such as:
@@ -185,7 +224,7 @@ In this case study we want to use time and response as fixed effects and the
 patients as random effects:
 
 <div class = "blue">
-> gene expression ~ time + response + (1 | patient)
+gene expression ~ time + response + (1 | patient)
 </div>
 
 To fit this model for all genes we can use the `glmmSeq` function. Note that
@@ -357,7 +396,7 @@ par(oldpar)
 
 Alternatively to plot the model fits alone you can use the modelPlot function:
 
-```{r}
+```{r, message=FALSE}
 library(ggpubr)
 
 p1 <- modelPlot(results,

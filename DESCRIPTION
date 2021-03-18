@@ -34,7 +34,8 @@ BugReports: https://github.com/KatrionaGoldmann/glmmSeq/issues
 Suggests:
     knitr,
     rmarkdown,
-    kableExtra
+    kableExtra,
+    edgeR
 VignetteBuilder: knitr
 Depends: R (>= 3.6.0)
 Imports:

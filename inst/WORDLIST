@@ -31,8 +31,6 @@ bobyqa
 countdata
 doi
 edgeR
-estimateCommonDisp
-estimateDispersions
 fcPlots
 ggplot
 glmer
@@ -50,4 +48,5 @@ qvalue
 qvalues
 seq
 sizeFactors
+tagwise
 tpm
