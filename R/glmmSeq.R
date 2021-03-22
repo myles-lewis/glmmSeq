@@ -57,7 +57,7 @@ setClass("GlmmSeq", slots = list(
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @return Returns a GlmmSeq object with results for gene-wise general linear
-#' mixed models
+#' mixed models or a list of results if returnList is TRUE.
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
 #' @importFrom stats update.formula model.matrix predict setNames
@@ -97,6 +97,7 @@ glmmSeq <- function(modelFormula,
                     removeSingles = FALSE,
                     zeroCount = 0.125,
                     verbose = TRUE,
+                    returnList = FALSE, 
                     progress = TRUE,
                     ...) {
   
@@ -229,6 +230,7 @@ glmmSeq <- function(modelFormula,
       }, mc.cores = cores)
     }
   }
+  if(returnList) return(resultList)
   
   # Print timing if verbose
   end <- Sys.time()
@@ -237,7 +239,9 @@ glmmSeq <- function(modelFormula,
   # Output
   names(resultList) <- rownames(countdata)
   noErr <- vapply(resultList, function(x) x$tryErrors == "", FUN.VALUE = TRUE)
-  if (length(which(noErr)) == 0) stop("All genes returned an error")
+  if (length(which(noErr)) == 0) { 
+    stop("All genes returned an error. Check sufficient data in each group")
+  }
   
   nCheat <- resultList[noErr][[1]]$predict
   outputPredict <- t(vapply(resultList[noErr], function(x) x$predict,

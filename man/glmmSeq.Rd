@@ -19,6 +19,7 @@ glmmSeq(
   removeSingles = FALSE,
   zeroCount = 0.125,
   verbose = TRUE,
+  returnList = FALSE,
   progress = TRUE,
   ...
 )
@@ -68,7 +69,7 @@ conditions/repeated measurements for a given time point (default = FALSE).}
 }
 \value{
 Returns a GlmmSeq object with results for gene-wise general linear
-mixed models
+mixed models or a list of results if returnList is TRUE.
 }
 \description{
 Glmm for sequencing results
