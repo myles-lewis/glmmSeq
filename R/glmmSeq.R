@@ -53,6 +53,8 @@ setClass("GlmmSeq", slots = list(
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default = 0.125)
 #' @param verbose Logical whether to display messaging (default = TRUE)
+#' @param returnList Logical whether to return results as a list or glmmSeq 
+#' object (default = FALSE).
 #' @param progress Logical whether to display a progress bar
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}

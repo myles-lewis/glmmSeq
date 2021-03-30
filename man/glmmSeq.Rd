@@ -62,6 +62,9 @@ conditions/repeated measurements for a given time point (default = FALSE).}
 
 \item{verbose}{Logical whether to display messaging (default = TRUE)}
 
+\item{returnList}{Logical whether to return results as a list or glmmSeq
+object (default = FALSE).}
+
 \item{progress}{Logical whether to display a progress bar}
 
 \item{...}{Other parameters to pass to
