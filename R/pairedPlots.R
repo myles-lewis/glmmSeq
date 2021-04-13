@@ -78,6 +78,7 @@ pairedPlot <- function(glmmResult,
                        lineColour='grey60',
                        markerSize=2,
                        fontSize=NULL,
+                       stat_fontSize=NULL,
                        alpha=0.7,
                        x2Offset=6,
                        pairedOnly=TRUE,
@@ -244,7 +245,7 @@ pairedPlot <- function(glmmResult,
       paste("P"[.(x1Label)]*"=", .(pval[1]),
             ", P"[.(x2Label)]*"=", .(pval[2]),
             ", P"[paste(.(x1Label), ":", .(x2Label))]*"=",
-            .(pval[3]))), cex=fontSize,
+            .(pval[3]))), cex=stat_fontSize,
       side=3, adj=0)
 
 
