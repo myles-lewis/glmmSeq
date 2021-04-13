@@ -206,7 +206,7 @@ pairedPlot <- function(glmmResult,
     plot(as.numeric(df_long$x1Factors), df_long$geneExp,
          type='p', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
-         pch=shapes[df_long$x2], bg=colours[df_long$x2],
+         pch=shapes[df_long$x2], bg=colours[df_long$x2], col = colours[df_long$x2],
          cex=markerSize, xlab=xTitle, ylab=yTitle,
          log=log,
          ...,
@@ -214,20 +214,20 @@ pairedPlot <- function(glmmResult,
            for (i in unique(df_long$id)) {
              lines(df_long$x1Factors[df_long$id==i],
                    df_long$geneExp[df_long$id==i],
-                   col=lineColour)}
+                   col=lineColour[df_long[which(df_long$id == i), x2Label]]))}
          })
 
     if(addModel){
       for(i in unique(df_mean$group)){
         lines(df_mean$x1Factors[df_mean$group == i],
               df_mean$y[df_mean$group == i],
-              lwd=modelSize+1, col=modelLineColour)
+              lwd=modelSize+1, col=modelLineColour[i])
       }
       segments(df_mean$x1Factors, df_mean$upper,
                df_mean$x1Factors, df_mean$lower,
-               lwd=modelSize+1, col=modelLineColour)
+               lwd=modelSize+1, col=modelColour)
       points(df_mean$x1Factors, df_mean$y, type = "p", bg=modelColour,
-             col=modelLineColour, pch=21, cex=modelSize)
+             col=modelColour, pch=21, cex=modelSize)
     }
 
     if(addBox){
