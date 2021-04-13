@@ -84,9 +84,8 @@ pairedPlot <- function(glmmResult,
                        graphics="base",
                        addModel=TRUE,
                        modelSize=3,
-                       modelColour="black",
                        modelLineSize=1,
-                       modelLineColour="black",
+                       modelColour="black",
                        addBox=FALSE,
                        addViolins=TRUE,
                        violinWidth=0.5,
@@ -221,13 +220,13 @@ pairedPlot <- function(glmmResult,
       for(i in unique(df_mean$group)){
         lines(df_mean$x1Factors[df_mean$group == i],
               df_mean$y[df_mean$group == i],
-              lwd=modelSize+1, col=modelLineColour[i])
+              lwd=modelSize+1, col=modelColour[i])
       }
       segments(df_mean$x1Factors, df_mean$upper,
                df_mean$x1Factors, df_mean$lower,
-               lwd=modelSize+1, col=modelColour)
-      points(df_mean$x1Factors, df_mean$y, type = "p", bg=modelColour,
-             col=modelColour, pch=21, cex=modelSize)
+               lwd=modelSize+1, col=rep(modelColour, each=length(unique(df_mean$group))))
+      points(df_mean$x1Factors, df_mean$y, type = "p", bg=rep(modelColour, each=length(unique(df_mean$group))),
+             col=rep(modelColour, each=length(unique(df_mean$group))), pch=21, cex=modelSize)
     }
 
     if(addBox){
