@@ -27,7 +27,7 @@ pairedPlot(
   modelSize = 3,
   modelColour = "black",
   modelLineSize = 1,
-  modelLineColour = "black",
+  modelLineColour = NULL,
   addBox = FALSE,
   addViolins = TRUE,
   violinWidth = 0.5,
@@ -57,9 +57,10 @@ to be paired using the ID.}
 
 \item{shapes}{The marker shapes (default=21)}
 
-\item{colours}{The marker colours (default='red')}
+\item{colours}{The marker colours (default='red') as vector or named vector}
 
-\item{lineColour}{The line colours (default='grey60')}
+\item{lineColour}{The line colours (default='grey60') as vector or named
+vector}
 
 \item{markerSize}{Size of markers (default=2)}
 
@@ -77,11 +78,14 @@ to be paired using the ID.}
 
 \item{modelSize}{Size of model points (default=3)}
 
-\item{modelColour}{Colour of model fit markers (default="black")}
+\item{modelColour}{Colour of model fit markers (default="black") as vector
+or named vector}
 
-\item{modelLineSize}{Size of model points (default=1)}
+\item{modelLineSize}{Size of model points (default=1) as vector or named
+vector}
 
-\item{modelLineColour}{Colour of model fit lines (default="black")}
+\item{modelLineColour}{Colour of model fit lines. If NULL same colours as
+modelColour used (default=NULL).}
 
 \item{addBox}{Logical whether to add boxplots for mean and IQR.}
 

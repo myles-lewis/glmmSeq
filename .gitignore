@@ -50,3 +50,5 @@ Meta
 package_creator.R
 ./logo.png
 *.Rproj
+/doc/
+/Meta/

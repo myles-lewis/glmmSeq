@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <h1 data-toc-skip>glmmSeq</h1>
                         <h4 class="author">Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 class="date">2021-03-30</h4>
+            <h4 class="date">2021-04-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/vignettes/glmmSeq.rmd"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="hidden name"><code>glmmSeq.rmd</code></div>
@@ -113,7 +113,7 @@
   margin-right: auto;
 }
 </style>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--03--30-turquoise.svg" alt="2021-03-30"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--04--18-turquoise.svg" alt="2021-04-18"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
 <div id="glmmseq" class="section level1">
 <h1 class="hasAnchor">
 <a href="#glmmseq" class="anchor"></a>glmmSeq</h1>
@@ -3042,7 +3042,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 12.05926 secs</code></pre>
+## Time difference of 22.63919 secs</code></pre>
 <p>or alternatively using two-factor classification with EULAR_binary:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_binary</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
@@ -3055,7 +3055,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 10.53417 secs</code></pre>
+## Time difference of 20.82469 secs</code></pre>
 <div id="outputs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h2>
@@ -8782,7 +8782,7 @@ LILRB3
 <p>Plots can be viewed using either ggplot or base graphics. We can start looking at the gene with the most significant interaction <em>IGHV3-23</em>:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plotColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"skyblue"</span>, <span class="st">"goldenrod1"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>
-<span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dodgerblue3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"seagreen4"</span><span class="op">)</span>, each<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dodgerblue3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"seagreen4"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
            geneName <span class="op">=</span> <span class="st">"IGHV3-23"</span>,
@@ -8794,11 +8794,12 @@ LILRB3
            colours <span class="op">=</span> <span class="va">plotColours</span>,
            modelColour <span class="op">=</span> <span class="va">modColours</span>,
            modelLineColour <span class="op">=</span> <span class="va">modColours</span>,
+           lineColour <span class="op">=</span> <span class="st">"grey60"</span>,
            fontSize<span class="op">=</span><span class="fl">10</span>,
            x2Offset <span class="op">=</span> <span class="fl">8</span>,
            logTransform<span class="op">=</span><span class="cn">TRUE</span>,
            addViolin <span class="op">=</span> <span class="cn">TRUE</span>,
-           pairedOnly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+           pairedOnly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-24-1.png" width="768"></p>
 <p>Or using base graphics, with or without the model fit overlaid:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
@@ -8813,7 +8814,10 @@ LILRB3
                 graphics<span class="op">=</span><span class="st">"base"</span>,
                 fontSize<span class="op">=</span><span class="fl">0.65</span>,
                 colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
-                modelSize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+                addModel<span class="op">=</span><span class="cn">T</span>,
+                modelColour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
+                modelLineColour <span class="op">=</span> <span class="st">"black"</span>,
+                modelSize <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 
 <span class="va">p2</span> <span class="op">=</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
                 geneName <span class="op">=</span> <span class="st">"EMILIN3"</span>,
@@ -8883,18 +8887,19 @@ LILRB3
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-27-1.png" width="768"></p>
 <p>Genes on the x-y plane, such as <em>IGHJ6</em>, will have associations in the same direction whereas genes on the x=-y axis have association in <em>opposite</em> directions, such as <em>ADAM12</em>. This allows us to pick out genes of potential interest which we can have another closer look at:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
+<code class="sourceCode R"><span class="va">p1</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
                  geneName <span class="op">=</span> <span class="st">"ADAM12"</span>,
                  x1Label <span class="op">=</span> <span class="st">"Timepoint"</span>,
                  x2Label<span class="op">=</span><span class="st">"EULAR_6m"</span>,
                  IDColumn <span class="op">=</span> <span class="st">"PATID"</span>,
                  graphics<span class="op">=</span><span class="st">"ggplot"</span>,
                  colours <span class="op">=</span> <span class="st">"grey60"</span>,
-                 modelColour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">plotColours</span>, each<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,
-                 modelLineColour <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">plotColours</span>, each<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,
+                 modelColour <span class="op">=</span> <span class="va">plotColours</span>, 
+                 modelLineColour <span class="op">=</span>  <span class="va">plotColours</span>, 
                  addViolins<span class="op">=</span><span class="cn">FALSE</span>,
                  fontSize<span class="op">=</span><span class="fl">8</span>,
-                 logTransform<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
+                 logTransform<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">theme</span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
                  geneName <span class="op">=</span> <span class="st">"IGHJ6"</span>,
@@ -8903,10 +8908,11 @@ LILRB3
                  IDColumn <span class="op">=</span> <span class="st">"PATID"</span>,
                  graphics<span class="op">=</span><span class="st">"ggplot"</span>,
                  addViolins <span class="op">=</span> <span class="cn">FALSE</span>,
-                 colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"blue"</span><span class="op">)</span>,
+                 colours <span class="op">=</span> <span class="st">"blue"</span>,
                  fontSize<span class="op">=</span><span class="fl">8</span>,
                  modelSize<span class="op">=</span><span class="fl">0.1</span>,
-                 logTransform<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
+                 logTransform<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">theme</span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu">element_text</span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-28-1.png" width="768"></p>
@@ -8963,7 +8969,7 @@ LILRB3
 ## To cite package 'glmmSeq' in publications use:
 ## 
 ##   Myles Lewis, Katriona Goldmann and Elisabetta Sciacca (NA). glmmSeq: General Linear
-##   Mixed Models for Gene-Level Differential Expression. R package version 0.1.0.
+##   Mixed Models for Gene-Level Differential Expression. R package version 0.1.1.
 ##   https://github.com/KatrionaGoldmann/glmmSeq
 ## 
 ## A BibTeX entry for LaTeX users is
@@ -8971,7 +8977,7 @@ LILRB3
 ##   @Manual{,
 ##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},
 ##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},
-##     note = {R package version 0.1.0},
+##     note = {R package version 0.1.1},
 ##     url = {https://github.com/KatrionaGoldmann/glmmSeq},
 ##   }</code></pre>
 </div>

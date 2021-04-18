@@ -1,6 +1,12 @@
 News
 =====
 
+# glmmSeq v0.1.1
+###### 18/04/2021
+
+##### Bug Fixes
+* Fix colours in paired\_plots
+
 
 # glmmSeq v0.1.0
 ###### 16/03/2021

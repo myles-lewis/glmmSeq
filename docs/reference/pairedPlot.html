@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@
   modelSize <span class='op'>=</span> <span class='fl'>3</span>,
   modelColour <span class='op'>=</span> <span class='st'>"black"</span>,
   modelLineSize <span class='op'>=</span> <span class='fl'>1</span>,
-  modelLineColour <span class='op'>=</span> <span class='st'>"black"</span>,
+  modelLineColour <span class='op'>=</span> <span class='cn'>NULL</span>,
   addBox <span class='op'>=</span> <span class='cn'>FALSE</span>,
   addViolins <span class='op'>=</span> <span class='cn'>TRUE</span>,
   violinWidth <span class='op'>=</span> <span class='fl'>0.5</span>,
@@ -221,11 +221,12 @@ to be paired using the ID.</p></td>
     </tr>
     <tr>
       <th>colours</th>
-      <td><p>The marker colours (default='red')</p></td>
+      <td><p>The marker colours (default='red') as vector or named vector</p></td>
     </tr>
     <tr>
       <th>lineColour</th>
-      <td><p>The line colours (default='grey60')</p></td>
+      <td><p>The line colours (default='grey60') as vector or named
+vector</p></td>
     </tr>
     <tr>
       <th>markerSize</th>
@@ -261,15 +262,18 @@ to be paired using the ID.</p></td>
     </tr>
     <tr>
       <th>modelColour</th>
-      <td><p>Colour of model fit markers (default="black")</p></td>
+      <td><p>Colour of model fit markers (default="black") as vector
+or named vector</p></td>
     </tr>
     <tr>
       <th>modelLineSize</th>
-      <td><p>Size of model points (default=1)</p></td>
+      <td><p>Size of model points (default=1) as vector or named
+vector</p></td>
     </tr>
     <tr>
       <th>modelLineColour</th>
-      <td><p>Colour of model fit lines (default="black")</p></td>
+      <td><p>Colour of model fit lines. If NULL same colours as
+modelColour used (default=NULL).</p></td>
     </tr>
     <tr>
       <th>addBox</th>

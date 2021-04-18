@@ -343,7 +343,7 @@ at the gene with the most significant interaction _IGHV3-23_:
 
 ```{r, fig.height=6, warning=FALSE}
 plotColours <- c("skyblue", "goldenrod1", "mediumseagreen")
-modColours <- rep(c("dodgerblue3", "goldenrod3", "seagreen4"), each=2)
+modColours <- c("dodgerblue3", "goldenrod3", "seagreen4")
 
 pairedPlot(glmmResult=results,
            geneName = "IGHV3-23",
@@ -355,11 +355,12 @@ pairedPlot(glmmResult=results,
            colours = plotColours,
            modelColour = modColours,
            modelLineColour = modColours,
+           lineColour = "grey60",
            fontSize=10,
            x2Offset = 8,
            logTransform=TRUE,
            addViolin = TRUE,
-           pairedOnly = FALSE)
+           pairedOnly = FALSE) 
 ```
 
 Or using base graphics, with or without the model fit overlaid:
@@ -376,7 +377,10 @@ p1 = pairedPlot(glmmResult=results2,
                 graphics="base",
                 fontSize=0.65,
                 colours=c("coral", "mediumseagreen"),
-                modelSize = 1)
+                addModel=T,
+                modelColour = c("coral", "mediumseagreen"),
+                modelLineColour = "black",
+                modelSize = 2)
 
 p2 = pairedPlot(glmmResult=results,
                 geneName = "EMILIN3",
@@ -458,18 +462,19 @@ This allows us to pick out genes of potential interest which we can have
 another closer look at:
 
 ```{r, fig.height=6, warning=FALSE}
-p1 <- pairedPlot(glmmResult=results,
+p1<- pairedPlot(glmmResult=results,
                  geneName = "ADAM12",
                  x1Label = "Timepoint",
                  x2Label="EULAR_6m",
                  IDColumn = "PATID",
                  graphics="ggplot",
                  colours = "grey60",
-                 modelColour = rep(plotColours, each=2),
-                 modelLineColour =rep(plotColours, each=2),
+                 modelColour = plotColours, 
+                 modelLineColour =  plotColours, 
                  addViolins=FALSE,
                  fontSize=8,
-                 logTransform=T) + theme(plot.subtitle=element_text(size=9))
+                 logTransform=T) +
+  theme(plot.subtitle=element_text(size=9))
 
 p2 <- pairedPlot(glmmResult=results,
                  geneName = "IGHJ6",
@@ -478,10 +483,11 @@ p2 <- pairedPlot(glmmResult=results,
                  IDColumn = "PATID",
                  graphics="ggplot",
                  addViolins = FALSE,
-                 colours = c("blue"),
+                 colours = "blue",
                  fontSize=8,
                  modelSize=0.1,
-                 logTransform=T) + theme(plot.subtitle=element_text(size=9))
+                 logTransform=T) +
+  theme(plot.subtitle=element_text(size=9))
 
 ggarrange(p1, p2, ncol=2)
 ```
