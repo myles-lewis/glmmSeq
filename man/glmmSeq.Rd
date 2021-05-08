@@ -14,6 +14,7 @@ glmmSeq(
   reducedFormula = "",
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
+  glmerFamily = NULL,
   cores = 1,
   removeDuplicatedMeasures = FALSE,
   removeSingles = FALSE,
@@ -26,7 +27,7 @@ glmmSeq(
 }
 \arguments{
 \item{modelFormula}{the model formula. For more information of formula
-structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
+structure see \code{\link[lme4:glmer]{lme4::glmer}}}
 
 \item{countdata}{the sequencing count data}
 
@@ -39,7 +40,7 @@ in pairing samples}
 
 \item{sizeFactors}{size factors (default = NULL). If provided the glmer
 offset is set to log(sizeFactors). For more information see
-\code{\link[lme4:glmer]{lme4::glmer()}}}
+\code{\link[lme4:glmer]{lme4::glmer}}}
 
 \item{reducedFormula}{Reduced design formula (default = "")}
 
@@ -47,7 +48,12 @@ offset is set to log(sizeFactors). For more information see
 
 \item{control}{the glmer control (default = glmerControl(optimizer =
 "bobyqa")). For more information see
-\code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
+\code{\link[lme4:glmerControl]{lme4::glmerControl}}.}
+
+\item{glmerFamily}{The GLM family, see
+\code{\link[stats:glm]{stats::glm}} and
+\code{\link[stats:family]{stats::family}}. If NULL
+\code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used.}
 
 \item{cores}{number of cores to use. Default = 1.}
 

@@ -12,6 +12,7 @@ glmerApply(
   modelData,
   designMatrix,
   offset,
+  glmerFamily = NULL,
   ...
 )
 }
@@ -19,13 +20,13 @@ glmerApply(
 \item{geneList}{List with gene expression and dispersion}
 
 \item{fullFormula}{the model formula. For more information of formula
-structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
+structure see \code{\link[lme4:glmer]{lme4::glmer}}}
 
 \item{data}{The sample data or metadata.}
 
 \item{control}{the glmer control (default = glmerControl(optimizer =
 "bobyqa")). For more information see
-\code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
+\code{\link[lme4:glmerControl]{lme4::glmerControl}}.}
 
 \item{modelData}{Expanded design matrix}
 
@@ -34,6 +35,11 @@ structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
 \item{offset}{this can be used to specify an a priori known component to be
 included in the linear predictor during fitting. For more information see
 \code{\link[lme4:glmer]{lme4::glmer()}}.}
+
+\item{glmerFamily}{The GLM family, see
+\code{\link[stats:glm]{stats::glm}} and
+\code{\link[stats:family]{stats::family}}. If NULL
+\code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used.}
 
 \item{...}{Other parameters to pass to
 \code{\link[lme4:glmer]{lme4::glmer()}}}

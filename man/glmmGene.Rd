@@ -15,6 +15,7 @@ glmmGene(
   reducedFormula = "",
   modelData = NULL,
   control = glmerControl(optimizer = "bobyqa"),
+  glmerFamily = NULL,
   zeroCount = 0.125,
   removeDuplicatedMeasures = FALSE,
   removeSingles = FALSE,
@@ -49,6 +50,11 @@ is set to log(sizeFactors).For more information see
 (default=glmerControl(optimizer="bobyqa")).
 For more information see
 \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
+
+\item{glmerFamily}{The GLM family, see
+\code{\link[stats:glm]{stats::glm}} and
+\code{\link[stats:family]{stats::family}}. If NULL
+\code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used.}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
 (default=0.125)}

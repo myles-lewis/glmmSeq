@@ -31,7 +31,7 @@ setClass("GlmmSeq", slots = list(
 #' Glmm for sequencing results
 #'
 #' @param modelFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
+#' structure see \code{\link[lme4:glmer]{lme4::glmer}}
 #' @param countdata the sequencing count data
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
@@ -39,12 +39,16 @@ setClass("GlmmSeq", slots = list(
 #' @param dispersion a numeric vector of gene dispersion
 #' @param sizeFactors size factors (default = NULL). If provided the glmer 
 #' offset is set to log(sizeFactors). For more information see
-#'  \code{\link[lme4:glmer]{lme4::glmer()}}
+#'  \code{\link[lme4:glmer]{lme4::glmer}}
 #' @param reducedFormula Reduced design formula (default = "")
 #' @param modelData Expanded design matrix
 #' @param control the glmer control (default = glmerControl(optimizer = 
 #' "bobyqa")). For more information see
-#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl}}.
+#' @param glmerFamily The GLM family, see 
+#' \code{\link[stats:glm]{stats::glm}} and 
+#' \code{\link[stats:family]{stats::family}}. If NULL 
+#' \code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used. 
 #' @param cores number of cores to use. Default = 1. 
 #' @param removeDuplicatedMeasures whether to remove duplicated
 #' conditions/repeated measurements for a given time point (default = FALSE).
@@ -94,6 +98,7 @@ glmmSeq <- function(modelFormula,
                     reducedFormula = "",
                     modelData = NULL,
                     control = glmerControl(optimizer = "bobyqa"),
+                    glmerFamily = NULL, 
                     cores = 1,
                     removeDuplicatedMeasures = FALSE,
                     removeSingles = FALSE,
@@ -200,19 +205,19 @@ glmmSeq <- function(modelFormula,
     cl <- makeCluster(cores)
     clusterExport(cl, varlist = c("glmerApply", "fullList", "fullFormula",
                                   "subsetMetadata", "control", "modelData",
-                                  "offset", "designMatrix", ...),
+                                  "offset", "designMatrix", "glmerFamily", ...),
                   envir = environment())
     if (progress) {
       resultList <- pblapply(fullList, function(geneList) {
         glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata,
                    control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+                   designMatrix = designMatrix, glmerFamily = glmerFamily, ...)
       }, cl = cl)
     } else {
       resultList <- parLapply(cl = cl, fullList, function(geneList) {
         glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata,
                    control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+                   designMatrix = designMatrix, glmerFamily = glmerFamily, ...)
       })
     }
     stopCluster(cl)
@@ -221,14 +226,14 @@ glmmSeq <- function(modelFormula,
       resultList <- pbmclapply(fullList, function(geneList) {
         glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata,
                    control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+                   designMatrix = designMatrix, glmerFamily = glmerFamily, ...)
       }, mc.cores = cores)
       if ("value" %in% names(resultList)) resultList <- resultList$value
     } else {
       resultList <- mclapply(fullList, function(geneList) {
         glmerApply(geneList, fullFormula = fullFormula, data = subsetMetadata,
                    control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+                   designMatrix = designMatrix, glmerFamily = glmerFamily, ...)
       }, mc.cores = cores)
     }
   }
@@ -289,13 +294,17 @@ glmmSeq <- function(modelFormula,
 #'
 #' @param geneList List with gene expression and dispersion
 #' @param fullFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
+#' structure see \code{\link[lme4:glmer]{lme4::glmer}}
 #' @param modelData Expanded design matrix
 #' @param data The sample data or metadata.
 #' @param designMatrix The design matrix
 #' @param control the glmer control (default = glmerControl(optimizer = 
 #' "bobyqa")). For more information see
-#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
+#' \code{\link[lme4:glmerControl]{lme4::glmerControl}}.
+#' @param glmerFamily The GLM family, see 
+#' \code{\link[stats:glm]{stats::glm}} and 
+#' \code{\link[stats:family]{stats::family}}. If NULL 
+#' \code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used. 
 #' @param offset this can be used to specify an a priori known component to be
 #'  included in the linear predictor during fitting. For more information see
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}.
@@ -317,14 +326,17 @@ glmerApply <- function(geneList,
                        modelData,
                        designMatrix,
                        offset,
+                       glmerFamily=NULL, 
                        ...) {
   data[, "count"] <- as.numeric(geneList$y)
+  
+  if(is.null(glmerFamily)){
+    glmerFamily <- MASS::negative.binomial(theta = 1/geneList$dispersion)
+  }
+  
   fit <- try(suppressMessages(
     lme4::glmer(fullFormula, data = data, control = control, offset = offset,
-                family = MASS::negative.binomial(theta = 
-                                                   1/geneList$dispersion)),
-    ...),
-    silent = TRUE)
+                family = glmerFamily, ...)), silent = TRUE)
   
   if (class(fit) != "try-error") {
     # intercept dropped genes

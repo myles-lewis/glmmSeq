@@ -35,7 +35,9 @@ fcPlots
 ggplot
 glmer
 glmerControl
+glmerFamily
 glmm
+glmmGene
 glmmResult
 jss
 lme
