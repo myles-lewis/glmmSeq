@@ -12,9 +12,9 @@
 #' @param yTitle Title for the y axis
 #' @param title Plot title. If NULL gene name is used
 #' @param logTransform Whether to perform a log10 transform on the y axis
-#' @param shapes The marker shapes (default=21)
+#' @param shapes The marker shapes (default=19)
 #' @param colours The marker colours (default='red') as vector or named vector
-#' @param lineColour The line colours (default='grey60') as vector or named 
+#' @param lineColours The line colours (default='grey60') as vector or named 
 #' vector
 #' @param markerSize Size of markers (default=2)
 #' @param fontSize Plot font size
@@ -24,11 +24,11 @@
 #' @param graphics Which graphic system to use (options = "base" or "ggplot")
 #' @param addModel Whether to add the fit model with markers (default=TRUE)
 #' @param modelSize Size of model points (default=3)
-#' @param modelColour Colour of model fit markers (default="black") as vector 
+#' @param modelColours Colour of model fit markers (default="black") as vector 
 #' or named vector
 #' @param modelLineSize Size of model points (default=1) as vector or named 
 #' vector
-#' @param modelLineColour Colour of model fit lines. If NULL same colours as 
+#' @param modelLineColours Colour of model fit lines. If NULL same colours as 
 #' modelColour used (default=NULL).
 #' @param addBox Logical whether to add boxplots for mean and IQR.
 #' @param addViolins Logical whether to add half violin-plots (ggplot only),
@@ -77,9 +77,9 @@ pairedPlot <- function(glmmResult,
                        yTitle = "Gene Expression",
                        title=NULL,
                        logTransform=FALSE,
-                       shapes=21,
+                       shapes=19,
                        colours='red',
-                       lineColour='grey60',
+                       lineColours='grey60',
                        markerSize=2,
                        fontSize=NULL,
                        alpha=0.7,
@@ -88,9 +88,9 @@ pairedPlot <- function(glmmResult,
                        graphics="base",
                        addModel=TRUE,
                        modelSize=3,
-                       modelColour="black",
+                       modelColours="black",
                        modelLineSize=1,
-                       modelLineColour=NULL,
+                       modelLineColours=NULL,
                        addBox=FALSE,
                        addViolins=TRUE,
                        violinWidth=0.5,
@@ -147,6 +147,8 @@ pairedPlot <- function(glmmResult,
     labs <- levels(droplevels(factor(glmmResult@modelData[, x2Label])))
     df_long$x2 <- as.numeric(factor(df_long[, x2Label]))
     df_long$x1 <- as.numeric(factor(df_long[, x1Label]))
+    df_long$x2Labels <- as.character(factor(df_long[, x2Label]))
+    df_long$x1Labels <- as.character(factor(df_long[, x1Label]))
     maxX2 <- max(as.numeric(df_long$x2), na.rm=TRUE)
     df_long$x1Factors <- as.numeric(factor(df_long[, x1Label])) +
       (df_long$x2-1) * length(unique(df_long[, x1Label]))
@@ -156,11 +158,15 @@ pairedPlot <- function(glmmResult,
     refactorCols <- function(x) {
       setNames(rep(x, length(x2Values))[seq_len(length(x2Values))], x2Values)
     }
-    if(is.null(modelLineColour)) modelLineColour <- modelColour
-    modelLineColour <- refactorCols(modelLineColour)
-    lineColour <- refactorCols(lineColour)
-    modelColour <- refactorCols(modelColour)
-    colours <- refactorCols(colours)
+    
+    # re-factor colours and shapes if necessary
+    if(is.null(modelLineColours)) modelLineColours <- modelColours
+    if(is.null(names(modelLineColours))) modelLineColours <- 
+      refactorCols(modelLineColours)
+    if(is.null(names(lineColours))) lineColours <- refactorCols(lineColours)
+    if(is.null(names(modelColours))) modelColours <- refactorCols(modelColours)
+    if(is.null(names(colours))) colours <- refactorCols(colours)
+    if(is.null(names(shapes))) shapes <- refactorCols(shapes)
     
     # Set up model fit data
     modelData <- glmmResult@modelData
@@ -220,30 +226,30 @@ pairedPlot <- function(glmmResult,
     plot(as.numeric(df_long$x1Factors), df_long$geneExp,
          ylim = my.ylim, type='p', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
-         pch=shapes[df_long$x2], bg=colours[df_long$x2],
+         pch=shapes[df_long$x2Labels], 
+         col=colours[df_long$x2Labels],
          cex=markerSize, xlab=xTitle, ylab=yTitle,
          log=log,
          ...,
          panel.first={
-           for (i in unique(df_long$id)) {
+           for (i in as.character(unique(df_long$id))) {
              lines(df_long$x1Factors[df_long$id==i],
                    df_long$geneExp[df_long$id==i],
-                   col=lineColour)[i]}
+                   col=lineColours[unique(df_long$x2Labels[df_long$id == i])] )}
          })
     if(addModel){
-      for(i in unique(df_mean$group)){
+      for(i in as.character(unique(df_mean$group))){
         lines(df_mean$x1Factors[df_mean$group == i],
               df_mean$y[df_mean$group == i],
-              lwd=modelSize+1, col=modelLineColour[i])
+              lwd=modelSize+1, col=modelLineColours[i])
         segments(df_mean$x1Factors[df_mean$group == i], 
                  df_mean$upper[df_mean$group == i],
                  df_mean$x1Factors[df_mean$group == i], 
                  df_mean$lower[df_mean$group == i],
-                 lwd=modelSize+1, col=modelLineColour[i])
+                 lwd=modelSize+1, col=modelLineColours[i])
         points(df_mean$x1Factors[df_mean$group == i], 
                df_mean$y[df_mean$group == i], type = "p", 
-               bg=modelColour[i],
-               col=modelLineColour[i], pch=21, cex=modelSize)
+               col=modelColours[i], pch=shapes[i], cex=modelSize)
       }
     }
     
@@ -272,8 +278,9 @@ pairedPlot <- function(glmmResult,
 
     p <- ggplot(df_long, 
                 aes_string(x="x1Factors", y="geneExp", group="id",
-                           shape=x2Label, color=x2Label, fill=x2Label)) +
-      geom_point(size=markerSize, alpha=alpha) +
+                           shape=x2Label, color=x2Label)) +
+      geom_point(size=markerSize, alpha=alpha, 
+                 colour=colours[df_long$x2Labels]) +
       geom_line(alpha=alpha) +
       theme_classic() +
       scale_shape_manual(values=shapes) +
@@ -291,8 +298,7 @@ pairedPlot <- function(glmmResult,
                 mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
                 nudge_x=0, vjust=x2Offset, inherit.aes=FALSE)  +
       coord_cartesian(clip = 'off') + 
-      scale_fill_manual(values=colours) +
-      scale_color_manual(values=lineColour) 
+      scale_color_manual(values=lineColours) 
     
     
     if(addBox) {
@@ -307,12 +313,12 @@ pairedPlot <- function(glmmResult,
       df_left <- df_long[df_long$x1 %% 2 != 0, ]
       lLength <- length(which(table(df_left$nudged)>2))
       leftColours <- rep(
-        colours,
+        colours[levels(factor(df_long$x2Labels))],
         each=length(unique(df_left$x1)))[table(df_left$nudged)>2]
       df_right <- df_long[df_long$x1 %% 2 == 0, ]
       rLength <- length(which(table(df_right$nudged)>2))
       rightColours <- rep(
-        colours,
+        colours[levels(factor(df_long$x2Labels))],
         each=length(unique(df_right$x1)))[table(df_right$nudged)>2]
       
       p <- p +
@@ -342,19 +348,18 @@ pairedPlot <- function(glmmResult,
       p <- p +
         annotate("line", x = df_mean$x1Factors, y = df_mean$y,
                  group=df_mean$group, size=modelLineSize,
-                 color=modelLineColour[df_mean$group]) +
+                 color=modelLineColours[as.character(df_mean$group)]) +
         annotate("errorbar", x = df_mean$x1Factors, y = df_mean$y,
-                 color=modelLineColour[df_mean$group], 
+                 color=modelLineColours[as.character(df_mean$group)], 
                  ymin=df_mean$lower, ymax=df_mean$upper,
-                 width=0.2, size=modelLineSize[df_mean$group]) +
-        annotate("point", x = df_mean$x1Factors, y = df_mean$y,
-                 size=modelSize, color=modelColour[df_mean$group])
+                 width=0.2, size=modelLineSize) +
+        annotate("point", x = df_mean$x1Factors, y = df_mean$y, 
+                 shape=shapes[as.character(df_mean$group)],
+                 size=modelSize, color=modelColours[as.character(df_mean$group)])
     }
     
-    
     if(logTransform) p <- p + scale_y_continuous(trans='log10')
-    
-    
+
     p <- p + labs(subtitle= bquote(
       paste("P"[.(x1Label)]*"=", .(pval[1]),
             ", P"[.(x2Label)]*"=", .(pval[2]),

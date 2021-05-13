@@ -14,9 +14,9 @@ pairedPlot(
   yTitle = "Gene Expression",
   title = NULL,
   logTransform = FALSE,
-  shapes = 21,
+  shapes = 19,
   colours = "red",
-  lineColour = "grey60",
+  lineColours = "grey60",
   markerSize = 2,
   fontSize = NULL,
   alpha = 0.7,
@@ -25,9 +25,9 @@ pairedPlot(
   graphics = "base",
   addModel = TRUE,
   modelSize = 3,
-  modelColour = "black",
+  modelColours = "black",
   modelLineSize = 1,
-  modelLineColour = NULL,
+  modelLineColours = NULL,
   addBox = FALSE,
   addViolins = TRUE,
   violinWidth = 0.5,
@@ -55,11 +55,11 @@ to be paired using the ID.}
 
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
-\item{shapes}{The marker shapes (default=21)}
+\item{shapes}{The marker shapes (default=19)}
 
 \item{colours}{The marker colours (default='red') as vector or named vector}
 
-\item{lineColour}{The line colours (default='grey60') as vector or named
+\item{lineColours}{The line colours (default='grey60') as vector or named
 vector}
 
 \item{markerSize}{Size of markers (default=2)}
@@ -78,13 +78,13 @@ vector}
 
 \item{modelSize}{Size of model points (default=3)}
 
-\item{modelColour}{Colour of model fit markers (default="black") as vector
+\item{modelColours}{Colour of model fit markers (default="black") as vector
 or named vector}
 
 \item{modelLineSize}{Size of model points (default=1) as vector or named
 vector}
 
-\item{modelLineColour}{Colour of model fit lines. If NULL same colours as
+\item{modelLineColours}{Colour of model fit lines. If NULL same colours as
 modelColour used (default=NULL).}
 
 \item{addBox}{Logical whether to add boxplots for mean and IQR.}

@@ -12,7 +12,7 @@
 #' @param overlap Logical whether x2Label fits should be plotted overlapping one
 #' another (default=TRUE).
 #' @param logTransform Whether to perform a log10 transform on the y axis
-#' @param shapes The marker shapes, default=21
+#' @param shapes The marker shapes, default=19
 #' @param colours The marker colours, default=c('blue')
 #' @param x2Offset Vertical adjustment to secondary x-axis (default=6)
 #' @param lineWidth Plot line size (default=1)
@@ -59,7 +59,7 @@ modelPlot <- function(glmmResult,
                       yTitle="Gene Expression",
                       title=NULL,
                       logTransform=FALSE,
-                      shapes=21,
+                      shapes=19,
                       colours=c('blue'),
                       x2Offset=6,
                       lineWidth=1,
@@ -123,6 +123,14 @@ modelPlot <- function(glmmResult,
     xUse <- as.numeric(factor(modelData[, x1Label]))
   } else {xUse <- as.numeric(modelData$xFactor)}
 
+  # Update colours to named list
+  refactorCols <- function(x) {
+    setNames(rep(x, length(x2Values))[seq_len(length(x2Values))], x2Values)
+  }
+  
+  # re-factor colours and shapes if necessary
+  if(is.null(names(colours))) colours <- refactorCols(colours)
+  if(is.null(names(shapes))) shapes <- refactorCols(shapes)
 
   # Plot base graphics
   if(graphics == "base"){
@@ -131,22 +139,23 @@ modelPlot <- function(glmmResult,
     plot(xUse, modelData$y, type='p', bty='l', las=1, xaxt='n',
          cex.axis=fontSize, cex.lab=fontSize,
          cex=markerSize,
-         pch=shapes[modelData[,x2Label]],
-         bg=colours[modelData[,x2Label]],
+         pch=shapes[as.character(modelData$group)],
+         col=colours[as.character(modelData$group)],
          xlab=xTitle,
          ylim=yLim, ylab=yTitle, log=log,
-         #...,
+         ...,
          panel.first={
-           for (i in 1:maxX2) {
-             lines(xUse[modelData[,2]==i],
-                   modelData$y[modelData[,2]==i],
-                   col=colours[i], lwd=2)
+           for (i in as.character(unique(modelData$group))) {
+             lines(xUse[modelData$group==i],
+                   modelData$y[modelData$group==i],
+                   col=colours[i], lwd=lineWidth)
            }
            if(addErrorbars){
-             for (i in 1:maxX2) {
-               arrows(x0=xUse[modelData[,x2Label]==i],
-                      y0=modelData$LCI[modelData[,x2Label]==i],
-                      y1=modelData$UCI[modelData[,x2Label]==i],
+             for (i in as.character(unique(modelData$group)) ) {
+               arrows(x0=xUse[modelData$group==i],
+                      y0=modelData$LCI[modelData$group==i],
+                      y1=modelData$UCI[modelData$group==i],
+                      lwd=lineWidth,
                       angle=90, code=3, length=0.08, col=colours[i])
              }}
          }
@@ -180,7 +189,7 @@ modelPlot <- function(glmmResult,
 
     if(overlap){
 
-      p <- ggplot(modelData, aes_string(x="x1Numeric", y="y", fill="group",
+      p <- ggplot(modelData, aes_string(x="x1Numeric", y="y", 
                                         shape="group", group="group",
                                         color="group")) +
         geom_line(size=lineWidth) +
@@ -192,8 +201,7 @@ modelPlot <- function(glmmResult,
               ...,
               text=element_text(size=fontSize))
     } else{
-      p <- ggplot(modelData, aes_string(x="xFactor", y="y", fill="group",
-                                        group="group",
+      p <- ggplot(modelData, aes_string(x="xFactor", y="y",  group="group",
                                         shape="group", color="group")) +
         geom_line(size=lineWidth) +
         geom_point(size=markerSize) +
@@ -212,9 +220,8 @@ modelPlot <- function(glmmResult,
         coord_cartesian(clip = 'off', expand=TRUE)
     }
     p <- p +
-      scale_fill_manual(values=colours, name=x2Label) +
-      scale_color_manual(values=colours, name=x2Label) +
-      scale_shape_manual(values=shapes, name=x2Label) +
+      scale_color_manual(values=colours[levels(modelData$group)], name=x2Label) +
+      scale_shape_manual(values=shapes[levels(modelData$group)], name=x2Label) +
       labs(subtitle= bquote(
         paste("P"[.(x1Label)]*"=", .(pval[1]),
               ", P"[.(x2Label)]*"=", .(pval[2]),
