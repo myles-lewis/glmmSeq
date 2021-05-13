@@ -221,10 +221,11 @@ pairedPlot <- function(glmmResult,
   if(graphics == "base"){
     if(logTransform) log <- "y" else log <- ""
     if(is.null(xTitle)) xTitle <- NA
-    if(addModel) my.ylim = c(min(df_mean$lower), max(df_mean$upper))
-    else my.ylim = NULL
+    if(addModel) {
+      myYlim = c(min(df_mean$lower), max(df_mean$upper))
+    } else myYlim = NULL
     plot(as.numeric(df_long$x1Factors), df_long$geneExp,
-         ylim = my.ylim, type='p', bty='l', las=2,
+         ylim = myYlim, type='p', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
          pch=shapes[df_long$x2Labels], 
          col=colours[df_long$x2Labels],
