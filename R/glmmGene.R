@@ -17,10 +17,6 @@
 #' (default=glmerControl(optimizer="bobyqa")).
 #' For more information see
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
-#' @param glmerFamily The GLM family, see 
-#' \code{\link[stats:glm]{stats::glm}} and 
-#' \code{\link[stats:family]{stats::family}}. If NULL 
-#' \code{\link[MASS:negative.binomial]{MASS::negative.binomial}} is used. 
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default=0.125)
 #' @param removeDuplicatedMeasures whether to remove duplicated
@@ -63,7 +59,6 @@ glmmGene <- function(modelFormula,
                      reducedFormula="",
                      modelData=NULL,
                      control=glmerControl(optimizer = "bobyqa"),
-                     glmerFamily=NULL,
                      zeroCount=0.125,
                      removeDuplicatedMeasures=FALSE,
                      removeSingles=FALSE,
@@ -161,14 +156,9 @@ glmmGene <- function(modelFormula,
 
   data <- subsetMetadata
   data[, "count"] <- as.numeric(countdata[gene, ])
-  
-  if(is.null(glmerFamily)) {
-    glmerFamily <- MASS::negative.binomial(theta = 1/dispersion)
-  }
-  
   fit <- try(
     glmer(fullFormula, data = data, control = control, offset = offset,
-          family=glmerFamily, ...),
+          family=MASS::negative.binomial(theta = 1/dispersion), ...),
     silent=FALSE)
 
   return(fit)

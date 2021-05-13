@@ -29,8 +29,8 @@ Add qvalue columns to the glmmSeq dataframe
 }
 \examples{
 data(PEAC_minimal_load)
-disp <- apply(tpm, 1, function(x) {
-(var(x, na.rm=TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
+disp <- apply(tpm, 1, function(x) { 
+(var(x, na.rm=TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2) 
 })
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      id = "PATID",
@@ -38,5 +38,5 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      metadata = metadata,
                      dispersion = disp[1:5],
                      verbose=FALSE)
-MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)
+MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)                    
 }

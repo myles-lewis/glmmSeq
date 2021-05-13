@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -152,7 +152,6 @@
   <span class='va'>modelData</span>,
   <span class='va'>designMatrix</span>,
   <span class='va'>offset</span>,
-  glmerFamily <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -166,7 +165,7 @@
     <tr>
       <th>fullFormula</th>
       <td><p>the model formula. For more information of formula
-structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer</a></code></p></td>
+structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -176,7 +175,7 @@ structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glme
       <th>control</th>
       <td><p>the glmer control (default = glmerControl(optimizer =
 "bobyqa")). For more information see
-<code><a href='https://rdrr.io/pkg/lme4/man/lmerControl.html'>lme4::glmerControl</a></code>.</p></td>
+<code><a href='https://rdrr.io/pkg/lme4/man/lmerControl.html'>lme4::glmerControl()</a></code>.</p></td>
     </tr>
     <tr>
       <th>modelData</th>
@@ -191,13 +190,6 @@ structure see <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glme
       <td><p>this can be used to specify an a priori known component to be
 included in the linear predictor during fitting. For more information see
 <code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>glmerFamily</th>
-      <td><p>The GLM family, see
-<code><a href='https://rdrr.io/r/stats/glm.html'>stats::glm</a></code> and
-<code><a href='https://rdrr.io/r/stats/family.html'>stats::family</a></code>. If NULL
-<code><a href='https://rdrr.io/pkg/MASS/man/negative.binomial.html'>MASS::negative.binomial</a></code> is used.</p></td>
     </tr>
     <tr>
       <th>...</th>
