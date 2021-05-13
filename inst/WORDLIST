@@ -42,6 +42,8 @@ lme
 lmer
 modelColour
 modelPlot
+modelPlots
+pairedPlots
 plotly
 pvalue
 pvalues

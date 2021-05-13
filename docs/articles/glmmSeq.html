@@ -97,7 +97,7 @@
       <h1 data-toc-skip>glmmSeq</h1>
                         <h4 class="author">Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 class="date">2021-04-18</h4>
+            <h4 class="date">2021-05-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/vignettes/glmmSeq.rmd"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="hidden name"><code>glmmSeq.rmd</code></div>
@@ -113,7 +113,7 @@
   margin-right: auto;
 }
 </style>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--04--18-turquoise.svg" alt="2021-04-18"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2021--05--13-turquoise.svg" alt="2021-05-13"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
 <div id="glmmseq" class="section level1">
 <h1 class="hasAnchor">
 <a href="#glmmseq" class="anchor"></a>glmmSeq</h1>
@@ -3042,7 +3042,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 22.63919 secs</code></pre>
+## Time difference of 20.6023 secs</code></pre>
 <p>or alternatively using two-factor classification with EULAR_binary:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_binary</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
@@ -3055,7 +3055,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 20.82469 secs</code></pre>
+## Time difference of 20.19051 secs</code></pre>
 <div id="outputs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h2>
@@ -8782,7 +8782,10 @@ LILRB3
 <p>Plots can be viewed using either ggplot or base graphics. We can start looking at the gene with the most significant interaction <em>IGHV3-23</em>:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plotColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"skyblue"</span>, <span class="st">"goldenrod1"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>
-<span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dodgerblue3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"seagreen4"</span><span class="op">)</span>
+<span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Good responder"</span><span class="op">=</span><span class="st">"dodgerblue3"</span>, 
+                <span class="st">"Moderate responder"</span><span class="op">=</span> <span class="st">"goldenrod3"</span>, 
+                <span class="st">"Non responder"</span><span class="op">=</span><span class="st">"seagreen4"</span><span class="op">)</span>
+<span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Moderate responder"</span><span class="op">=</span><span class="fl">19</span>, <span class="st">"Good responder"</span><span class="op">=</span> <span class="fl">17</span>, <span class="st">"Non responder"</span><span class="op">=</span><span class="fl">18</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,
            geneName <span class="op">=</span> <span class="st">"IGHV3-23"</span>,
@@ -8792,9 +8795,11 @@ LILRB3
            IDColumn <span class="op">=</span> <span class="st">"PATID"</span>,
            graphics <span class="op">=</span> <span class="st">"ggplot"</span>,
            colours <span class="op">=</span> <span class="va">plotColours</span>,
-           modelColour <span class="op">=</span> <span class="va">modColours</span>,
-           modelLineColour <span class="op">=</span> <span class="va">modColours</span>,
-           lineColour <span class="op">=</span> <span class="st">"grey60"</span>,
+           shapes <span class="op">=</span> <span class="va">shapes</span>,
+           lineColours <span class="op">=</span> <span class="va">plotColours</span>, 
+           modelColours <span class="op">=</span> <span class="va">modColours</span>,
+           modelLineColours <span class="op">=</span> <span class="va">modColours</span>,
+           modelSize <span class="op">=</span> <span class="fl">10</span>, 
            fontSize<span class="op">=</span><span class="fl">10</span>,
            x2Offset <span class="op">=</span> <span class="fl">8</span>,
            logTransform<span class="op">=</span><span class="cn">TRUE</span>,
@@ -8815,8 +8820,8 @@ LILRB3
                 fontSize<span class="op">=</span><span class="fl">0.65</span>,
                 colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
                 addModel<span class="op">=</span><span class="cn">T</span>,
-                modelColour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
-                modelLineColour <span class="op">=</span> <span class="st">"black"</span>,
+                modelColours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
+                modelLineColours <span class="op">=</span> <span class="st">"black"</span>,
                 modelSize <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 
 <span class="va">p2</span> <span class="op">=</span> <span class="fu"><a href="../reference/pairedPlot.html">pairedPlot</a></span><span class="op">(</span>glmmResult<span class="op">=</span><span class="va">results</span>,

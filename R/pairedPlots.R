@@ -222,8 +222,8 @@ pairedPlot <- function(glmmResult,
     if(logTransform) log <- "y" else log <- ""
     if(is.null(xTitle)) xTitle <- NA
     if(addModel) {
-      myYlim = c(min(df_mean$lower), max(df_mean$upper))
-    } else myYlim = NULL
+      myYlim <- c(min(df_mean$lower), max(df_mean$upper))
+    } else myYlim <- NULL
     plot(as.numeric(df_long$x1Factors), df_long$geneExp,
          ylim = myYlim, type='p', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
@@ -355,8 +355,8 @@ pairedPlot <- function(glmmResult,
                  ymin=df_mean$lower, ymax=df_mean$upper,
                  width=0.2, size=modelLineSize) +
         annotate("point", x = df_mean$x1Factors, y = df_mean$y, 
-                 shape=shapes[as.character(df_mean$group)],
-                 size=modelSize, color=modelColours[as.character(df_mean$group)])
+                 shape=shapes[as.character(df_mean$group)], size=modelSize, 
+                 color=modelColours[as.character(df_mean$group)])
     }
     
     if(logTransform) p <- p + scale_y_continuous(trans='log10')

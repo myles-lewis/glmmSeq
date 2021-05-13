@@ -220,7 +220,8 @@ modelPlot <- function(glmmResult,
         coord_cartesian(clip = 'off', expand=TRUE)
     }
     p <- p +
-      scale_color_manual(values=colours[levels(modelData$group)], name=x2Label) +
+      scale_color_manual(values=colours[levels(modelData$group)], 
+                         name=x2Label) +
       scale_shape_manual(values=shapes[levels(modelData$group)], name=x2Label) +
       labs(subtitle= bquote(
         paste("P"[.(x1Label)]*"=", .(pval[1]),
