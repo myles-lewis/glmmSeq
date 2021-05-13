@@ -13,7 +13,7 @@ modelPlot(
   yTitle = "Gene Expression",
   title = NULL,
   logTransform = FALSE,
-  shapes = 21,
+  shapes = 19,
   colours = c("blue"),
   x2Offset = 6,
   lineWidth = 1,
@@ -43,7 +43,7 @@ modelPlot(
 
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
-\item{shapes}{The marker shapes, default=21}
+\item{shapes}{The marker shapes, default=19}
 
 \item{colours}{The marker colours, default=c('blue')}
 

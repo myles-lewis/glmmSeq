@@ -343,7 +343,10 @@ at the gene with the most significant interaction _IGHV3-23_:
 
 ```{r, fig.height=6, warning=FALSE}
 plotColours <- c("skyblue", "goldenrod1", "mediumseagreen")
-modColours <- c("dodgerblue3", "goldenrod3", "seagreen4")
+modColours <- c("Good responder"="dodgerblue3", 
+                "Moderate responder"= "goldenrod3", 
+                "Non responder"="seagreen4")
+shapes <- c("Moderate responder"=19, "Good responder"= 17, "Non responder"=18)
 
 pairedPlot(glmmResult=results,
            geneName = "IGHV3-23",
@@ -353,9 +356,11 @@ pairedPlot(glmmResult=results,
            IDColumn = "PATID",
            graphics = "ggplot",
            colours = plotColours,
-           modelColour = modColours,
-           modelLineColour = modColours,
-           lineColour = "grey60",
+           shapes = shapes,
+           lineColours = plotColours, 
+           modelColours = modColours,
+           modelLineColours = modColours,
+           modelSize = 10, 
            fontSize=10,
            x2Offset = 8,
            logTransform=TRUE,
@@ -378,8 +383,8 @@ p1 = pairedPlot(glmmResult=results2,
                 fontSize=0.65,
                 colours=c("coral", "mediumseagreen"),
                 addModel=T,
-                modelColour = c("coral", "mediumseagreen"),
-                modelLineColour = "black",
+                modelColours = c("coral", "mediumseagreen"),
+                modelLineColours = "black",
                 modelSize = 2)
 
 p2 = pairedPlot(glmmResult=results,

@@ -5,7 +5,7 @@ News
 ###### 18/04/2021
 
 ##### Bug Fixes
-* Fix colours in paired\_plots
+* Fix colours in pairedPlots and modelPlots
 
 
 # glmmSeq v0.1.0
