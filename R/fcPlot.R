@@ -104,8 +104,8 @@ fcPlot <- function(glmmResult,
   yCols <- modelData$y[modelData[, x2Label] == x2Values[2] &
                          modelData[, x1Label] %in% x1Values]
 
-  plotData$x <- log2(plotData[, xCols[1]]+1) - log2(plotData[, xCols[2]]+1)
-  plotData$y <- log2(plotData[, yCols[1]]+1) - log2(plotData[, yCols[2]]+1)
+  plotData$x <- log2(plotData[, xCols[2]]+1) - log2(plotData[, xCols[1]]+1)
+  plotData$y <- log2(plotData[, yCols[2]]+1) - log2(plotData[, yCols[1]]+1)
   plotData$maxGroup <- ifelse(abs(plotData$x) > abs(plotData$y),
                               x2Values[1],
                               x2Values[2])
@@ -172,11 +172,11 @@ fcPlot <- function(glmmResult,
       geom_point() +
       theme_minimal() +
       scale_color_manual(values = colours, breaks = colLevels, name = "") +
-      labs(x = bquote(paste("log"[2], "Fold Change ", .(x1Values[1]), " vs ",
-                          .(x1Values[2]), " (", .(x2Label), " = ",
+      labs(x = bquote(paste("log"[2], "Fold Change ", .(x1Values[2]), " vs ",
+                          .(x1Values[1]), " (", .(x2Label), " = ",
                           .(x2Values[1]), ")")),
-           y = bquote(paste("log"[2], "Fold Change ", .(x1Values[1]), " vs ",
-                          .(x1Values[2]), " (", .(x2Label), " = ",
+           y = bquote(paste("log"[2], "Fold Change ", .(x1Values[2]), " vs ",
+                          .(x1Values[1]), " (", .(x2Label), " = ",
                           .(x2Values[2]), ")")),
            title = "") +
       theme(legend.position = c(0, 1),
@@ -200,11 +200,11 @@ fcPlot <- function(glmmResult,
                  text = rownames(plotData), hoverinfo = 'text') %>%
       layout(annotations = annot,
              xaxis = list(title = paste0("log<sub>2</sub>Fold change ",
-                                     x1Values[1], " vs ", x1Values[2],
+                                     x1Values[2], " vs ", x1Values[1],
                                      " (", x2Label, " = ", x2Values[1], ")"),
                         color = 'black'),
              yaxis = list(title = paste0("log<sub>2</sub>Fold change ",
-                                     x1Values[1], " vs ", x1Values[2],
+                                     x1Values[2], " vs ", x1Values[1],
                                      " (", x2Label, " = ", x2Values[2], ")"),
                         color = 'black'),
              font = list(size = fontSize),
