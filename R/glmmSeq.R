@@ -42,6 +42,7 @@ setClass("GlmmSeq", slots = list(
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default = "")
 #' @param modelData Expanded design matrix
+#' @param designMatrix custom design matrix
 #' @param control the glmer control (default = glmerControl(optimizer = 
 #' "bobyqa")). For more information see
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
@@ -93,6 +94,7 @@ glmmSeq <- function(modelFormula,
                     sizeFactors = NULL,
                     reducedFormula = "",
                     modelData = NULL,
+                    designMatrix = NULL,
                     control = glmerControl(optimizer = "bobyqa"),
                     cores = 1,
                     removeDuplicatedMeasures = FALSE,
@@ -187,8 +189,11 @@ glmmSeq <- function(modelFormula,
     })
     modelData <- expand.grid(varLevels)
     colnames(modelData) <- reducedVars
-  }
-  designMatrix <- model.matrix(reducedFormula, modelData)
+  } 
+
+  if (is.null(designMatrix)){
+    designMatrix <- model.matrix(reducedFormula, modelData)
+  } 
   
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
