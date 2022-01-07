@@ -353,7 +353,7 @@ glmerApply <- function(geneList,
     newLCI <- exp(newY - newSE * 1.96)
     newUCI <- exp(newY + newSE * 1.96)
     predictdf <- c(exp(newY), newLCI, newUCI)
-    singular <- is.numeric(lme4::isSingular(fit))
+    singular <- as.numeric(lme4::isSingular(fit))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
     return(list(stats = c(stats, fixedEffects, waldtest),
