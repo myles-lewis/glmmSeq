@@ -324,7 +324,7 @@ glmerApply <- function(geneList,
                        offset,
                        ...) {
   data[, "count"] <- as.numeric(geneList$y)
-  fit <- try(suppressMessages(
+  fit <- try(suppressWarnings(
     lme4::glmer(fullFormula, data = data, control = control, offset = offset,
                 family = MASS::negative.binomial(theta = 
                                                    1/geneList$dispersion)),
