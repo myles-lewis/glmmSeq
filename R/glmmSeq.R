@@ -346,14 +346,14 @@ glmerApply <- function(geneList,
                          c(paste0("Chisq_", rownames(wald)),
                            paste0("P_", rownames(wald))))
     newY <- predict(fit, newdata = modelData, re.form = NA)
-    a <- designMatrix %*% vcov(fit)
+    a <- designMatrix %*% suppressWarnings(vcov(fit))
     b <- as.matrix(a %*% t(designMatrix))
     predVar <- diag(b)
     newSE <- sqrt(predVar)
     newLCI <- exp(newY - newSE * 1.96)
     newUCI <- exp(newY + newSE * 1.96)
     predictdf <- c(exp(newY), newLCI, newUCI)
-    singular <- as.numeric(lme4::isSingular(fit))
+    singular <- suppressWarnings(is.numeric(lme4::isSingular(fit)))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
     return(list(stats = c(stats, fixedEffects, waldtest),
