@@ -42,6 +42,7 @@ setClass("GlmmSeq", slots = list(
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default = "")
 #' @param modelData Expanded design matrix
+#' @param designMatrix custom design matrix
 #' @param control the glmer control (default = glmerControl(optimizer = 
 #' "bobyqa")). For more information see
 #' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
@@ -93,6 +94,7 @@ glmmSeq <- function(modelFormula,
                     sizeFactors = NULL,
                     reducedFormula = "",
                     modelData = NULL,
+                    designMatrix = NULL,
                     control = glmerControl(optimizer = "bobyqa"),
                     cores = 1,
                     removeDuplicatedMeasures = FALSE,
@@ -181,14 +183,17 @@ glmmSeq <- function(modelFormula,
   if (is.null(modelData)) {
     reducedVars <- rownames(attr(terms(reducedFormula), "factors"))
     varLevels <- lapply(reducedVars, function(x) {
-      if (class(metadata[, x]) == "factor") {
+      if (is.factor(metadata[, x])) {
         return(levels(subsetMetadata[, x]))
       } else {sort(unique(subsetMetadata[, x]))}
     })
     modelData <- expand.grid(varLevels)
     colnames(modelData) <- reducedVars
-  }
-  designMatrix <- model.matrix(reducedFormula, modelData)
+  } 
+
+  if (is.null(designMatrix)){
+    designMatrix <- model.matrix(reducedFormula, modelData)
+  } 
   
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
@@ -319,11 +324,11 @@ glmerApply <- function(geneList,
                        offset,
                        ...) {
   data[, "count"] <- as.numeric(geneList$y)
-  fit <- try(suppressMessages(
+  fit <- try(suppressMessages(suppressWarnings(
     lme4::glmer(fullFormula, data = data, control = control, offset = offset,
                 family = MASS::negative.binomial(theta = 
                                                    1/geneList$dispersion)),
-    ...),
+    ...)),
     silent = TRUE)
   
   if (class(fit) != "try-error") {
@@ -341,7 +346,7 @@ glmerApply <- function(geneList,
                          c(paste0("Chisq_", rownames(wald)),
                            paste0("P_", rownames(wald))))
     newY <- predict(fit, newdata = modelData, re.form = NA)
-    a <- designMatrix %*% vcov(fit)
+    a <- designMatrix %*% suppressWarnings(vcov(fit))
     b <- as.matrix(a %*% t(designMatrix))
     predVar <- diag(b)
     newSE <- sqrt(predVar)
