@@ -331,7 +331,7 @@ glmerApply <- function(geneList,
     ...)),
     silent = TRUE)
   
-  if (class(fit) != "try-error") {
+  if (inherits(fit, "try-error")) {
     # intercept dropped genes
     if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
       return( list(stats = NA, predict = NA, optinfo = NA,

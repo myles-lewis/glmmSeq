@@ -345,7 +345,7 @@ pairedPlot <- function(glmmResult,
                                   each=512*lLength/length(leftColours)))
     }
     
-    if(addModel & class(glmmResult) == "GlmmSeq"){
+    if(addModel & inherits(glmmResult, "GlmmSeq")){
       p <- p +
         annotate("line", x = df_mean$x1Factors, y = df_mean$y,
                  group=df_mean$group, size=modelLineSize,

@@ -30,7 +30,7 @@
 glmmQvals <- function(glmmResult, cutoff = 0.05, pi0 = NULL, verbose = TRUE) {
 
 
-  if (class(glmmResult) != "GlmmSeq") {
+  if (!inherits(glmmResult, "GlmmSeq")) {
     stop("glmmResult must be a GlmmSeq object")
   }
 
