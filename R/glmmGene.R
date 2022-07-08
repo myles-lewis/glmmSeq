@@ -69,10 +69,7 @@ glmmGene <- function(modelFormula,
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
   }
-  if (class(dispersion) != "numeric" | length(dispersion) != 1) {
-    stop("dispersion must be a single number")
-  }
-  if (class(dispersion) != "numeric" | length(dispersion) != 1) {
+  if (!is.numeric(dispersion) | length(dispersion) != 1) {
     stop("dispersion must be a single number")
   }
   if (ncol(countdata) != nrow(metadata)) {
