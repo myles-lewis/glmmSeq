@@ -56,8 +56,8 @@ setClass("lmmSeq", slots = list(
 #' @param progress Logical whether to display a progress bar
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a lmmSeq object with results for gene-wise general linear
-#' mixed models or a list of results if returnList is TRUE.
+#' @return Returns an S4 class `lmmSeq` object with results for gene-wise
+#'   general linear mixed models or a list of results if `returnList` is `TRUE`.
 #' @importFrom lme4 subbars findbars lmer fixef lmerControl nobars isSingular
 #' @importFrom stats update.formula model.matrix predict setNames
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
@@ -291,8 +291,7 @@ lmmSeq <- function(modelFormula,
 #'  \code{\link[lme4:glmer]{lme4::lmer()}}.
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::lmer()}}
-#' @return Returns an lmmSeq object with results for gene-wise linear
-#' mixed models
+#' @return Returns a list of results for gene-wise linear mixed models
 #' @importFrom lme4 lmer fixef isSingular
 #' @importFrom stats update.formula model.matrix predict setNames
 #' @importFrom car Anova
