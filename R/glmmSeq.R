@@ -327,8 +327,8 @@ glmerApply <- function(geneList,
   fit <- try(suppressMessages(suppressWarnings(
     lme4::glmer(fullFormula, data = data, control = control, offset = offset,
                 family = MASS::negative.binomial(theta = 
-                                                   1/geneList$dispersion)),
-    ...)),
+                                                   1/geneList$dispersion),
+                ...))),
     silent = TRUE)
   
   if (!inherits(fit, "try-error")) {
