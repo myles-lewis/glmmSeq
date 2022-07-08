@@ -36,7 +36,6 @@ setClass("lmmSeq", slots = list(
 #' @param metadata a dataframe of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
 #' in pairing samples
-#' @param dispersion a numeric vector of gene dispersion
 #' @param sizeFactors size factors (default = NULL). If provided the glmer 
 #' offset is set to log(sizeFactors). For more information see
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
@@ -51,8 +50,6 @@ setClass("lmmSeq", slots = list(
 #' conditions/repeated measurements for a given time point (default = FALSE).
 #' @param removeSingles whether to remove individuals with only one measurement
 #' (default = FALSE)
-#' @param zeroCount numerical value to offset zeroes for the purpose of log
-#' (default = 0.125)
 #' @param verbose Logical whether to display messaging (default = TRUE)
 #' @param returnList Logical whether to return results as a list or lmmSeq 
 #' object (default = FALSE).
@@ -76,9 +73,8 @@ setClass("lmmSeq", slots = list(
 #'
 #' MS4A1lmm <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      id = "PATID",
-#'                      maindata = tpm["MS4A1", ],
+#'                      maindata = log2(tpm["MS4A1", ] +1),
 #'                      metadata = metadata,
-#'                      dispersion = disp["MS4A1"],
 #'                      verbose = FALSE)
 #' names(attributes(MS4A1lmm))
 
