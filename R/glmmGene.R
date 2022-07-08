@@ -144,7 +144,7 @@ glmmGene <- function(modelFormula,
   if (is.null(modelData)) {
     reducedVars <- rownames(attr(terms(reducedFormula), "factors"))
     varLevels <- lapply(reducedVars, function(x) {
-      if (class(metadata[, x]) == "factor") return(levels(metadata[, x]))
+      if (is.factor(metadata[, x])) return(levels(metadata[, x]))
       sort(unique(metadata[, x]))
     })
     modelData <- expand.grid(varLevels)
