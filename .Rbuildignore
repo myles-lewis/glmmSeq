@@ -12,3 +12,4 @@ package_creator.R
 ^pkgdown$
 ^CRAN-SUBMISSION$
 cran-comments.md
+

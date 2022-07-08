@@ -1,6 +1,10 @@
 News
 =====
 
+# glmmSeq v.0.1.2
+###### 08/07/2022
+* Fix CMD check errors
+
 # glmmSeq v0.1.1
 ###### 18/04/2021
 
