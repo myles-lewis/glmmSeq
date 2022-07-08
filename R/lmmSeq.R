@@ -70,13 +70,13 @@ setClass("lmmSeq", slots = list(
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)
-#'
-#' MS4A1lmm <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#' logtpm <- log2(tpm +1)
+#' lmmtest <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      id = "PATID",
-#'                      maindata = log2(tpm["MS4A1", ] +1),
+#'                      maindata = logtpm["MS4A1", ],
 #'                      metadata = metadata,
 #'                      verbose = FALSE)
-#' names(attributes(MS4A1lmm))
+#' names(attributes(lmmtest))
 
 
 lmmSeq <- function(modelFormula,
