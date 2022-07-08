@@ -96,13 +96,12 @@ pairedPlot <- function(glmmResult,
                        violinWidth=0.5,
                        ...) {
   
-  if(class(alpha) != "numeric" | alpha > 1 | alpha < 0) {
-    stop("alpha must be a numer between 1 and 0")
+  if(!is.numeric(alpha) | alpha > 1 | alpha < 0) {
+    stop("alpha must be a number between 0 and 1")
   }
   
-  
   # For outputs from glmmGene
-  if(class(glmmResult) == "glmerMod"){
+  if(inherits(glmmResult, "glmerMod")){
     if(! x1Label %in% colnames(glmmResult@frame)) {
       stop("x1Label must be a column name in glmmResult@frame")
     }
@@ -117,7 +116,7 @@ pairedPlot <- function(glmmResult,
     labs <- levels(droplevels(factor(glmmResult@frame[, x2Label])))
     
     # For outputs from glmmSeq
-  } else if(class(glmmResult) == "GlmmSeq"){
+  } else if(inherits(glmmResult, "GlmmSeq")){
     if(! x1Label %in% colnames(glmmResult@modelData)) {
       stop("x1Label must be a column name in glmmResult@modelData")
     }
