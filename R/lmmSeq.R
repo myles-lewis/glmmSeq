@@ -7,7 +7,7 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 #' @slot stats the statistics from the LMM fit
 #' @slot predict The predicted interception values
 #' @slot reducedFormula The reduced formula with removed random effects
-#' @slot maindata The input expression data
+#' @slot maindata The input expression data with variables in rows
 #' @slot metadata The input metadata
 #' @slot modelData the model data for the LMM
 #' @slot optInfo Information on whether the model was singular or converged
@@ -30,10 +30,13 @@ setClass("lmmSeq", slots = list(
 
 #' Linear mixed models for data matrix
 #'
-#' @param modelFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @param maindata data matrix
-#' @param metadata a dataframe of sample information
+#' @param modelFormula the model formula. This must be of the form `"~ ..."`
+#'   where the structure is assumed to be `"gene ~ ..."`. The formula must
+#'   include a random effects term. For more information on formula structure
+#'   for random effects see \code{\link[lme4:lmer]{lme4::lmer()}}
+#' @param maindata data matrix with genes in rows and samples in columns
+#' @param metadata a dataframe of sample information with variables in columns
+#'   and samples in rows
 #' @param id Column name in metadata which contains the sample IDs to be used
 #' in pairing samples
 #' @param sizeFactors size factors (default = NULL). If provided the glmer 

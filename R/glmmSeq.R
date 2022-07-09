@@ -30,8 +30,10 @@ setClass("GlmmSeq", slots = list(
 
 #' Glmm for sequencing results
 #'
-#' @param modelFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
+#' @param modelFormula the model formula. This must be of the form `"~ ..."`
+#'   where the structure is assumed to be `"counts ~ ..."`. The formula must
+#'   include a random effects term. For more information on formula structure
+#'   for random effects see \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param countdata the sequencing count data
 #' @param metadata a data frame of sample information
 #' @param id Column name in metadata which contains the sample IDs to be used
