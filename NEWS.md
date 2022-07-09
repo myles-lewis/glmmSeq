@@ -1,7 +1,11 @@
 News
 =====
 
-# glmmSeq v.0.1.2
+# glmmSeq v0.2.0
+###### 09/7/2022
+* Add lmmSeq function for gaussian linear mixed models
+
+# glmmSeq v0.1.2
 ###### 08/07/2022
 * Fix CMD check errors
 
@@ -10,7 +14,6 @@ News
 
 ##### Bug Fixes
 * Fix colours in pairedPlots and modelPlots
-
 
 # glmmSeq v0.1.0
 ###### 16/03/2021
