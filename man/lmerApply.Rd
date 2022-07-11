@@ -23,8 +23,8 @@ structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{data}{The sample metadata.}
 
-\item{control}{the lmer control (default = lmerControl()). For more information see
-\code{\link[lme4:lmerControl]{lme4::lmerControl()}}.}
+\item{control}{the lmer control (default = lmerControl()). For more
+information see \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.}
 
 \item{modelData}{Expanded design matrix}
 

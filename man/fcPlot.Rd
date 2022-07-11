@@ -18,7 +18,8 @@ fcPlot(
   fontSize = 12,
   labelFontSize = 5,
   colours = c("grey", "goldenrod1", "red", "blue"),
-  verbose = FALSE
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -54,6 +55,8 @@ change. If NULL the first two levels in x1Label are used.}
 \item{colours}{Vector of colours to use for significance groups}
 
 \item{verbose}{Whether to print statistics}
+
+\item{...}{Other parameters to pass to plotly or ggplot}
 }
 \value{
 Returns a plot for fold change between x1Values in one x2Value

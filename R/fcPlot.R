@@ -19,6 +19,7 @@
 #' @param labelFontSize Font size for labels
 #' @param colours Vector of colours to use for significance groups
 #' @param verbose Whether to print statistics
+#' @param ... Other parameters to pass to plotly or ggplot
 #' @return Returns a plot for fold change between x1Values in one x2Value
 #' subset on x axis and fold change in the other x2Value on the y axis.
 #' @importFrom plotly layout config plot_ly
@@ -62,7 +63,8 @@ fcPlot <- function(glmmResult,
                    fontSize = 12,
                    labelFontSize = 5,
                    colours = c("grey", "goldenrod1", "red", "blue"),
-                   verbose = FALSE){
+                   verbose = FALSE, 
+                   ...){
   
   # Extract the data
   predict <- glmmResult@predict
@@ -167,7 +169,8 @@ fcPlot <- function(glmmResult,
   # GGplot
   if (graphics == "ggplot") {
     plotData <- plotData[order(plotData$col), ]
-    p <- ggplot(data = plotData, aes_string(x = "x", y = "y", color = "col")) +
+    p <- ggplot(data = plotData, aes_string(x = "x", y = "y", color = "col"), 
+                ...) +
       geom_hline(yintercept = 0) + geom_vline(xintercept = 0)+
       geom_point() +
       theme_minimal() +
@@ -193,7 +196,7 @@ fcPlot <- function(glmmResult,
   }else if (graphics == "plotly") {
     plotData <- plotData[order(plotData$col), ]
     p <- plot_ly(data = plotData, x = ~x, y = ~y, type = 'scatter', 
-                 mode = 'markers',
+                 mode = 'markers', ...,
                  color = ~col, colors = colours,
                  marker = list(size = 8, 
                                line = list(width = 0.75, color = 'white')),
@@ -209,7 +212,7 @@ fcPlot <- function(glmmResult,
                         color = 'black'),
              font = list(size = fontSize),
              legend = list(x = 0, y = 1, font = list(color = 'black'))) %>%
-      config(edits = list(annotationPosition = TRUE,
+      config(edits = list(annotationPosition = FALSE,
                           annotationTail = TRUE,
                           annotationText = TRUE),
              toImageButtonOptions = list(format = "svg"))

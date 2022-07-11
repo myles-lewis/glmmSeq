@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -3042,7 +3042,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 14.02954 secs</code></pre>
+## Time difference of 11.88863 secs</code></pre>
 <p>or alternatively using two-factor classification with EULAR_binary:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_binary</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
@@ -3055,7 +3055,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-ali
                   cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## n = 124 samples, 82 individuals
-## Time difference of 12.00159 secs</code></pre>
+## Time difference of 10.7866 secs</code></pre>
 <div id="outputs" class="section level2">
 <h2 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h2>
@@ -8974,7 +8974,7 @@ LILRB3
 ## To cite package 'glmmSeq' in publications use:
 ## 
 ##   Myles Lewis, Katriona Goldmann and Elisabetta Sciacca (NA). glmmSeq: General Linear
-##   Mixed Models for Gene-Level Differential Expression. R package version 0.2.0.
+##   Mixed Models for Gene-Level Differential Expression. R package version 0.2.1.
 ##   https://github.com/KatrionaGoldmann/glmmSeq
 ## 
 ## A BibTeX entry for LaTeX users is
@@ -8982,7 +8982,7 @@ LILRB3
 ##   @Manual{,
 ##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},
 ##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},
-##     note = {R package version 0.2.0},
+##     note = {R package version 0.2.1},
 ##     url = {https://github.com/KatrionaGoldmann/glmmSeq},
 ##   }</code></pre>
 </div>

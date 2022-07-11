@@ -1,6 +1,12 @@
 News
 =====
 
+# glmmSeq v0.2.1
+###### 11/7/2022
+* Add `...` option to fcPlot which is passed to `plotly()` or `ggplot()`
+* set `annotationPosition=FALSE` in `fcPlot so arrows/connectors are not moved
+
+
 # glmmSeq v0.2.0
 ###### 09/7/2022
 * Add lmmSeq function for gaussian linear mixed models
