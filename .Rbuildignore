@@ -13,3 +13,4 @@ package_creator.R
 ^CRAN-SUBMISSION$
 cran-comments.md
 
+^CRAN-RELEASE$
