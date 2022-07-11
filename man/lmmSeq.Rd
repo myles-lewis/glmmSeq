@@ -24,12 +24,15 @@ lmmSeq(
 )
 }
 \arguments{
-\item{modelFormula}{the model formula. For more information of formula
-structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
+\item{modelFormula}{the model formula. This must be of the form \code{"~ ..."}
+where the structure is assumed to be \code{"gene ~ ..."}. The formula must
+include a random effects term. For more information on formula structure
+for random effects see \code{\link[lme4:lmer]{lme4::lmer()}}}
 
-\item{maindata}{data matrix}
+\item{maindata}{data matrix with genes in rows and samples in columns}
 
-\item{metadata}{a dataframe of sample information}
+\item{metadata}{a dataframe of sample information with variables in columns
+and samples in rows}
 
 \item{id}{Column name in metadata which contains the sample IDs to be used
 in pairing samples}

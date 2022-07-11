@@ -26,8 +26,10 @@ glmmSeq(
 )
 }
 \arguments{
-\item{modelFormula}{the model formula. For more information of formula
-structure see \code{\link[lme4:glmer]{lme4::glmer()}}}
+\item{modelFormula}{the model formula. This must be of the form \code{"~ ..."}
+where the structure is assumed to be \code{"counts ~ ..."}. The formula must
+include a random effects term. For more information on formula structure
+for random effects see \code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{countdata}{the sequencing count data}
 

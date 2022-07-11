@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
@@ -243,38 +243,39 @@ conditions/repeated measurements for a given time point (default=FALSE).</p></td
     <p>Returns the fit for the general linear mixed model of a single gene</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>PEAC_minimal_load</span><span class='op'>)</span>
-<span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>tpm</span>, <span class='fl'>1</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='op'>}</span><span class='op'>)</span>
-<span class='va'>MS4A1fit</span> <span class='op'>&lt;-</span> <span class='fu'>glmmGene</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,
-                      gene <span class='op'>=</span> <span class='st'>"MS4A1"</span>,
-                      id <span class='op'>=</span> <span class='st'>"PATID"</span>,
-                      countdata <span class='op'>=</span> <span class='va'>tpm</span>,
-                      metadata <span class='op'>=</span> <span class='va'>metadata</span>,
-                      dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='st'>"MS4A1"</span><span class='op'>]</span>,
-                      verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='va'>MS4A1fit</span>
-</div><div class='output co'>#&gt; Generalized linear mixed model fit by maximum likelihood (Laplace
-#&gt;   Approximation) [glmerMod]
-#&gt;  Family: Negative Binomial(0.2865)  ( log )
-#&gt; Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m
-#&gt;    Data: data
-#&gt;  Offset: offset
-#&gt;       AIC       BIC    logLik  deviance  df.resid 
-#&gt;  898.2008  920.7630 -441.1004  882.2008       116 
-#&gt; Random effects:
-#&gt;  Groups Name        Std.Dev.
-#&gt;  PATID  (Intercept) 0.2038  
-#&gt; Number of obs: 124, groups:  PATID, 82
-#&gt; Fixed Effects:
-#&gt;                          (Intercept)                             Timepoint  
-#&gt;                              2.69088                               0.03668  
-#&gt;           EULAR_6mModerate responder                 EULAR_6mNon responder  
-#&gt;                              0.22723                              -1.69489  
-#&gt; Timepoint:EULAR_6mModerate responder       Timepoint:EULAR_6mNon responder  
-#&gt;                             -0.20100                               0.17747  </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>PEAC_minimal_load</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>tpm</span>, <span class='fl'>1</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>MS4A1fit</span> <span class='op'>&lt;-</span> <span class='fu'>glmmGene</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,</span>
+<span class='r-in'>                      gene <span class='op'>=</span> <span class='st'>"MS4A1"</span>,</span>
+<span class='r-in'>                      id <span class='op'>=</span> <span class='st'>"PATID"</span>,</span>
+<span class='r-in'>                      countdata <span class='op'>=</span> <span class='va'>tpm</span>,</span>
+<span class='r-in'>                      metadata <span class='op'>=</span> <span class='va'>metadata</span>,</span>
+<span class='r-in'>                      dispersion <span class='op'>=</span> <span class='va'>disp</span><span class='op'>[</span><span class='st'>"MS4A1"</span><span class='op'>]</span>,</span>
+<span class='r-in'>                      verbose<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>MS4A1fit</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Generalized linear mixed model fit by maximum likelihood (Laplace</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Approximation) [glmerMod]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Family: Negative Binomial(0.2865)  ( log )</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Data: data</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Offset: offset</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       AIC       BIC    logLik  deviance  df.resid </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  898.2008  920.7630 -441.1004  882.2008       116 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Random effects:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Groups Name        Std.Dev.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  PATID  (Intercept) 0.2038  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of obs: 124, groups:  PATID, 82</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fixed Effects:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          (Intercept)                             Timepoint  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              2.69088                               0.03668  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           EULAR_6mModerate responder                 EULAR_6mNon responder  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              0.22723                              -1.69489  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Timepoint:EULAR_6mModerate responder       Timepoint:EULAR_6mNon responder  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                             -0.20100                               0.17747  </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

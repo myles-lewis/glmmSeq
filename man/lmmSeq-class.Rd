@@ -18,7 +18,7 @@ An S4 class to define the lmmSeq output
 
 \item{\code{reducedFormula}}{The reduced formula with removed random effects}
 
-\item{\code{maindata}}{The input expression data}
+\item{\code{maindata}}{The input expression data with variables in rows}
 
 \item{\code{metadata}}{The input metadata}
 

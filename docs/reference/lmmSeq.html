@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotly or ggplot fold change plots — fcPlot • glmmSeq</title>
+<title>Linear mixed models for data matrix — lmmSeq • glmmSeq</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Plotly or ggplot fold change plots — fcPlot" />
-<meta property="og:description" content="Plotly or ggplot fold change plots" />
+<meta property="og:title" content="Linear mixed models for data matrix — lmmSeq" />
+<meta property="og:description" content="Linear mixed models for data matrix" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -135,127 +135,133 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotly or ggplot fold change plots</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/fcPlot.R'><code>R/fcPlot.R</code></a></small>
-    <div class="hidden name"><code>fcPlot.Rd</code></div>
+    <h1>Linear mixed models for data matrix</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/lmmSeq.R'><code>R/lmmSeq.R</code></a></small>
+    <div class="hidden name"><code>lmmSeq.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plotly or ggplot fold change plots</p>
+    <p>Linear mixed models for data matrix</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fcPlot</span><span class='op'>(</span>
-  <span class='va'>glmmResult</span>,
-  <span class='va'>x1Label</span>,
-  <span class='va'>x2Label</span>,
-  x1Values <span class='op'>=</span> <span class='cn'>NULL</span>,
-  x2Values <span class='op'>=</span> <span class='cn'>NULL</span>,
-  pCutoff <span class='op'>=</span> <span class='fl'>0.01</span>,
-  labels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>,
-  useAdjusted <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  plotCutoff <span class='op'>=</span> <span class='fl'>1</span>,
-  graphics <span class='op'>=</span> <span class='st'>"ggplot"</span>,
-  fontSize <span class='op'>=</span> <span class='fl'>12</span>,
-  labelFontSize <span class='op'>=</span> <span class='fl'>5</span>,
-  colours <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grey"</span>, <span class='st'>"goldenrod1"</span>, <span class='st'>"red"</span>, <span class='st'>"blue"</span><span class='op'>)</span>,
-  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+    <pre class="usage"><span class='fu'>lmmSeq</span><span class='op'>(</span>
+  <span class='va'>modelFormula</span>,
+  <span class='va'>maindata</span>,
+  <span class='va'>metadata</span>,
+  <span class='va'>id</span>,
+  sizeFactors <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reducedFormula <span class='op'>=</span> <span class='st'>""</span>,
+  modelData <span class='op'>=</span> <span class='cn'>NULL</span>,
+  designMatrix <span class='op'>=</span> <span class='cn'>NULL</span>,
+  control <span class='op'>=</span> <span class='fu'>lmerControl</span><span class='op'>(</span><span class='op'>)</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>,
+  removeDuplicatedMeasures <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  removeSingles <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  returnList <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  progress <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>glmmResult</th>
-      <td><p>A glmmSeq object created by
-<code><a href='glmmSeq.html'>glmmSeq::glmmSeq()</a></code>.</p></td>
+      <th>modelFormula</th>
+      <td><p>the model formula. This must be of the form <code>"~ ..."</code>
+where the structure is assumed to be <code>"gene ~ ..."</code>. The formula must
+include a random effects term. For more information on formula structure
+for random effects see <code><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lme4::lmer()</a></code></p></td>
     </tr>
     <tr>
-      <th>x1Label</th>
-      <td><p>The name of the first (inner) x parameter</p></td>
+      <th>maindata</th>
+      <td><p>data matrix with genes in rows and samples in columns</p></td>
     </tr>
     <tr>
-      <th>x2Label</th>
-      <td><p>The name of the second (outer) x parameter</p></td>
+      <th>metadata</th>
+      <td><p>a dataframe of sample information with variables in columns
+and samples in rows</p></td>
     </tr>
     <tr>
-      <th>x1Values</th>
-      <td><p>Subpopulations in x1Label to be used to calculate fold
-change. If NULL the first two levels in x1Label are used.</p></td>
+      <th>id</th>
+      <td><p>Column name in metadata which contains the sample IDs to be used
+in pairing samples</p></td>
     </tr>
     <tr>
-      <th>x2Values</th>
-      <td><p>Subpopulations in x2Label to be compared on x and y axis.</p></td>
+      <th>sizeFactors</th>
+      <td><p>size factors (default = NULL). If provided the glmer
+offset is set to log(sizeFactors). For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
     </tr>
     <tr>
-      <th>pCutoff</th>
-      <td><p>The significance cut-off for colour-coding
-(default = 0.01)</p></td>
+      <th>reducedFormula</th>
+      <td><p>Reduced design formula (default = "")</p></td>
     </tr>
     <tr>
-      <th>labels</th>
-      <td><p>Row names or indices to label on plot</p></td>
+      <th>modelData</th>
+      <td><p>Expanded design matrix</p></td>
     </tr>
     <tr>
-      <th>useAdjusted</th>
-      <td><p>whether to use adjusted pvalues
-(must have q_ columns in glmmResult). Default = FALSE</p></td>
+      <th>designMatrix</th>
+      <td><p>custom design matrix</p></td>
     </tr>
     <tr>
-      <th>plotCutoff</th>
-      <td><p>Which probes to include on plot by significance cut-off
-(default = 1, for all markers)</p></td>
+      <th>control</th>
+      <td><p>the glmer control (default = glmerControl(optimizer =
+"bobyqa")). For more information see
+<code><a href='https://rdrr.io/pkg/lme4/man/lmerControl.html'>lme4::glmerControl()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>graphics</th>
-      <td><p>Graphics system to use: "ggplot" or "plotly"</p></td>
+      <th>cores</th>
+      <td><p>number of cores to use. Default = 1.</p></td>
     </tr>
     <tr>
-      <th>fontSize</th>
-      <td><p>Font size</p></td>
+      <th>removeDuplicatedMeasures</th>
+      <td><p>whether to remove duplicated
+conditions/repeated measurements for a given time point (default = FALSE).</p></td>
     </tr>
     <tr>
-      <th>labelFontSize</th>
-      <td><p>Font size for labels</p></td>
-    </tr>
-    <tr>
-      <th>colours</th>
-      <td><p>Vector of colours to use for significance groups</p></td>
+      <th>removeSingles</th>
+      <td><p>whether to remove individuals with only one measurement
+(default = FALSE)</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Whether to print statistics</p></td>
+      <td><p>Logical whether to display messaging (default = TRUE)</p></td>
+    </tr>
+    <tr>
+      <th>returnList</th>
+      <td><p>Logical whether to return results as a list or lmmSeq
+object (default = FALSE).</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Logical whether to display a progress bar</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other parameters to pass to
+<code><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>lme4::glmer()</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a plot for fold change between x1Values in one x2Value
-subset on x axis and fold change in the other x2Value on the y axis.</p>
+    <p>Returns an S4 class <code>lmmSeq</code> object with results for gene-wise
+general linear mixed models or a list of results if <code>returnList</code> is <code>TRUE</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>PEAC_minimal_load</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>disp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>tpm</span>, <span class='fl'>1</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>var</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>**</span><span class='fl'>2</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>}</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>glmmFit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='glmmSeq.html'>glmmSeq</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,</span>
-<span class='r-in'>                     id <span class='op'>=</span> <span class='st'>'PATID'</span>,</span>
-<span class='r-in'>                     countdata <span class='op'>=</span> <span class='va'>tpm</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span>,</span>
+<span class='r-in'><span class='va'>logtpm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log2</a></span><span class='op'>(</span><span class='va'>tpm</span> <span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lmmtest</span> <span class='op'>&lt;-</span> <span class='fu'>lmmSeq</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>Timepoint</span> <span class='op'>*</span> <span class='va'>EULAR_6m</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>PATID</span><span class='op'>)</span>,</span>
+<span class='r-in'>                     id <span class='op'>=</span> <span class='st'>"PATID"</span>,</span>
+<span class='r-in'>                     maindata <span class='op'>=</span> <span class='va'>logtpm</span><span class='op'>[</span><span class='st'>"MS4A1"</span>, <span class='op'>]</span>,</span>
 <span class='r-in'>                     metadata <span class='op'>=</span> <span class='va'>metadata</span>,</span>
-<span class='r-in'>                     dispersion <span class='op'>=</span> <span class='va'>disp</span>,</span>
 <span class='r-in'>                     verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>variance-covariance matrix computed from finite-difference Hessian is</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> not positive definite or contains NA values: falling back to var-cov estimated from RX</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>fcPlot</span><span class='op'>(</span>glmmResult <span class='op'>=</span> <span class='va'>glmmFit</span>,</span>
-<span class='r-in'>      x1Label <span class='op'>=</span> <span class='st'>"Timepoint"</span>,</span>
-<span class='r-in'>      x2Label <span class='op'>=</span> <span class='st'>"EULAR_6m"</span>,</span>
-<span class='r-in'>      x2Values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Good responder"</span>, <span class='st'>"Non responder"</span><span class='op'>)</span>,</span>
-<span class='r-in'>      pCutoff <span class='op'>=</span> <span class='fl'>0.05</span>,</span>
-<span class='r-in'>      useAdjusted <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
-<span class='r-in'>      plotCutoff <span class='op'>=</span> <span class='fl'>1</span>,</span>
-<span class='r-in'>      graphics <span class='op'>=</span> <span class='st'>"plotly"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>lmmtest</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "formula"        "stats"          "predict"        "reducedFormula"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "maindata"       "metadata"       "modelData"      "optInfo"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "errors"         "variables"      "class"         </span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -287,8 +287,8 @@ lmmSeq <- function(modelFormula,
 #' @param modelData Expanded design matrix
 #' @param data The sample metadata.
 #' @param designMatrix The design matrix
-#' @param control the lmer control (default = lmerControl()). For more information see
-#' \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.
+#' @param control the lmer control (default = lmerControl()). For more 
+#' information see \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.
 #' @param offset this can be used to specify an a priori known component to be
 #'  included in the linear predictor during fitting. For more information see
 #'  \code{\link[lme4:glmer]{lme4::lmer()}}.

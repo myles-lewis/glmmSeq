@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
@@ -107,12 +107,12 @@
 <div id="from-cran" class="section level3">
 <h3 class="hasAnchor">
 <a href="#from-cran" class="anchor"></a>From CRAN</h3>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("glmmSeq")</a></code></pre>
+<pre><code>install.packages("glmmSeq")</code></pre>
 </div>
 <div id="from-github" class="section level3">
 <h3 class="hasAnchor">
 <a href="#from-github" class="anchor"></a>From Github</h3>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("KatrionaGoldmann/glmmSeq")</a></code></pre>
+<pre><code>devtools::install_github("KatrionaGoldmann/glmmSeq")</code></pre>
 </div>
 <div id="locally" class="section level3">
 <h3 class="hasAnchor">
@@ -121,7 +121,7 @@
 <pre><code>functions = list.files("./R", full.names = TRUE)
 invisible(lapply(functions, source))</code></pre>
 <p>But you will need to load in the additional libraries then:</p>
-<pre><code><a href="https://rdrr.io/r/base/invisible.html"># Install CRAN packages
+<pre><code># Install CRAN packages
 invisible(lapply(c("MASS", "car", "ggplot2", "ggpubr", "lme4", 
                      "methods", "parallel", "plotly", "stats", 
                      "gghalves"),
@@ -138,7 +138,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 invisible(lapply(c("qvalue"), function(p){
   if(! p %in% rownames(installed.packages())) BiocManager::install(p)
   library(p, character.only=TRUE)
-}))</a></code></pre>
+}))</code></pre>
 </div>
 </div>
 <div id="example-script" class="section level1">
@@ -151,7 +151,7 @@ invisible(lapply(c("qvalue"), function(p){
 <a href="#reference" class="anchor"></a>Reference</h1>
 <p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/">Experimental Medicine &amp; Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/">Centre for Translational Bioinformatics</a> at Queen Mary University London.</p>
 <p>If you use this package please cite as:</p>
-<pre><code><a href="https://rdrr.io/r/utils/citation.html">citation("glmmSeq")
+<pre><code>citation("glmmSeq")
 
 ## To cite package ‘glmmSeq’ in publications use:
 ##
@@ -167,7 +167,7 @@ invisible(lapply(c("qvalue"), function(p){
 ##    year = {2021},
 ##    note = {R package version 0.0.1},
 ##    url = {https://github.com/KatrionaGoldmann/glmmSeq},
-##  }</a></code></pre>
+##  }</code></pre>
 </div>
 
   </div>

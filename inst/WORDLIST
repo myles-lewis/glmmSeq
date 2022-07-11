@@ -2,6 +2,7 @@ Altman
 BH
 Bolker
 Bombardieri
+CMD
 DAS
 DESeq
 Dabney
@@ -14,6 +15,7 @@ GlmmSeq
 IGHJ
 IGHV
 Jimack
+LMM
 Lifecycle
 Limma
 Maechler
@@ -40,6 +42,8 @@ glmmResult
 jss
 lme
 lmer
+lmerControl
+lmmSeq
 modelColour
 modelPlot
 modelPlots

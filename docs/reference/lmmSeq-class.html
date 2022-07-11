@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TPM count data from PEAC — tpm • glmmSeq</title>
+<title>An S4 class to define the lmmSeq output — lmmSeq-class • glmmSeq</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="TPM count data from PEAC — tpm" />
-<meta property="og:description" content="Transcripts Per Million (TPM) count data for PEAC synovial
-biopsies." />
+<meta property="og:title" content="An S4 class to define the lmmSeq output — lmmSeq-class" />
+<meta property="og:description" content="An S4 class to define the lmmSeq output" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -136,22 +135,43 @@ biopsies." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>TPM count data from PEAC</h1>
-    <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/PEAC_minimal_load.R'><code>R/PEAC_minimal_load.R</code></a></small>
-    <div class="hidden name"><code>tpm.Rd</code></div>
+    <h1>An S4 class to define the lmmSeq output</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KatrionaGoldmann/glmmSeq/blob/master/R/lmmSeq.R'><code>R/lmmSeq.R</code></a></small>
+    <div class="hidden name"><code>lmmSeq-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Transcripts Per Million (TPM) count data for PEAC synovial
-biopsies.</p>
+    <p>An S4 class to define the lmmSeq output</p>
     </div>
 
-    <pre class="usage"><span class='va'>tpm</span></pre>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p>An object of class <code>data.frame</code> with 50 rows and 149 columns.</p>
+    
+
+<dl>
+<dt><code>formula</code></dt><dd><p>The model formula</p></dd>
+
+<dt><code>stats</code></dt><dd><p>the statistics from the LMM fit</p></dd>
+
+<dt><code>predict</code></dt><dd><p>The predicted interception values</p></dd>
+
+<dt><code>reducedFormula</code></dt><dd><p>The reduced formula with removed random effects</p></dd>
+
+<dt><code>maindata</code></dt><dd><p>The input expression data with variables in rows</p></dd>
+
+<dt><code>metadata</code></dt><dd><p>The input metadata</p></dd>
+
+<dt><code>modelData</code></dt><dd><p>the model data for the LMM</p></dd>
+
+<dt><code>optInfo</code></dt><dd><p>Information on whether the model was singular or converged</p></dd>
+
+<dt><code>errors</code></dt><dd><p>Any errors</p></dd>
+
+<dt><code>variables</code></dt><dd><p>The variables used in the formula</p></dd>
+
+</dl>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
