@@ -257,7 +257,7 @@ lmmSeq2 <- function(modelFormula,
     if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):",
                             paste0(names(noErr)[! noErr], collapse = ", ")))
     outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
-                           FUN.VALUE = c("test"))
+                           FUN.VALUE = character(1))
   } else {outputErrors <- c("No errors")}
   
   optInfo <- t(vapply(resultList[noErr], function(x) {
