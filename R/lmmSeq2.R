@@ -160,7 +160,7 @@ lmmSeq2 <- function(modelFormula,
     designMatrix <- model.matrix(reducedFormula, modelData)
   } 
   
-  # hyp.matrix.1 & 2
+  # Adapted from car:::Anova.II.mer
   reduced2 <- nobars(fullFormula)
   fac <- attr(terms(reduced2), "factors")
   data2 <- metadata
