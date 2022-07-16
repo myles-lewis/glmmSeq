@@ -11,8 +11,10 @@
 #' @param maindata data matrix with genes in rows and samples in columns
 #' @param metadata a dataframe of sample information with variables in columns
 #'   and samples in rows
-#' @param id Column name in metadata which contains the sample IDs to be used
-#' in repeated samples for random effects
+#' @param id Optional. Used to specify the column in metadata which contains the
+#'   sample IDs to be used in repeated samples for random effects. If not
+#'   specified, the function defaults to using the variable after the "|" in the
+#'   random effects term in the formula.
 #' @param sizeFactors size factors (default = NULL). If provided the `lmer`
 #'   offset is set to `sizeFactors`. For more information see
 #'   \code{\link[lme4:glmer]{lme4::glmer()}}
@@ -61,7 +63,7 @@
 lmmSeq2 <- function(modelFormula,
                    maindata,
                    metadata,
-                   id,
+                   id = NULL,
                    sizeFactors = NULL,
                    reducedFormula = "",
                    modelData = NULL,
@@ -91,6 +93,11 @@ lmmSeq2 <- function(modelFormula,
   nonRandomFormula <- subbars(modelFormula)
   variables <- rownames(attr(terms(nonRandomFormula), "factors"))
   subsetMetadata <- metadata[, variables]
+  if (is.null(id)) {
+    fb <- findbars(modelFormula)
+    id <- sub(".*[|]", "", fb)
+    id <- sub(" ", "", id)
+  }
   ids <- as.character(metadata[, id])
   
   

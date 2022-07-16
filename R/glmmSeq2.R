@@ -13,8 +13,10 @@
 #'   samples in columns
 #' @param metadata a dataframe of sample information with variables in columns
 #'   and samples in rows
-#' @param id Column name in metadata which contains the sample IDs to be used
-#' in repeated samples for random effects
+#' @param id Optional. Used to specify the column in metadata which contains the
+#'   sample IDs to be used in repeated samples for random effects. If not
+#'   specified, the function defaults to using the variable after the "|" in the
+#'   random effects term in the formula.
 #' @param dispersion a numeric vector of gene dispersion
 #' @param sizeFactors size factors (default = NULL). If provided the glmer 
 #' offset is set to log(sizeFactors). For more information see
@@ -68,7 +70,7 @@
 glmmSeq2 <- function(modelFormula,
                     countdata,
                     metadata,
-                    id,
+                    id = NULL,
                     dispersion,
                     sizeFactors = NULL,
                     reducedFormula = "",
@@ -103,6 +105,11 @@ glmmSeq2 <- function(modelFormula,
   nonRandomFormula <- subbars(modelFormula)
   variables <- rownames(attr(terms(nonRandomFormula), "factors"))
   subsetMetadata <- metadata[, variables]
+  if (is.null(id)) {
+    fb <- findbars(modelFormula)
+    id <- sub(".*[|]", "", fb)
+    id <- sub(" ", "", id)
+  }
   ids <- as.character(metadata[, id])
   
   
