@@ -1,6 +1,6 @@
 Package: glmmSeq
 Title: General Linear Mixed Models for Gene-Level Differential Expression
-Version: 0.2.1
+Version: 0.2.2
 Authors@R:
     c(person(given = "Myles",family = "Lewis",
     role = c("aut"),
