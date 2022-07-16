@@ -317,7 +317,7 @@ lmerCore <- function(geneList,
     stats <- setNames(c(AIC(fit), as.numeric(logLik(fit))),
                       c("AIC", "logLik"))
     fixedEffects <- lme4::fixef(fit)
-    vcov. <- suppressWarnings(vcov(fit))
+    vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
@@ -357,11 +357,10 @@ lmer_wald <- function(fixef, hyp.matrix.1, hyp.matrix.2, vcov.) {
   })
   # source car:::linearHypothesis.mer()
   b <- fixef
-  rhs <- 0
   V <- vcov.
   chi_val <- lapply(hyp.list, function(L) {
-    as.vector(t(L %*% b - rhs) %*% solve(L %*% V %*% 
-                                           t(L)) %*% (L %*% b - rhs))
+    as.vector(t(L %*% b) %*% solve(L %*% V %*% 
+                                           t(L)) %*% (L %*% b))
   })
   df <- unlist(lapply(hyp.list, nrow))
   list(chisq = setNames(unlist(chi_val), names(hyp.matrix.1)),
