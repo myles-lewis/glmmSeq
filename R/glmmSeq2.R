@@ -95,7 +95,7 @@ glmmSeq2 <- function(modelFormula,
     stop("Different sizeFactors length")
   }
   if (! is.numeric(zeroCount)) stop("zeroCount must be numeric")
-  if (zeroCount < 0) stop("zeroCount must be > = 0")
+  if (zeroCount < 0) stop("zeroCount must be >= 0")
   if (zeroCount > 0) countdata[countdata == 0] <- zeroCount
   
   # Manipulate formulae
