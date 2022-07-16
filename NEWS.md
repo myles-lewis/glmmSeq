@@ -5,7 +5,8 @@ News
 ###### 16/7/2022
 * Fast version of `lmmSeq()` called `lmmSeq2()`. Improves speed of calculation
 of type 2 Wald test. Overall speed increase of 25%.
-* Faster version of `glmmSeq()` called `glmmSeq2()`.
+* Faster version of `glmmSeq()` called `glmmSeq2()`
+* Automatically detects `id` column name from the RE term in the formula 
 
 # glmmSeq v0.2.1
 ###### 11/7/2022
