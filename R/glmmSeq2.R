@@ -2,16 +2,19 @@
 
 #' Glmm for sequencing results
 #'
-#' Improved version optimised for speed.
+#' Experimental version to speed up Wald type 2 Chi-square test by vectorising
+#' code from car::Anova
 #'
 #' @param modelFormula the model formula. This must be of the form `"~ ..."`
 #'   where the structure is assumed to be `"counts ~ ..."`. The formula must
 #'   include a random effects term. For more information on formula structure
 #'   for random effects see \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @param countdata the sequencing count data
-#' @param metadata a data frame of sample information
+#' @param countdata the sequencing count data matrix with genes in rows and
+#'   samples in columns
+#' @param metadata a dataframe of sample information with variables in columns
+#'   and samples in rows
 #' @param id Column name in metadata which contains the sample IDs to be used
-#' in pairing samples
+#' in repeated samples for random effects
 #' @param dispersion a numeric vector of gene dispersion
 #' @param sizeFactors size factors (default = NULL). If provided the glmer 
 #' offset is set to log(sizeFactors). For more information see
@@ -39,14 +42,14 @@
 #' mixed models or a list of results if returnList is TRUE.
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
-#' @importFrom stats update.formula model.matrix predict setNames
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #' clusterExport stopCluster
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom car Anova
 #' @importFrom methods slot new
-#' @importFrom stats AIC complete.cases logLik reshape terms vcov
+#' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
+#'   update.formula model.matrix predict setNames
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)

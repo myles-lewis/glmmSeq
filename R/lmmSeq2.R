@@ -12,7 +12,7 @@
 #' @param metadata a dataframe of sample information with variables in columns
 #'   and samples in rows
 #' @param id Column name in metadata which contains the sample IDs to be used
-#' in pairing samples
+#' in repeated samples for random effects
 #' @param sizeFactors size factors (default = NULL). If provided the `lmer`
 #'   offset is set to `sizeFactors`. For more information see
 #'   \code{\link[lme4:glmer]{lme4::glmer()}}
