@@ -1,6 +1,11 @@
 News
 =====
 
+# glmmSeq v0.2.2
+###### 16/7/2022
+* Fast version of `lmmSeq()` called `lmmSeq2()`. Improves speed of calculation
+of type 2 Wald test. Overall speed increase of 25%.
+
 # glmmSeq v0.2.1
 ###### 11/7/2022
 * Add `...` option to fcPlot which is passed to `plotly()` or `ggplot()`
