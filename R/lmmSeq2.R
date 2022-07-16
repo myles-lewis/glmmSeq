@@ -358,6 +358,7 @@ lmer_wald <- function(fixef, hyp.matrix.1, hyp.matrix.2, vcov.) {
   # source car:::linearHypothesis.mer()
   b <- fixef
   V <- vcov.
+  # rhs = 0
   chi_val <- lapply(hyp.list, function(L) {
     as.vector(t(L %*% b) %*% solve(L %*% V %*% 
                                            t(L)) %*% (L %*% b))
