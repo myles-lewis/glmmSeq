@@ -364,7 +364,7 @@ lmer_wald <- function(fixef, hyp.matrix.1, hyp.matrix.2, vcov.) {
     as.vector(t(L %*% b) %*% solve(L %*% V %*% 
                                            t(L)) %*% (L %*% b))
   })
-  df <- unlist(lapply(hyp.list, nrow))
+  df <- unlist(lapply(hyp.list, NROW))
   list(chisq = setNames(unlist(chi_val), names(hyp.matrix.1)),
        df = df)
 }
