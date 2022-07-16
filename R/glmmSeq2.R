@@ -107,7 +107,7 @@ glmmSeq2 <- function(modelFormula,
   if (is.null(id)) {
     fb <- findbars(modelFormula)
     id <- sub(".*[|]", "", fb)
-    id <- sub(" ", "", id)
+    id <- gsub(" ", "", id)
   }
   ids <- as.character(metadata[, id])
   
