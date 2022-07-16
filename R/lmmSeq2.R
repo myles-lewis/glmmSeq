@@ -318,6 +318,7 @@ lmerCore <- function(geneList,
                       c("AIC", "logLik"))
     fixedEffects <- lme4::fixef(fit)
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
+    vcov. <- as.matrix(vcov.)
     waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
