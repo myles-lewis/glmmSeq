@@ -153,7 +153,7 @@ glmmSeq2 <- function(modelFormula,
     stop("metadata nrow does not match maindata ncol")
   }
   if (! all(rownames(countdata) %in% names(dispersion))) {
-    stop("Missing dispersions")
+    stop("Some dispersion values are missing")
   }
   
   if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
