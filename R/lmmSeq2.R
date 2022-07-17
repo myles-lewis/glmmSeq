@@ -98,13 +98,12 @@ lmmSeq2 <- function(modelFormula,
   
   # Option to subset to remove unpaired samples
   if (removeSingles) {
-    singles <- names(table(ids)[table(ids) %in% c(0, 1)])
-    nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
-    
-    maindata <- maindata[, nonSingleIDs]
-    offset <- offset[nonSingleIDs]
-    subsetMetadata <- subsetMetadata[nonSingleIDs, ]
-    ids <- droplevels(subsetMetadata[, id])
+    nonSingle <- levels(ids)[table(ids) > 1]
+    paired.index <- ids %in% nonSingle
+    maindata <- maindata[, paired.index]
+    subsetmetadata <- subsetmetadata[paired.index, ]
+    ids <- ids[paired.index]
+    offset <- offset[paired.index]
   }
   
   # Check numbers and alignment
