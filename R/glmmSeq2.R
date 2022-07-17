@@ -18,30 +18,30 @@
 #'   specified, the function defaults to using the variable after the "|" in the
 #'   random effects term in the formula.
 #' @param dispersion a numeric vector of gene dispersion
-#' @param sizeFactors size factors (default = NULL). If provided the glmer 
-#' offset is set to log(sizeFactors). For more information see
+#' @param sizeFactors size factors (default = NULL). If provided the `glmer` 
+#' offset is set to log(sizeFactors). For more information see``
 #'  \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @param reducedFormula Reduced design formula (default = "")
 #' @param modelData Expanded design matrix
 #' @param designMatrix custom design matrix
-#' @param control the glmer control (default = glmerControl(optimizer = 
-#' "bobyqa")). For more information see
-#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
+#' @param control the `glmer` optimizer control (default =
+#'   `glmerControl(optimizer = "bobyqa")`). See
+#'   \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
 #' @param cores number of cores to use. Default = 1. 
 #' @param removeDuplicatedMeasures whether to remove duplicated
 #' conditions/repeated measurements for a given time point (default = FALSE).
-#' @param removeSingles whether to remove individuals with only one measurement
+#' @param removeSingles whether to remove individuals without repeated measures
 #' (default = FALSE)
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
 #' (default = 0.125)
 #' @param verbose Logical whether to display messaging (default = TRUE)
-#' @param returnList Logical whether to return results as a list or glmmSeq 
-#' object (default = FALSE).
+#' @param returnList Logical whether to return results as a list or `glmmSeq` 
+#' object (default = FALSE). Useful for debugging.
 #' @param progress Logical whether to display a progress bar
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a GlmmSeq object with results for gene-wise general linear
-#' mixed models or a list of results if returnList is TRUE.
+#' @return Returns a `GlmmSeq` object with results for gene-wise general linear
+#' mixed models or a list of results if `returnList` is `TRUE`.
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
@@ -77,7 +77,6 @@ glmmSeq2 <- function(modelFormula,
                     designMatrix = NULL,
                     control = glmerControl(optimizer = "bobyqa"),
                     cores = 1,
-                    removeDuplicatedMeasures = FALSE,
                     removeSingles = FALSE,
                     zeroCount = 0.125,
                     verbose = TRUE,
@@ -110,34 +109,7 @@ glmmSeq2 <- function(modelFormula,
     id <- gsub(" ", "", id)
   }
   ids <- as.character(metadata[, id])
-  
-  
-  # Option to subset to remove duplicated timepoints
-  if (removeDuplicatedMeasures) {
-    # Check the distribution for duplicates
-    check <- data.frame(table(droplevels(subsetMetadata)))
-    check <- check[! check$Freq %in% c(0, 1), ]
-    if (nrow(check) > 0) {
-      mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
-        paste(as.character(x), collapse = " ")
-      }))
-      cCheck <- as.character(apply(check[, variables], 1, function(x) {
-        paste(as.character(x), collapse = " ")
-      }))
-      countdata <- countdata[, ! mCheck %in% cCheck]
-      sizeFactors <- sizeFactors[! mCheck %in% cCheck]
-      subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
-      ids <- droplevels(subsetMetadata[, id])
-      warning(paste0(paste(check[, id], collapse = ", "),
-                     " has multiple entries for identical ",
-                     paste0(colnames(check)[! colnames(check) %in%
-                                              c(id, "Freq")],
-                            collapse = " and "),
-                     ". These will all be removed."))
-    }
-  }
-  
-  
+
   # Option to subset to remove unpaired samples
   if (removeSingles) {
     nonSingles <- names(table(ids))[table(ids) > 1]

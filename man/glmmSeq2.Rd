@@ -8,7 +8,7 @@ glmmSeq2(
   modelFormula,
   countdata,
   metadata,
-  id,
+  id = NULL,
   dispersion,
   sizeFactors = NULL,
   reducedFormula = "",
@@ -16,7 +16,6 @@ glmmSeq2(
   designMatrix = NULL,
   control = glmerControl(optimizer = "bobyqa"),
   cores = 1,
-  removeDuplicatedMeasures = FALSE,
   removeSingles = FALSE,
   zeroCount = 0.125,
   verbose = TRUE,
@@ -37,13 +36,15 @@ samples in columns}
 \item{metadata}{a dataframe of sample information with variables in columns
 and samples in rows}
 
-\item{id}{Column name in metadata which contains the sample IDs to be used
-in repeated samples for random effects}
+\item{id}{Optional. Used to specify the column in metadata which contains the
+sample IDs to be used in repeated samples for random effects. If not
+specified, the function defaults to using the variable after the "|" in the
+random effects term in the formula.}
 
 \item{dispersion}{a numeric vector of gene dispersion}
 
-\item{sizeFactors}{size factors (default = NULL). If provided the glmer
-offset is set to log(sizeFactors). For more information see
+\item{sizeFactors}{size factors (default = NULL). If provided the \code{glmer}
+offset is set to log(sizeFactors). For more information see``
 \code{\link[lme4:glmer]{lme4::glmer()}}}
 
 \item{reducedFormula}{Reduced design formula (default = "")}
@@ -52,16 +53,13 @@ offset is set to log(sizeFactors). For more information see
 
 \item{designMatrix}{custom design matrix}
 
-\item{control}{the glmer control (default = glmerControl(optimizer =
-"bobyqa")). For more information see
+\item{control}{the \code{glmer} optimizer control (default =
+\code{glmerControl(optimizer = "bobyqa")}). See
 \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
 
 \item{cores}{number of cores to use. Default = 1.}
 
-\item{removeDuplicatedMeasures}{whether to remove duplicated
-conditions/repeated measurements for a given time point (default = FALSE).}
-
-\item{removeSingles}{whether to remove individuals with only one measurement
+\item{removeSingles}{whether to remove individuals without repeated measures
 (default = FALSE)}
 
 \item{zeroCount}{numerical value to offset zeroes for the purpose of log
@@ -69,17 +67,20 @@ conditions/repeated measurements for a given time point (default = FALSE).}
 
 \item{verbose}{Logical whether to display messaging (default = TRUE)}
 
-\item{returnList}{Logical whether to return results as a list or glmmSeq
-object (default = FALSE).}
+\item{returnList}{Logical whether to return results as a list or \code{glmmSeq}
+object (default = FALSE). Useful for debugging.}
 
 \item{progress}{Logical whether to display a progress bar}
 
 \item{...}{Other parameters to pass to
 \code{\link[lme4:glmer]{lme4::glmer()}}}
+
+\item{removeDuplicatedMeasures}{whether to remove duplicated
+conditions/repeated measurements for a given time point (default = FALSE).}
 }
 \value{
-Returns a GlmmSeq object with results for gene-wise general linear
-mixed models or a list of results if returnList is TRUE.
+Returns a \code{GlmmSeq} object with results for gene-wise general linear
+mixed models or a list of results if \code{returnList} is \code{TRUE}.
 }
 \description{
 Experimental version to speed up Wald type 2 Chi-square test by vectorising
@@ -91,7 +92,6 @@ disp <- apply(tpm, 1, function(x) {
 (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 })
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = "PATID",
                      countdata = tpm["MS4A1", ],
                      metadata = metadata,
                      dispersion = disp["MS4A1"],
