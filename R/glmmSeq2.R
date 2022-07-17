@@ -140,22 +140,20 @@ glmmSeq2 <- function(modelFormula,
   
   # Option to subset to remove unpaired samples
   if (removeSingles) {
-    singles <- names(table(ids)[table(ids) %in% c(0, 1)])
-    nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
-    
+    nonSingles <- names(table(ids))[table(ids) > 1]
+    nonSingleIDs <- ids %in% nonSingles
     countdata <- countdata[, nonSingleIDs]
     sizeFactors <- sizeFactors[nonSingleIDs]
     subsetMetadata <- subsetMetadata[nonSingleIDs, ]
-    ids <- droplevels(subsetMetadata[, id])
+    ids <- ids[nonSingleIDs]
   }
   
   # Check numbers and alignment
-  if (! all(vapply(list(length(ids), nrow(subsetMetadata)), FUN = identical,
-                   FUN.VALUE = TRUE, ncol(countdata)))) {
-    stop("Alignment error: metadata rownames must match countdata colnames")
+  if (nrow(subsetMetadata) != ncol(maindata)) {
+    stop("metadata nrow does not match maindata ncol")
   }
-  if (! all(rownames(countdata) %in% names(dispersion), nrow(countdata))) {
-    stop("Dispersion length must match nrow in countdata")
+  if (! all(rownames(countdata) %in% names(dispersion))) {
+    stop("Missing dispersions")
   }
   
   if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
