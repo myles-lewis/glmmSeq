@@ -108,15 +108,8 @@ lmmSeq2 <- function(modelFormula,
     offset <- offset[pairedIndex]
   }
   
-  # Check numbers and alignment
-  if (nrow(subsetMetadata) != ncol(maindata)) {
-    stop("metadata nrow does not match maindata ncol")
-  }
-  
-  
   if (verbose) cat(paste0("\nn = ", length(ids), " samples, ",
                           length(unique(ids)), " individuals\n"))
-  
   
   # setup model prediction
   if (reducedFormula == "") reducedFormula <- nobars(modelFormula)

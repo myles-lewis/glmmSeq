@@ -120,10 +120,6 @@ glmmSeq2 <- function(modelFormula,
     ids <- ids[nonSingleIDs]
   }
   
-  # Check numbers and alignment
-  if (nrow(subsetMetadata) != ncol(maindata)) {
-    stop("metadata nrow does not match maindata ncol")
-  }
   if (! all(rownames(countdata) %in% names(dispersion))) {
     stop("Some dispersion values are missing")
   }
