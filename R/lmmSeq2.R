@@ -28,8 +28,6 @@
 #' `lmerControl(optimizer = "bobyqa")`). See
 #' \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.
 #' @param cores number of cores to use for parallelisation. Default = 1. 
-#' @param removeDuplicatedMeasures whether to remove duplicated
-#' conditions/repeated measurements for a given time point (default = FALSE).
 #' @param removeSingles whether to remove individuals with only one measurement
 #' i.e. no repeated measures (default = FALSE)
 #' @param verbose Logical whether to display messaging (default = TRUE)
@@ -69,7 +67,6 @@ lmmSeq2 <- function(modelFormula,
                    designMatrix = NULL,
                    control = lmerControl(),
                    cores = 1,
-                   removeDuplicatedMeasures = FALSE,
                    removeSingles = FALSE,
                    verbose = TRUE,
                    returnList = FALSE, 
@@ -98,33 +95,6 @@ lmmSeq2 <- function(modelFormula,
     id <- gsub(" ", "", id)
   }
   ids <- as.character(metadata[, id])
-  
-  
-  # Option to subset to remove duplicated timepoints
-  if (removeDuplicatedMeasures) {
-    # Check the distribution for duplicates
-    check <- data.frame(table(droplevels(subsetMetadata)))
-    check <- check[! check$Freq %in% c(0, 1), ]
-    if (nrow(check) > 0) {
-      mCheck <- as.character(apply(subsetMetadata[, variables], 1, function(x) {
-        paste(as.character(x), collapse = " ")
-      }))
-      cCheck <- as.character(apply(check[, variables], 1, function(x) {
-        paste(as.character(x), collapse = " ")
-      }))
-      maindata <- maindata[, ! mCheck %in% cCheck]
-      offset <- offset[! mCheck %in% cCheck]
-      subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
-      ids <- droplevels(subsetMetadata[, id])
-      warning(paste0(paste(check[, id], collapse = ", "),
-                     " has multiple entries for identical ",
-                     paste0(colnames(check)[! colnames(check) %in%
-                                              c(id, "Freq")],
-                            collapse = " and "),
-                     ". These will all be removed."))
-    }
-  }
-  
   
   # Option to subset to remove unpaired samples
   if (removeSingles) {
