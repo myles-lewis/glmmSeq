@@ -60,10 +60,10 @@ pairedPlot <- function(glmmResult,
                        x2Label = NULL,
                        IDColumn = 'ID',
                        xTitle = NULL,
-                       yTitle = "Gene Expression",
-                       title=NULL,
+                       yTitle = geneName,
+                       title=geneName,
                        logTransform=FALSE,
-                       shapes=19,
+                       shapes=21,
                        colours='grey60',
                        lineColours='grey60',
                        markerSize=0.5,
@@ -72,10 +72,13 @@ pairedPlot <- function(glmmResult,
                        x2Offset=6,
                        pairedOnly=TRUE,
                        addModel=TRUE,
+                       addPoints=TRUE,
                        modelSize=2,
-                       modelColours="black",
+                       modelColours="royalblue",
                        modelLineSize=1,
                        modelLineColours=NULL,
+                       errorBarLwd=2.5,
+                       errorBarLength=0.05,
                        addBox=FALSE,
                        removeDuplicates=TRUE,
                        ...) {
@@ -124,7 +127,7 @@ pairedPlot <- function(glmmResult,
       glmmResult@metadata[, c(IDColumn, x1Label, x2Label)],
       geneExp=as.numeric(glmmResult@countdata[geneName, ]))
     pval <- glmmResult@stats[geneName, grepl("P_", colnames(glmmResult@stats))]
-    pval <- vapply(pval, format, FUN.VALUE="character", digits=2)
+    pval <- formatC(pval, digits=2)
     x1Values <- levels(droplevels(factor(glmmResult@modelData[, x1Label])))
     x2Values <- levels(droplevels(factor(glmmResult@modelData[, x2Label])))
     labs <- levels(droplevels(factor(glmmResult@modelData[, x2Label])))
@@ -169,7 +172,7 @@ pairedPlot <- function(glmmResult,
   checkColumns <-  c(IDColumn, x1Label, x2Label)
   duplicates <- duplicated(df_long[, checkColumns])
   
-  if (removeDuplicates & any(duplicates)){
+  if ((removeDuplicates | pairedOnly) & any(duplicates)){
     message("Removing duplicates: multiple entries for ",
             paste(df_long[duplicates, IDColumn], collapse=", "))
     df_long <- df_long[!duplicates, ]
@@ -194,13 +197,15 @@ pairedPlot <- function(glmmResult,
   if(logTransform) log <- "y" else log <- ""
   if(is.null(xTitle)) xTitle <- NA
   if(addModel) {
-    myYlim <- c(min(min(df_mean$lower), min(df_long$geneExp)),
-                max(max(df_mean$upper), max(df_long$geneExp)) )
+    myYlim <- if (addPoints) {
+      range(c(df_mean[, c('lower', 'upper')], df_long$geneExp))
+    } else range(df_mean[, c('lower', 'upper')])
   } else myYlim <- NULL
+  if (addPoints) {
   plot(as.numeric(df_long$x1Factors), df_long$geneExp,
        ylim = myYlim, type='p', bty='l', las=2,
        xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
-       pch=shapes[df_long$x2Labels], 
+       pch=19, 
        col=colours[df_long$x2Labels],
        cex=markerSize, xlab=xTitle, ylab=yTitle,
        log=log,
@@ -211,19 +216,32 @@ pairedPlot <- function(glmmResult,
                  df_long$geneExp[df_long$id==i],
                  col=lineColours[unique(df_long$x2Labels[df_long$id == i])] )}
        })
+  } else {
+    plot(as.numeric(df_long$x1Factors), df_long$geneExp,
+         ylim = myYlim, type='n', bty='l', las=2,
+         xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
+         xlab=xTitle, ylab=yTitle,
+         log=log,
+         ...)
+  }
   if(addModel){
     for(i in as.character(unique(df_mean$group))){
       lines(df_mean$x1Factors[df_mean$group == i],
             df_mean$y[df_mean$group == i],
             lwd=modelSize+1, col=modelLineColours[i])
-      segments(df_mean$x1Factors[df_mean$group == i], 
+      arrows(df_mean$x1Factors[df_mean$group == i], 
                df_mean$upper[df_mean$group == i],
                df_mean$x1Factors[df_mean$group == i], 
                df_mean$lower[df_mean$group == i],
-               lwd=modelSize+1, col=modelLineColours[i])
+               lwd=errorBarLwd, col=modelLineColours[i],
+             angle = 90, code = 3, length = errorBarLength)
       points(df_mean$x1Factors[df_mean$group == i], 
-             df_mean$y[df_mean$group == i], type = "p", 
-             col=modelColours[i], pch=shapes[i], cex=modelSize)
+             df_mean$y[df_mean$group == i], type = "p",
+             col=ifelse(shapes[i] >= 21, "black",
+                        modelColours[i]),
+             bg=ifelse(shapes[i] < 21, NULL,
+                       modelColours[i]),
+             pch=shapes[i], cex=modelSize)
     }
   }
   
