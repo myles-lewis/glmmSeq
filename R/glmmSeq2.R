@@ -274,7 +274,8 @@ glmmSeq2 <- function(modelFormula,
       modelData = modelData,
       optInfo = optInfo,
       errors = outputErrors,
-      variables = id
+      vars = list(id = id,
+                  removeSingles = removeSingles)
   )
 }
 

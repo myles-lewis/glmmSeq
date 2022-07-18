@@ -28,6 +28,6 @@ An S4 class to define the glmmSeq output
 
 \item{\code{errors}}{Any errors}
 
-\item{\code{variables}}{The variables used in the formula}
+\item{\code{vars}}{List of variables stored from the original call}
 }}
 

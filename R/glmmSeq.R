@@ -12,7 +12,7 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 #' @slot modelData the model data for the glmm
 #' @slot optInfo Information on whether the model was singular or converged
 #' @slot errors Any errors
-#' @slot variables The variables used in the formula
+#' @slot vars List of variables stored from the original call
 
 setClass("GlmmSeq", slots = list(
   formula = "formula",
@@ -24,7 +24,7 @@ setClass("GlmmSeq", slots = list(
   modelData = "df_or_matrix",
   optInfo = "matrix",
   errors = "character_or_list",
-  variables = "character_or_list"
+  vars = "list"
 ))
 
 
@@ -287,7 +287,7 @@ glmmSeq <- function(modelFormula,
       modelData = modelData,
       optInfo = optInfo,
       errors = outputErrors,
-      variables = id
+      vars = list(id = id)
   )
 }
 
