@@ -74,9 +74,6 @@ object (default = FALSE). Useful for debugging.}
 
 \item{...}{Other parameters to pass to
 \code{\link[lme4:glmer]{lme4::glmer()}}}
-
-\item{removeDuplicatedMeasures}{whether to remove duplicated
-conditions/repeated measurements for a given time point (default = FALSE).}
 }
 \value{
 Returns a \code{GlmmSeq} object with results for gene-wise general linear
@@ -91,7 +88,7 @@ data(PEAC_minimal_load)
 disp <- apply(tpm, 1, function(x) {
 (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 })
-MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+MS4A1glmm <- glmmSeq2(~ Timepoint * EULAR_6m + (1 | PATID),
                      countdata = tpm["MS4A1", ],
                      metadata = metadata,
                      dispersion = disp["MS4A1"],
