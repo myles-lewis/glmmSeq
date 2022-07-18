@@ -52,7 +52,7 @@
 #' @examples
 #' data(PEAC_minimal_load)
 #' logtpm <- log2(tpm +1)
-#' lmmtest <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#' lmmtest <- lmmSeq2(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      maindata = logtpm["MS4A1", ],
 #'                      metadata = metadata,
 #'                      verbose = FALSE)

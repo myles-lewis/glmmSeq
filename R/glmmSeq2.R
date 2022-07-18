@@ -27,9 +27,7 @@
 #' @param control the `glmer` optimizer control (default =
 #'   `glmerControl(optimizer = "bobyqa")`). See
 #'   \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
-#' @param cores number of cores to use. Default = 1. 
-#' @param removeDuplicatedMeasures whether to remove duplicated
-#' conditions/repeated measurements for a given time point (default = FALSE).
+#' @param cores number of cores to use. Default = 1.
 #' @param removeSingles whether to remove individuals without repeated measures
 #' (default = FALSE)
 #' @param zeroCount numerical value to offset zeroes for the purpose of log
@@ -58,7 +56,7 @@
 #' disp <- apply(tpm, 1, function(x) {
 #' (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 #' })
-#' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#' MS4A1glmm <- glmmSeq2(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      countdata = tpm["MS4A1", ],
 #'                      metadata = metadata,
 #'                      dispersion = disp["MS4A1"],
