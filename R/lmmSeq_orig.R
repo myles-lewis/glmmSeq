@@ -254,28 +254,6 @@ lmmSeq_v1 <- function(modelFormula,
 }
 
 
-#' Fit an lmer model for an individual gene
-#'
-#' @param geneList List with gene expression and dispersion
-#' @param fullFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @param modelData Expanded design matrix
-#' @param data The sample metadata.
-#' @param designMatrix The design matrix
-#' @param control the lmer control (default = lmerControl()). For more 
-#' information see \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.
-#' @param offset this can be used to specify an a priori known component to be
-#'  included in the linear predictor during fitting. For more information see
-#'  \code{\link[lme4:glmer]{lme4::lmer()}}.
-#' @param ... Other parameters to pass to
-#' \code{\link[lme4:glmer]{lme4::lmer()}}
-#' @return Returns a list of results for gene-wise linear mixed models
-#' @importFrom lme4 lmer fixef isSingular
-#' @importFrom stats update.formula model.matrix predict setNames
-#' @importFrom car Anova
-#' @importFrom stats AIC complete.cases logLik reshape terms vcov predict
-#' @keywords internal
-#' @export
 lmerApply <- function(geneList,
                       fullFormula,
                       data,

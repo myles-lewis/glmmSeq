@@ -265,31 +265,6 @@ glmmSeq_v1 <- function(modelFormula,
 }
 
 
-#' Fit a glmer model for an individual gene
-#'
-#' @param geneList List with gene expression and dispersion
-#' @param fullFormula the model formula. For more information of formula
-#' structure see \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @param modelData Expanded design matrix
-#' @param data The sample data or metadata.
-#' @param designMatrix The design matrix
-#' @param control the glmer control (default = glmerControl(optimizer = 
-#' "bobyqa")). For more information see
-#' \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
-#' @param offset this can be used to specify an a priori known component to be
-#'  included in the linear predictor during fitting. For more information see
-#'  \code{\link[lme4:glmer]{lme4::glmer()}}.
-#' @param ... Other parameters to pass to
-#' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a GlmmSeq object with results for gene-wise general linear
-#' mixed models
-#' @importFrom MASS negative.binomial
-#' @importFrom lme4 glmer fixef isSingular
-#' @importFrom stats update.formula model.matrix predict setNames
-#' @importFrom car Anova
-#' @importFrom stats AIC complete.cases logLik reshape terms vcov predict
-#' @keywords internal
-#' @export
 glmerApply <- function(geneList,
                        fullFormula,
                        data,
