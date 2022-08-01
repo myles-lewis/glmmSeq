@@ -3,22 +3,20 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 
 #' An S4 class to define the glmmSeq output
 #'
-#' @slot call The matched call
+#' @slot info List including the matched call, dispersions, offset, designMatrix
 #' @slot formula The model formula
 #' @slot stats the statistics from the glmm fit
 #' @slot predict The predicted interception values
 #' @slot reducedFormula The reduced formula with removed random effects
 #' @slot countdata The input expression data
 #' @slot metadata The input metadata
-#' @slot dispersion Input dispersion vector
 #' @slot modelData Model data for predictions
-#' @slot offset Model offset
-#' @slot designMatrix Model design matrix
 #' @slot optInfo Information on whether the model was singular or converged
 #' @slot errors Any errors
 #' @slot vars List of variables stored from the original call
 
 setClass("GlmmSeq", slots = list(
+  info = "list",
   formula = "formula",
   stats = "df_or_matrix",
   predict = "df_or_matrix",
@@ -32,7 +30,7 @@ setClass("GlmmSeq", slots = list(
 ))
 
 
-#' GLMM with negative bionomial distribution for sequencing count data
+#' GLMM with negative binomial distribution for sequencing count data
 #'
 #' Fits many generalised linear mixed effects models (GLMM) with negative
 #' binomial distribution for analysis of overdispersed count data with random
@@ -123,7 +121,7 @@ glmmSeq <- function(modelFormula,
                     returnList = FALSE, 
                     progress = FALSE,
                     ...) {
-  
+  glmmcall <- match.call(expand.dots = TRUE)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
@@ -307,6 +305,11 @@ glmmSeq <- function(modelFormula,
   
   # Create GlmmSeq object with results
   new("GlmmSeq",
+      info = list(call = glmmcall,
+                  offset = offset,
+                  designMatrix = designMatrix,
+                  control = control,
+                  dispersion = dispersion),
       formula = fullFormula,
       stats = s,
       predict = outputPredict,

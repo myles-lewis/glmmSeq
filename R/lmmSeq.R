@@ -3,20 +3,22 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 
 #' An S4 class to define the lmmSeq output
 #'
+#' @slot info List including matched call, offset, designMatrix
 #' @slot formula The model formula
-#' @slot stats the statistics from the LMM fit
-#' @slot predict The predicted interception values
+#' @slot stats Statistics from fitted models
+#' @slot predict Predicted values
 #' @slot reducedFormula The reduced formula with removed random effects
 #' @slot maindata The input expression data with variables in rows
 #' @slot metadata The input metadata
-#' @slot modelData the model data for the LMM
+#' @slot modelData Model data for predictions
 #' @slot optInfo Information on whether the model was singular or converged
 #' @slot errors Any errors
 #' @slot vars List of variables stored from the original call
 
 setClass("lmmSeq", slots = list(
+  info = "list",
   formula = "formula",
-  stats = "df_or_matrix",
+  stats = "list",
   predict = "df_or_matrix",
   reducedFormula = "formula",
   maindata = "df_or_matrix",
@@ -105,7 +107,7 @@ lmmSeq <- function(modelFormula,
                    returnList = FALSE, 
                    progress = FALSE,
                    ...) {
-  
+  lmmcall <- match.call(expand.dots = TRUE)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
@@ -278,6 +280,10 @@ lmmSeq <- function(modelFormula,
   
   # Create lmmSeq object with results
   new("lmmSeq",
+      info = list(call = lmmcall,
+                  offset = offset,
+                  designMatrix = designMatrix,
+                  control = control),
       formula = fullFormula,
       stats = s,
       predict = outputPredict,
