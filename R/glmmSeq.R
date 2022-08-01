@@ -3,13 +3,17 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 
 #' An S4 class to define the glmmSeq output
 #'
+#' @slot call The matched call
 #' @slot formula The model formula
 #' @slot stats the statistics from the glmm fit
 #' @slot predict The predicted interception values
 #' @slot reducedFormula The reduced formula with removed random effects
 #' @slot countdata The input expression data
 #' @slot metadata The input metadata
-#' @slot modelData the model data for the glmm
+#' @slot dispersion Input dispersion vector
+#' @slot modelData Model data for predictions
+#' @slot offset Model offset
+#' @slot designMatrix Model design matrix
 #' @slot optInfo Information on whether the model was singular or converged
 #' @slot errors Any errors
 #' @slot vars List of variables stored from the original call
@@ -28,10 +32,12 @@ setClass("GlmmSeq", slots = list(
 ))
 
 
-#' Glmm for sequencing results
+#' GLMM with negative bionomial distribution for sequencing count data
 #'
-#' Experimental version to speed up Wald type 2 Chi-square test by vectorising
-#' code from car::Anova
+#' Fits many generalised linear mixed effects models (GLMM) with negative
+#' binomial distribution for analysis of overdispersed count data with random
+#' effects. Designed for longitudinal analysis of RNA-Sequencing count data.
+#' Wald type 2 Chi-squared test is used to calculate p-values.
 #'
 #' @param modelFormula the model formula. This must be of the form `"~ ..."`
 #'   where the structure is assumed to be `"counts ~ ..."`. The formula must
@@ -66,19 +72,15 @@ setClass("GlmmSeq", slots = list(
 #' @param progress Logical whether to display a progress bar
 #' @param ... Other parameters to pass to
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
-#' @return Returns a `GlmmSeq` object with results for gene-wise general linear
-#' mixed models or a list of results if `returnList` is `TRUE`.
-#' @importFrom MASS negative.binomial
-#' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
-#' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
-#' clusterExport stopCluster
-#' @importFrom pbmcapply pbmclapply
-#' @importFrom pbapply pblapply
-#' @importFrom car Anova
-#' @importFrom methods slot new
-#' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
-#'   update.formula model.matrix predict setNames
-#' @export
+#' @return Returns an S4 class `GlmmSeq` object with results for gene-wise
+#'   general linear mixed models. A list of results is returned if `returnList`
+#'   is `TRUE` which is useful for debugging.
+#' @details
+#' This function is a wrapper for [lme4::glmer()]. Wald type 2 Chi-squared test
+#' is calculated as per [car::Anova()] optimised for speed. Parallelisation is
+#' provided using [parallel::mclapply] on Unix/Mac or [parallel::parLapply] on
+#' PC.
+#' 
 #' @examples
 #' data(PEAC_minimal_load)
 #' disp <- apply(tpm, 1, function(x) {
@@ -90,6 +92,18 @@ setClass("GlmmSeq", slots = list(
 #'                      dispersion = disp["MS4A1"],
 #'                      verbose = FALSE)
 #' names(attributes(MS4A1glmm))
+#' 
+#' @importFrom MASS negative.binomial
+#' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
+#' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
+#' clusterExport stopCluster
+#' @importFrom pbmcapply pbmclapply
+#' @importFrom pbapply pblapply
+#' @importFrom car Anova
+#' @importFrom methods slot new
+#' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
+#'   update.formula model.matrix predict setNames
+#' @export
 
 
 glmmSeq <- function(modelFormula,
