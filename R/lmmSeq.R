@@ -97,7 +97,7 @@ lmmSeq <- function(modelFormula,
                    metadata,
                    id = NULL,
                    offset = NULL,
-                   test = c("Wald", "F"),
+                   test.stat = c("Wald", "F"),
                    reducedFormula = "",
                    modelData = NULL,
                    designMatrix = NULL,
@@ -109,6 +109,7 @@ lmmSeq <- function(modelFormula,
                    progress = FALSE,
                    ...) {
   lmmcall <- match.call(expand.dots = TRUE)
+  test.stat <- match.arg(test.stat)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
@@ -203,7 +204,8 @@ lmmSeq <- function(modelFormula,
                  control = control, modelData = modelData, offset = offset,
                  designMatrix = designMatrix,
                  hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2, ...)
+                 hyp.matrix.2 = hyp.matrix.2,
+                 test.stat = test.stat, ...)
       }, cl = cl)
     } else {
       resultList <- parLapply(cl = cl, fullList, function(geneList) {
@@ -211,7 +213,8 @@ lmmSeq <- function(modelFormula,
                  control = control, modelData = modelData, offset = offset,
                  designMatrix = designMatrix,
                  hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2, ...)
+                 hyp.matrix.2 = hyp.matrix.2,
+                 test.stat = test.stat, ...)
       })
     }
     stopCluster(cl)
@@ -222,7 +225,8 @@ lmmSeq <- function(modelFormula,
                  control = control, modelData = modelData, offset = offset,
                  designMatrix = designMatrix,
                  hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2, ...)
+                 hyp.matrix.2 = hyp.matrix.2,
+                 test.stat = test.stat, ...)
       }, mc.cores = cores)
       if ("value" %in% names(resultList)) resultList <- resultList$value
     } else {
@@ -231,7 +235,8 @@ lmmSeq <- function(modelFormula,
                  control = control, modelData = modelData, offset = offset,
                  designMatrix = designMatrix,
                  hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2, ...)
+                 hyp.matrix.2 = hyp.matrix.2,
+                 test.stat = test.stat, ...)
       }, mc.cores = cores)
     }
   }
@@ -271,22 +276,38 @@ lmmSeq <- function(modelFormula,
   s <- do.call(rbind, statsList)
   coefList <- lapply(resultList[noErr], "[[", "coef")
   cf <- do.call(rbind, coefList)
-  chisqList <- lapply(resultList[noErr], "[[", "chisq")
-  chisq <- do.call(rbind, chisqList)
-  dfList <- lapply(resultList[noErr], "[[", "df")
-  df <- do.call(rbind, dfList)
-  pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
-  colnames(df) <- colnames(chisq)
-  colnames(pvals) <- colnames(chisq)
-  #s <- cbind(s, chisq, df, pvals)
-  s <- list(AIC = s, coef = cf, Chisq = chisq, Df = df, pvals = pvals)
+  SEList <- lapply(resultList[noErr], "[[", "stdErr")
+  stdErr <- do.call(rbind, SEList)
+  if (test.stat == "Wald") {
+    chisqList <- lapply(resultList[noErr], "[[", "chisq")
+    chisq <- do.call(rbind, chisqList)
+    dfList <- lapply(resultList[noErr], "[[", "df")
+    df <- do.call(rbind, dfList)
+    pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
+    colnames(df) <- colnames(chisq)
+    colnames(pvals) <- colnames(chisq)
+    s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
+              pvals = pvals)
+  } else {
+    NumDF <- lapply(resultList[noErr], function(x) x$Ftest[,1])
+    NumDF <- do.call(rbind, NumDF)
+    DenDF <- lapply(resultList[noErr], function(x) x$Ftest[,2])
+    DenDF <- do.call(rbind, DenDF)
+    Fval <- lapply(resultList[noErr], function(x) x$Ftest[,3])
+    Fval <- do.call(rbind, Fval)
+    pvals <- lapply(resultList[noErr], function(x) x$Ftest[,4])
+    pvals <- do.call(rbind, pvals)
+    s <- list(res = s, coef = cf, stdErr = stdErr, NumDF = NumDF, DenDF = DenDF, 
+              Fval = Fval, pvals = pvals)
+  }
   
   # Create lmmSeq object with results
   new("lmmSeq",
       info = list(call = lmmcall,
                   offset = offset,
                   designMatrix = designMatrix,
-                  control = substitute(control)),
+                  control = substitute(control),
+                  test.stat = test.stat),
       formula = fullFormula,
       stats = s,
       predict = outputPredict,
@@ -311,13 +332,20 @@ lmerCore <- function(geneList,
                      offset,
                      hyp.matrix.1,
                      hyp.matrix.2,
+                     test.stat,
                      ...) {
   data[, "gene"] <- geneList
+  if (test.stat == "Wald") {
   fit <- try(suppressMessages(suppressWarnings(
     lme4::lmer(fullFormula, data = data, control = control, offset = offset,
                ...))),
     silent = TRUE)
-  
+  } else {
+    fit <- try(suppressMessages(suppressWarnings(
+      lmerTest::lmer(fullFormula, data = data, control = control, offset = offset,
+                     ...))),
+      silent = TRUE)
+  }
   if (!inherits(fit, "try-error")) {
     # intercept dropped genes
     if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
@@ -327,10 +355,15 @@ lmerCore <- function(geneList,
     stats <- setNames(c(AIC(fit), as.numeric(logLik(fit))),
                       c("AIC", "logLik"))
     fixedEffects <- lme4::fixef(fit)
+    stdErr <- coef(summary(fit))[, 2]
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
-    waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
-    
+    if (test.stat == "Wald") {
+      waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
+    } else {
+      Ftest <- as.matrix(anova(fit)[, -c(1,2)])
+    }
+      
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.
     b <- as.matrix(a %*% t(designMatrix))
@@ -342,16 +375,28 @@ lmerCore <- function(geneList,
     singular <- as.numeric(lme4::isSingular(fit))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
-    return(list(stats = stats,
-                coef = fixedEffects,
-                chisq = waldtest$chisq,
-                df = waldtest$df,
-                predict = predictdf,
-                optinfo = c(singular, conv),
-                tryErrors = "") )
+    ret <- if (test.stat == "Wald") {
+      list(stats = stats,
+           coef = fixedEffects,
+           SE = stdErr,
+           chisq = waldtest$chisq,
+           df = waldtest$df,
+           predict = predictdf,
+           optinfo = c(singular, conv),
+           tryErrors = "")
+    } else {
+      list(stats = stats,
+           coef = fixedEffects,
+           stdErr = stdErr,
+           Ftest = Ftest,
+           predict = predictdf,
+           optinfo = c(singular, conv),
+           tryErrors = "")
+    }
+    return(ret)
   } else {
-    return(list(stats = NA, chisq = NA, df = NA, predict = NA, optinfo = NA, 
-                tryErrors = fit[1]))
+    return(list(stats = NA, coef = NA, SE = NA, chisq = NA, df = NA, 
+                predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }
 
@@ -413,8 +458,9 @@ summary.lmmSeq <- function(x, rows = NULL) {
     statSet <- names(x@stats)
     gp <- lapply(statSet, function(i) {
       out <- x@stats[[i]]
-      if (i %in% c("Chisq", "F", "Df")) colnames(out) <- paste(i, colnames(out), sep = "_")
+      if (i %in% c("Chisq", "Fval", "Df", "NumDF", "DenDF")) colnames(out) <- paste(i, colnames(out), sep = "_")
       if (i == "pvals") colnames(out) <- paste0("P_", colnames(out))
+      if (i == "stdErr") colnames(out) <- paste0("se_", colnames(out))
       out
     })
     do.call(cbind, gp)

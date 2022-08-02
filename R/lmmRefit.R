@@ -15,8 +15,13 @@ lmmRefit.lmmSeq <- function(obj, gene, ...) {
   data[, "gene"] <- unlist(obj@maindata[gene, ])
   offset <- obj@info$offset
   control <- eval(obj@info$control)
-  fit <- lme4::lmer(obj@formula, data = data,
-                    control = control, offset = offset, ...)
+  fit <- if (obj@info$test.stat == "Wald") {
+    lme4::lmer(obj@formula, data = data,
+               control = control, offset = offset, ...)
+  } else {
+    lmerTest::lmer(obj@formula, data = data,
+                   control = control, offset = offset, ...)
+  }
   fit
 }
 
