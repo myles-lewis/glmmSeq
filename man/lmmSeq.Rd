@@ -10,6 +10,7 @@ lmmSeq(
   metadata,
   id = NULL,
   offset = NULL,
+  test = c("Wald", "F"),
   reducedFormula = "",
   modelData = NULL,
   designMatrix = NULL,

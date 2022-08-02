@@ -10,7 +10,7 @@ An S4 class to define the glmmSeq output
 \section{Slots}{
 
 \describe{
-\item{\code{call}}{The matched call}
+\item{\code{info}}{List including the matched call, dispersions, offset, designMatrix}
 
 \item{\code{formula}}{The model formula}
 
@@ -24,13 +24,7 @@ An S4 class to define the glmmSeq output
 
 \item{\code{metadata}}{The input metadata}
 
-\item{\code{dispersion}}{Input dispersion vector}
-
 \item{\code{modelData}}{Model data for predictions}
-
-\item{\code{offset}}{Model offset}
-
-\item{\code{designMatrix}}{Model design matrix}
 
 \item{\code{optInfo}}{Information on whether the model was singular or converged}
 

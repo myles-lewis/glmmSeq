@@ -97,6 +97,7 @@ lmmSeq <- function(modelFormula,
                    metadata,
                    id = NULL,
                    offset = NULL,
+                   test = c("Wald", "F"),
                    reducedFormula = "",
                    modelData = NULL,
                    designMatrix = NULL,
@@ -268,22 +269,24 @@ lmmSeq <- function(modelFormula,
   
   statsList <- lapply(resultList[noErr], "[[", "stats")
   s <- do.call(rbind, statsList)
+  coefList <- lapply(resultList[noErr], "[[", "coef")
+  cf <- do.call(rbind, coefList)
   chisqList <- lapply(resultList[noErr], "[[", "chisq")
   chisq <- do.call(rbind, chisqList)
   dfList <- lapply(resultList[noErr], "[[", "df")
   df <- do.call(rbind, dfList)
   pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
-  colnames(df) <- paste0("Df_", colnames(chisq))
-  colnames(pvals) <- paste0("P_", colnames(chisq))
-  colnames(chisq) <- paste0("Chisq_", colnames(chisq))
-  s <- cbind(s, chisq, df, pvals)
+  colnames(df) <- colnames(chisq)
+  colnames(pvals) <- colnames(chisq)
+  #s <- cbind(s, chisq, df, pvals)
+  s <- list(AIC = s, coef = cf, Chisq = chisq, Df = df, pvals = pvals)
   
   # Create lmmSeq object with results
   new("lmmSeq",
       info = list(call = lmmcall,
                   offset = offset,
                   designMatrix = designMatrix,
-                  control = control),
+                  control = substitute(control)),
       formula = fullFormula,
       stats = s,
       predict = outputPredict,
@@ -339,7 +342,8 @@ lmerCore <- function(geneList,
     singular <- as.numeric(lme4::isSingular(fit))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
-    return(list(stats = c(stats, fixedEffects),
+    return(list(stats = stats,
+                coef = fixedEffects,
                 chisq = waldtest$chisq,
                 df = waldtest$df,
                 predict = predictdf,
@@ -401,3 +405,20 @@ car_relatives <- function (term, names, factors)
                                           function(term2) is.relative(term, term2))]
   }
 
+
+#' @export
+
+summary.lmmSeq <- function(x, rows = NULL) {
+  if (is.null(rows)) {
+    statSet <- names(x@stats)
+    gp <- lapply(statSet, function(i) {
+      out <- x@stats[[i]]
+      if (i %in% c("Chisq", "F", "Df")) colnames(out) <- paste(i, colnames(out), sep = "_")
+      if (i == "pvals") colnames(out) <- paste0("P_", colnames(out))
+      out
+    })
+    do.call(cbind, gp)
+  } else {
+    lapply(x@stats, function(i) i[rows,])
+  }
+}

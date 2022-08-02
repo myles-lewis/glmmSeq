@@ -2,7 +2,7 @@
 % Please edit documentation in R/glmmSeq.R
 \name{glmmSeq}
 \alias{glmmSeq}
-\title{GLMM with negative bionomial distribution for sequencing count data}
+\title{GLMM with negative binomial distribution for sequencing count data}
 \usage{
 glmmSeq(
   modelFormula,
