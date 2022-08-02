@@ -228,35 +228,26 @@ gene expression ~ time + response + (1 | patient)
 </div>
 
 To fit this model for all genes we can use the `glmmSeq` function. Note that
-this analysis can take some time, with 2 cores:
+this analysis can take some time, with 4 cores:
 
-- 100 genes takes a couple of seconds
-- 1000 genes takes about 20 seconds
-- All ~20000 genes takes about 9 mins
+- 1000 genes takes about 10 seconds
+- 20000 genes takes about 4 mins
 
 ```{r, warning=FALSE}
 results <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                  id = "PATID",
-                  countdata = tpm,
-                  metadata = metadata,
-                  dispersion = disp,
-                  removeDuplicatedMeasures = FALSE,
-                  removeSingles=FALSE,
-                  progress=TRUE,
-                  cores = 1)
+                   countdata = tpm,
+                   metadata = metadata,
+                   dispersion = disp,
+                   progress = TRUE)
 ```
 
 or alternatively using two-factor classification with EULAR_binary: 
 
 ```{r, warning=FALSE}
 results2 <- glmmSeq(~ Timepoint * EULAR_binary + (1 | PATID),
-                  id = "PATID",
-                  countdata = tpm,
-                  metadata = metadata,
-                  dispersion = disp,
-                  removeDuplicatedMeasures = FALSE,
-                  removeSingles=FALSE,
-                  cores = 1)
+                    countdata = tpm,
+                    metadata = metadata,
+                    dispersion = disp)
 ```
 
 ## Outputs
@@ -310,11 +301,10 @@ Similarly you can run the script for an individual gene:
 
 ```{r, warning=FALSE}
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = "PATID",
                      countdata = tpm["MS4A1", ],
                      metadata = metadata,
                      dispersion = disp,
-                     verbose=FALSE)
+                     verbose = FALSE)
 ```
 
 or to view the lmer fit alone using `glmmGene`:
