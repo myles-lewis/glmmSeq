@@ -74,6 +74,7 @@ setClass("lmmSeq", slots = list(
 #' @return Returns an S4 class `lmmSeq` object with results for gene-wise
 #'   linear mixed models or a list of results if `returnList` is `TRUE`.
 #' @importFrom lme4 subbars findbars lmer fixef lmerControl nobars isSingular
+#' @importFrom lmerTest lmer
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #'   clusterExport stopCluster
 #' @importFrom pbmcapply pbmclapply
@@ -378,7 +379,7 @@ lmerCore <- function(geneList,
     ret <- if (test.stat == "Wald") {
       list(stats = stats,
            coef = fixedEffects,
-           SE = stdErr,
+           stdErr = stdErr,
            chisq = waldtest$chisq,
            df = waldtest$df,
            predict = predictdf,
@@ -395,7 +396,7 @@ lmerCore <- function(geneList,
     }
     return(ret)
   } else {
-    return(list(stats = NA, coef = NA, SE = NA, chisq = NA, df = NA, 
+    return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA, 
                 predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }
@@ -453,7 +454,8 @@ car_relatives <- function (term, names, factors)
 
 #' @export
 
-summary.lmmSeq <- function(x, rows = NULL) {
+summary.lmmSeq <- function(x, rows = NULL,
+                           digits = max(3L, getOption("digits") - 3L)) {
   if (is.null(rows)) {
     statSet <- names(x@stats)
     gp <- lapply(statSet, function(i) {
@@ -465,6 +467,26 @@ summary.lmmSeq <- function(x, rows = NULL) {
     })
     do.call(cbind, gp)
   } else {
-    lapply(x@stats, function(i) i[rows,])
+    out <- lapply(x@stats, function(i) i[rows,])
+    cat("Linear mixed model\n")
+    print(out$res)
+    cat("\nFixed effects:\n")
+    cfdf <- data.frame(Estimate = out$coef,
+                       `Std. Error` = out$stdErr, check.names = FALSE)
+    print(cfdf, digits = digits)
+    if (x@info$test.stat == "Wald") {
+      cat("\nAnalysis of Deviance Table (Type II Wald chisquare tests)\n")
+      testdf <- data.frame(Chisq = out$Chisq,
+                           Df = out$Df,
+                           `Pr(>Chisq)` = out$pvals, check.names = FALSE)
+    } else {
+      cat("\nType III Analysis of Variance Table with Satterthwaite's method\n")
+      testdf <- data.frame(NumDF = out$NumDF,
+                           DenDF = out$DenDF,
+                           `F value` = out$Fval,
+                           `Pr(>F)` = out$pvals, check.names = FALSE)
+    }
+    print(testdf, digits = digits)
+    invisible(out)
   }
 }
