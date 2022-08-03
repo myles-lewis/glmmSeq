@@ -39,7 +39,7 @@
 #' @param ... Other parameters passed to \code{\link[lme4:lmer]{lme4::lmer()}}
 #' @return Returns an S4 class `lmmSeq` object with results for gene-wise
 #'   linear mixed models or a list of results if `returnList` is `TRUE`.
-#' @importFrom lme4 subbars findbars lmer fixef lmerControl nobars isSingular
+#' @importFrom lme4 subbars findbars fixef lmerControl nobars isSingular
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #'   clusterExport stopCluster
 #' @importFrom pbmcapply pbmclapply

@@ -65,9 +65,9 @@ pairedPlot <- function(object,
                        markerSize=0.5,
                        fontSize=NULL,
                        alpha=0.7,
-                       pairedOnly=NULL,
                        addModel=TRUE,
                        addPoints=TRUE,
+                       x2shift=NULL,
                        modelSize=2,
                        modelColours="royalblue",
                        modelLineSize=1,
@@ -75,176 +75,115 @@ pairedPlot <- function(object,
                        errorBarLwd=2.5,
                        errorBarLength=0.05,
                        addBox=FALSE,
-                       removeDuplicates=FALSE,
                        ...) {
+    
+  if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
+    stop("object must be an output from glmmSeq or lmmSeq")}
   
-  # For outputs from glmmGene
-  if(inherits(object, "glmerMod")){
-    if(! x1var %in% colnames(object@frame)) {
-      stop("x1var must be a column name in object@frame")
+  IDColumn <- object@vars$id
+  pairedOnly <- object@vars$removeSingles
+  if (!x1var %in% colnames(object@modelData)) {
+    stop("x1var must be a column name in object@modelData")}
+  if (!is.null(x2var)) if (!x2var %in% colnames(object@modelData)) {
+    stop("x2var must be a column name in object@modelData")}
+  maindata <- if (inherits(object, "GlmmSeq")) {
+    object@countdata} else object@maindata
+  if(! geneName %in% rownames(maindata)) {
+    stop("geneName not found")}
+  if(ncol(object@modelData) > 2){
+    stop("More than 2 variables in modelData")}
+  
+  # Set up plotting data frame
+  id <- object@metadata[, IDColumn]
+  y <- as.numeric(maindata[geneName, ])
+  x <- object@metadata[, x1var]
+  x1Values <- unique(x)
+  xdiff <- diff(range(x, na.rm = TRUE))
+  if (!is.null(x2var)) {
+    x2labs <- levels(droplevels(factor(object@modelData[, x2var])))
+    x2 <- as.numeric(factor(object@metadata[, x2var]))
+    maxX2 <- max(x2, na.rm = TRUE)
+    nsegments <- length(unique(x)) -1
+    if (is.null(x2shift)) {
+      x2shift <- max(x, na.rm = TRUE) + xdiff / nsegments
+      x <- x + (x2-1) * x2shift
     }
-    if(!is.null(x2var) & !x2var %in% colnames(object@frame)) {
-      stop("x2var not a column name in object@frame")
-    }
-    if(! IDColumn %in% colnames(object@frame)) {
-      stop("IDColumn must be a column name in object@frame")
-    }
-    
-    x1Values <-  levels(droplevels(factor(object@frame[, x1var])))
-    labs <- levels(droplevels(factor(object@frame[, x2var])))
-    
-    # For outputs from glmmSeq
-  } else if(inherits(object, "GlmmSeq") |
-            inherits(object, "lmmSeq")){
-    IDColumn <- object@vars$id
-    if (is.null(pairedOnly)) pairedOnly <- object@vars$removeSingles
-    if (!x1var %in% colnames(object@modelData)) {
-      stop("x1var must be a column name in object@modelData")
-    }
-    if (!is.null(x2var)) if (!x2var %in% colnames(object@modelData)) {
-      stop("x2var must be a column name in object@modelData")
-    }
-    maindata <- if (inherits(object, "GlmmSeq")) {
-      object@countdata} else object@maindata
-    if(! geneName %in% rownames(maindata)){
-      stop("geneName must be in rownames(object@countdata)")
-    }
-    # if(ncol(object@modelData) != 2){
-    #   stop(
-    #     paste("These plots only work for interactions between two variable.",
-    #           "Therefore nrow(object@modelData) should be 2."))
-    # }
-    
-    # Set up plotting data frame
-    if (!is.null(x2var)) {
-      df_long <- cbind(
-        object@metadata[, c(IDColumn, x1var, x2var)],
-        geneExp=as.numeric(maindata[geneName, ]))
-      pval <- object@stats$pvals[geneName, ]
-      pval <- formatC(pval, digits=2)
-      x1Values <- levels(droplevels(factor(object@modelData[, x1var])))
-      x2Values <- levels(droplevels(factor(object@modelData[, x2var])))
-      labs <- levels(droplevels(factor(object@modelData[, x2var])))
-      df_long$x2 <- as.numeric(factor(df_long[, x2var]))
-      df_long$x1 <- as.numeric(factor(df_long[, x1var]))
-      df_long$x2vars <- as.character(factor(df_long[, x2var]))
-      df_long$x1vars <- as.character(factor(df_long[, x1var]))
-      maxX2 <- max(as.numeric(df_long$x2), na.rm=TRUE)
-      df_long$x1Factors <- as.numeric(factor(df_long[, x1var])) +
-        (df_long$x2-1) * length(unique(df_long[, x1var]))
-      df_long$id <- df_long[, IDColumn]
-    } else {
-      df_long <- cbind(
-        object@metadata[, c(IDColumn, x1var)],
-        geneExp=as.numeric(maindata[geneName, ]))
-      pval <- object@stats$pvals[geneName, ]
-      pval <- formatC(pval, digits=2)
-      x1Values <- object@modelData[, x1var]
-      labs <- levels(droplevels(factor(object@modelData[, x2var])))
-      df_long$x2 <- as.numeric(factor(df_long[, x2var]))
-      df_long$x1 <- as.numeric(factor(df_long[, x1var]))
-      df_long$x2vars <- as.character(factor(df_long[, x2var]))
-      df_long$x1vars <- as.character(factor(df_long[, x1var]))
-      maxX2 <- 1
-      df_long$x1Factors <- as.numeric(factor(df_long[, x1var])) +
-        (df_long$x2-1) * length(unique(df_long[, x1var]))
-    }
-    
-    
-    # Update colours to named list
-    refactorCols <- function(x) {
-      setNames(rep(x, length(x2Values))[seq_len(length(x2Values))], x2Values)
-    }
-    
-    # re-factor colours and shapes if necessary
-    if(is.null(names(lineColours))) lineColours <- refactorCols(lineColours)
-    if(is.null(names(modelColours))) modelColours <- refactorCols(modelColours)
-    if(is.null(names(colours))) colours <- refactorCols(colours)
-    if(is.null(names(shapes))) shapes <- refactorCols(shapes)
-    
-    # Set up model fit data
-    modelData <- object@modelData
-    df_mean <- object@predict[geneName, ]
-    outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
-    df_mean <- data.frame("x1Factors"=seq_along(modelData[, 1]),
-                          "y"= df_mean[ paste0("y_",outLabels)],
-                          "lower" =  df_mean[paste0("LCI_", outLabels)],
-                          "upper" =  df_mean[paste0("UCI_", outLabels)],
-                          "group" = object@modelData[, x2var])
-    
-  } else{
-    stop("object must be an output from either glmmSeq, lmmSeq or glmmGene")
+  } else {
+    x2 <- 1
+    maxX2 <- 1
+    x2Values <- NULL
+    x2shift <- FALSE
   }
+  df_long <- data.frame(id, y, x, x2)
+  pval <- object@stats$pvals[geneName, , drop = FALSE]
+  pval <- formatC(pval, digits=2)
   
-  # Check for duplicated measurements
-  checkColumns <-  c(IDColumn, x1var, x2var)
-  duplicates <- duplicated(df_long[, checkColumns])
+  lineColours <- rep_len(lineColours, maxX2)
+  modelColours <- rep_len(modelColours, maxX2)
+  colours <- rep_len(colours, maxX2)
+  shapes <- rep_len(shapes, maxX2)
   
-  if ((removeDuplicates | pairedOnly) & any(duplicates)){
-    message("Removing duplicates: multiple entries for ",
-            paste(df_long[duplicates, IDColumn], collapse=", "))
-    df_long <- df_long[!duplicates, ]
-  }
-  
-  if (length(shapes)==1) shapes <- rep(shapes, maxX2)
-  if (length(colours)==1) colours <- rep(colours, maxX2)
-  
-  if (pairedOnly) {
-    # Convert to wide format
-    df <- stats::reshape(df_long[, c('id', 'x1', 'geneExp')], timevar='x1',
-                         idvar='id', v.names='geneExp', direction='wide')
-    # keep only paired samples
-    paired <- df$id[complete.cases(df)]
-    df_long <- df_long[df_long$id %in% paired, ]
-    df_long <- df_long[complete.cases(df_long), ]
-  }
-  
-  if(is.null(title)) title <- geneName
+  # Set up model fit data
+  modelData <- object@modelData
+  preds <- object@predict[geneName, ]
+  s <- nrow(modelData)
+  modelx <- if (!is.null(x2var)) {
+    modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift
+  } else modelData[, x1var]
+  df_model <- data.frame(x = modelx,
+                        y = preds[1:s],
+                        lower = preds[1:s +s],
+                        upper = preds[1:s +s*2],
+                        group = modelData[, x2var])
+  if (is.null(x2var)) df_model$group <- 1
+  xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
   
   # Generate base plots
   if(logTransform) log <- "y" else log <- ""
   if(is.null(xTitle)) xTitle <- NA
   if(addModel) {
     myYlim <- if (addPoints) {
-      range(c(df_mean[, c('lower', 'upper')], df_long$geneExp))
-    } else range(df_mean[, c('lower', 'upper')])
+      range(c(df_model[, c('lower', 'upper')], df_long$y))
+    } else range(df_model[, c('lower', 'upper')])
   } else myYlim <- NULL
   if (addPoints) {
-  plot(as.numeric(df_long$x1Factors), df_long$geneExp,
-       ylim = myYlim, type='p', bty='l', las=2,
-       xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
-       pch=19, 
-       col=colours[df_long$x2vars],
-       cex=markerSize, xlab=xTitle, ylab=yTitle,
-       log=log,
-       ...,
-       panel.first={
-         for (i in as.character(unique(df_long$id))) {
-           lines(df_long$x1Factors[df_long$id==i],
-                 df_long$geneExp[df_long$id==i],
-                 col=lineColours[unique(df_long$x2vars[df_long$id == i])] )}
-       })
+    plot(df_long$x, df_long$y,
+         ylim = myYlim, type='p', bty='l', las=2,
+         xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
+         pch=19, 
+         col=colours[df_long$x2],
+         cex=markerSize, xlab=xTitle, ylab=yTitle,
+         log=log,
+         ...,
+         panel.first={
+           for (i in as.character(unique(df_long$id))) {
+             lines(df_long$x[df_long$id==i],
+                   df_long$y[df_long$id==i],
+                   col=lineColours[df_long$x2[df_long$id == i]] )}
+         })
   } else {
-    plot(as.numeric(df_long$x1Factors), df_long$geneExp,
+    plot(as.numeric(df_long$x), df_long$y,
          ylim = myYlim, type='n', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
          xlab=xTitle, ylab=yTitle,
          log=log,
+         xlim = xlim,
          ...)
   }
   if(addModel){
-    for(i in as.character(unique(df_mean$group))){
-      lines(df_mean$x1Factors[df_mean$group == i],
-            df_mean$y[df_mean$group == i],
+    for(i in 1:nlevels(df_model$group)){
+      ind <- as.numeric(df_model$group) == i
+      lines(df_model$x[ind],
+            df_model$y[ind],
             lwd=modelSize+1, col=modelLineColours[i])
-      arrows(df_mean$x1Factors[df_mean$group == i], 
-               df_mean$upper[df_mean$group == i],
-               df_mean$x1Factors[df_mean$group == i], 
-               df_mean$lower[df_mean$group == i],
+      arrows(df_model$x[ind], 
+               df_model$upper[ind],
+               df_model$x[ind], 
+               df_model$lower[ind],
                lwd=errorBarLwd, col=modelLineColours[i],
              angle = 90, code = 3, length = errorBarLength)
-      points(df_mean$x1Factors[df_mean$group == i], 
-             df_mean$y[df_mean$group == i], type = "p",
+      points(df_model$x[ind], 
+             df_model$y[ind], type = "p",
              col=ifelse(shapes[i] >= 21, "black",
                         modelColours[i]),
              bg=ifelse(shapes[i] < 21, NULL,
@@ -257,18 +196,21 @@ pairedPlot <- function(object,
     boxplot(geneExp ~ x1Factors , data = df_long, outcex=0, boxwex=0.25,
             add=TRUE, col=NA, frame = FALSE, axes=FALSE)
   }
-  axis(1, seq_along(modelData[, 1]), labels=rep(x1Values, length(x2Values)),
-       cex.axis=fontSize)
-  axis(1, length(x1Values)*(seq_along(x2Values)-1) +
-         length(x1Values)/2+0.5, labels=labs,
-       line=1.5, cex.axis=fontSize, tick=FALSE)
+  if (x2shift > xdiff) {
+    axis(1, modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift, 
+         labels=modelData[, x1var], cex.axis=fontSize)
+    axis(1, x2shift*(seq_along(x2labs)-1) + xdiff/2, labels=x2labs,
+         line=1.5, cex.axis=fontSize, tick=FALSE)
+  } else {
+    axis(1, modelData[, x1var], 
+         labels=modelData[, x1var], cex.axis=fontSize)
+  }
   if(title!="") mtext(title, side=3, adj=0, padj=-3, cex=fontSize)
   
-  mtext(bquote(
-    paste("P"[.(x1var)]*"=", .(pval[1]),
-          ", P"[.(x2var)]*"=", .(pval[2]),
-          ", P"[paste(.(x1var), ":", .(x2var))]*"=",
-          .(pval[3]))), cex=fontSize,
-    side=3, adj=0)
+  ptext <- lapply(1:ncol(pval), function(i) {
+    bquote("P" [.(colnames(pval)[i])] *"="* .(pval[,i]))
+  })
+  ptext <- bquote(.(paste(unlist(ptext), collapse = '*", "*')))
+  mtext(parse(text=ptext), side=3, adj=0, cex=fontSize)
   
 }

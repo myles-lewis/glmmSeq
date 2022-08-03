@@ -7,8 +7,8 @@
 pairedPlot(
   object,
   geneName = NULL,
-  x1Label = NULL,
-  x2Label = NULL,
+  x1var = NULL,
+  x2var = NULL,
   xTitle = NULL,
   yTitle = geneName,
   title = geneName,
@@ -39,10 +39,10 @@ pairedPlot(
 
 \item{geneName}{The gene/row name to be plotted}
 
-\item{x1Label}{The name of the first (inner) x parameter. This must be able
+\item{x1var}{The name of the first (inner) x parameter. This must be able
 to be paired using the ID.}
 
-\item{x2Label}{The name of the second (outer) x parameter}
+\item{x2var}{The name of the second (outer) x parameter}
 
 \item{xTitle}{Title for the x axis}
 
@@ -105,6 +105,6 @@ MS4A1glmm <- glmmSeq2(~ Timepoint * EULAR_6m + (1 | PATID),
 
 pairedPlot(object=MS4A1glmm,
            geneName = 'MS4A1',
-           x1Label = 'Timepoint',
-           x2Label='EULAR_6m')
+           x1var = 'Timepoint',
+           x2var='EULAR_6m')
 }
