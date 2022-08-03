@@ -76,7 +76,7 @@ pairedPlot <- function(object,
                        errorBarLength=0.05,
                        addBox=FALSE,
                        ...) {
-    
+  
   if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
     stop("object must be an output from glmmSeq or lmmSeq")}
   
@@ -131,10 +131,10 @@ pairedPlot <- function(object,
     modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift
   } else modelData[, x1var]
   df_model <- data.frame(x = modelx,
-                        y = preds[1:s],
-                        lower = preds[1:s +s],
-                        upper = preds[1:s +s*2],
-                        group = modelData[, x2var])
+                         y = preds[1:s],
+                         lower = preds[1:s +s],
+                         upper = preds[1:s +s*2],
+                         group = modelData[, x2var])
   if (is.null(x2var)) df_model$group <- 1
   xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
   
@@ -177,10 +177,10 @@ pairedPlot <- function(object,
             df_model$y[ind],
             lwd=modelSize+1, col=modelLineColours[i])
       arrows(df_model$x[ind], 
-               df_model$upper[ind],
-               df_model$x[ind], 
-               df_model$lower[ind],
-               lwd=errorBarLwd, col=modelLineColours[i],
+             df_model$upper[ind],
+             df_model$x[ind], 
+             df_model$lower[ind],
+             lwd=errorBarLwd, col=modelLineColours[i],
              angle = 90, code = 3, length = errorBarLength)
       points(df_model$x[ind], 
              df_model$y[ind], type = "p",
@@ -193,7 +193,7 @@ pairedPlot <- function(object,
   }
   
   if(addBox){
-    boxplot(geneExp ~ x1Factors , data = df_long, outcex=0, boxwex=0.25,
+    boxplot(y ~ x, data = df_long, outcex=0, boxwex=0.25,
             add=TRUE, col=NA, frame = FALSE, axes=FALSE)
   }
   if (x2shift > xdiff) {
