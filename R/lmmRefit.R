@@ -2,7 +2,7 @@
 
 #' @export
 
-lmmRefit <- function(x, ...) {
+lmmRefit <- function(object, gene, ...) {
   UseMethod("lmmRefit")
 }
 
@@ -10,16 +10,16 @@ lmmRefit <- function(x, ...) {
 
 #' @export
 
-lmmRefit.lmmSeq <- function(obj, gene, ...) {
-  data <- obj@metadata
-  data[, "gene"] <- unlist(obj@maindata[gene, ])
-  offset <- obj@info$offset
-  control <- eval(obj@info$control)
-  fit <- if (obj@info$test.stat == "Wald") {
-    lme4::lmer(obj@formula, data = data,
+lmmRefit.lmmSeq <- function(object, gene, ...) {
+  data <- object@metadata
+  data[, "gene"] <- unlist(object@maindata[gene, ])
+  offset <- object@info$offset
+  control <- eval(object@info$control)
+  fit <- if (object@info$test.stat == "Wald") {
+    lme4::lmer(object@formula, data = data,
                control = control, offset = offset, ...)
   } else {
-    lmerTest::lmer(obj@formula, data = data,
+    lmerTest::lmer(object@formula, data = data,
                    control = control, offset = offset, ...)
   }
   fit
@@ -29,13 +29,13 @@ lmmRefit.lmmSeq <- function(obj, gene, ...) {
 
 #' @export
 
-lmmRefit.GlmmSeq <- function(obj, gene, ...) {
-  data <- obj@metadata
-  data[, "count"] <- unlist(obj@countdata[gene, ])
-  disp <- obj@info$dispersions[gene]
-  offset <- obj@info$offset
-  control <- eval(obj@info$control)
-  fit <- lme4::glmer(obj@formula, data = data,
+lmmRefit.GlmmSeq <- function(object, gene, ...) {
+  data <- object@metadata
+  data[, "count"] <- unlist(object@countdata[gene, ])
+  disp <- object@info$dispersions[gene]
+  offset <- object@info$offset
+  control <- eval(object@info$control)
+  fit <- lme4::glmer(object@formula, data = data,
                      control = control, offset = offset,
                      family = MASS::negative.binomial(theta = 1/disp),
                      ...)

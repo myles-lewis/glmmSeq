@@ -60,6 +60,9 @@ offset is set to log(sizeFactors). For more information see``
 
 \item{cores}{number of cores to use. Default = 1.}
 
+\item{removeDuplicatedMeasures}{whether to remove duplicated
+conditions/repeated measurements for a given time point (default = FALSE).}
+
 \item{removeSingles}{whether to remove individuals without repeated measures
 (default = FALSE)}
 

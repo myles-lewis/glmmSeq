@@ -15,10 +15,6 @@ significant by the pvalue cut-off (default=0.05)}
 
 \item{verbose}{Logical whether to print the number of significant probes
 (default=TRUE)}
-
-\item{pi0}{It is recommended not to input an estimate of pi0. Experienced
-users can use their own methodology to estimate the proportion of true nulls
-or set it equal to 1 for the BH procedure (default = NULL).}
 }
 \value{
 Returns a GlmmSeq object with results for gene-wise general linear

@@ -100,7 +100,7 @@ setClass("GlmmSeq", slots = list(
 #' @importFrom car Anova
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
-#'   update.formula model.matrix predict setNames
+#'   update.formula model.matrix predict setNames coef
 #' @export
 
 
@@ -377,7 +377,7 @@ glmerCore <- function(geneList,
 
 #' @export
 
-summary.GlmmSeq <- function(x, ...) {
-  summary.lmmSeq(x, ...)
+summary.GlmmSeq <- function(object, ...) {
+  summary.lmmSeq(object, ...)
 }
 

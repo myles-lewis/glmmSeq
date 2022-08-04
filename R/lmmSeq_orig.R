@@ -30,6 +30,8 @@
 #' @param control the `lmer` optimizer control (default = `lmerControl()`). See
 #'   \code{\link[lme4:lmerControl]{lme4::lmerControl()}}.
 #' @param cores number of cores to use for parallelisation. Default = 1. 
+#' @param removeDuplicatedMeasures whether to remove duplicated
+#' conditions/repeated measurements for a given time point (default = FALSE).
 #' @param removeSingles whether to remove individuals with no repeated measures
 #'   (default = FALSE)
 #' @param verbose Logical whether to display messaging (default = TRUE)
@@ -61,6 +63,7 @@ lmmSeq_v1 <- function(modelFormula,
                       maindata,
                       metadata,
                       id,
+                      offset = NULL,
                       sizeFactors = NULL,
                       reducedFormula = "",
                       modelData = NULL,

@@ -26,6 +26,8 @@
 #'   `glmerControl(optimizer = "bobyqa")`). See
 #'   \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
 #' @param cores number of cores to use. Default = 1.
+#' @param removeDuplicatedMeasures whether to remove duplicated
+#' conditions/repeated measurements for a given time point (default = FALSE).
 #' @param removeSingles whether to remove individuals without repeated measures
 #' (default = FALSE)
 #' @param zeroCount numerical value to offset zeroes for the purpose of log

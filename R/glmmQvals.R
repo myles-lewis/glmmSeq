@@ -5,14 +5,12 @@
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
 #' @param cutoff Prints a table showing the number of probes considered
 #' significant by the pvalue cut-off (default=0.05)
-#' @param pi0 It is recommended not to input an estimate of pi0. Experienced
-#' users can use their own methodology to estimate the proportion of true nulls
-#' or set it equal to 1 for the BH procedure (default = NULL).
 #' @param verbose Logical whether to print the number of significant probes
 #' (default=TRUE)
 #' @return Returns a GlmmSeq object with results for gene-wise general linear
 #' mixed models with adjusted p-values using the qvalue function
 #' @importFrom qvalue qvalue
+#' @importFrom stats p.adjust
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)

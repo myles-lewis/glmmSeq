@@ -37,7 +37,7 @@
 #' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
 #' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous
 #' scale_x_continuous aes_string annotate margin element_text rel geom_errorbar
-#' @importFrom gghalves geom_half_violin
+#' @importFrom methods is
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)
