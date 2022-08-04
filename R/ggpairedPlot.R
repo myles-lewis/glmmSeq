@@ -2,38 +2,34 @@
 #'
 #' Paired plot to show differences between groups and over time using ggplot2
 #' 
-#' @param glmmResult A glmmSeq object created by
+#' @param object A glmmSeq object created by
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}
 #' @param geneName The gene/row name to be plotted
-#' @param x1Label The name of the first (inner) x parameter. This must be able
+#' @param x1var The name of the first (inner) x parameter. This must be able
 #' to be paired using the ID.
-#' @param x2Label The name of the second (outer) x parameter
-#' @param IDColumn Column name of sample IDs for pairing
-#' @param xTitle Title for the x axis
-#' @param yTitle Title for the y axis
+#' @param x2var The name of the second (outer) x parameter
+#' @param x2shift Amount to shift along x axis for each level of `x2var`. By
+#'   default the function will arrange each level of `x2var` side by side. Lower
+#'   values of `x2var` or `x2var = 0` can be used to overlap plots similar to
+#'   'dodge' or stagger them.
+#' @param xlab Title for the x axis
+#' @param ylab Title for the y axis
 #' @param title Plot title. If NULL gene name is used
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shapes (default=19)
-#' @param colours The marker colours (default='red') as vector or named vector
-#' @param lineColours The line colours (default='grey60') as vector or named 
-#' vector
-#' @param markerSize Size of markers (default=2)
+#' @param colours The marker colours as vector
+#' @param lineColours The line colours (default='grey60') as vector
+#' @param markerSize Size of markers (default=1)
 #' @param fontSize Plot font size
 #' @param alpha Line and marker opacity (default=0.7)
-#' @param x2Offset Vertical adjustment to secondary x-axis (default=6)
-#' @param pairedOnly Logical whether to only plot paired samples (default=TRUE)
+#' @param x2Offset Vertical adjustment to secondary x-axis labels (default=5)
+#' @param addPoints Whether to add underlying data points (default=TRUE)
 #' @param addModel Whether to add the fit model with markers (default=TRUE)
-#' @param modelSize Size of model points (default=3)
-#' @param modelColours Colour of model fit markers (default="black") as vector 
-#' or named vector
-#' @param modelLineSize Size of model points (default=1) as vector or named 
-#' vector
-#' @param modelLineColours Colour of model fit lines. If NULL same colours as 
-#' modelColour used (default=NULL).
-#' @param addBox Logical whether to add boxplots for mean and IQR.
-#' @param addViolins Logical whether to add half violin-plots (ggplot only),
-#' default=TRUE
-#' @param violinWidth Width of violin plots (default=0.5)
+#' @param modelSize Size of model points (default=4)
+#' @param modelColours Colour of model fit markers (default="blue") as vector
+#' @param modelLineSize Size of model points (default=1) as vector
+#' @param modelLineColours Colour of model fit lines
+#' @param addBox Logical whether to add boxplots for mean and IQR
 #' @param ... Other parameters to pass to
 #' \code{\link[ggplot2:theme]{ggplot2::theme()}}.
 #' @return Returns a paired plot for matched samples.
@@ -51,261 +47,131 @@
 #' })
 #'
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      id = 'PATID',
 #'                      countdata = tpm['MS4A1', ],
 #'                      metadata = metadata,
 #'                      dispersion = disp['MS4A1'],
-#'                      removeDuplicatedMeasures=TRUE,
 #'                      verbose=FALSE)
 #'
-#' ggpairedPlot(glmmResult=MS4A1glmm,
+#' ggpairedPlot(object=MS4A1glmm,
 #'            geneName = 'MS4A1',
-#'            x1Label = 'Timepoint',
-#'            x2Label='EULAR_6m',
-#'            IDColumn = 'PATID',
+#'            x1var = 'Timepoint',
+#'            x2var='EULAR_6m',
 #'            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'))
 
-ggpairedPlot <- function(glmmResult,
-                       geneName = NULL,
-                       x1Label = NULL,
-                       x2Label = NULL,
-                       IDColumn = 'ID',
-                       xTitle = NULL,
-                       yTitle = "Gene Expression",
-                       title=NULL,
-                       logTransform=FALSE,
-                       shapes=19,
-                       colours='grey60',
-                       lineColours='grey60',
-                       markerSize=0.5,
-                       fontSize=NULL,
-                       alpha=0.7,
-                       x2Offset=6,
-                       pairedOnly=TRUE,
-                       graphics="base",
-                       addModel=TRUE,
-                       modelSize=2,
-                       modelColours="black",
-                       modelLineSize=1,
-                       modelLineColours=NULL,
-                       addBox=FALSE,
-                       addViolins=TRUE,
-                       violinWidth=0.5,
-                       ...) {
-  
-  if(!is.numeric(alpha) | alpha > 1 | alpha < 0) {
-    stop("alpha must be a number between 0 and 1")
-  }
-  
-  # For outputs from glmmGene
-  if(inherits(glmmResult, "glmerMod")){
-    if(! x1Label %in% colnames(glmmResult@frame)) {
-      stop("x1Label must be a column name in glmmResult@frame")
-    }
-    if(! x2Label %in% colnames(glmmResult@frame)) {
-      stop("x2Label must be a column name in glmmResult@frame")
-    }
-    if(! IDColumn %in% colnames(glmmResult@frame)) {
-      stop("IDColumn must be a column name in glmmResult@frame")
-    }
+ggpairedPlot <- function(object,
+                         geneName = NULL,
+                         x1var = NULL,
+                         x2var = NULL,
+                         x2shift = NULL,
+                         xlab = NULL,
+                         ylab = geneName,
+                         title = geneName,
+                         logTransform = is(object, "GlmmSeq"),
+                         shapes = 19,
+                         colours = 'grey60',
+                         lineColours = 'grey60',
+                         markerSize = 1,
+                         fontSize = 12,
+                         alpha = 0.7,
+                         x2Offset = 5,
+                         addPoints = TRUE,
+                         addModel = TRUE,
+                         modelSize = 4,
+                         modelColours = "blue",
+                         modelLineSize = 1,
+                         modelLineColours = modelColours,
+                         addBox = FALSE,
+                         ...) {
     
-    x1Values <-  levels(droplevels(factor(glmmResult@frame[, x1Label])))
-    labs <- levels(droplevels(factor(glmmResult@frame[, x2Label])))
-    
-    # For outputs from glmmSeq
-  } else if(is(glmmResult, "GlmmSeq") | is(glmmResult, "lmmSeq")){
-    if(! x1Label %in% colnames(glmmResult@modelData)) {
-      stop("x1Label must be a column name in glmmResult@modelData")
-    }
-    if(! x2Label %in% colnames(glmmResult@modelData)) {
-      stop("x2Label must be a column name in glmmResult@modelData")
-    }
-    if(! IDColumn %in% colnames(glmmResult@metadata)) {
-      stop("IDColumn must be a column name in glmmResult@metadata")
-    }
-    if(! geneName %in% rownames(glmmResult@countdata)){
-      stop("geneName must be in rownames(glmmResult@countdata)")
-    }
-    if(ncol(glmmResult@modelData) != 2){
-      stop(
-        paste("These plots only work for interactions between two variable.",
-              "Therefore nrow(glmmResult@modelData) should be 2."))
-    }
-    
-    # Set up plotting data frame
-    df_long <- cbind(
-      glmmResult@metadata[, c(IDColumn, x1Label, x2Label)],
-      geneExp=as.numeric(glmmResult@countdata[geneName, ]))
-    pval <- glmmResult@stats[geneName, grepl("P_", colnames(glmmResult@stats))]
-    pval <- vapply(pval, format, FUN.VALUE="character", digits=2)
-    x1Values <- levels(droplevels(factor(glmmResult@modelData[, x1Label])))
-    x2Values <- levels(droplevels(factor(glmmResult@modelData[, x2Label])))
-    labs <- levels(droplevels(factor(glmmResult@modelData[, x2Label])))
-    df_long$x2 <- as.numeric(factor(df_long[, x2Label]))
-    df_long$x1 <- as.numeric(factor(df_long[, x1Label]))
-    df_long$x2Labels <- as.character(factor(df_long[, x2Label]))
-    df_long$x1Labels <- as.character(factor(df_long[, x1Label]))
-    maxX2 <- max(as.numeric(df_long$x2), na.rm=TRUE)
-    df_long$x1Factors <- as.numeric(factor(df_long[, x1Label])) +
-      (df_long$x2-1) * length(unique(df_long[, x1Label]))
-    df_long$id <- df_long[, glmmResult@variables]
-    
-    # Update colours to named list
-    refactorCols <- function(x) {
-      setNames(rep(x, length(x2Values))[seq_len(length(x2Values))], x2Values)
-    }
-    
-    # re-factor colours and shapes if necessary
-    if(is.null(modelLineColours)) modelLineColours <- modelColours
-    if(is.null(names(modelLineColours))) modelLineColours <- 
-      refactorCols(modelLineColours)
-    if(is.null(names(lineColours))) lineColours <- refactorCols(lineColours)
-    if(is.null(names(modelColours))) modelColours <- refactorCols(modelColours)
-    if(is.null(names(colours))) colours <- refactorCols(colours)
-    if(is.null(names(shapes))) shapes <- refactorCols(shapes)
-    
-    # Set up model fit data
-    modelData <- glmmResult@modelData
-    df_mean <- glmmResult@predict[geneName, ]
-    outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
-    df_mean <- data.frame("x1Factors"=seq_along(modelData[, 1]),
-                          "y"= df_mean[ paste0("y_",outLabels)],
-                          "lower" =  df_mean[paste0("LCI_", outLabels)],
-                          "upper" =  df_mean[paste0("UCI_", outLabels)],
-                          "group" = glmmResult@modelData[, x2Label])
-    
-  } else{
-    stop("glmmResult must be an output from either glmmGene or glmmSeq")
-  }
+  if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
+    stop("object must be an output from glmmSeq or lmmSeq")}
   
-  # Check for duplicated measurements
-  checkColumns <-  c(IDColumn, x1Label, x2Label)
-  duplicatedMeasures <- df_long[duplicated(df_long[, checkColumns]), ]
-  
-  if(nrow(duplicatedMeasures) > 0){
-    keepMeasures <- apply(df_long[, checkColumns], 1, function(x) {
-      ! paste(x, collapse="-") %in%
-        apply(duplicatedMeasures[ , checkColumns], 1 , paste , collapse = "-" )
-    })
-    df_long <- df_long[keepMeasures, ]
-    str <- apply(duplicatedMeasures[, c(x1Label, x2Label)], 1, function(x){
-      paste0(x1Label, "=", x[1], "; ", x2Label, "=", x[2])
-    })
-    
-    warning(paste0(paste(duplicatedMeasures[, IDColumn], collapse=", "),
-                   " has multiple entries for: ", str,
-                   ". These will all be removed from plotting."))
-  }
-  
-  # Convert to wide format
-  df <- stats::reshape(df_long[, c('id', 'x1', 'geneExp')], timevar='x1',
-                       idvar='id', v.names='geneExp', direction='wide')
-  
-  
-  if (length(shapes)==1) shapes <- rep(shapes, maxX2)
-  if (length(colours)==1) colours <- rep(colours, maxX2)
-  
-  # keep only paired samples
-  paired <- df$id[complete.cases(df)]
-  if (pairedOnly) df_long <- df_long[df_long$id %in% paired, ]
-  
-  df_long <- df_long[complete.cases(df_long), ]
-  
-  if(is.null(title)) title <- geneName
-  
-  # Generate ggplot plots
-  df_long$x1Factors <- factor(df_long$x1Factors)
+  dfs <- formPlot(object, geneName, x1var, x2var, x2shift)
+  df_long <- dfs[[1]]
+  df_model <- dfs[[2]]
+  xdiff <- dfs[[3]]
+  x2shift <- dfs[[4]]
+  modelData <- object@modelData
+  maxX2 <- max(df_long$x2, na.rm = TRUE)
   df_long$x2 <- factor(df_long$x2)
+  if (!is.null(x2var)) {
+    x2labs <- levels(droplevels(factor(modelData[, x2var])))
+  }
+  xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
+  pval <- object@stats$pvals[geneName, , drop = FALSE]
+  pval <- formatC(pval, digits=2)
   
-  p <- ggplot(df_long, 
-              aes_string(x="x1Factors", y="geneExp", group="id",
-                         shape=x2Label, color=x2Label)) +
-    geom_point(size=markerSize, alpha=alpha, 
-               colour=colours[df_long$x2Labels]) +
-    geom_line(alpha=alpha) +
+  lineColours <- rep_len(lineColours, maxX2)
+  modelColours <- rep_len(modelColours, maxX2)
+  colours <- rep_len(colours, maxX2)
+  shapes <- rep_len(shapes, maxX2)
+  
+  if (addPoints) {
+    p <- ggplot(df_long, 
+                aes_string(x="x", y="y", group="id",
+                           shape="x2", color="x2")) +
+      geom_point(size=markerSize, alpha=alpha, 
+                 colour=colours[df_long$x2]) +
+      geom_line(alpha=alpha)
+  } else {
+    p <- ggplot()
+  }
+  
+  p <- p +
     theme_classic() +
     scale_shape_manual(values=shapes) +
-    labs(x=xTitle, y=yTitle, title=title) +
-    theme(legend.position = "none", plot.margin=margin(7,0,14+x2Offset,0),
-          text=element_text(size=fontSize), ...) +
-    scale_x_discrete(labels=setNames(rep(x1Values, length(x2Values)),
-                                     seq_along(modelData[, 1]))) +
-    geom_text(data=data.frame(label = labs,
-                              x=length(x1Values)*(seq_along(x2Values)-1) +
-                                length(x1Values)/2+0.5,
-                              y = min(c(modelData$LCI, df_long$geneExp),
-                                      na.rm=TRUE)),
-              size=rel(3),
-              mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
-              nudge_x=0, vjust=x2Offset, inherit.aes=FALSE)  +
+    labs(x=xlab, y=ylab, title=title) +
+    theme(legend.position = "none", plot.margin=margin(7,4,14+x2Offset,4),
+          text=element_text(size=fontSize),
+          axis.text = element_text(colour = "black", size=fontSize-1), ...) +
+    scale_x_continuous(labels=modelData[, x1var],
+                       breaks=if(x2shift < xdiff) {
+                         modelData[, x1var]
+                       } else {
+                         modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift
+                       }
+                       ) +
     coord_cartesian(clip = 'off') + 
     scale_color_manual(values=lineColours) 
   
+  if (x2shift >= xdiff) {
+    p <- p + geom_text(data=data.frame(label = x2labs,
+                                       x = x2shift*(seq_along(x2labs)-1) + xdiff/2,
+                                       y = min(c(modelData$LCI, df_long$y),
+                                               na.rm=TRUE)),
+                       size=rel(4),
+                       mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
+                       nudge_x=0, vjust=x2Offset, inherit.aes=FALSE) +
+      theme(axis.title.x = element_text(vjust=-6))
+  }
   
   if(addBox) {
-    p <- p + geom_boxplot(mapping=aes_string(x="x1Factors", y="geneExp"),
+    p <- p + geom_boxplot(mapping=aes_string(x="x", y="y"),
                           inherit.aes=FALSE,
                           alpha=alpha*0.7, outlier.shape=NA, width=0.2)
   }
   
-  if(addViolins){
-    df_long$nudged <- as.numeric(df_long$x1Factors) +
-      0.06*ifelse(df_long$x1 %% 2 == 0, 1, -1)
-    df_left <- df_long[df_long$x1 %% 2 != 0, ]
-    lLength <- length(which(table(df_left$nudged)>2))
-    leftColours <- rep(
-      colours[levels(factor(df_long$x2Labels))],
-      each=length(unique(df_left$x1)))[table(df_left$nudged)>2]
-    df_right <- df_long[df_long$x1 %% 2 == 0, ]
-    rLength <- length(which(table(df_right$nudged)>2))
-    rightColours <- rep(
-      colours[levels(factor(df_long$x2Labels))],
-      each=length(unique(df_right$x1)))[table(df_right$nudged)>2]
-    
+  if(addModel){
     p <- p +
-      # Violins on the right
-      geom_half_violin(data = df_right,
-                       inherit.aes = FALSE, alpha=alpha,
-                       mapping=aes_string(x="nudged",
-                                          y="geneExp", group="x1Factors"),
-                       side=c("r"), width=violinWidth,
-                       color=rep(rightColours,
-                                 each=512*rLength/length(rightColours)),
-                       fill=rep(rightColours,
-                                each=512*rLength/length(rightColours)))  +
-      # Violins on the left
-      geom_half_violin(data = df_left,
-                       inherit.aes = FALSE, alpha=alpha,
-                       mapping=aes_string(x="nudged",
-                                          y="geneExp", group="x1Factors"),
-                       side=c("l"), width=violinWidth,
-                       color=rep(leftColours,
-                                 each=512*lLength/length(leftColours)),
-                       fill=rep(leftColours,
-                                each=512*lLength/length(leftColours)))
-  }
-  
-  if(addModel & inherits(glmmResult, "GlmmSeq")){
-    p <- p +
-      annotate("line", x = df_mean$x1Factors, y = df_mean$y,
-               group=df_mean$group, size=modelLineSize,
-               color=modelLineColours[as.character(df_mean$group)]) +
-      annotate("errorbar", x = df_mean$x1Factors, y = df_mean$y,
-               color=modelLineColours[as.character(df_mean$group)], 
-               ymin=df_mean$lower, ymax=df_mean$upper,
+      annotate("line", x = df_model$x, y = df_model$y,
+               group=df_model$group, size=modelLineSize,
+               color=modelLineColours[as.numeric(df_model$group)]) +
+      annotate("errorbar", x = df_model$x, y = df_model$y,
+               color=modelLineColours[as.numeric(df_model$group)], 
+               ymin=df_model$lower, ymax=df_model$upper,
                width=0.2, size=modelLineSize) +
-      annotate("point", x = df_mean$x1Factors, y = df_mean$y, 
-               shape=shapes[as.character(df_mean$group)], size=modelSize, 
-               color=modelColours[as.character(df_mean$group)])
+      annotate("point", x = df_model$x, y = df_model$y, 
+               shape=shapes[as.numeric(df_model$group)], size=modelSize, 
+               color=modelColours[as.numeric(df_model$group)])
   }
   
   if(logTransform) p <- p + scale_y_continuous(trans='log10')
   
-  p <- p + labs(subtitle= bquote(
-    paste("P"[.(x1Label)]*"=", .(pval[1]),
-          ", P"[.(x2Label)]*"=", .(pval[2]),
-          ", P"[paste(.(x1Label), ":", .(x2Label))]*"=",
-          .(pval[3]))))
+  ptext <- lapply(1:ncol(pval), function(i) {
+    bquote("P" [.(colnames(pval)[i])] *"="* .(pval[,i]))
+  })
+  ptext <- bquote(.(paste(unlist(ptext), collapse = '*", "*')))
+  p <- p + labs(subtitle = parse(text = ptext))
   
   return(p)
   

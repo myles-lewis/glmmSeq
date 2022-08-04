@@ -8,9 +8,13 @@
 #' @param x1var The name of the first (inner) x parameter. This must be able
 #' to be paired using the ID.
 #' @param x2var The name of the second (outer) x parameter
+#' @param x2shift Amount to shift along x axis for each level of `x2var`. By
+#'   default the function will arrange each level of `x2var` side by side. Lower
+#'   values of `x2var` or `x2var = 0` can be used to overlap plots similar to
+#'   'dodge' or stagger them.
 #' @param IDColumn Column name of sample IDs for pairing
-#' @param xTitle Title for the x axis
-#' @param yTitle Title for the y axis
+#' @param xlab Title for the x axis
+#' @param ylab Title for the y axis
 #' @param title Plot title. If NULL gene name is used
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shapes (default=19)
@@ -56,8 +60,9 @@ pairedPlot <- function(object,
                        geneName = NULL,
                        x1var = NULL,
                        x2var = NULL,
-                       xTitle = NA,
-                       yTitle = geneName,
+                       x2shift = NULL,
+                       xlab = NA,
+                       ylab = geneName,
                        title = geneName,
                        logTransform = is(object, "GlmmSeq"),
                        shapes = 21,
@@ -68,7 +73,6 @@ pairedPlot <- function(object,
                        alpha = 0.7,
                        addModel = TRUE,
                        addPoints = TRUE,
-                       x2shift = NULL,
                        modelSize = 2,
                        modelColours = "royalblue",
                        modelLineSize = 1,
@@ -112,8 +116,8 @@ pairedPlot <- function(object,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
          pch=19, 
          col=colours[df_long$x2],
-         cex=markerSize, xlab=xTitle, ylab=yTitle,
-         log=log,
+         cex=markerSize, xlab=xlab, ylab=ylab,
+         log=log, xlim = xlim,
          ...,
          panel.first={
            for (i in as.character(unique(df_long$id))) {
@@ -125,7 +129,7 @@ pairedPlot <- function(object,
     plot(as.numeric(df_long$x), df_long$y,
          ylim = myYlim, type='n', bty='l', las=2,
          xaxt='n', cex.axis=fontSize, cex.lab=fontSize,
-         xlab=xTitle, ylab=yTitle,
+         xlab=xlab, ylab=ylab,
          log=log,
          xlim = xlim,
          ...)
@@ -156,7 +160,7 @@ pairedPlot <- function(object,
     axis(1, modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift, 
          labels=modelData[, x1var], cex.axis=fontSize)
     axis(1, x2shift*(seq_along(x2labs)-1) + xdiff/2, labels=x2labs,
-         line=1.5, cex.axis=fontSize, tick=FALSE)
+         line=1, cex.axis=fontSize, tick=FALSE)
   } else {
     axis(1, modelData[, x1var], 
          labels=modelData[, x1var], cex.axis=fontSize)
@@ -196,8 +200,8 @@ formPlot <- function(object, geneName, x1var, x2var, x2shift) {
     nsegments <- length(unique(x)) -1
     if (is.null(x2shift)) {
       x2shift <- max(x, na.rm = TRUE) + xdiff / nsegments
-      x <- x + (x2-1) * x2shift
     }
+    x <- x + (x2-1) * x2shift
   } else {
     x2 <- 1
     x2shift <- -Inf
