@@ -344,7 +344,7 @@ glmerCore <- function(geneList,
                         as.numeric(logLik(fit))),
                       c("Dispersion", "AIC", "logLik"))
     fixedEffects <- lme4::fixef(fit)
-    stdErr <- coef(summary(fit))[, 2]
+    stdErr <- suppressWarnings(coef(summary(fit))[, 2])
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
     waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
