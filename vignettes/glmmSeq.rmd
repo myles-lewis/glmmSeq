@@ -272,9 +272,9 @@ see the most significant interactions we can order `pvals` by
 `Timepoint:EULAR_6m`:
 
 ```{r}
-stats = data.frame(results@stats$pvals)
+stats <- summary(results)
 
-kable(stats[order(stats[, 'Timepoint:EULAR_6m']), ]) %>%
+kable(stats[order(stats[, 'P_Timepoint:EULAR_6m']), ]) %>%
   kable_styling() %>%
   scroll_box(width = "100%", height = "400px")
 ```
@@ -288,14 +288,14 @@ kable(predict) %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
-# Qvalues
+# Q-values
 
 The qvalues from each of the pvalue columns can be calculated using `glmmQvals`. 
-This will output a significance table based on the cut-off (default p=0.05) and 
+This will print a significance table based on the cut-off (default p=0.05) and 
 add a matrix called `qvals` to the `@stats` slot:
 
 ```{r}
-results <- glmmQvals(results, pi0=1)
+results <- glmmQvals(results)
 ```
 
 ## Individual Genes
@@ -339,18 +339,18 @@ plotColours <- c("skyblue", "goldenrod1", "mediumseagreen")
 modColours <- c("dodgerblue3", "goldenrod3", "seagreen4")
 shapes <- c(17, 19, 18)
 
-modelPlot(results,
-          geneName = "IGHV3-23",
-          x1var = "Timepoint",
-          x2var="EULAR_6m",
-          xlab="Time",
-          colours = plotColours,
-          shapes = shapes,
-          lineColours = plotColours, 
-          modelColours = modColours,
-          modelSize = 10, 
-          fontSize=10,
-          x2Offset = 8)
+ggmodelPlot(results,
+            geneName = "IGHV3-23",
+            x1var = "Timepoint",
+            x2var="EULAR_6m",
+            xlab="Time",
+            colours = plotColours,
+            shapes = shapes,
+            lineColours = plotColours, 
+            modelColours = modColours,
+            modelSize = 10, 
+            fontSize=10,
+            x2Offset = 8)
 ```
 
 Or using base graphics, with or without the model fit overlaid:
@@ -447,13 +447,13 @@ p1<- ggmodelPlot(results,
                  modelLineColour =  plotColours) +
   theme(plot.subtitle=element_text(size=9))
 
-p2 <- modelPlot(results,
-                 geneName = "IGHJ6",
-                 x1var = "Timepoint",
-                 x2var="EULAR_6m",
-                 colours = "blue",
-                 fontSize=8,
-                 modelSize=0.1) +
+p2 <- ggmodelPlot(results,
+                  geneName = "IGHJ6",
+                  x1var = "Timepoint",
+                  x2var="EULAR_6m",
+                  colours = "blue",
+                  fontSize=8,
+                  modelSize=0.1) +
   theme(plot.subtitle=element_text(size=9))
 
 ggarrange(p1, p2, ncol=2)

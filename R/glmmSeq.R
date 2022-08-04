@@ -373,3 +373,11 @@ glmerCore <- function(geneList,
                 predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }
+
+
+#' @export
+
+summary.GlmmSeq <- function(x, ...) {
+  summary.lmmSeq(x, ...)
+}
+

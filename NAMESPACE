@@ -2,6 +2,7 @@
 
 S3method(lmmRefit,GlmmSeq)
 S3method(lmmRefit,lmmSeq)
+S3method(summary,GlmmSeq)
 S3method(summary,lmmSeq)
 export(fcPlot)
 export(ggmodelPlot)
