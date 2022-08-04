@@ -56,6 +56,7 @@
 #' lmmtest <- lmmSeq_v1(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      maindata = logtpm["MS4A1", ],
 #'                      metadata = metadata,
+#'                      id = "PATID",
 #'                      verbose = FALSE)
 #' names(attributes(lmmtest))
 
