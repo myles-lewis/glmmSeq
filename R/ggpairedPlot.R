@@ -1,13 +1,15 @@
-#' Paired plot using ggplot2
+#' Mixed model effects plot using ggplot2
 #'
-#' Paired plot to show differences between groups and over time using ggplot2
+#' Plot to show differences between groups and over time using ggplot2.
 #' 
-#' @param object A glmmSeq object created by
-#' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}
+#' @param object A glmmSeq/lmmSeq object created by
+#' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}} or 
+#' \code{\link[glmmSeq:lmmSeq]{glmmSeq::lmmSeq()}}
 #' @param geneName The gene/row name to be plotted
-#' @param x1var The name of the first (inner) x parameter. This must be able
-#' to be paired using the ID.
-#' @param x2var The name of the second (outer) x parameter
+#' @param x1var The name of the first (inner) x parameter, typically 'time'.
+#'   This is anticipated to have different values when matched by ID.
+#' @param x2var The name of an optional second (outer) x parameter, which should be a
+#'   factor.
 #' @param x2shift Amount to shift along x axis for each level of `x2var`. By
 #'   default the function will arrange each level of `x2var` side by side. Lower
 #'   values of `x2var` or `x2var = 0` can be used to overlap plots similar to
@@ -134,6 +136,12 @@ ggpairedPlot <- function(object,
     coord_cartesian(clip = 'off') + 
     scale_color_manual(values=lineColours) 
   
+  if(addBox) {
+    p <- p + geom_boxplot(mapping=aes_string(x="x", y="y", group="x"),
+                          inherit.aes=FALSE,
+                          alpha=alpha*0.7, outlier.shape=NA, width=xdiff/6)
+  }
+  
   if (x2shift >= xdiff) {
     p <- p + geom_text(data=data.frame(label = x2labs,
                                        x = x2shift*(seq_along(x2labs)-1) + xdiff/2,
@@ -143,12 +151,6 @@ ggpairedPlot <- function(object,
                        mapping=aes_string(label="label", x="x", y="y"), hjust = 0.5,
                        nudge_x=0, vjust=x2Offset, inherit.aes=FALSE) +
       theme(axis.title.x = element_text(vjust=-6))
-  }
-  
-  if(addBox) {
-    p <- p + geom_boxplot(mapping=aes_string(x="x", y="y"),
-                          inherit.aes=FALSE,
-                          alpha=alpha*0.7, outlier.shape=NA, width=0.2)
   }
   
   if(addModel){

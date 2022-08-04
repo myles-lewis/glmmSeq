@@ -2,15 +2,16 @@
 % Please edit documentation in R/pairedPlot.R
 \name{pairedPlot}
 \alias{pairedPlot}
-\title{Repeated measures plot}
+\title{Mixed model effects plot}
 \usage{
 pairedPlot(
   object,
   geneName = NULL,
   x1var = NULL,
   x2var = NULL,
-  xTitle = NULL,
-  yTitle = geneName,
+  x2shift = NULL,
+  xlab = NA,
+  ylab = geneName,
   title = geneName,
   logTransform = is(object, "GlmmSeq"),
   shapes = 21,
@@ -21,7 +22,6 @@ pairedPlot(
   alpha = 0.7,
   addModel = TRUE,
   addPoints = TRUE,
-  x2shift = NULL,
   modelSize = 2,
   modelColours = "royalblue",
   modelLineSize = 1,
@@ -32,19 +32,26 @@ pairedPlot(
 )
 }
 \arguments{
-\item{object}{A glmmSeq object created by
-\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}}
+\item{object}{A glmmSeq/lmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}} or
+\code{\link[glmmSeq:lmmSeq]{glmmSeq::lmmSeq()}}}
 
 \item{geneName}{The gene/row name to be plotted}
 
-\item{x1var}{The name of the first (inner) x parameter. This must be able
-to be paired using the ID.}
+\item{x1var}{The name of the first (inner) x parameter, typically 'time'.
+This is anticipated to have different values when matched by ID.}
 
-\item{x2var}{The name of the second (outer) x parameter}
+\item{x2var}{The name of an optional second (outer) x parameter, which should be a
+factor.}
 
-\item{xTitle}{Title for the x axis}
+\item{x2shift}{Amount to shift along x axis for each level of \code{x2var}. By
+default the function will arrange each level of \code{x2var} side by side. Lower
+values of \code{x2var} or \code{x2var = 0} can be used to overlap plots similar to
+'dodge' or stagger them.}
 
-\item{yTitle}{Title for the y axis}
+\item{xlab}{Title for the x axis}
+
+\item{ylab}{Title for the y axis}
 
 \item{title}{Plot title. If NULL gene name is used}
 

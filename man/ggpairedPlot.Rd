@@ -2,54 +2,56 @@
 % Please edit documentation in R/ggpairedPlot.R
 \name{ggpairedPlot}
 \alias{ggpairedPlot}
-\title{Paired plot using ggplot2}
+\title{Mixed model effects plot using ggplot2}
 \usage{
 ggpairedPlot(
-  glmmResult,
+  object,
   geneName = NULL,
-  x1Label = NULL,
-  x2Label = NULL,
-  IDColumn = "ID",
-  xTitle = NULL,
-  yTitle = "Gene Expression",
-  title = NULL,
-  logTransform = FALSE,
+  x1var = NULL,
+  x2var = NULL,
+  x2shift = NULL,
+  xlab = NULL,
+  ylab = geneName,
+  title = geneName,
+  logTransform = is(object, "GlmmSeq"),
   shapes = 19,
   colours = "grey60",
   lineColours = "grey60",
-  markerSize = 0.5,
-  fontSize = NULL,
+  markerSize = 1,
+  fontSize = 12,
   alpha = 0.7,
-  x2Offset = 6,
-  pairedOnly = TRUE,
-  graphics = "base",
+  x2Offset = 5,
+  addPoints = TRUE,
   addModel = TRUE,
-  modelSize = 2,
-  modelColours = "black",
+  modelSize = 4,
+  modelColours = "blue",
   modelLineSize = 1,
-  modelLineColours = NULL,
+  modelLineColours = modelColours,
   addBox = FALSE,
-  addViolins = TRUE,
-  violinWidth = 0.5,
   ...
 )
 }
 \arguments{
-\item{glmmResult}{A glmmSeq object created by
-\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}}
+\item{object}{A glmmSeq/lmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}} or
+\code{\link[glmmSeq:lmmSeq]{glmmSeq::lmmSeq()}}}
 
 \item{geneName}{The gene/row name to be plotted}
 
-\item{x1Label}{The name of the first (inner) x parameter. This must be able
-to be paired using the ID.}
+\item{x1var}{The name of the first (inner) x parameter, typically 'time'.
+This is anticipated to have different values when matched by ID.}
 
-\item{x2Label}{The name of the second (outer) x parameter}
+\item{x2var}{The name of an optional second (outer) x parameter, which should be a
+factor.}
 
-\item{IDColumn}{Column name of sample IDs for pairing}
+\item{x2shift}{Amount to shift along x axis for each level of \code{x2var}. By
+default the function will arrange each level of \code{x2var} side by side. Lower
+values of \code{x2var} or \code{x2var = 0} can be used to overlap plots similar to
+'dodge' or stagger them.}
 
-\item{xTitle}{Title for the x axis}
+\item{xlab}{Title for the x axis}
 
-\item{yTitle}{Title for the y axis}
+\item{ylab}{Title for the y axis}
 
 \item{title}{Plot title. If NULL gene name is used}
 
@@ -57,40 +59,31 @@ to be paired using the ID.}
 
 \item{shapes}{The marker shapes (default=19)}
 
-\item{colours}{The marker colours (default='red') as vector or named vector}
+\item{colours}{The marker colours as vector}
 
-\item{lineColours}{The line colours (default='grey60') as vector or named
-vector}
+\item{lineColours}{The line colours (default='grey60') as vector}
 
-\item{markerSize}{Size of markers (default=2)}
+\item{markerSize}{Size of markers (default=1)}
 
 \item{fontSize}{Plot font size}
 
 \item{alpha}{Line and marker opacity (default=0.7)}
 
-\item{x2Offset}{Vertical adjustment to secondary x-axis (default=6)}
+\item{x2Offset}{Vertical adjustment to secondary x-axis labels (default=5)}
 
-\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
+\item{addPoints}{Whether to add underlying data points (default=TRUE)}
 
 \item{addModel}{Whether to add the fit model with markers (default=TRUE)}
 
-\item{modelSize}{Size of model points (default=3)}
+\item{modelSize}{Size of model points (default=4)}
 
-\item{modelColours}{Colour of model fit markers (default="black") as vector
-or named vector}
+\item{modelColours}{Colour of model fit markers (default="blue") as vector}
 
-\item{modelLineSize}{Size of model points (default=1) as vector or named
-vector}
+\item{modelLineSize}{Size of model points (default=1) as vector}
 
-\item{modelLineColours}{Colour of model fit lines. If NULL same colours as
-modelColour used (default=NULL).}
+\item{modelLineColours}{Colour of model fit lines}
 
-\item{addBox}{Logical whether to add boxplots for mean and IQR.}
-
-\item{addViolins}{Logical whether to add half violin-plots (ggplot only),
-default=TRUE}
-
-\item{violinWidth}{Width of violin plots (default=0.5)}
+\item{addBox}{Logical whether to add boxplots for mean and IQR}
 
 \item{...}{Other parameters to pass to
 \code{\link[ggplot2:theme]{ggplot2::theme()}}.}
@@ -99,7 +92,7 @@ default=TRUE}
 Returns a paired plot for matched samples.
 }
 \description{
-Paired plot to show differences between groups and over time using ggplot2
+Plot to show differences between groups and over time using ggplot2.
 }
 \examples{
 data(PEAC_minimal_load)
@@ -109,17 +102,14 @@ disp <- apply(tpm, 1, function(x){
 })
 
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = 'PATID',
                      countdata = tpm['MS4A1', ],
                      metadata = metadata,
                      dispersion = disp['MS4A1'],
-                     removeDuplicatedMeasures=TRUE,
                      verbose=FALSE)
 
-ggpairedPlot(glmmResult=MS4A1glmm,
+ggpairedPlot(object=MS4A1glmm,
            geneName = 'MS4A1',
-           x1Label = 'Timepoint',
-           x2Label='EULAR_6m',
-           IDColumn = 'PATID',
+           x1var = 'Timepoint',
+           x2var='EULAR_6m',
            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'))
 }
