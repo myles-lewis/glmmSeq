@@ -18,7 +18,7 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 setClass("lmmSeq", slots = list(
   info = "list",
   formula = "formula",
-  stats = "list",
+  stats = "list_or_matrix",
   predict = "df_or_matrix",
   reducedFormula = "formula",
   maindata = "df_or_matrix",

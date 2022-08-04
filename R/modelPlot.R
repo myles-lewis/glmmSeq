@@ -193,7 +193,7 @@ formPlot <- function(object, geneName, x1var, x2var, x2shift) {
   # Set up plotting data frame
   IDColumn <- object@vars$id
   id <- object@metadata[, IDColumn]
-  y <- as.numeric(maindata[geneName, ])
+  y <- maindata[geneName, ]
   x <- object@metadata[, x1var]
   xdiff <- diff(range(x, na.rm = TRUE))
   if (!is.null(x2var)) {

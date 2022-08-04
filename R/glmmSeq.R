@@ -1,5 +1,6 @@
 setClassUnion("character_or_list", c("character", "list"))
 setClassUnion("df_or_matrix", c("data.frame", "matrix"))
+setClassUnion("list_or_matrix", c("list", "matrix"))
 
 #' An S4 class to define the glmmSeq output
 #'
@@ -18,7 +19,7 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 setClass("GlmmSeq", slots = list(
   info = "list",
   formula = "formula",
-  stats = "list",
+  stats = "list_or_matrix",
   predict = "df_or_matrix",
   reducedFormula = "formula",
   countdata = "df_or_matrix",
@@ -122,6 +123,7 @@ glmmSeq <- function(modelFormula,
                     progress = FALSE,
                     ...) {
   glmmcall <- match.call(expand.dots = TRUE)
+  countdata <- as.matrix(countdata)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
@@ -210,7 +212,7 @@ glmmSeq <- function(modelFormula,
   
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
-    list(y = as.numeric(countdata[i, ]), dispersion = dispersion[i])
+    list(y = countdata[i, ], dispersion = dispersion[i])
   })
   
   # For each gene perform a fit

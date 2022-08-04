@@ -59,6 +59,7 @@
 #' MS4A1glmm <- glmmSeq_v1(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      countdata = tpm["MS4A1", ],
 #'                      metadata = metadata,
+#'                      id = "PATID",
 #'                      dispersion = disp["MS4A1"],
 #'                      verbose = FALSE)
 #' names(attributes(MS4A1glmm))
