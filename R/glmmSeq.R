@@ -5,10 +5,10 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 #'
 #' @slot info List including the matched call, dispersions, offset, designMatrix
 #' @slot formula The model formula
-#' @slot stats the statistics from the glmm fit
-#' @slot predict The predicted interception values
+#' @slot stats Statistics from fitted models
+#' @slot predict Predicted values
 #' @slot reducedFormula The reduced formula with removed random effects
-#' @slot countdata The input expression data
+#' @slot countdata The input expression data with count data in rows
 #' @slot metadata The input metadata
 #' @slot modelData Model data for predictions
 #' @slot optInfo Information on whether the model was singular or converged
@@ -18,7 +18,7 @@ setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 setClass("GlmmSeq", slots = list(
   info = "list",
   formula = "formula",
-  stats = "df_or_matrix",
+  stats = "list",
   predict = "df_or_matrix",
   reducedFormula = "formula",
   countdata = "df_or_matrix",

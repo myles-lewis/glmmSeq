@@ -14,13 +14,13 @@ An S4 class to define the glmmSeq output
 
 \item{\code{formula}}{The model formula}
 
-\item{\code{stats}}{the statistics from the glmm fit}
+\item{\code{stats}}{Statistics from fitted models}
 
-\item{\code{predict}}{The predicted interception values}
+\item{\code{predict}}{Predicted values}
 
 \item{\code{reducedFormula}}{The reduced formula with removed random effects}
 
-\item{\code{countdata}}{The input expression data}
+\item{\code{countdata}}{The input expression data with count data in rows}
 
 \item{\code{metadata}}{The input metadata}
 
