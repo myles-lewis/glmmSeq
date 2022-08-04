@@ -433,7 +433,7 @@ car_relatives <- function (term, names, factors)
 #' @export
 
 summary.lmmSeq <- function(object,
-                           rows,
+                           rows = NULL,
                            digits = max(3L, getOption("digits") - 3L), ...) {
   if (is.null(rows)) {
     statSet <- names(object@stats)
