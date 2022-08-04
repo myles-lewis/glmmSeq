@@ -200,6 +200,7 @@ maPlot <- function(object,
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
       theme(legend.position=c(1, 0),
             text=element_text(size=fontSize),
+            axis.text = element_text(colour = "black", size=fontSize-1),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1,-0.1)) +
       annotate("text", x=unlist(lapply(annot1, function(x) x$x)),
@@ -216,6 +217,7 @@ maPlot <- function(object,
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
       theme(legend.position=c(1, 0),
             text=element_text(size=fontSize),
+            axis.text = element_text(colour = "black", size=fontSize-1),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1, -0.1)) +
       annotate("text", x=unlist(lapply(annot2, function(x) x$x)),
