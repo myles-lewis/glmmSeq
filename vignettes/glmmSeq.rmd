@@ -265,13 +265,16 @@ The variables used by the model are in the `@modeldata`:
 kable(results@modelData) %>% kable_styling()
 ```
 
-The model fit statistics can be viewed in the `@stats` slot. To see the most
-significant interactions we can order by P_Timepoint.EULAR_6m:
+The model fit statistics can be viewed in the `@stats` slot which is a list of
+items including fitted model coefficients, their standard errors and the results
+of statistical tests on terms within the model using Wald type 2 Chi square. To
+see the most significant interactions we can order `pvals` by
+`Timepoint:EULAR_6m`:
 
 ```{r}
-stats = data.frame(results@stats)
+stats = data.frame(results@stats$pvals)
 
-kable(stats[order(stats$P_Timepoint.EULAR_6m), ]) %>%
+kable(stats[order(stats[, 'Timepoint:EULAR_6m']), ]) %>%
   kable_styling() %>%
   scroll_box(width = "100%", height = "400px")
 ```
@@ -289,7 +292,7 @@ kable(predict) %>%
 
 The qvalues from each of the pvalue columns can be calculated using `glmmQvals`. 
 This will output a significance table based on the cut-off (default p=0.05) and 
-add qvalue columns to the `@stats` slot:
+add a matrix called `qvals` to the `@stats` slot:
 
 ```{r}
 results <- glmmQvals(results, pi0=1)
