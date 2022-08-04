@@ -338,11 +338,11 @@ modColours <- c("Good responder"="dodgerblue3",
                 "Non responder"="seagreen4")
 shapes <- c("Moderate responder"=19, "Good responder"= 17, "Non responder"=18)
 
-pairedPlot(glmmResult=results,
+modelPlot(results,
            geneName = "IGHV3-23",
-           x1Label = "Timepoint",
-           x2Label="EULAR_6m",
-           xTitle="Time",
+           x1var = "Timepoint",
+           x2var="EULAR_6m",
+           xlab="Time",
            IDColumn = "PATID",
            graphics = "ggplot",
            colours = plotColours,
@@ -364,61 +364,48 @@ Or using base graphics, with or without the model fit overlaid:
 oldpar <- par()
 par(mfrow=c(1, 2))
 
-p1 = pairedPlot(glmmResult=results2,
+modelPlot(results2,
                 geneName = "FGF14",
-                x1Label = "Timepoint",
-                x2Label="EULAR_binary",
-                IDColumn = "PATID",
-                graphics="base",
+                x1var = "Timepoint",
+                x2var="EULAR_binary",
                 fontSize=0.65,
                 colours=c("coral", "mediumseagreen"),
-                addModel=T,
                 modelColours = c("coral", "mediumseagreen"),
                 modelLineColours = "black",
                 modelSize = 2)
 
-p2 = pairedPlot(glmmResult=results,
+modelPlot(results,
                 geneName = "EMILIN3",
-                x1Label = "Timepoint",
-                x2Label="EULAR_6m",
-                IDColumn = "PATID",
-                addModel=TRUE,
-                graphics="base",
-                fontSize=0.65,
-                colours=plotColours)
+                x1var = "Timepoint",
+                x2var = "EULAR_6m",
+                colours = plotColours,
+          addModel = FALSE)
 
 par(oldpar)
 ```
 
-
-# Model plots
-
-Alternatively to plot the model fits alone you can use the modelPlot function:
+To plot the model fits alone set `addPoints = FALSE`.
 
 ```{r, message=FALSE}
 library(ggpubr)
 
-p1 <- modelPlot(results,
+p1 <- ggmodelPlot(results,
                 "ADAM12",
-                x1Label="Timepoint",
-                x2Label="EULAR_6m",
-                xTitle="Time",
-                fontSize=8,
-                x2Offset=6,
-                overlap=FALSE,
-                graphics="ggplot",
+                x1var="Timepoint",
+                x2var="EULAR_6m",
+                xlab="Time",
+                addPoints = FALSE,
                 colours = plotColours)
 
-p2 <- modelPlot(results,
+p2 <- ggmodelPlot(results,
                 "ADAM12",
-                x1Label="Timepoint",
-                x2Label="EULAR_6m",
-                xTitle="Time",
+                x1var="Timepoint",
+                x2var="EULAR_6m",
+                xlab="Time",
                 fontSize=8,
                 x2Offset=1,
                 addErrorbars = FALSE,
-                overlap=TRUE,
-                graphics="ggplot",
+                addPoints = FALSE,
                 colours = plotColours)
 
 ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
@@ -427,8 +414,8 @@ ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 
 # Fold Change Plots
 
-The comparative fold change (for x1Label variables) between conditions 
-(x2Label and x2Values variables) can be plotted using fcPlots 
+The comparative fold change (for x1var variables) between conditions 
+(x2var and x2Values variables) can be plotted using fcPlots 
 for all genes to highlight significance. 
 
 (By setting graphics="plotly" this can be viewed interactively)
@@ -440,9 +427,9 @@ labels = c('MS4A1', 'FGF14', 'IL2RG', 'IGHV3-23', 'ADAM12', 'FGFRL1', 'IL36G',
            'BLK', 'SAA1', 'CILP', 'EMILIN3', 'EMILIN2', 'IGHJ6', 
            'CXCL9', 'CXCL13')
 
-fcPlot(glmmResult=results,
-       x1Label="Timepoint",
-       x2Label="EULAR_6m",
+fcPlot(results,
+       x1var="Timepoint",
+       x2var="EULAR_6m",
        x2Values=c("Good responder", "Non responder"),
        pCutoff=0.1,
        labels=labels,
@@ -457,53 +444,26 @@ This allows us to pick out genes of potential interest which we can have
 another closer look at:
 
 ```{r, fig.height=6, warning=FALSE}
-p1<- pairedPlot(glmmResult=results,
+p1<- ggmodelPlot(results,
                  geneName = "ADAM12",
-                 x1Label = "Timepoint",
-                 x2Label="EULAR_6m",
-                 IDColumn = "PATID",
-                 graphics="ggplot",
+                 x1var = "Timepoint",
+                 x2var="EULAR_6m",
                  colours = "grey60",
                  modelColour = plotColours, 
-                 modelLineColour =  plotColours, 
-                 addViolins=FALSE,
-                 fontSize=8,
-                 logTransform=T) +
+                 modelLineColour =  plotColours) +
   theme(plot.subtitle=element_text(size=9))
 
-p2 <- pairedPlot(glmmResult=results,
+p2 <- modelPlot(results,
                  geneName = "IGHJ6",
-                 x1Label = "Timepoint",
-                 x2Label="EULAR_6m",
-                 IDColumn = "PATID",
-                 graphics="ggplot",
-                 addViolins = FALSE,
+                 x1var = "Timepoint",
+                 x2var="EULAR_6m",
                  colours = "blue",
                  fontSize=8,
-                 modelSize=0.1,
-                 logTransform=T) +
+                 modelSize=0.1) +
   theme(plot.subtitle=element_text(size=9))
 
 ggarrange(p1, p2, ncol=2)
 ```
-
-Or flipping the x1 and x2 labels we can look at the fold change between response at different
-time points. This might be interesting to see if there are differences at certain
-time points which are not present at others. 
-
-```{r}
-fcPlot(glmmResult=results,
-       x2Label="Timepoint",
-       x1Label="EULAR_6m",
-       x1Values=c("Good responder", "Non responder"),
-       labels=labels,
-       pCutoff=0.1,
-       useAdjusted = F,
-       plotCutoff = 1,
-       graphics="ggplot")
-```
-
-
 
 
 # MA plots
@@ -515,8 +475,8 @@ scales, then plotting these values.
 
 ```{r, fig.height=8}
 maPlots <- maPlot(results,
-                  x1Label="Timepoint",
-                  x2Label="EULAR_6m",
+                  x1var="Timepoint",
+                  x2var="EULAR_6m",
                   x2Values=c("Good responder", "Non responder"),
                   colours=c('grey', 'midnightblue',
                              'mediumseagreen', 'goldenrod'),
@@ -528,8 +488,8 @@ maPlots$combined
 
 ```{r, fig.height=8}
 maPlots <- maPlot(results,
-                  x2Label="Timepoint",
-                  x1Label="EULAR_6m",
+                  x2var="Timepoint",
+                  x1var="EULAR_6m",
                   x1Values=c("Good responder", "Non responder"),
                   colours=c('grey', 'midnightblue',
                              'mediumseagreen', 'goldenrod'),
