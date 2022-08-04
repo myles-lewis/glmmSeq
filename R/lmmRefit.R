@@ -11,6 +11,7 @@
 #' @param object A fitted results object of class `GlmmSeq` or `lmmSeq`
 #' @param gene A character value specifying a single gene to extract a fitted
 #'   model for
+#' @param ... Optional arguments passed to either [lme4::glmer] or [lme4::lmer]
 #' @return Fitted model of class `lmerMod` in the case of LMM or `glmerMod` for
 #'   a GLMM
 #' @export

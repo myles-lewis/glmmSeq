@@ -11,6 +11,8 @@ lmmRefit(object, gene, ...)
 
 \item{gene}{A character value specifying a single gene to extract a fitted
 model for}
+
+\item{...}{Optional arguments passed to either \link[lme4:glmer]{lme4::glmer} or \link[lme4:lmer]{lme4::lmer}}
 }
 \value{
 Fitted model of class \code{lmerMod} in the case of LMM or \code{glmerMod} for
