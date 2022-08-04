@@ -45,22 +45,22 @@
 #' data(PEAC_minimal_load)
 #'
 #' disp <- apply(tpm, 1, function(x){
-#' (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
+#'   (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 #' })
 #'
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 #'                      countdata = tpm['MS4A1', ],
 #'                      metadata = metadata,
 #'                      dispersion = disp['MS4A1'],
-#'                      verbose=FALSE)
+#'                      verbose = FALSE)
 #'
-#' ggpairedPlot(object=MS4A1glmm,
+#' ggmodelPlot(object = MS4A1glmm,
 #'            geneName = 'MS4A1',
 #'            x1var = 'Timepoint',
-#'            x2var='EULAR_6m',
+#'            x2var = 'EULAR_6m',
 #'            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'))
 
-ggpairedPlot <- function(object,
+ggmodelPlot <- function(object,
                          geneName = NULL,
                          x1var = NULL,
                          x2var = NULL,
