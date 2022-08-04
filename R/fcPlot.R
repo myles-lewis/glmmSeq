@@ -194,7 +194,7 @@ fcPlot <- function(object,
             axis.text = element_text(colour = "black", size=fontSize-1),
             legend.background = element_rect(fill = NA, color = NA),
             legend.justification = c(-0.1,1.1),
-            plot.margin = unit(c(7, 0, 3, 0), units = "mm")) +
+            plot.margin = unit(c(7, 4, 4, 4), units = "mm")) +
       annotate("text", x = unlist(lapply(annot, function(x) x$x)),
                y = unlist(lapply(annot, function(x) x$y)), vjust = 1,
                size = labelFontSize,

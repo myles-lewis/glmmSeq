@@ -325,11 +325,13 @@ MS4A1fit
 
 This has the advantage of increased model flexibility.
 
-# Paired Plots
+# Model Plots
 
-For variables which are paired according to an ID (the random effect), we can
-view the model using paired plots. In this case the samples can be paired over
-time.
+For variables such as time, which are matched according to an ID (the random
+effect), we can examine the fitted model using plots which show estimated means
+and confidence intervals based on coefficients for the fitted regression model,
+overlaid upon the underlying data. In this case the samples are matched
+longitudinally over time.
 
 Plots can be viewed using either ggplot or base graphics. We can start looking 
 at the gene with the most significant interaction _IGHV3-23_:
@@ -408,12 +410,11 @@ ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 
 # Fold Change Plots
 
-The comparative fold change (for x1var variables) between conditions 
-(x2var and x2Values variables) can be plotted using fcPlots 
-for all genes to highlight significance. 
+The comparative fold change (for `x1var` variables) between conditions (`x2var`
+and `x2Values` variables) can be plotted using an fcPlot for all genes to
+highlight significance.
 
-(By setting graphics="plotly" this can be viewed interactively)
-
+(By setting `graphics = "plotly"` this can be viewed interactively)
 
 ```{r}
 # Genes to label:

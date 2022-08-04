@@ -67,7 +67,14 @@ maPlot <- function(object,
 
   # Extract the data
   predict <- object@predict
-  stats <- object@stats
+  stats <- object@stats$pvals
+  if (useAdjusted) {
+    stats <- object@stats$qvals
+    colnames(stats) <- paste0("q_", colnames(stats))
+  } else {
+    stats <- object@stats$pvals
+    colnames(stats) <- paste0("P_", colnames(stats))
+  }
   adj <- ifelse(useAdjusted, "q_", "P_")
   modelData <- object@modelData
   outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
