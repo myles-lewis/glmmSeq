@@ -12,8 +12,8 @@
 #'   be a factor.
 #' @param x2shift Amount to shift along x axis for each level of `x2var`. By
 #'   default the function will arrange each level of `x2var` side by side. Lower
-#'   values of `x2var` or `x2var = 0` can be used to overlap plots similar to
-#'   'dodge' or stagger them.
+#'   values of `x2shift` or `x2shift = 0` can be used to overlap plots similar
+#'   to 'dodge' or stagger them.
 #' @param xlab Title for the x axis
 #' @param ylab Title for the y axis
 #' @param title Plot title. If NULL gene name is used

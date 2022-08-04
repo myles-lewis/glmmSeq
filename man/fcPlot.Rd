@@ -5,9 +5,9 @@
 \title{Plotly or ggplot fold change plots}
 \usage{
 fcPlot(
-  glmmResult,
-  x1Label,
-  x2Label,
+  object,
+  x1var,
+  x2var,
   x1Values = NULL,
   x2Values = NULL,
   pCutoff = 0.01,
@@ -23,17 +23,17 @@ fcPlot(
 )
 }
 \arguments{
-\item{glmmResult}{A glmmSeq object created by
+\item{object}{A glmmSeq object created by
 \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 
-\item{x1Label}{The name of the first (inner) x parameter}
+\item{x1var}{The name of the first (inner) x parameter}
 
-\item{x2Label}{The name of the second (outer) x parameter}
+\item{x2var}{The name of the second (outer) x parameter}
 
-\item{x1Values}{Subpopulations in x1Label to be used to calculate fold
-change. If NULL the first two levels in x1Label are used.}
+\item{x1Values}{Subpopulations in x1var to be used to calculate fold
+change. If NULL the first two levels in x1var are used.}
 
-\item{x2Values}{Subpopulations in x2Label to be compared on x and y axis.}
+\item{x2Values}{Subpopulations in x2var to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding
 (default = 0.01)}
@@ -41,7 +41,7 @@ change. If NULL the first two levels in x1Label are used.}
 \item{labels}{Row names or indices to label on plot}
 
 \item{useAdjusted}{whether to use adjusted pvalues
-(must have q_ columns in glmmResult). Default = FALSE}
+(must have q_ columns in object). Default = FALSE}
 
 \item{plotCutoff}{Which probes to include on plot by significance cut-off
 (default = 1, for all markers)}
@@ -79,9 +79,9 @@ glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      dispersion = disp,
                      verbose = FALSE)
 
-fcPlot(glmmResult = glmmFit,
-      x1Label = "Timepoint",
-      x2Label = "EULAR_6m",
+fcPlot(object = glmmFit,
+      x1var = "Timepoint",
+      x2var = "EULAR_6m",
       x2Values = c("Good responder", "Non responder"),
       pCutoff = 0.05,
       useAdjusted = FALSE,

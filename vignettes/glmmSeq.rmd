@@ -386,23 +386,22 @@ To plot the model fits alone set `addPoints = FALSE`.
 library(ggpubr)
 
 p1 <- ggmodelPlot(results,
-                "ADAM12",
-                x1var="Timepoint",
-                x2var="EULAR_6m",
-                xlab="Time",
-                addPoints = FALSE,
-                colours = plotColours)
+                  "ADAM12",
+                  x1var="Timepoint",
+                  x2var="EULAR_6m",
+                  xlab="Time",
+                  addPoints = FALSE,
+                  colours = plotColours)
 
 p2 <- ggmodelPlot(results,
-                "ADAM12",
-                x1var="Timepoint",
-                x2var="EULAR_6m",
-                xlab="Time",
-                fontSize=8,
-                x2Offset=1,
-                addErrorbars = FALSE,
-                addPoints = FALSE,
-                colours = plotColours)
+                  "EMILIN3",
+                  x1var="Timepoint",
+                  x2var="EULAR_6m",
+                  xlab="Time",
+                  fontSize=8,
+                  x2Offset=1,
+                  addPoints = FALSE,
+                  colours = plotColours)
 
 ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 ```

@@ -45,9 +45,7 @@ This is anticipated to have different values when matched by ID.}
 factor.}
 
 \item{x2shift}{Amount to shift along x axis for each level of \code{x2var}. By
-default the function will arrange each level of \code{x2var} side by side. Lower
-values of \code{x2var} or \code{x2var = 0} can be used to overlap plots similar to
-'dodge' or stagger them.}
+default the function will arrange each level of \code{x2var} side by side.}
 
 \item{xlab}{Title for the x axis}
 

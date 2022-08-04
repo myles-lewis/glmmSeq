@@ -11,9 +11,7 @@
 #' @param x2var The name of an optional second (outer) x parameter, which should be a
 #'   factor.
 #' @param x2shift Amount to shift along x axis for each level of `x2var`. By
-#'   default the function will arrange each level of `x2var` side by side. Lower
-#'   values of `x2var` or `x2var = 0` can be used to overlap plots similar to
-#'   'dodge' or stagger them.
+#'   default the function will arrange each level of `x2var` side by side.
 #' @param xlab Title for the x axis
 #' @param ylab Title for the y axis
 #' @param title Plot title. If NULL gene name is used
@@ -38,7 +36,7 @@
 #' @importFrom ggplot2 ggplot geom_boxplot geom_point geom_line theme_classic
 #' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
 #' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous
-#' scale_x_continuous aes_string annotate margin element_text rel
+#' scale_x_continuous aes_string annotate margin element_text rel geom_errorbar
 #' @importFrom gghalves geom_half_violin
 #' @export
 #' @examples
@@ -159,11 +157,11 @@ ggmodelPlot <- function(object,
                group=df_model$group, size=modelLineSize,
                color=modelLineColours[as.numeric(df_model$group)]) +
       annotate("errorbar", x = df_model$x, y = df_model$y,
-               color=modelLineColours[as.numeric(df_model$group)], 
+               color=modelLineColours[as.numeric(df_model$group)],
                ymin=df_model$lower, ymax=df_model$upper,
-               width=0.2, size=modelLineSize) +
-      annotate("point", x = df_model$x, y = df_model$y, 
-               shape=shapes[as.numeric(df_model$group)], size=modelSize, 
+               width=xdiff/6, size=modelLineSize) +
+      annotate("point", x = df_model$x, y = df_model$y,
+               shape=shapes[as.numeric(df_model$group)], size=modelSize,
                color=modelColours[as.numeric(df_model$group)])
   }
   

@@ -46,8 +46,8 @@ be a factor.}
 
 \item{x2shift}{Amount to shift along x axis for each level of \code{x2var}. By
 default the function will arrange each level of \code{x2var} side by side. Lower
-values of \code{x2var} or \code{x2var = 0} can be used to overlap plots similar to
-'dodge' or stagger them.}
+values of \code{x2shift} or \code{x2shift = 0} can be used to overlap plots similar
+to 'dodge' or stagger them.}
 
 \item{xlab}{Title for the x axis}
 
