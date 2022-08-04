@@ -291,24 +291,15 @@ glmmSeq <- function(modelFormula,
     setNames(x$optinfo, c("Singular", "Conv"))
   }, FUN.VALUE = c(1, 1)))
   
-  statsList <- lapply(resultList[noErr], "[[", "stats")
-  s <- do.call(rbind, statsList)
-  chisqList <- lapply(resultList[noErr], "[[", "chisq")
-  chisq <- do.call(rbind, chisqList)
-  dfList <- lapply(resultList[noErr], "[[", "df")
-  df <- do.call(rbind, dfList)
-  pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
-  colnames(df) <- paste0("Df_", colnames(chisq))
-  colnames(pvals) <- paste0("P_", colnames(chisq))
-  colnames(chisq) <- paste0("Chisq_", colnames(chisq))
-  s <- cbind(s, chisq, df, pvals)
+  s <- organiseStats(resultList[noErr], "Wald")
   
   # Create GlmmSeq object with results
   new("GlmmSeq",
       info = list(call = glmmcall,
                   offset = offset,
                   designMatrix = designMatrix,
-                  control = control,
+                  control = substitute(control),
+                  test.stat = "Wald",
                   dispersion = dispersion),
       formula = fullFormula,
       stats = s,
@@ -353,6 +344,7 @@ glmerCore <- function(geneList,
                         as.numeric(logLik(fit))),
                       c("Dispersion", "AIC", "logLik"))
     fixedEffects <- lme4::fixef(fit)
+    stdErr <- coef(summary(fit))[, 2]
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
     waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
@@ -368,14 +360,16 @@ glmerCore <- function(geneList,
     singular <- as.numeric(lme4::isSingular(fit))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
-    return(list(stats = c(stats, fixedEffects),
+    return(list(stats = stats,
+                coef = fixedEffects,
+                stdErr = stdErr,
                 chisq = waldtest$chisq,
                 df = waldtest$df,
                 predict = predictdf,
                 optinfo = c(singular, conv),
                 tryErrors = "") )
   } else {
-    return(list(stats = NA, chisq = NA, df = NA, predict = NA, optinfo = NA, 
-                tryErrors = fit[1]))
+    return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA,
+                predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }

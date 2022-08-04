@@ -273,34 +273,7 @@ lmmSeq <- function(modelFormula,
     setNames(x$optinfo, c("Singular", "Conv"))
   }, FUN.VALUE = c(1, 1)))
   
-  statsList <- lapply(resultList[noErr], "[[", "stats")
-  s <- do.call(rbind, statsList)
-  coefList <- lapply(resultList[noErr], "[[", "coef")
-  cf <- do.call(rbind, coefList)
-  SEList <- lapply(resultList[noErr], "[[", "stdErr")
-  stdErr <- do.call(rbind, SEList)
-  if (test.stat == "Wald") {
-    chisqList <- lapply(resultList[noErr], "[[", "chisq")
-    chisq <- do.call(rbind, chisqList)
-    dfList <- lapply(resultList[noErr], "[[", "df")
-    df <- do.call(rbind, dfList)
-    pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
-    colnames(df) <- colnames(chisq)
-    colnames(pvals) <- colnames(chisq)
-    s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
-              pvals = pvals)
-  } else {
-    NumDF <- lapply(resultList[noErr], function(x) x$Ftest[,1])
-    NumDF <- do.call(rbind, NumDF)
-    DenDF <- lapply(resultList[noErr], function(x) x$Ftest[,2])
-    DenDF <- do.call(rbind, DenDF)
-    Fval <- lapply(resultList[noErr], function(x) x$Ftest[,3])
-    Fval <- do.call(rbind, Fval)
-    pvals <- lapply(resultList[noErr], function(x) x$Ftest[,4])
-    pvals <- do.call(rbind, pvals)
-    s <- list(res = s, coef = cf, stdErr = stdErr, NumDF = NumDF, DenDF = DenDF, 
-              Fval = Fval, pvals = pvals)
-  }
+  s <- organiseStats(resultList[noErr], test.stat)
   
   # Create lmmSeq object with results
   new("lmmSeq",
@@ -488,5 +461,37 @@ summary.lmmSeq <- function(x, rows = NULL,
     }
     print(testdf, digits = digits)
     invisible(out)
+  }
+}
+
+
+organiseStats <- function(resultList, test.stat) {
+  statsList <- lapply(resultList, "[[", "stats")
+  s <- do.call(rbind, statsList)
+  coefList <- lapply(resultList, "[[", "coef")
+  cf <- do.call(rbind, coefList)
+  SEList <- lapply(resultList, "[[", "stdErr")
+  stdErr <- do.call(rbind, SEList)
+  if (test.stat == "Wald") {
+    chisqList <- lapply(resultList, "[[", "chisq")
+    chisq <- do.call(rbind, chisqList)
+    dfList <- lapply(resultList, "[[", "df")
+    df <- do.call(rbind, dfList)
+    pvals <- pchisq(chisq, df=df, lower.tail = FALSE)
+    colnames(df) <- colnames(chisq)
+    colnames(pvals) <- colnames(chisq)
+    s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
+              pvals = pvals)
+  } else {
+    NumDF <- lapply(resultList, function(x) x$Ftest[,1])
+    NumDF <- do.call(rbind, NumDF)
+    DenDF <- lapply(resultList, function(x) x$Ftest[,2])
+    DenDF <- do.call(rbind, DenDF)
+    Fval <- lapply(resultList, function(x) x$Ftest[,3])
+    Fval <- do.call(rbind, Fval)
+    pvals <- lapply(resultList, function(x) x$Ftest[,4])
+    pvals <- do.call(rbind, pvals)
+    s <- list(res = s, coef = cf, stdErr = stdErr, NumDF = NumDF, DenDF = DenDF, 
+              Fval = Fval, pvals = pvals)
   }
 }
