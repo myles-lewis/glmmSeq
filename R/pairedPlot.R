@@ -27,8 +27,9 @@
 #' or named vector
 #' @param modelLineSize Size of model points (default=1) as vector or named 
 #' vector
-#' @param modelLineColours Colour of model fit lines. If NULL same colours as 
-#' modelColour used (default=NULL).
+#' @param modelLineColours Colour of model fit lines.
+#' @param errorBarLwd Line width of error bars
+#' @param errorBarLength Head width of error bars
 #' @param ... Other parameters to pass to
 #' \code{\link[graphics:plot]{graphics::plot()}}
 #' @return Returns a paired plot for matched samples
@@ -74,47 +75,21 @@ pairedPlot <- function(object,
                        modelLineColours=modelColours,
                        errorBarLwd=2.5,
                        errorBarLength=0.05,
-                       addBox=FALSE,
                        ...) {
   
   if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
     stop("object must be an output from glmmSeq or lmmSeq")}
   
-  IDColumn <- object@vars$id
-  pairedOnly <- object@vars$removeSingles
-  if (!x1var %in% colnames(object@modelData)) {
-    stop("x1var must be a column name in object@modelData")}
-  if (!is.null(x2var)) if (!x2var %in% colnames(object@modelData)) {
-    stop("x2var must be a column name in object@modelData")}
-  maindata <- if (inherits(object, "GlmmSeq")) {
-    object@countdata} else object@maindata
-  if(! geneName %in% rownames(maindata)) {
-    stop("geneName not found")}
-  if(ncol(object@modelData) > 2){
-    stop("More than 2 variables in modelData")}
+  dfs <- formPlot(object, geneName, x1var, x2var, x2shift)
+  df_long <- dfs[[1]]
+  df_model <- dfs[[2]]
+  xdiff <- dfs[[3]]
+  x2shift <- dfs[[4]]
+  modelData <- object@modelData
+  maxX2 <- max(df_long$x2, na.rm = TRUE)
+  x2labs <- levels(droplevels(factor(modelData[, x2var])))
+  xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
   
-  # Set up plotting data frame
-  id <- object@metadata[, IDColumn]
-  y <- as.numeric(maindata[geneName, ])
-  x <- object@metadata[, x1var]
-  x1Values <- unique(x)
-  xdiff <- diff(range(x, na.rm = TRUE))
-  if (!is.null(x2var)) {
-    x2labs <- levels(droplevels(factor(object@modelData[, x2var])))
-    x2 <- as.numeric(factor(object@metadata[, x2var]))
-    maxX2 <- max(x2, na.rm = TRUE)
-    nsegments <- length(unique(x)) -1
-    if (is.null(x2shift)) {
-      x2shift <- max(x, na.rm = TRUE) + xdiff / nsegments
-      x <- x + (x2-1) * x2shift
-    }
-  } else {
-    x2 <- 1
-    maxX2 <- 1
-    x2Values <- NULL
-    x2shift <- FALSE
-  }
-  df_long <- data.frame(id, y, x, x2)
   pval <- object@stats$pvals[geneName, , drop = FALSE]
   pval <- formatC(pval, digits=2)
   
@@ -122,21 +97,6 @@ pairedPlot <- function(object,
   modelColours <- rep_len(modelColours, maxX2)
   colours <- rep_len(colours, maxX2)
   shapes <- rep_len(shapes, maxX2)
-  
-  # Set up model fit data
-  modelData <- object@modelData
-  preds <- object@predict[geneName, ]
-  s <- nrow(modelData)
-  modelx <- if (!is.null(x2var)) {
-    modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift
-  } else modelData[, x1var]
-  df_model <- data.frame(x = modelx,
-                         y = preds[1:s],
-                         lower = preds[1:s +s],
-                         upper = preds[1:s +s*2],
-                         group = modelData[, x2var])
-  if (is.null(x2var)) df_model$group <- 1
-  xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
   
   # Generate base plots
   if(logTransform) log <- "y" else log <- ""
@@ -192,10 +152,6 @@ pairedPlot <- function(object,
     }
   }
   
-  if(addBox){
-    boxplot(y ~ x, data = df_long, outcex=0, boxwex=0.25,
-            add=TRUE, col=NA, frame = FALSE, axes=FALSE)
-  }
   if (x2shift > xdiff) {
     axis(1, modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift, 
          labels=modelData[, x1var], cex.axis=fontSize)
@@ -214,3 +170,56 @@ pairedPlot <- function(object,
   mtext(parse(text=ptext), side=3, adj=0, cex=fontSize)
   
 }
+
+
+formPlot <- function(object, geneName, x1var, x2var, x2shift) {
+  if (!x1var %in% colnames(object@modelData)) {
+    stop("x1var must be a column name in object@modelData")}
+  if (!is.null(x2var)) if (!x2var %in% colnames(object@modelData)) {
+    stop("x2var must be a column name in object@modelData")}
+  if(ncol(object@modelData) > 2){
+    stop("More than 2 variables in modelData")}
+  
+  maindata <- if (inherits(object, "GlmmSeq")) {
+    object@countdata} else object@maindata
+  if(! geneName %in% rownames(maindata)) {
+    stop("geneName not found")}
+  
+  # Set up plotting data frame
+  IDColumn <- object@vars$id
+  id <- object@metadata[, IDColumn]
+  y <- as.numeric(maindata[geneName, ])
+  x <- object@metadata[, x1var]
+  x1Values <- unique(x)
+  xdiff <- diff(range(x, na.rm = TRUE))
+  if (!is.null(x2var)) {
+    x2 <- as.numeric(factor(object@metadata[, x2var]))
+    nsegments <- length(unique(x)) -1
+    if (is.null(x2shift)) {
+      x2shift <- max(x, na.rm = TRUE) + xdiff / nsegments
+      x <- x + (x2-1) * x2shift
+    }
+  } else {
+    x2 <- 1
+    x2Values <- NULL
+    x2shift <- -Inf
+  }
+  df_long <- data.frame(id, y, x, x2)
+  
+  # Set up model fit data
+  modelData <- object@modelData
+  preds <- object@predict[geneName, ]
+  s <- nrow(modelData)
+  modelx <- if (!is.null(x2var)) {
+    modelData[, x1var] + (as.numeric(modelData[, x2var])-1) * x2shift
+  } else modelData[, x1var]
+  df_model <- data.frame(x = modelx,
+                         y = preds[1:s],
+                         lower = preds[1:s +s],
+                         upper = preds[1:s +s*2],
+                         group = modelData[, x2var])
+  if (is.null(x2var)) df_model$group <- 1
+  
+  return(list(df_long, df_model, xdiff, x2shift))
+}
+

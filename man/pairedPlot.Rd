@@ -19,17 +19,15 @@ pairedPlot(
   markerSize = 0.5,
   fontSize = NULL,
   alpha = 0.7,
-  pairedOnly = NULL,
   addModel = TRUE,
   addPoints = TRUE,
+  x2shift = NULL,
   modelSize = 2,
   modelColours = "royalblue",
   modelLineSize = 1,
   modelLineColours = modelColours,
   errorBarLwd = 2.5,
   errorBarLength = 0.05,
-  addBox = FALSE,
-  removeDuplicates = FALSE,
   ...
 )
 }
@@ -65,8 +63,6 @@ vector}
 
 \item{alpha}{Line and marker opacity (default=0.7)}
 
-\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
-
 \item{addModel}{Whether to add the fit model with markers (default=TRUE)}
 
 \item{modelSize}{Size of model points (default=3)}
@@ -77,13 +73,18 @@ or named vector}
 \item{modelLineSize}{Size of model points (default=1) as vector or named
 vector}
 
-\item{modelLineColours}{Colour of model fit lines. If NULL same colours as
-modelColour used (default=NULL).}
+\item{modelLineColours}{Colour of model fit lines.}
+
+\item{errorBarLwd}{Line width of error bars}
+
+\item{errorBarLength}{Head width of error bars}
 
 \item{...}{Other parameters to pass to
 \code{\link[graphics:plot]{graphics::plot()}}}
 
 \item{IDColumn}{Column name of sample IDs for pairing}
+
+\item{pairedOnly}{Logical whether to only plot paired samples (default=TRUE)}
 }
 \value{
 Returns a paired plot for matched samples

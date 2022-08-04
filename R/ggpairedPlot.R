@@ -113,7 +113,7 @@ ggpairedPlot <- function(glmmResult,
     labs <- levels(droplevels(factor(glmmResult@frame[, x2Label])))
     
     # For outputs from glmmSeq
-  } else if(inherits(glmmResult, "GlmmSeq")){
+  } else if(is(glmmResult, "GlmmSeq") | is(glmmResult, "lmmSeq")){
     if(! x1Label %in% colnames(glmmResult@modelData)) {
       stop("x1Label must be a column name in glmmResult@modelData")
     }
