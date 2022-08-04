@@ -64,7 +64,6 @@ lmmSeq_v1 <- function(modelFormula,
                       metadata,
                       id,
                       offset = NULL,
-                      sizeFactors = NULL,
                       reducedFormula = "",
                       modelData = NULL,
                       designMatrix = NULL,
@@ -84,8 +83,8 @@ lmmSeq_v1 <- function(modelFormula,
   if (ncol(maindata) != nrow(metadata)) {
     stop("maindata columns different size to metadata rows")
   }
-  if (!is.null(sizeFactors) & ncol(maindata) != length(sizeFactors)) {
-    stop("Different sizeFactors length")
+  if (!is.null(offset) & ncol(maindata) != length(offset)) {
+    stop("Different offset length")
   }
   
   # Manipulate formulae
@@ -109,7 +108,7 @@ lmmSeq_v1 <- function(modelFormula,
         paste(as.character(x), collapse = " ")
       }))
       maindata <- maindata[, ! mCheck %in% cCheck]
-      sizeFactors <- sizeFactors[! mCheck %in% cCheck]
+      offset <- offset[! mCheck %in% cCheck]
       subsetMetadata <- subsetMetadata[! mCheck %in% cCheck, ]
       ids <- droplevels(subsetMetadata[, id])
       warning(paste0(paste(check[, id], collapse = ", "),
@@ -128,7 +127,7 @@ lmmSeq_v1 <- function(modelFormula,
     nonSingleIDs <- which(! subsetMetadata[, id] %in% singles)
     
     maindata <- maindata[, nonSingleIDs]
-    sizeFactors <- sizeFactors[nonSingleIDs]
+    offset <- offset[nonSingleIDs]
     subsetMetadata <- subsetMetadata[nonSingleIDs, ]
     ids <- droplevels(subsetMetadata[, id])
   }
@@ -140,7 +139,7 @@ lmmSeq_v1 <- function(modelFormula,
   }
   
   
-  if (!is.null(sizeFactors)) offset <- sizeFactors else offset <- NULL
+  if (!is.null(offset)) offset <- offset else offset <- NULL
   if (verbose) cat(paste0("\nn = ", length(ids), " samples, ",
                           length(unique(ids)), " individuals\n"))
   

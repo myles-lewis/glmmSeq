@@ -44,7 +44,6 @@ Imports:
     MASS,
     car,
     stats,
-    gghalves,
     ggplot2,
     ggpubr,
     graphics,

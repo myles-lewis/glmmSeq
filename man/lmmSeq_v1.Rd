@@ -10,7 +10,6 @@ lmmSeq_v1(
   metadata,
   id,
   offset = NULL,
-  sizeFactors = NULL,
   reducedFormula = "",
   modelData = NULL,
   designMatrix = NULL,

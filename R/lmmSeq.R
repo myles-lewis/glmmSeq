@@ -432,8 +432,9 @@ car_relatives <- function (term, names, factors)
 
 #' @export
 
-summary.lmmSeq <- function(object, rows = NULL,
-                           digits = maobject(3L, getOption("digits") - 3L)) {
+summary.lmmSeq <- function(object,
+                           rows,
+                           digits = max(3L, getOption("digits") - 3L), ...) {
   if (is.null(rows)) {
     statSet <- names(object@stats)
     gp <- lapply(statSet, function(i) {
@@ -446,9 +447,9 @@ summary.lmmSeq <- function(object, rows = NULL,
     do.call(cbind, gp)
   } else {
     out <- lapply(object@stats, function(i) i[rows,])
-    cat("Linear miobjected model\n")
+    cat("Linear mixed model\n")
     print(out$res)
-    cat("\nFiobjected effects:\n")
+    cat("\nFixed effects:\n")
     cfdf <- data.frame(Estimate = out$coef,
                        `Std. Error` = out$stdErr, check.names = FALSE)
     print(cfdf, digits = digits)
