@@ -56,25 +56,25 @@ pairedPlot <- function(object,
                        geneName = NULL,
                        x1var = NULL,
                        x2var = NULL,
-                       xTitle = NULL,
+                       xTitle = NA,
                        yTitle = geneName,
-                       title=geneName,
-                       logTransform=is(object, "GlmmSeq"),
-                       shapes=21,
-                       colours='grey60',
-                       lineColours='grey60',
-                       markerSize=0.5,
-                       fontSize=NULL,
-                       alpha=0.7,
-                       addModel=TRUE,
-                       addPoints=TRUE,
-                       x2shift=NULL,
-                       modelSize=2,
-                       modelColours="royalblue",
-                       modelLineSize=1,
-                       modelLineColours=modelColours,
-                       errorBarLwd=2.5,
-                       errorBarLength=0.05,
+                       title = geneName,
+                       logTransform = is(object, "GlmmSeq"),
+                       shapes = 21,
+                       colours = 'grey60',
+                       lineColours = 'grey60',
+                       markerSize = 0.5,
+                       fontSize = NULL,
+                       alpha = 0.7,
+                       addModel = TRUE,
+                       addPoints = TRUE,
+                       x2shift = NULL,
+                       modelSize = 2,
+                       modelColours = "royalblue",
+                       modelLineSize = 1,
+                       modelLineColours = modelColours,
+                       errorBarLwd = 2.5,
+                       errorBarLength = 0.05,
                        ...) {
   
   if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
@@ -87,9 +87,10 @@ pairedPlot <- function(object,
   x2shift <- dfs[[4]]
   modelData <- object@modelData
   maxX2 <- max(df_long$x2, na.rm = TRUE)
-  x2labs <- levels(droplevels(factor(modelData[, x2var])))
+  if (!is.null(x2var)) {
+    x2labs <- levels(droplevels(factor(modelData[, x2var])))
+  }
   xlim <- range(c(df_long$x, df_model$x), na.rm = TRUE)
-  
   pval <- object@stats$pvals[geneName, , drop = FALSE]
   pval <- formatC(pval, digits=2)
   
@@ -99,8 +100,7 @@ pairedPlot <- function(object,
   shapes <- rep_len(shapes, maxX2)
   
   # Generate base plots
-  if(logTransform) log <- "y" else log <- ""
-  if(is.null(xTitle)) xTitle <- NA
+  log <- if(logTransform) "y" else ""
   if(addModel) {
     myYlim <- if (addPoints) {
       range(c(df_model[, c('lower', 'upper')], df_long$y))
@@ -190,7 +190,6 @@ formPlot <- function(object, geneName, x1var, x2var, x2shift) {
   id <- object@metadata[, IDColumn]
   y <- as.numeric(maindata[geneName, ])
   x <- object@metadata[, x1var]
-  x1Values <- unique(x)
   xdiff <- diff(range(x, na.rm = TRUE))
   if (!is.null(x2var)) {
     x2 <- as.numeric(factor(object@metadata[, x2var]))
@@ -201,7 +200,6 @@ formPlot <- function(object, geneName, x1var, x2var, x2shift) {
     }
   } else {
     x2 <- 1
-    x2Values <- NULL
     x2shift <- -Inf
   }
   df_long <- data.frame(id, y, x, x2)
