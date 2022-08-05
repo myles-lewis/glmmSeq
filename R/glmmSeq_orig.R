@@ -57,7 +57,7 @@
 #' (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 #' })
 #' MS4A1glmm <- glmmSeq_v1(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      countdata = tpm["MS4A1", ],
+#'                      countdata = tpm["MS4A1", , drop = FALSE],
 #'                      metadata = metadata,
 #'                      id = "PATID",
 #'                      dispersion = disp["MS4A1"],

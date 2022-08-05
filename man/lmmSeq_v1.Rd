@@ -87,7 +87,7 @@ Legacy version retained for testing purposes only.
 data(PEAC_minimal_load)
 logtpm <- log2(tpm +1)
 lmmtest <- lmmSeq_v1(~ Timepoint * EULAR_6m + (1 | PATID),
-                     maindata = logtpm["MS4A1", ],
+                     maindata = logtpm["MS4A1", , drop = FALSE],
                      metadata = metadata,
                      id = "PATID",
                      verbose = FALSE)

@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
   html_document:
     fig_width: 8
-    fig_height: 6
+    fig_height: 5
 vignette: >
   %\VignetteIndexEntry{glmmSeq}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,7 +21,7 @@ vignette: >
 </style>  
   
 ```{r setup, include=FALSE}
-options(width=96)
+options(width=88)
 library(kableExtra)
 ```
 
@@ -129,9 +129,8 @@ These are outlined in the following subsections.
 ```{r}
 metadata$EULAR_binary  = NA
 metadata$EULAR_binary[metadata$EULAR_6m %in%
-                        c("Good responder", "Moderate responder" )] = "responder"
-metadata$EULAR_binary[metadata$EULAR_6m %in% c("Non responder")] = "non_responder"
-metadata = metadata[! is.na(metadata$EULAR_binary), ]
+                        c("Good", "Moderate" )] = "responder"
+metadata$EULAR_binary[metadata$EULAR_6m %in% c("Non-response")] = "non_responder"
 
 kable(head(metadata), row.names = F) %>% kable_styling()
 ```
@@ -139,7 +138,7 @@ kable(head(metadata), row.names = F) %>% kable_styling()
 ## Count data
 
 ```{r}
-tpm = tpm[, metadata$SAMID]
+
 kable(head(tpm)) %>% kable_styling() %>%
   scroll_box(width = "100%")
 ```
@@ -303,11 +302,12 @@ results <- glmmQvals(results)
 
 ## Individual Genes
 
-Similarly you can run the script for an individual gene:
+Similarly you can run the script for an individual gene (make sure you use 
+`drop = FALSE` to maintain `countdata` as a matrix).
 
 ```{r, warning=FALSE}
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     countdata = tpm["MS4A1", ],
+                     countdata = tpm["MS4A1", , drop = FALSE],
                      metadata = metadata,
                      dispersion = disp,
                      verbose = FALSE)
@@ -356,9 +356,7 @@ ggmodelPlot(results,
             shapes = shapes,
             lineColours = plotColours, 
             modelColours = modColours,
-            modelSize = 10, 
-            fontSize=10,
-            x2Offset = 8)
+            modelSize = 10)
 ```
 
 Or using base graphics, with or without the model fit overlaid:
@@ -423,25 +421,24 @@ highlight significance.
 
 ```{r}
 # Genes to label:
-labels = c('MS4A1', 'FGF14', 'IL2RG', 'IGHV3-23', 'ADAM12', 'FGFRL1', 'IL36G', 
+labels = c('MS4A1', 'FGF14', 'IL2RG', 'IGHV3-23', 'ADAM12', 'IL36G', 
            'BLK', 'SAA1', 'CILP', 'EMILIN3', 'EMILIN2', 'IGHJ6', 
            'CXCL9', 'CXCL13')
 
 fcPlot(results,
        x1var="Timepoint",
        x2var="EULAR_6m",
-       x2Values=c("Good responder", "Non responder"),
+       x2Values=c("Good", "Non-response"),
        pCutoff=0.1,
        labels=labels,
        useAdjusted = FALSE,
        plotCutoff = 1)
 ```
 
-Genes on the x-y plane, such as _IGHJ6_, will have associations in the same 
-direction whereas 
-genes on the x=-y axis have association in _opposite_ directions, such as _ADAM12_.
-This allows us to pick out genes of potential interest which we can have
-another closer look at:
+Genes on the line of identity, such as _IGHJ6_, will have associations in the
+same direction whereas genes along the opposing x=-y line have association in
+_opposite_ directions, such as _ADAM12_. This allows us to pick out genes of
+potential interest which we can have another closer look at:
 
 ```{r, fig.height=6, warning=FALSE}
 p1<- ggmodelPlot(results,
@@ -469,28 +466,14 @@ ggarrange(p1, p2, ncol=2)
 # MA plots
 
 An MA plot is an application of a Bland–Altman plot. The plot visualizes the
-differences between measurements taken in
-two samples, by transforming the data onto M (log ratio) and A (mean average)
-scales, then plotting these values.
+differences between measurements taken in two samples, by transforming the data
+onto M (log ratio) and A (mean average) scales, then plotting these values.
 
 ```{r, fig.height=8}
 maPlots <- maPlot(results,
                   x1var="Timepoint",
                   x2var="EULAR_6m",
-                  x2Values=c("Good responder", "Non responder"),
-                  colours=c('grey', 'midnightblue',
-                             'mediumseagreen', 'goldenrod'),
-                  labels=labels,
-                  graphics="ggplot")
-
-maPlots$combined
-```
-
-```{r, fig.height=8}
-maPlots <- maPlot(results,
-                  x2var="Timepoint",
-                  x1var="EULAR_6m",
-                  x1Values=c("Good responder", "Non responder"),
+                  x2Values=c("Good", "Non-response"),
                   colours=c('grey', 'midnightblue',
                              'mediumseagreen', 'goldenrod'),
                   labels=labels,

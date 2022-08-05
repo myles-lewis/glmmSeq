@@ -16,7 +16,7 @@ maPlot(
   colours = c("grey", "midnightblue", "mediumvioletred", "goldenrod"),
   labels = c(),
   fontSize = 12,
-  labelFontSize = 5,
+  labelFontSize = 4,
   useAdjusted = FALSE,
   graphics = "ggplot",
   verbose = FALSE
@@ -80,7 +80,7 @@ resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
 plots <- maPlot(resultTable,
                 x1var='Timepoint',
                 x2var='EULAR_6m',
-                x2Values=c('Good responder', 'Non responder'),
+                x2Values=c('Good', 'Non-response'),
                 graphics="plotly")
 
 plots$combined

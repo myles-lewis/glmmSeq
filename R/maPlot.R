@@ -43,7 +43,7 @@
 #' plots <- maPlot(resultTable,
 #'                 x1var='Timepoint',
 #'                 x2var='EULAR_6m',
-#'                 x2Values=c('Good responder', 'Non responder'),
+#'                 x2Values=c('Good', 'Non-response'),
 #'                 graphics="plotly")
 #'
 #' plots$combined
@@ -60,7 +60,7 @@ maPlot <- function(object,
                              'mediumvioletred', 'goldenrod'),
                    labels=c(),
                    fontSize=12,
-                   labelFontSize=5,
+                   labelFontSize=4,
                    useAdjusted=FALSE,
                    graphics="ggplot",
                    verbose=FALSE){
@@ -204,7 +204,7 @@ maPlot <- function(object,
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1,-0.1)) +
       annotate("text", x=unlist(lapply(annot1, function(x) x$x)),
-               y=unlist(lapply(annot1, function(x) x$y)), vjust=1,
+               y=unlist(lapply(annot1, function(x) x$y)), vjust=1.3,
                size=labelFontSize,
                label= unlist(lapply(annot1, function(x) x$text)))
 
@@ -221,7 +221,7 @@ maPlot <- function(object,
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1, -0.1)) +
       annotate("text", x=unlist(lapply(annot2, function(x) x$x)),
-               y=unlist(lapply(annot2, function(x) x$y)), vjust=1,
+               y=unlist(lapply(annot2, function(x) x$y)), vjust=1.3,
                size=labelFontSize,
                label= unlist(lapply(annot2, function(x) x$text)))
 

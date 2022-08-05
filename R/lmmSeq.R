@@ -92,7 +92,7 @@ setClass("lmmSeq", slots = list(
 #' data(PEAC_minimal_load)
 #' logtpm <- log2(tpm +1)
 #' lmmtest <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      maindata = logtpm["MS4A1", ],
+#'                      maindata = logtpm[1:2, ],
 #'                      metadata = metadata,
 #'                      verbose = FALSE)
 #' names(attributes(lmmtest))

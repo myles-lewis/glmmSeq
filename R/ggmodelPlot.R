@@ -47,9 +47,9 @@
 #' })
 #'
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      countdata = tpm['MS4A1', ],
+#'                      countdata = tpm['MS4A1', , drop = FALSE],
 #'                      metadata = metadata,
-#'                      dispersion = disp['MS4A1'],
+#'                      dispersion = disp,
 #'                      verbose = FALSE)
 #'
 #' ggmodelPlot(object = MS4A1glmm,

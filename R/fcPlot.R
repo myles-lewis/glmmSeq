@@ -35,7 +35,6 @@
 #' })
 #'
 #' glmmFit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      id = 'PATID',
 #'                      countdata = tpm[1:5, ],
 #'                      metadata = metadata,
 #'                      dispersion = disp,
@@ -44,7 +43,7 @@
 #' fcPlot(object = glmmFit,
 #'       x1var = "Timepoint",
 #'       x2var = "EULAR_6m",
-#'       x2Values = c("Good responder", "Non responder"),
+#'       x2Values = c("Good", "Non-response"),
 #'       pCutoff = 0.05,
 #'       useAdjusted = FALSE,
 #'       plotCutoff = 1,

@@ -86,9 +86,9 @@ setClass("GlmmSeq", slots = list(
 #' (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 #' })
 #' MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                      countdata = tpm["MS4A1", ],
+#'                      countdata = tpm[1:2, ],
 #'                      metadata = metadata,
-#'                      dispersion = disp["MS4A1"],
+#'                      dispersion = disp,
 #'                      verbose = FALSE)
 #' names(attributes(MS4A1glmm))
 #' 
