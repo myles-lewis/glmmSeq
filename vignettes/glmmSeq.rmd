@@ -280,6 +280,12 @@ kable(stats[order(stats[, 'P_Timepoint:EULAR_6m']), ]) %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
+Summary statistics on a single gene can be shown specifying the argument `gene`.
+
+```{r}
+summary(results, gene = "MS4A1")
+```
+
 Estimated means based on each gene's fitted model to show fixed effects and
 their 95% confidence intervals can be seen in the `@predict` slot:
 

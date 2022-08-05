@@ -5,6 +5,8 @@ News
 ###### 05/8/2022
 * Significant update including output of standard error on fitted coefficients
 for both `glmmSeq` and `lmmSeq`
+* Add `summary` function for glmmSeq and lmmSeq to display results for an
+individual gene
 * Reorganised `@stats` slot in output objects to include more information
 including DF
 * Added option of using Saiterthwaite's DF method with anova type III tables as

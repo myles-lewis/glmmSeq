@@ -433,9 +433,9 @@ car_relatives <- function (term, names, factors)
 #' @export
 
 summary.lmmSeq <- function(object,
-                           rows = NULL,
+                           gene = NULL,
                            digits = max(3L, getOption("digits") - 3L), ...) {
-  if (is.null(rows)) {
+  if (is.null(gene)) {
     statSet <- names(object@stats)
     gp <- lapply(statSet, function(i) {
       out <- object@stats[[i]]
@@ -446,7 +446,7 @@ summary.lmmSeq <- function(object,
     })
     do.call(cbind, gp)
   } else {
-    out <- lapply(object@stats, function(i) i[rows,])
+    out <- lapply(object@stats, function(i) i[gene,])
     cat("Linear mixed model\n")
     print(out$res)
     cat("\nFixed effects:\n")
