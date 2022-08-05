@@ -195,7 +195,7 @@ lmmSeq <- function(modelFormula,
   names(hyp.matrix.1) <- term.labels
   
   start <- Sys.time()
-  fullList <- lapply(rownames(maindata), function(i) as.numeric(maindata[i, ]))
+  fullList <- lapply(rownames(maindata), function(i) maindata[i, ])
   
   # For each gene perform a fit
   if (Sys.info()["sysname"] == "Windows" & cores > 1) {
