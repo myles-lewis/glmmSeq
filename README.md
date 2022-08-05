@@ -14,8 +14,8 @@ tag](https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg)](https://Gi
 
 
 
-This R package is designed to model gene expression with a general linear mixed model (glmm). This allows us to include random effects as well as fixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://CRAN.R-project.org/package=lme4)
-package which fits a glmm.
+This R package is designed to model gene expression with a general linear mixed model (GLMM). This allows us to include random effects as well as fixed effects. For the purpose of the package we use the `glmer` function from the [`lme4`](https://CRAN.R-project.org/package=lme4)
+package which fits a GLMM.
 
 This package focuses in particular on changes in genes expression between different response or treatment groups over time. 
 
@@ -48,8 +48,8 @@ But you will need to load in the additional libraries then:
 ```
 # Install CRAN packages
 invisible(lapply(c("MASS", "car", "ggplot2", "ggpubr", "lme4", 
-                     "methods", "parallel", "plotly", "stats", 
-                     "gghalves"),
+                   "lmerTest", "methods", "parallel", "plotly", 
+                   "pbapply", "pbmcapply"),
                  function(p){
                    if(! p %in% rownames(installed.packages())) {
                      install.packages(p)
@@ -83,7 +83,7 @@ citation("glmmSeq")
 ##
 ##  Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk and Anna Surace (2021). 
 ##  glmmSeq: General Linear Mixed Models for Gene-level Differential Expression. 
-##  R package version 0.0.1. https://github.com/KatrionaGoldmann/glmmSeq
+##  R package version 0.3.0. https://github.com/KatrionaGoldmann/glmmSeq
 ##
 ## A BibTeX entry for LaTeX users is
 ##
@@ -91,7 +91,7 @@ citation("glmmSeq")
 ##    title = {glmmSeq: General Linear Mixed Models for Gene-level Differential Expression},
 ##    author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca and Cankut Cubuk and Anna Surace},
 ##    year = {2021},
-##    note = {R package version 0.0.1},
+##    note = {R package version 0.3.0},
 ##    url = {https://github.com/KatrionaGoldmann/glmmSeq},
 ##  }
 ```

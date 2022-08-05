@@ -78,8 +78,8 @@ But you will need to load in the additional libraries:
 
 ```{r, eval=FALSE}
 # Install CRAN packages
-invisible(lapply(c("MASS", "car", "ggplot2", "ggpubr", "lme4", "methods",
-                   "parallel", "plotly", "stats", "gghalves"),
+invisible(lapply(c("MASS", "car", "ggplot2", "ggpubr", "lme4","lmerTest",
+                   "methods", "parallel", "plotly", "pbapply", "pbmcapply"),
                  function(p){
                    if(! p %in% rownames(installed.packages())) {
                      install.packages(p)
