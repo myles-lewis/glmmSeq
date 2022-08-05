@@ -448,7 +448,11 @@ summary.lmmSeq <- function(object,
     do.call(cbind, gp)
   } else {
     out <- lapply(object@stats, function(i) i[gene,])
-    cat("Linear mixed model\n")
+    if (is(object, "GlmmSeq")) {
+      cat("Generalised linear mixed model\nFamily: Negative Binomial\n")
+    } else {
+      cat("Linear mixed model\n")
+    }
     print(out$res)
     cat("\nFixed effects:\n")
     cfdf <- data.frame(Estimate = out$coef,

@@ -4,6 +4,8 @@ author: "Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna 
 date: "`r Sys.Date()`"
 output:
   html_document:
+    toc: true
+    toc_float: true
     fig_width: 8
     fig_height: 5
 vignette: >
@@ -300,7 +302,7 @@ kable(predict) %>%
   scroll_box(width = "100%", height = "400px")
 ```
 
-# Q-values
+## Q-values
 
 The q-values from each of the p-value columns can be calculated using
 `glmmQvals`. This will print a significance table based on the cut-off (default
@@ -310,7 +312,7 @@ p=0.05) and add a matrix named `qvals` to the `@stats` slot:
 results <- glmmQvals(results)
 ```
 
-## Gaussian mixed effects models
+# Gaussian mixed effects models
 
 An alternative to fitting negative binomial GLMM is to use transformed data and
 fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
@@ -439,7 +441,7 @@ ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 ```
 
 
-# Fold Change Plots
+## Fold Change Plots
 
 The comparative fold change (for `x1var` variables) between conditions (`x2var`
 and `x2Values` variables) can be plotted using an fcPlot for all genes to
@@ -491,7 +493,7 @@ ggarrange(p1, p2, ncol=2)
 ```
 
 
-# MA plots
+## MA plots
 
 An MA plot is an application of a Bland–Altman plot. The plot visualizes the
 differences between measurements taken in two samples, by transforming the data
