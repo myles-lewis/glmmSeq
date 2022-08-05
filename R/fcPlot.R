@@ -60,7 +60,7 @@ fcPlot <- function(object,
                    plotCutoff = 1,
                    graphics = "ggplot",
                    fontSize = 12,
-                   labelFontSize = 5,
+                   labelFontSize = 4,
                    colours = c("grey", "goldenrod1", "red", "blue"),
                    verbose = FALSE, 
                    ...){
@@ -195,7 +195,7 @@ fcPlot <- function(object,
             legend.justification = c(-0.1,1.1),
             plot.margin = unit(c(7, 4, 4, 4), units = "mm")) +
       annotate("text", x = unlist(lapply(annot, function(x) x$x)),
-               y = unlist(lapply(annot, function(x) x$y)), vjust = 1,
+               y = unlist(lapply(annot, function(x) x$y)), vjust = 1.3,
                size = labelFontSize,
                label = unlist(lapply(annot, function(x) x$text)))
 
