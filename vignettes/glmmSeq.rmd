@@ -2,7 +2,10 @@
 title: "glmmSeq"
 author: "Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  html_document:
+    fig_width: 8
+    fig_height: 6
 vignette: >
   %\VignetteIndexEntry{glmmSeq}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +21,6 @@ vignette: >
 </style>  
   
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.width = 8, fig.height = 6)
 options(width=96)
 library(kableExtra)
 ```
