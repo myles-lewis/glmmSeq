@@ -41,7 +41,7 @@ library(kableExtra)
 
 
 The aim of this package is to model gene expression with a general linear mixed
-model (glmm). The most widely used mainstream differential gene expression analysis tools 
+model (GLMM). The most widely used mainstream differential gene expression analysis tools 
 (e.g [Limma](https://doi.org/10.1093/nar/gkv007), [DESeq2](https://doi.org/10.1186/s13059-014-0550-8), 
 [edgeR](https://doi.org/10.1093/bioinformatics/btp616)) are all unable to fit 
 mixed effects linear models. This package however fits negative binomial mixed 
@@ -188,7 +188,7 @@ estimated using:
 
 ```{r}
 sizeFactors <- colSums(tpm)  
-sizeFactors <- sizeFactors / mean(sizeFactors)  # normalise
+sizeFactors <- sizeFactors / mean(sizeFactors)  # normalise to mean = 1
 
 head(sizeFactors)
 ```
@@ -204,6 +204,9 @@ Similarly, with DESeq2:
 ```{r, eval=FALSE}
 sizeFactors <- estimateSizeFactorsForMatrix(counts)
 ```
+
+Note the `sizeFactors` vector needs to be centred around 1, since it used
+directly as an offset of form `log(sizeFactors)` in the GLMM model.
 
 # Fitting Models
 
@@ -304,6 +307,24 @@ p=0.05) and add a matrix named `qvals` to the `@stats` slot:
 
 ```{r}
 results <- glmmQvals(results)
+```
+
+## Gaussian mixed effects models
+
+An alternative to fitting negative binomial GLMM is to use transformed data and
+fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
+data) where random effects/mixed effects models are useful. For example,
+gaussian normalised DNA methylation data can be analysed using this method. In
+the example below the RNA-Seq gene expression data is log transformed so that it
+is approximately Gaussian.
+
+```{r, warning=FALSE}
+logtpm <- log2(tpm + 1)
+lmmres <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                   maindata = logtpm,
+                   metadata = metadata,
+                   progress = TRUE)
+summary(lmmres, "MS4A1")
 ```
 
 ## Individual Genes
