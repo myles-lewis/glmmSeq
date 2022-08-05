@@ -106,8 +106,9 @@ set.seed(1234)
 
 
 This vignette will demonstrate the power of this package using a minimal example
-from the [PEAC data set](http://www.peac-mrc.mds.qmul.ac.uk/). Here we will
-focus on the synovial data from this cohort.
+from the [PEAC data set](https://peac.hpc.qmul.ac.uk/). Here we focus on the
+synovial biopsy RNA-Seq data from this cohort of patients with early rheumatoid
+arthritis.
 
 ```{r}
 data(PEAC_minimal_load)

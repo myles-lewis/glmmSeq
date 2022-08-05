@@ -22,7 +22,7 @@ Authors@R:
     role = c("ctb"),
     email = "a.surace@qmul.ac.uk",
     comment = c(ORCID = "0000-0001-9589-3005")))
-Description: Using mixed effects models to analyse longitudinal gene expression can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, and are less optimal for analysing longitudinal data. This package provides negative binomial and gaussian mixed effects models to fit gene expression across repeated samples. This is particularly useful for investigating changes in gene expression between groups of individuals over time, as described in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Çubuk, C., Giorli, G., ... Lewis, M. J., & Pitzalis, C. (2022) Nature medicine <doi:10.1038/s41591-022-01789-0>.
+Description: Using mixed effects models to analyse longitudinal gene expression can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, and are less optimal for analysing longitudinal data. This package provides negative binomial and Gaussian mixed effects models to fit gene expression and other biological data across repeated samples. This is particularly useful for investigating changes in RNA-Sequencing gene expression between groups of individuals over time, as described in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Cubuk, C., Giorli, G., ... Lewis, M. J., & Pitzalis, C. (2022) Nature medicine <doi:10.1038/s41591-022-01789-0>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -36,6 +36,7 @@ Suggests:
     knitr,
     rmarkdown,
     kableExtra,
+    DESeq2,
     edgeR,
     emmeans
 VignetteBuilder: knitr

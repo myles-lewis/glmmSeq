@@ -34,7 +34,7 @@ glmmQvals <- function(object, cutoff = 0.05, verbose = TRUE) {
   qvals <- apply(pvals, 2, function(x) {
     out <- rep_len(NA, length(x))
     qv <- try(qvalue(x[!is.na(x)])$qvalues, silent = TRUE)
-    if (class(qv) != 'try-error') {
+    if (!inherits(qv, 'try-error')) {
       out[!is.na(x)] <- qv
     } else {
       out[!is.na(x)] <- p.adjust(x[!is.na(x)], method='BH')
