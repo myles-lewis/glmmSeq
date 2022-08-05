@@ -268,7 +268,7 @@ lmmSeq <- function(modelFormula,
                                paste0("UCI_", outLabels))
   
   if (sum(!noErr) != 0) {
-    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s):",
+    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s): ",
                             paste0(names(noErr)[! noErr], collapse = ", ")))
     outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
                            FUN.VALUE = character(1))
