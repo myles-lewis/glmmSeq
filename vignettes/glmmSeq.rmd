@@ -503,3 +503,7 @@ Statistical software used in this package:
 3. [MASS](https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf): Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
 
 4. [qvalue](https://github.com/StoreyLab/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/StoreyLab/qvalue
+
+5. [lmerTest](https://CRAN.R-project.org/package=lmerTest): Alexandra Kuznetsova, Per Brockhoff, Rune Christensen, Sofie Jensen. lmerTest: Tests in Linear Mixed Effects Models
+
+6. [emmeans](https://CRAN.R-project.org/package=emmeans): Russell V. Lenth, Paul Buerkner, Maxime Herve, Jonathon Love, Fernando Miguez, Hannes Riebl, Henrik Singmann. emmeans: Estimated Marginal Means, aka Least-Squares Means
