@@ -1,6 +1,6 @@
 Package: glmmSeq
 Title: General Linear Mixed Models for Gene-Level Differential Expression
-Version: 0.2.2
+Version: 0.3.0
 Authors@R:
     c(person(given = "Myles",family = "Lewis",
     role = c("aut"),
@@ -22,7 +22,7 @@ Authors@R:
     role = c("ctb"),
     email = "a.surace@qmul.ac.uk",
     comment = c(ORCID = "0000-0001-9589-3005")))
-Description: Using random and fixed effects to model expression at an individual gene level can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, therefore do not capture interaction terms. This package uses negative binomial mixed effects models to fit gene expression with matched samples. This is particularly useful for investigating  changes in gene expression between groups of individuals over time, as seen in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Çubuk, C., Giorli, G., ... Lewis, M. J., & Pitzalis, C. (2022). Rituximab versus tocilizumab in rheumatoid arthritis: synovial biopsy-based biomarker analysis of the phase 4 R4RA randomized trial. Nature medicine, 1-13.
+Description: Using mixed effects models to analyse longitudinal gene expression can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, and are less optimal for analysing longitudinal data. This package provides negative binomial and Gaussian mixed effects models to fit gene expression and other biological data across repeated samples. This is particularly useful for investigating changes in RNA-Sequencing gene expression between groups of individuals over time, as described in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Cubuk, C., Giorli, G., ... Lewis, M. J., & Pitzalis, C. (2022) Nature medicine <doi:10.1038/s41591-022-01789-0>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -36,18 +36,20 @@ Suggests:
     knitr,
     rmarkdown,
     kableExtra,
-    edgeR
+    DESeq2,
+    edgeR,
+    emmeans
 VignetteBuilder: knitr
 Depends: R (>= 3.6.0)
 Imports:
     MASS,
     car,
     stats,
-    gghalves,
     ggplot2,
     ggpubr,
     graphics,
     lme4,
+    lmerTest,
     methods,
     plotly,
     qvalue,

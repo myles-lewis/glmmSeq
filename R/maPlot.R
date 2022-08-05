@@ -1,12 +1,12 @@
 #' MA plots
 #'
-#' @param glmmResult A glmmSeq object created by
+#' @param object A glmmSeq object created by
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
-#' @param x1Label The name of the first (inner) x parameter
-#' @param x2Label The name of the second (outer) x parameter
-#' @param x1Values Subpopulations in x1Label to be used to calculate fold
-#' change. If NULL the first two levels in x1Label are used.
-#' @param x2Values Subpopulations in x2Label to be compared on x and y axis.
+#' @param x1var The name of the first (inner) x parameter
+#' @param x2var The name of the second (outer) x parameter
+#' @param x1Values Subpopulations in x1var to be used to calculate fold
+#' change. If NULL the first two levels in x1var are used.
+#' @param x2Values Subpopulations in x2var to be compared on x and y axis.
 #' @param pCutoff The significance cut-off for colour-coding (default=0.01)
 #' @param plotCutoff Which probes to include by significance cut-off
 #' (default=1 for all markers)
@@ -16,8 +16,8 @@
 #' @param labels Row names or indices to label on plot
 #' @param fontSize Font size
 #' @param labelFontSize Font size for labels
-#' @param useAdjusted whether to use adjusted pvalues
-#' (must have q_ columns in glmmResult)
+#' @param useAdjusted whether to use adjusted p-values
+#' (must have q_ columns in object)
 #' @param graphics Either "ggplot" or "plotly"
 #' @param verbose Whether to print statistics
 #' @return List of three plots. One plot for each x2Value and one combined
@@ -36,22 +36,21 @@
 #' })
 #'
 #' resultTable <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-#'                        id = "PATID",
 #'                        countdata = tpm[1:5, ],
 #'                        metadata = metadata,
 #'                        dispersion = disp)
 #'
 #' plots <- maPlot(resultTable,
-#'                 x1Label='Timepoint',
-#'                 x2Label='EULAR_6m',
-#'                 x2Values=c('Good responder', 'Non responder'),
+#'                 x1var='Timepoint',
+#'                 x2var='EULAR_6m',
+#'                 x2Values=c('Good', 'Non-response'),
 #'                 graphics="plotly")
 #'
 #' plots$combined
 
-maPlot <- function(glmmResult,
-                   x1Label,
-                   x2Label,
+maPlot <- function(object,
+                   x1var,
+                   x2var,
                    x1Values=NULL,
                    x2Values=NULL,
                    pCutoff = 0.01,
@@ -61,16 +60,23 @@ maPlot <- function(glmmResult,
                              'mediumvioletred', 'goldenrod'),
                    labels=c(),
                    fontSize=12,
-                   labelFontSize=5,
+                   labelFontSize=4,
                    useAdjusted=FALSE,
                    graphics="ggplot",
                    verbose=FALSE){
 
   # Extract the data
-  predict <- glmmResult@predict
-  stats <- glmmResult@stats
+  predict <- object@predict
+  stats <- object@stats$pvals
+  if (useAdjusted) {
+    stats <- object@stats$qvals
+    colnames(stats) <- paste0("q_", colnames(stats))
+  } else {
+    stats <- object@stats$pvals
+    colnames(stats) <- paste0("P_", colnames(stats))
+  }
   adj <- ifelse(useAdjusted, "q_", "P_")
-  modelData <- glmmResult@modelData
+  modelData <- object@modelData
   outLabels <- apply(modelData, 1, function(x) paste(x, collapse="_"))
   modelData$y <- paste0('y_', outLabels)
 
@@ -83,28 +89,28 @@ maPlot <- function(glmmResult,
     stop(paste("there must be at least 3", adj, "columns"))
   }
   if(! all(labels %in% rownames(plotData))){
-    stop("labels must be in rownames(glmmResult@predict)")
+    stop("labels must be in rownames(object@predict)")
   }
 
   # Define the comparisons
   if(is.null(x1Values)){
-    x1Values <-  levels(factor(modelData[, x1Label]))[1:2]
+    x1Values <-  levels(factor(modelData[, x1var]))[1:2]
   }
   if(is.null(x2Values)){
-    x2Values <-  levels(factor(modelData[, x2Label]))[1:2]
+    x2Values <-  levels(factor(modelData[, x2var]))[1:2]
   }
-  if(! all(x1Values %in% levels(factor(modelData[, x1Label]))) |
+  if(! all(x1Values %in% levels(factor(modelData[, x1var]))) |
      length(x1Values) != 2){
-    stop("x1Values must be a vector of two levels in x1Label")
+    stop("x1Values must be a vector of two levels in x1var")
   }
-  if(! all(x2Values %in% levels(factor(modelData[, x2Label]))) |
+  if(! all(x2Values %in% levels(factor(modelData[, x2var]))) |
      length(x2Values) != 2){
-    stop("x2Values must be a vector of two levels in x2Label")
+    stop("x2Values must be a vector of two levels in x2var")
   }
-  xCols <- modelData$y[modelData[, x2Label] == x2Values[1] &
-                         modelData[, x1Label] %in% x1Values]
-  yCols <- modelData$y[modelData[, x2Label] == x2Values[2] &
-                         modelData[, x1Label] %in% x1Values]
+  xCols <- modelData$y[modelData[, x2var] == x2Values[1] &
+                         modelData[, x1var] %in% x1Values]
+  yCols <- modelData$y[modelData[, x2var] == x2Values[2] &
+                         modelData[, x1var] %in% x1Values]
   plotData$x <- log2(plotData[, xCols[1]]+1) - log2(plotData[, xCols[2]]+1)
   plotData$y <- log2(plotData[, yCols[1]]+1) - log2(plotData[, yCols[2]]+1)
   plotData$maxGroup <- ifelse(abs(plotData$x) > abs(plotData$y),
@@ -113,17 +119,17 @@ maPlot <- function(glmmResult,
   cols <- gsub("P_", "", colnames(plotData)[grepl("P_", colnames(plotData))])
 
   # Set up the colour code
-  colLevels <- c('Not Significant', paste0(adj, x1Label, ' < ', pCutoff),
-                 paste0(adj, x2Label, " < ", pCutoff, " (up in ",
+  colLevels <- c('Not Significant', paste0(adj, x1var, ' < ', pCutoff),
+                 paste0(adj, x2var, " < ", pCutoff, " (up in ",
                         x2Values[2], ")"),
-                 paste0(adj, x2Label, " < ", pCutoff, " (up in ",
+                 paste0(adj, x2var, " < ", pCutoff, " (up in ",
                         x2Values[1], ")"))
   plotData$col <- colLevels[1]
-  plotData$col[plotData[, paste0(adj, x1Label)] < pCutoff &
-                 ! is.na(plotData[, paste0(adj, x1Label)])] <- colLevels[2]
-  plotData$col[plotData[, paste0(adj, x2Label)] < pCutoff &
-                 !is.na(plotData[, paste0(adj, x2Label)])] <- colLevels[3]
-  plotData$col[plotData$col==paste0(adj, x2Label, " < ",
+  plotData$col[plotData[, paste0(adj, x1var)] < pCutoff &
+                 ! is.na(plotData[, paste0(adj, x1var)])] <- colLevels[2]
+  plotData$col[plotData[, paste0(adj, x2var)] < pCutoff &
+                 !is.na(plotData[, paste0(adj, x2var)])] <- colLevels[3]
+  plotData$col[plotData$col==paste0(adj, x2var, " < ",
                                     pCutoff, " (up in ", x2Values[2], ")") &
                  plotData$maxGroup==x2Values[1]] <- colLevels[4]
   plotData$col[is.na(plotData$col)] <- 'Not Significant'
@@ -131,11 +137,11 @@ maPlot <- function(glmmResult,
 
   # Calculate the mean expression
   plotData$meanexp <- apply(
-    glmmResult@countdata[rownames(glmmResult@predict), ], 1, function(x) {
+    object@countdata[rownames(object@predict), ], 1, function(x) {
       mean(log2(x+1))
     })
   plotData$zerocount <- apply(
-    glmmResult@countdata[rownames(glmmResult@predict), ], 1, function(x) {
+    object@countdata[rownames(object@predict), ], 1, function(x) {
       sum(x < 1)
     })
 
@@ -179,7 +185,7 @@ maPlot <- function(glmmResult,
   } else {annot1 <- annot2 <- list()}
 
 
-  yLab <- paste0("log2(Fold Change)\n", x1Label, ": ",
+  yLab <- paste0("log2(Fold Change)\n", x1var, ": ",
                  x1Values[1], " vs ", x1Values[2])
 
   # GGplot
@@ -190,14 +196,15 @@ maPlot <- function(glmmResult,
       theme_minimal() +
       scale_color_manual(values=colours, name="") +
       labs(x=bquote(paste("Mean log"[2], "(gene expression + 1)")), y=yLab,
-           title=paste0("MA plot (", x2Label, " = ", x2Values[1], ")")) +
+           title=paste0("MA plot (", x2var, " = ", x2Values[1], ")")) +
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
       theme(legend.position=c(1, 0),
             text=element_text(size=fontSize),
+            axis.text = element_text(colour = "black", size=fontSize-1),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1,-0.1)) +
       annotate("text", x=unlist(lapply(annot1, function(x) x$x)),
-               y=unlist(lapply(annot1, function(x) x$y)), vjust=1,
+               y=unlist(lapply(annot1, function(x) x$y)), vjust=1.3,
                size=labelFontSize,
                label= unlist(lapply(annot1, function(x) x$text)))
 
@@ -206,14 +213,15 @@ maPlot <- function(glmmResult,
       theme_minimal() +
       scale_color_manual(values=colours, breaks=colLevels, name="") +
       labs(x=bquote(paste("Mean log"[2], "(gene expression + 1)")), y=yLab,
-           title=paste0("MA plot (", x2Label, " = ", x2Values[2], ")")) +
+           title=paste0("MA plot (", x2var, " = ", x2Values[2], ")")) +
       geom_hline(yintercept = 0, colour="grey60", linetype="dashed") +
       theme(legend.position=c(1, 0),
             text=element_text(size=fontSize),
+            axis.text = element_text(colour = "black", size=fontSize-1),
             legend.background = element_rect(fill=NA, color=NA),
             legend.justification=c(1.1, -0.1)) +
       annotate("text", x=unlist(lapply(annot2, function(x) x$x)),
-               y=unlist(lapply(annot2, function(x) x$y)), vjust=1,
+               y=unlist(lapply(annot2, function(x) x$y)), vjust=1.3,
                size=labelFontSize,
                label= unlist(lapply(annot2, function(x) x$text)))
 
@@ -229,7 +237,7 @@ maPlot <- function(glmmResult,
                    marker=list(size=8, line=list(width=0.5, color='white')),
                    text=rownames(plotData),
                    hoverinfo='text') %>%
-      layout(title = paste0("MA plot (", x2Label, " = ", x2Values[1], ")"),
+      layout(title = paste0("MA plot (", x2var, " = ", x2Values[1], ")"),
              annotations=annot1,
              font=list(size=fontSize),
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),
@@ -245,7 +253,7 @@ maPlot <- function(glmmResult,
                                      line=list(width=0.5, color='white')),
                          text=rownames(plotData),
                          hoverinfo='text', showlegend=FALSE) %>%
-      layout(title = paste0("MA plot (", x2Label, " = ", x2Values[1], ")"),
+      layout(title = paste0("MA plot (", x2var, " = ", x2Values[1], ")"),
              annotations=annot1,
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),
              yaxis=list(title=yLab, color='black'),
@@ -260,7 +268,7 @@ maPlot <- function(glmmResult,
                    marker=list(size=8, line=list(width=0.5, color='white')),
                    text=rownames(plotData),
                    hoverinfo='text') %>%
-      layout(title = paste0("MA plot (", x2Label, " = ", x2Values[2], ")"),
+      layout(title = paste0("MA plot (", x2var, " = ", x2Values[2], ")"),
              annotations=annot2,
              font=list(size=fontSize),
              xaxis=list(title="Mean log2 gene expr + 1", color='black'),

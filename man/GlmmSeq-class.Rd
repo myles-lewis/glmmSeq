@@ -10,24 +10,26 @@ An S4 class to define the glmmSeq output
 \section{Slots}{
 
 \describe{
+\item{\code{info}}{List including the matched call, dispersions, offset, designMatrix}
+
 \item{\code{formula}}{The model formula}
 
-\item{\code{stats}}{the statistics from the glmm fit}
+\item{\code{stats}}{Statistics from fitted models}
 
-\item{\code{predict}}{The predicted interception values}
+\item{\code{predict}}{Predicted values}
 
 \item{\code{reducedFormula}}{The reduced formula with removed random effects}
 
-\item{\code{countdata}}{The input expression data}
+\item{\code{countdata}}{The input expression data with count data in rows}
 
 \item{\code{metadata}}{The input metadata}
 
-\item{\code{modelData}}{the model data for the glmm}
+\item{\code{modelData}}{Model data for predictions}
 
 \item{\code{optInfo}}{Information on whether the model was singular or converged}
 
 \item{\code{errors}}{Any errors}
 
-\item{\code{variables}}{The variables used in the formula}
+\item{\code{vars}}{List of variables stored from the original call}
 }}
 

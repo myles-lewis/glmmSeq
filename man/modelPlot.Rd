@@ -2,93 +2,115 @@
 % Please edit documentation in R/modelPlot.R
 \name{modelPlot}
 \alias{modelPlot}
-\title{Model plot}
+\title{Mixed model effects plot}
 \usage{
 modelPlot(
-  glmmResult,
-  geneName,
-  x1Label = "Timepoint",
-  x2Label,
-  xTitle = NULL,
-  yTitle = "Gene Expression",
-  title = NULL,
-  logTransform = FALSE,
-  shapes = 19,
-  colours = c("blue"),
-  x2Offset = 6,
-  lineWidth = 1,
-  markerSize = 5,
+  object,
+  geneName = NULL,
+  x1var = NULL,
+  x2var = NULL,
+  x2shift = NULL,
+  xlab = NA,
+  ylab = geneName,
+  title = geneName,
+  logTransform = is(object, "GlmmSeq"),
+  shapes = 21,
+  colours = "grey60",
+  lineColours = "grey60",
+  markerSize = 0.5,
   fontSize = NULL,
-  overlap = TRUE,
-  addErrorbars = TRUE,
-  graphics = "ggplot",
+  alpha = 0.7,
+  addModel = TRUE,
+  addPoints = TRUE,
+  modelSize = 2,
+  modelColours = "royalblue",
+  modelLineSize = 1,
+  modelLineColours = modelColours,
+  errorBarLwd = 2.5,
+  errorBarLength = 0.05,
   ...
 )
 }
 \arguments{
-\item{glmmResult}{A glmmSeq object created by
-\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}..}
+\item{object}{A glmmSeq/lmmSeq object created by
+\code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}} or
+\code{\link[glmmSeq:lmmSeq]{glmmSeq::lmmSeq()}}}
 
-\item{geneName}{Gene/row name to plot}
+\item{geneName}{The gene/row name to be plotted}
 
-\item{x1Label}{The name of the first (inner) x parameter}
+\item{x1var}{The name of the first (inner) x parameter, typically 'time'.
+This is anticipated to have different values when matched by ID.}
 
-\item{x2Label}{The name of the second (outer) x parameter}
+\item{x2var}{The name of an optional second (outer) x parameter, which should
+be a factor.}
 
-\item{xTitle}{Title for the x axis}
+\item{x2shift}{Amount to shift along x axis for each level of \code{x2var}. By
+default the function will arrange each level of \code{x2var} side by side. Lower
+values of \code{x2shift} or \code{x2shift = 0} can be used to overlap plots similar
+to 'dodge' or stagger them.}
 
-\item{yTitle}{Title for the y axis}
+\item{xlab}{Title for the x axis}
 
-\item{title}{Plot title. If NULL gene name is used.}
+\item{ylab}{Title for the y axis}
+
+\item{title}{Plot title. If NULL gene name is used}
 
 \item{logTransform}{Whether to perform a log10 transform on the y axis}
 
-\item{shapes}{The marker shapes, default=19}
+\item{shapes}{The marker shapes (default=19)}
 
-\item{colours}{The marker colours, default=c('blue')}
+\item{colours}{The marker colours (default='red') as vector or named vector}
 
-\item{x2Offset}{Vertical adjustment to secondary x-axis (default=6)}
+\item{lineColours}{The line colours (default='grey60') as vector or named
+vector}
 
-\item{lineWidth}{Plot line size (default=1)}
+\item{markerSize}{Size of markers (default=2)}
 
-\item{markerSize}{Size of markers (default=5)}
+\item{fontSize}{Plot font size}
 
-\item{fontSize}{Plot font size (default=10)}
+\item{alpha}{Line and marker opacity (default=0.7)}
 
-\item{overlap}{Logical whether x2Label fits should be plotted overlapping one
-another (default=TRUE).}
+\item{addModel}{Whether to add the fit model with markers (default=TRUE)}
 
-\item{addErrorbars}{Logical whether to add error bars.}
+\item{addPoints}{Whether to add underlying data points (default=TRUE)}
 
-\item{graphics}{Which graphic system to use (options = "base" or "ggplot")}
+\item{modelSize}{Size of model points (default=2)}
+
+\item{modelColours}{Colour of model fit markers (default="black") as vector
+or named vector}
+
+\item{modelLineSize}{Size of model points (default=1) as vector or named
+vector}
+
+\item{modelLineColours}{Colour of model fit lines.}
+
+\item{errorBarLwd}{Line width of error bars}
+
+\item{errorBarLength}{Head width of error bars}
 
 \item{...}{Other parameters to pass to
-\code{\link[graphics:plot]{graphics::plot()}} or
-\code{\link[ggplot2:theme]{ggplot2::theme()}}.}
+\code{\link[graphics:plot]{graphics::plot()}}}
 }
 \value{
-Returns a plot with the glmm fit for a given gene/row
+Returns a paired plot for matched samples
 }
 \description{
-Model plots to show the overall differences between groups and over time
+Plot to show differences between groups over time using base graphics.
 }
 \examples{
 data(PEAC_minimal_load)
+
 disp <- apply(tpm, 1, function(x){
-(var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
+  (var(x, na.rm=TRUE)-mean(x, na.rm=TRUE))/(mean(x, na.rm=TRUE)**2)
 })
-Fit <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = 'PATID',
-                     countdata = tpm['ADAM12', ],
+
+MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     countdata = tpm[1:2, ],
                      metadata = metadata,
-                     dispersion = disp,
-                     verbose=FALSE)
-modelPlot(Fit,
-          "ADAM12",
-          x1Label="Timepoint",
-          x2Label="EULAR_6m",
-          colours = c('skyblue', 'goldenrod1', 'mediumvioletred'),
-          xTitle="Time",
-          markerSize=3,
-          graphics="base")
+                     dispersion = disp)
+
+modelPlot(object=MS4A1glmm,
+          geneName = 'MS4A1',
+          x1var = 'Timepoint',
+          x2var='EULAR_6m')
 }

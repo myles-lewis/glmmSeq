@@ -4,18 +4,14 @@
 \alias{glmmQvals}
 \title{Glmm Sequencing qvalues}
 \usage{
-glmmQvals(glmmResult, cutoff = 0.05, pi0 = NULL, verbose = TRUE)
+glmmQvals(object, cutoff = 0.05, verbose = TRUE)
 }
 \arguments{
-\item{glmmResult}{A glmmSeq object created by
+\item{object}{A glmmSeq/lmmSeq object created by
 \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.}
 
 \item{cutoff}{Prints a table showing the number of probes considered
 significant by the pvalue cut-off (default=0.05)}
-
-\item{pi0}{It is recommended not to input an estimate of pi0. Experienced
-users can use their own methodology to estimate the proportion of true nulls
-or set it equal to 1 for the BH procedure (default = NULL).}
 
 \item{verbose}{Logical whether to print the number of significant probes
 (default=TRUE)}
@@ -33,10 +29,9 @@ disp <- apply(tpm, 1, function(x) {
 (var(x, na.rm=TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
 })
 MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                     id = "PATID",
                      countdata = tpm[1:5, ],
                      metadata = metadata,
                      dispersion = disp[1:5],
                      verbose=FALSE)
-MS4A1glmm <- glmmQvals(MS4A1glmm, pi0=1)
+MS4A1glmm <- glmmQvals(MS4A1glmm)
 }
