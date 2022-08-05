@@ -116,6 +116,7 @@ lmmSeq <- function(modelFormula,
                    ...) {
   lmmcall <- match.call(expand.dots = TRUE)
   test.stat <- match.arg(test.stat)
+  maindata <- as.matrix(maindata)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
     stop("No random effects terms specified in formula")
