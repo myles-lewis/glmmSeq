@@ -16,7 +16,7 @@ fcPlot(
   plotCutoff = 1,
   graphics = "ggplot",
   fontSize = 12,
-  labelFontSize = 5,
+  labelFontSize = 4,
   colours = c("grey", "goldenrod1", "red", "blue"),
   verbose = FALSE,
   ...
