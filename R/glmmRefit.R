@@ -16,14 +16,14 @@
 #'   a GLMM
 #' @export
 
-lmmRefit <- function(object, gene, ...) {
-  UseMethod("lmmRefit")
+glmmRefit <- function(object, gene, ...) {
+  UseMethod("glmmRefit")
 }
 
 
 #' @export
 
-lmmRefit.lmmSeq <- function(object, gene, ...) {
+glmmRefit.lmmSeq <- function(object, gene, ...) {
   data <- object@metadata
   data[, "gene"] <- unlist(object@maindata[gene, ])
   offset <- object@info$offset
@@ -41,7 +41,7 @@ lmmRefit.lmmSeq <- function(object, gene, ...) {
 
 #' @export
 
-lmmRefit.GlmmSeq <- function(object, gene, ...) {
+glmmRefit.GlmmSeq <- function(object, gene, ...) {
   data <- object@metadata
   data[, "count"] <- unlist(object@countdata[gene, ])
   disp <- object@info$dispersion[gene]

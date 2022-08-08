@@ -343,10 +343,10 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      verbose = FALSE)
 ```
 
-The (g)lmer fitted object can be obtained using the function `lmmRefit()`:
+The (g)lmer fitted object can be obtained using the function `glmmRefit()`:
 
 ```{r, warning=FALSE}
-fit <- lmmRefit(results, gene = "MS4A1")
+fit <- glmmRefit(results, gene = "MS4A1")
 fit
 ```
 
