@@ -9,12 +9,12 @@ for both `glmmSeq` and `lmmSeq`
 individual gene
 * Reorganised `@stats` slot in output objects to include more information
 including DF
-* Added option of using Saiterthwaite's DF method with anova type III tables as
+* Added option of using Saiterthwaite's DF method with ANOVA type III tables as
 option for `lmmSeq` using the `lmerTest` package
 * Added `lmmRefit` function to fit an identical (g)lmer model. This can then be
 passed to the `emmeans` package for visualisation of more complex models.
 * Separated `modelPlots` (base graphics) and `ggmodelPlots` (ggplot2)
-* Streamlined `modelPlots` to allow for simplest case gene ~ Time + (1 | ID)
+* Streamlined `modelPlots` to allow for simplest case `gene ~ Time + (1 | ID)`
 
 # glmmSeq v0.2.2
 ###### 16/7/2022

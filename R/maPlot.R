@@ -4,23 +4,23 @@
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
 #' @param x1var The name of the first (inner) x parameter
 #' @param x2var The name of the second (outer) x parameter
-#' @param x1Values Subpopulations in x1var to be used to calculate fold
-#' change. If NULL the first two levels in x1var are used.
-#' @param x2Values Subpopulations in x2var to be compared on x and y axis.
+#' @param x1Values Timepoints or categories in `x1var` to be used to calculate fold
+#' change. If `NULL` the first two levels in `x1var` are used.
+#' @param x2Values Categories in `x2var` to be compared on x and y axis.
 #' @param pCutoff The significance cut-off for colour-coding (default=0.01)
 #' @param plotCutoff Which probes to include by significance cut-off
 #' (default=1 for all markers)
 #' @param zeroCountCutoff Which probes to include by minimum counts cut-off
-#' (default = 50)
+#' (default=50)
 #' @param colours Vector of colours to use for significance groups
 #' @param labels Row names or indices to label on plot
 #' @param fontSize Font size
 #' @param labelFontSize Font size for labels
 #' @param useAdjusted whether to use adjusted p-values
-#' (must have q_ columns in object)
+#' (must have q-values in `object`)
 #' @param graphics Either "ggplot" or "plotly"
 #' @param verbose Whether to print statistics
-#' @return List of three plots. One plot for each x2Value and one combined
+#' @return List of three plots. One plot for each `x2Value` and one combined
 #' figure
 #' @importFrom plotly layout config plot_ly subplot %>%
 #' @importFrom ggplot2 ggplot geom_point theme_minimal scale_color_manual labs

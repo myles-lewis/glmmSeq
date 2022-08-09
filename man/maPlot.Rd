@@ -30,10 +30,10 @@ maPlot(
 
 \item{x2var}{The name of the second (outer) x parameter}
 
-\item{x1Values}{Subpopulations in x1var to be used to calculate fold
-change. If NULL the first two levels in x1var are used.}
+\item{x1Values}{Timepoints or categories in \code{x1var} to be used to calculate fold
+change. If \code{NULL} the first two levels in \code{x1var} are used.}
 
-\item{x2Values}{Subpopulations in x2var to be compared on x and y axis.}
+\item{x2Values}{Categories in \code{x2var} to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding (default=0.01)}
 
@@ -41,7 +41,7 @@ change. If NULL the first two levels in x1var are used.}
 (default=1 for all markers)}
 
 \item{zeroCountCutoff}{Which probes to include by minimum counts cut-off
-(default = 50)}
+(default=50)}
 
 \item{colours}{Vector of colours to use for significance groups}
 
@@ -52,14 +52,14 @@ change. If NULL the first two levels in x1var are used.}
 \item{labelFontSize}{Font size for labels}
 
 \item{useAdjusted}{whether to use adjusted p-values
-(must have q_ columns in object)}
+(must have q-values in \code{object})}
 
 \item{graphics}{Either "ggplot" or "plotly"}
 
 \item{verbose}{Whether to print statistics}
 }
 \value{
-List of three plots. One plot for each x2Value and one combined
+List of three plots. One plot for each \code{x2Value} and one combined
 figure
 }
 \description{
