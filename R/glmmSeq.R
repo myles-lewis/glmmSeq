@@ -376,10 +376,3 @@ glmerCore <- function(geneList,
   }
 }
 
-
-#' @export
-
-summary.GlmmSeq <- function(object, ...) {
-  summary.lmmSeq(object, ...)
-}
-
