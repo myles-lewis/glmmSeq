@@ -30,18 +30,18 @@ fcPlot(
 
 \item{x2var}{The name of the second (outer) x parameter}
 
-\item{x1Values}{Subpopulations in x1var to be used to calculate fold
-change. If NULL the first two levels in x1var are used.}
+\item{x1Values}{Timepoints or categories in \code{x1var} used to calculate fold
+change. If \code{NULL} the first two levels in \code{x1var} are used.}
 
-\item{x2Values}{Subpopulations in x2var to be compared on x and y axis.}
+\item{x2Values}{Categories in \code{x2var} to be compared on x and y axis.}
 
 \item{pCutoff}{The significance cut-off for colour-coding
 (default = 0.01)}
 
 \item{labels}{Row names or indices to label on plot}
 
-\item{useAdjusted}{whether to use adjusted pvalues
-(must have q_ columns in object). Default = FALSE}
+\item{useAdjusted}{whether to use adjusted p-values (must have q-values in
+\code{object}). Default = FALSE}
 
 \item{plotCutoff}{Which probes to include on plot by significance cut-off
 (default = 1, for all markers)}

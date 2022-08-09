@@ -4,14 +4,14 @@
 #' \code{\link[glmmSeq:glmmSeq]{glmmSeq::glmmSeq()}}.
 #' @param x1var The name of the first (inner) x parameter
 #' @param x2var The name of the second (outer) x parameter
-#' @param x1Values Subpopulations in x1var to be used to calculate fold
-#' change. If NULL the first two levels in x1var are used.
-#' @param x2Values Subpopulations in x2var to be compared on x and y axis.
+#' @param x1Values Timepoints or categories in `x1var` used to calculate fold
+#' change. If `NULL` the first two levels in `x1var` are used.
+#' @param x2Values Categories in `x2var` to be compared on x and y axis.
 #' @param pCutoff The significance cut-off for colour-coding
 #' (default = 0.01)
 #' @param labels Row names or indices to label on plot
-#' @param useAdjusted whether to use adjusted pvalues
-#' (must have q_ columns in object). Default = FALSE
+#' @param useAdjusted whether to use adjusted p-values (must have q-values in
+#'   `object`). Default = FALSE
 #' @param plotCutoff Which probes to include on plot by significance cut-off
 #' (default = 1, for all markers)
 #' @param graphics Graphics system to use: "ggplot" or "plotly"
