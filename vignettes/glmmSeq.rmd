@@ -169,7 +169,7 @@ head(disp)
 Alternatively, we recommend using _edgeR_ to estimate of the common, trended and 
 tagwise dispersions across all tags:
 
-```{r, message=FALSE}
+```{r, eval=FALSE}
 disp  <- setNames(edgeR::estimateDisp(tpm)$tagwise.dispersion, rownames(tpm))
 
 head(disp)
