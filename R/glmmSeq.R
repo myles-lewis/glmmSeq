@@ -1,35 +1,3 @@
-setClassUnion("character_or_list", c("character", "list"))
-setClassUnion("df_or_matrix", c("data.frame", "matrix"))
-setClassUnion("list_or_matrix", c("list", "matrix"))
-
-#' An S4 class to define the glmmSeq output
-#'
-#' @slot info List including the matched call, dispersions, offset, designMatrix
-#' @slot formula The model formula
-#' @slot stats Statistics from fitted models
-#' @slot predict Predicted values
-#' @slot reducedFormula The reduced formula with removed random effects
-#' @slot countdata The input expression data with count data in rows
-#' @slot metadata The input metadata
-#' @slot modelData Model data for predictions
-#' @slot optInfo Information on whether the model was singular or converged
-#' @slot errors Any errors
-#' @slot vars List of variables stored from the original call
-
-setClass("GlmmSeq", slots = list(
-  info = "list",
-  formula = "formula",
-  stats = "list_or_matrix",
-  predict = "df_or_matrix",
-  reducedFormula = "formula",
-  countdata = "df_or_matrix",
-  metadata = "df_or_matrix",
-  modelData = "df_or_matrix",
-  optInfo = "matrix",
-  errors = "character_or_list",
-  vars = "list"
-))
-
 
 #' GLMM with negative binomial distribution for sequencing count data
 #'
