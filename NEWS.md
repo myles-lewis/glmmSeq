@@ -1,8 +1,13 @@
 News
 =====
 
+# glmmSeq v0.4.0
+###### 10/8/2022
+* Further speed enhancements to `lmmSeq()` using `lme4::modular` code. Speed
+increase of around 25%.
+
 # glmmSeq v0.3.0
-###### 05/8/2022
+###### 5/8/2022
 * Significant update including output of standard error on fitted coefficients
 for both `glmmSeq` and `lmmSeq`
 * Add `summary` function for glmmSeq and lmmSeq to display results for an
