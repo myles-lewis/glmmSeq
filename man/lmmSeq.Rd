@@ -81,13 +81,28 @@ object (default = FALSE). Helpful for debugging.}
 }
 \value{
 Returns an S4 class \code{lmmSeq} object with results for gene-wise
-linear mixed models or a list of results if \code{returnList} is \code{TRUE}.
+linear mixed models; or a list of results if \code{returnList} is \code{TRUE}.
 }
 \description{
 Fits many linear mixed effects models for analysis of gaussian data with
 random effects, with parallelisation and optimisation for speed. It is
 suitable for longitudinal analysis of high dimensional data. Wald type 2
 Chi-squared test is used to calculate p-values.
+}
+\details{
+Two key methods are used to speed up computation above and beyond simple
+parallelisation. The first is to speed up \code{\link[lme4:lmer]{lme4::lmer()}} by calling
+\link[lme4:modular]{lme4::lFormula} once at the start and then updating the \code{lFormula} output
+with new data. The 2nd speed up is through optimised code for repeated type 2
+Wald Chi-squared tests (original code was derived from \link[car:Anova]{car::Anova}). For
+example, elements such as the hypothesis matrices are generated only once to
+reduce unnecessarily repetitive computation, and the generation of p-values
+from Chi-squared values is vectorised and performed at the end. F-tests using
+the \code{lmerTest} package have not been optimised and are therefore slower.
+
+Parallelisation is performed using \link[parallel:mclapply]{parallel::mclapply} on unix/mac and
+\link[parallel:clusterApply]{parallel::parLapply} on windows. Progress bars use \link[pbmcapply:pbmclapply]{pbmcapply::pbmclapply}
+on unix/mac and \link[pbapply:pbapply]{pbapply::pblapply} on windows.
 }
 \examples{
 data(PEAC_minimal_load)

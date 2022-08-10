@@ -46,8 +46,25 @@
 #' @param progress Logical whether to display a progress bar
 #' @param ... Other parameters passed to \code{\link[lme4:lmer]{lme4::lmer()}}
 #' @return Returns an S4 class `lmmSeq` object with results for gene-wise
-#'   linear mixed models or a list of results if `returnList` is `TRUE`.
+#'   linear mixed models; or a list of results if `returnList` is `TRUE`.
+#'   
+#' @details
+#' Two key methods are used to speed up computation above and beyond simple
+#' parallelisation. The first is to speed up [lme4::lmer()] by calling
+#' [lme4::lFormula] once at the start and then updating the `lFormula` output
+#' with new data. The 2nd speed up is through optimised code for repeated type 2
+#' Wald Chi-squared tests (original code was derived from [car::Anova]). For
+#' example, elements such as the hypothesis matrices are generated only once to
+#' reduce unnecessarily repetitive computation, and the generation of p-values
+#' from Chi-squared values is vectorised and performed at the end. F-tests using
+#' the `lmerTest` package have not been optimised and are therefore slower.
+#' 
+#' Parallelisation is performed using [parallel::mclapply] on unix/mac and
+#' [parallel::parLapply] on windows. Progress bars use [pbmcapply::pbmclapply]
+#' on unix/mac and [pbapply::pblapply] on windows.
+#'   
 #' @importFrom lme4 subbars findbars fixef lmerControl nobars isSingular
+#'   lFormula
 #' @importFrom lmerTest lmer
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #'   clusterExport stopCluster
@@ -139,83 +156,115 @@ lmmSeq <- function(modelFormula,
     designMatrix <- model.matrix(reducedFormula, modelData)
   } 
   
-  # Adapted from car:::Anova.II.mer
-  reduced2 <- nobars(fullFormula)
-  fac <- attr(terms(reduced2), "factors")
-  data2 <- metadata
-  data2[,'gene'] <- rep(0, nrow(data2)) 
-  dm2 <- model.matrix(reduced2, data2)
-  assign <- attr(dm2, "assign")
-  term.labels <- attr(terms(reduced2), "term.labels")
-  p <- length(assign)
-  I.p <- diag(p)
-  n.terms <- length(term.labels)
-  hyp.matrix.1 <- hyp.matrix.2 <- list()
-  for (i in seq_len(n.terms)) {
-    which.term <- i
-    subs.term <- which(assign == which.term)
-    relatives <- car_relatives(term.labels[i], term.labels, fac)
-    subs.relatives <- NULL
-    for (relative in relatives) subs.relatives <- c(subs.relatives, 
-                                                    which(assign == relative))
-    hyp.matrix.1[[i]] <- I.p[subs.relatives, , drop = FALSE]
-    hyp.matrix.2[[i]] <- I.p[c(subs.relatives, subs.term), , drop = FALSE]
-  }
-  names(hyp.matrix.1) <- term.labels
-  
   start <- Sys.time()
   fullList <- lapply(rownames(maindata), function(i) maindata[i, ])
   
-  # For each gene perform a fit
-  if (Sys.info()["sysname"] == "Windows" & cores > 1) {
-    cl <- makeCluster(cores)
-    clusterExport(cl, varlist = c("lmerCore", "fullList", "fullFormula",
-                                  "subsetMetadata", "control", "modelData",
-                                  "offset", "designMatrix",
-                                  "hyp.matrix.1", "hyp.matrix.2", ...),
-                  envir = environment())
-    if (progress) {
-      resultList <- pblapply(fullList, function(geneList) {
-        lmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                 control = control, modelData = modelData, offset = offset,
-                 designMatrix = designMatrix,
-                 hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2,
-                 test.stat = test.stat, ...)
-      }, cl = cl)
-    } else {
-      resultList <- parLapply(cl = cl, fullList, function(geneList) {
-        lmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                 control = control, modelData = modelData, offset = offset,
-                 designMatrix = designMatrix,
-                 hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2,
-                 test.stat = test.stat, ...)
-      })
+  if (test.stat == "Wald") {
+    # Adapted from lme4::modular / lme4::lmer
+    subsetMetadata$gene <- maindata[1, ]
+    lmod <- lFormula(fullFormula, subsetMetadata,
+                     offset = offset, control = control, ...)
+    
+    # Adapted from car:::Anova.II.mer
+    reduced2 <- nobars(fullFormula)
+    fac <- attr(terms(reduced2), "factors")
+    data2 <- metadata
+    data2[,'gene'] <- rep(0, nrow(data2)) 
+    dm2 <- model.matrix(reduced2, data2)
+    assign <- attr(dm2, "assign")
+    term.labels <- attr(terms(reduced2), "term.labels")
+    p <- length(assign)
+    I.p <- diag(p)
+    n.terms <- length(term.labels)
+    hyp.matrix.1 <- hyp.matrix.2 <- list()
+    for (i in seq_len(n.terms)) {
+      which.term <- i
+      subs.term <- which(assign == which.term)
+      relatives <- car_relatives(term.labels[i], term.labels, fac)
+      subs.relatives <- NULL
+      for (relative in relatives) subs.relatives <- c(subs.relatives, 
+                                                      which(assign == relative))
+      hyp.matrix.1[[i]] <- I.p[subs.relatives, , drop = FALSE]
+      hyp.matrix.2[[i]] <- I.p[c(subs.relatives, subs.term), , drop = FALSE]
     }
-    stopCluster(cl)
-  } else{
-    if (progress) {
-      resultList <- pbmclapply(fullList, function(geneList) {
-        lmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                 control = control, modelData = modelData, offset = offset,
-                 designMatrix = designMatrix,
-                 hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2,
-                 test.stat = test.stat, ...)
-      }, mc.cores = cores)
-      if ("value" %in% names(resultList)) resultList <- resultList$value
-    } else {
-      resultList <- mclapply(fullList, function(geneList) {
-        lmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                 control = control, modelData = modelData, offset = offset,
-                 designMatrix = designMatrix,
-                 hyp.matrix.1 = hyp.matrix.1,
-                 hyp.matrix.2 = hyp.matrix.2,
-                 test.stat = test.stat, ...)
-      }, mc.cores = cores)
+    names(hyp.matrix.1) <- term.labels
+    
+    # For each gene perform a fit
+    # lmerFast
+    if (Sys.info()["sysname"] == "Windows" & cores > 1) {
+      cl <- makeCluster(cores)
+      clusterExport(cl, varlist = c("lmerFast",
+                                    "lmod", "control", "modelData",
+                                    "designMatrix",
+                                    "hyp.matrix.1", "hyp.matrix.2"),
+                    envir = environment())
+      if (progress) {
+        resultList <- pblapply(fullList, function(geneRow) {
+          lmerFast(geneRow, lmod, control,
+                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+        }, cl = cl)
+      } else {
+        resultList <- parLapply(cl = cl, fullList, function(geneRow) {
+          lmerFast(geneRow, lmod, control,
+                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+        })
+      }
+      stopCluster(cl)
+    } else{
+      if (progress) {
+        resultList <- pbmclapply(fullList, function(geneRow) {
+          lmerFast(geneRow, lmod, control,
+                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+        }, mc.cores = cores)
+        if ("value" %in% names(resultList)) resultList <- resultList$value
+      } else {
+        resultList <- mclapply(fullList, function(geneRow) {
+          lmerFast(geneRow, lmod, control,
+                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+        }, mc.cores = cores)
+      }
+    }
+    
+  } else {
+    # lmerTest
+    if (Sys.info()["sysname"] == "Windows" & cores > 1) {
+      cl <- makeCluster(cores)
+      clusterExport(cl, varlist = c("lmerTestCore", "fullList", "fullFormula",
+                                    "subsetMetadata", "control", "modelData",
+                                    "offset", "designMatrix", ...),
+                    envir = environment())
+      if (progress) {
+        resultList <- pblapply(fullList, function(geneRow) {
+          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
+                   control = control, modelData = modelData, offset = offset,
+                   designMatrix = designMatrix, ...)
+        }, cl = cl)
+      } else {
+        resultList <- parLapply(cl = cl, fullList, function(geneRow) {
+          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
+                   control = control, modelData = modelData, offset = offset,
+                   designMatrix = designMatrix, ...)
+        })
+      }
+      stopCluster(cl)
+    } else{
+      if (progress) {
+        resultList <- pbmclapply(fullList, function(geneRow) {
+          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
+                   control = control, modelData = modelData, offset = offset,
+                   designMatrix = designMatrix, ...)
+        }, mc.cores = cores)
+        if ("value" %in% names(resultList)) resultList <- resultList$value
+      } else {
+        resultList <- mclapply(fullList, function(geneRow) {
+          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
+                   control = control, modelData = modelData, offset = offset,
+                   designMatrix = designMatrix, ...)
+        }, mc.cores = cores)
+      }
     }
   }
+  
   if(returnList) return(resultList)
   
   # Print timing if verbose
@@ -272,29 +321,32 @@ lmmSeq <- function(modelFormula,
 }
 
 
-lmerCore <- function(geneList,
-                     fullFormula,
-                     data,
+## see lme4::modular
+#' @importFrom lme4 mkLmerDevfun optimizeLmer checkConv mkMerMod
+#' 
+lmerFast <- function(geneRow,
+                     lmod,
                      control,
                      modelData,
                      designMatrix,
-                     offset,
-                     hyp.matrix.1,
-                     hyp.matrix.2,
-                     test.stat,
-                     ...) {
-  data[, "gene"] <- geneList
-  if (test.stat == "Wald") {
-  fit <- try(suppressMessages(suppressWarnings(
-    lme4::lmer(fullFormula, data = data, control = control, offset = offset,
-               ...))),
-    silent = TRUE)
-  } else {
-    fit <- try(suppressMessages(suppressWarnings(
-      lmerTest::lmer(fullFormula, data = data, control = control, offset = offset,
-                     ...))),
-      silent = TRUE)
-  }
+                     hyp.matrix.1, hyp.matrix.2) {
+  lmod$fr$gene <- geneRow
+  devfun <- do.call(mkLmerDevfun, c(lmod, list(control=control)))
+  opt <- optimizeLmer(devfun,
+                      optimizer = control$optimizer,
+                      restart_edge = control$restart_edge,
+                      boundary.tol = control$boundary.tol,
+                      control = control$optCtrl,
+                      calc.derivs=control$calc.derivs,
+                      use.last.params=control$use.last.params)
+  cc <- try(suppressMessages(suppressWarnings(
+    checkConv(attr(opt,"derivs"), opt$par,
+              ctrl = control$checkConv,
+              lbound = environment(devfun)$lower)
+  )), silent = TRUE)
+  fit <- mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
+                  lme4conv=cc)
+  
   if (!inherits(fit, "try-error")) {
     # intercept dropped genes
     if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
@@ -307,12 +359,61 @@ lmerCore <- function(geneList,
     stdErr <- coef(summary(fit))[, 2]
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
-    if (test.stat == "Wald") {
-      waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
-    } else {
-      Ftest <- as.matrix(anova(fit)[, -c(1,2)])
+    waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
+    
+    newY <- predict(fit, newdata = modelData, re.form = NA)
+    a <- designMatrix %*% vcov.
+    b <- as.matrix(a %*% t(designMatrix))
+    predVar <- diag(b)
+    newSE <- sqrt(predVar)
+    newLCI <- newY - newSE * 1.96
+    newUCI <- newY + newSE * 1.96
+    predictdf <- c(newY, newLCI, newUCI)
+    singular <- as.numeric(lme4::isSingular(fit))
+    conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
+    ret <- list(stats = stats,
+                coef = fixedEffects,
+                stdErr = stdErr,
+                chisq = waldtest$chisq,
+                df = waldtest$df,
+                predict = predictdf,
+                optinfo = c(singular, conv),
+                tryErrors = "")
+    return(ret)
+  } else {
+    return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA, 
+                predict = NA, optinfo = NA, tryErrors = fit[1]))
+  }
+}
+
+
+lmerTestCore <- function(geneRow,
+                         fullFormula,
+                         data,
+                         control,
+                         modelData,
+                         designMatrix,
+                         offset,
+                         ...) {
+  data[, "gene"] <- geneRow
+  fit <- try(suppressMessages(suppressWarnings(
+    lmerTest::lmer(fullFormula, data = data, control = control, offset = offset,
+                   ...))),
+    silent = TRUE)
+  if (!inherits(fit, "try-error")) {
+    # intercept dropped genes
+    if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
+      return( list(stats = NA, predict = NA, optinfo = NA,
+                   tryErrors = attr(fit@pp$X, "msgRankdrop")) )
     }
-      
+    stats <- setNames(c(AIC(fit), as.numeric(logLik(fit))),
+                      c("AIC", "logLik"))
+    fixedEffects <- lme4::fixef(fit)
+    stdErr <- coef(summary(fit))[, 2]
+    vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
+    vcov. <- as.matrix(vcov.)
+    Ftest <- as.matrix(anova(fit)[, -c(1,2)])
+    
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.
     b <- as.matrix(a %*% t(designMatrix))
@@ -324,27 +425,16 @@ lmerCore <- function(geneList,
     singular <- as.numeric(lme4::isSingular(fit))
     conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
     rm(fit, data)
-    ret <- if (test.stat == "Wald") {
-      list(stats = stats,
-           coef = fixedEffects,
-           stdErr = stdErr,
-           chisq = waldtest$chisq,
-           df = waldtest$df,
-           predict = predictdf,
-           optinfo = c(singular, conv),
-           tryErrors = "")
-    } else {
-      list(stats = stats,
-           coef = fixedEffects,
-           stdErr = stdErr,
-           Ftest = Ftest,
-           predict = predictdf,
-           optinfo = c(singular, conv),
-           tryErrors = "")
-    }
+    ret <- list(stats = stats,
+                coef = fixedEffects,
+                stdErr = stdErr,
+                Ftest = Ftest,
+                predict = predictdf,
+                optinfo = c(singular, conv),
+                tryErrors = "")
     return(ret)
   } else {
-    return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA, 
+    return(list(stats = NA, coef = NA, stdErr = NA, Ftest = NA,
                 predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }
