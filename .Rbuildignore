@@ -14,3 +14,4 @@ package_creator.R
 cran-comments.md
 
 ^CRAN-RELEASE$
+^_pkgdown\.yml$

@@ -52,3 +52,4 @@ package_creator.R
 *.Rproj
 /doc/
 /Meta/
+docs
