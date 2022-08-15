@@ -27,7 +27,7 @@
 #'   `expand.grid` using levels of variables in the formula. Used to calculate
 #'   model predictions (estimated means & 95% CI) for plotting via [modelPlot].
 #'   It can therefore be used to add/remove points in [modelPlot].
-#' @param designMatrix custom design matrix
+#' @param designMatrix custom design matrix, used only for prediction
 #' @param control the `glmer` optimizer control (default =
 #'   `glmerControl(optimizer = "bobyqa")`). See
 #'   \code{\link[lme4:glmerControl]{lme4::glmerControl()}}.
@@ -70,6 +70,7 @@
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom car Anova
+#' @importFrom glmmTMB glmmTMB glmmTMBControl nbinom2 sigma
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
 #'   update.formula model.matrix predict setNames coef
@@ -80,12 +81,14 @@ glmmSeq <- function(modelFormula,
                     countdata,
                     metadata,
                     id = NULL,
-                    dispersion,
+                    dispersion = NA,
                     sizeFactors = NULL,
                     reducedFormula = "",
                     modelData = NULL,
                     designMatrix = NULL,
-                    control = glmerControl(optimizer = "bobyqa"),
+                    method = c("lme4", "glmmTMB"),
+                    control = NULL,
+                    family = nbinom2,
                     cores = 1,
                     removeSingles = FALSE,
                     zeroCount = 0.125,
@@ -94,6 +97,12 @@ glmmSeq <- function(modelFormula,
                     progress = FALSE,
                     ...) {
   glmmcall <- match.call(expand.dots = TRUE)
+  method <- match.arg(method)
+  if (is.null(control)) {
+    control <- if (method == "lme4") {
+      glmerControl(optimizer = "bobyqa")
+    } else glmmTMBControl()
+  }
   countdata <- as.matrix(countdata)
   # Catch errors
   if (length(findbars(modelFormula)) == 0) {
@@ -131,8 +140,12 @@ glmmSeq <- function(modelFormula,
     ids <- ids[nonSingleIDs]
   }
   
-  if (! all(rownames(countdata) %in% names(dispersion))) {
+  if (method == "lme4" & !all(rownames(countdata) %in% names(dispersion))) {
     stop("Some dispersion values are missing")
+  }
+  if (method == "glmmTMB") {
+    dispersion <- rep_len(NA, nrow(countdata))
+    names(dispersion) <- rownames(countdata)
   }
   
   if (!is.null(sizeFactors)) offset <- log(sizeFactors) else offset <- NULL
@@ -151,6 +164,10 @@ glmmSeq <- function(modelFormula,
     })
     modelData <- expand.grid(varLevels)
     colnames(modelData) <- reducedVars
+    if (method == "glmmTMB") {
+      modelData <- cbind(modelData, .id = NA)
+      colnames(modelData)[which(colnames(modelData) == ".id")] <- id
+    }
   }
 
   if (is.null(designMatrix)){
@@ -183,9 +200,9 @@ glmmSeq <- function(modelFormula,
   
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
-    list(y = countdata[i, ], dispersion = dispersion[i])
-  })
-  
+      list(y = countdata[i, ], dispersion = dispersion[i])
+    })
+    
   # For each gene perform a fit
   if (Sys.info()["sysname"] == "Windows" & cores > 1) {
     cl <- makeCluster(cores)
@@ -196,39 +213,31 @@ glmmSeq <- function(modelFormula,
                   envir = environment())
     if (progress) {
       resultList <- pblapply(fullList, function(geneList) {
-        glmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                  control = control, modelData = modelData, offset = offset,
-                  designMatrix = designMatrix,
-                  hyp.matrix.1 = hyp.matrix.1,
-                  hyp.matrix.2 = hyp.matrix.2, ...)
+        glmerCore(geneList, fullFormula, subsetMetadata, method, family,
+                  control, offset, modelData, designMatrix, hyp.matrix.1,
+                  hyp.matrix.2, ...)
       }, cl = cl)
     } else {
       resultList <- parLapply(cl = cl, fullList, function(geneList) {
-        glmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                  control = control, modelData = modelData, offset = offset,
-                  designMatrix = designMatrix,
-                  hyp.matrix.1 = hyp.matrix.1,
-                  hyp.matrix.2 = hyp.matrix.2, ...)
+        glmerCore(geneList, fullFormula, subsetMetadata, method, family,
+                  control, offset, modelData, designMatrix, hyp.matrix.1,
+                  hyp.matrix.2, ...)
       })
     }
     stopCluster(cl)
   } else{
     if (progress) {
       resultList <- pbmclapply(fullList, function(geneList) {
-        glmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                  control = control, modelData = modelData, offset = offset,
-                  designMatrix = designMatrix,
-                  hyp.matrix.1 = hyp.matrix.1,
-                  hyp.matrix.2 = hyp.matrix.2, ...)
+        glmerCore(geneList, fullFormula, subsetMetadata, method, family,
+                  control, offset, modelData, designMatrix, hyp.matrix.1,
+                  hyp.matrix.2, ...)
       }, mc.cores = cores)
       if ("value" %in% names(resultList)) resultList <- resultList$value
     } else {
       resultList <- mclapply(fullList, function(geneList) {
-        glmerCore(geneList, fullFormula = fullFormula, data = subsetMetadata,
-                  control = control, modelData = modelData, offset = offset,
-                  designMatrix = designMatrix,
-                  hyp.matrix.1 = hyp.matrix.1,
-                  hyp.matrix.2 = hyp.matrix.2, ...)
+        glmerCore(geneList, fullFormula, subsetMetadata, method, family,
+                  control, offset, modelData, designMatrix, hyp.matrix.1,
+                  hyp.matrix.2, ...)
       }, mc.cores = cores)
     }
   }
@@ -289,37 +298,44 @@ glmmSeq <- function(modelFormula,
 }
 
 
-glmerCore <- function(geneList,
-                      fullFormula,
-                      data,
-                      control,
-                      modelData,
-                      designMatrix,
-                      offset,
-                      hyp.matrix.1,
-                      hyp.matrix.2,
-                      ...) {
+glmerCore <- function(geneList, fullFormula, data, method, family,
+                      control, offset, modelData, designMatrix, hyp.matrix.1,
+                      hyp.matrix.2, ...) {
   data[, "count"] <- geneList$y
+  disp <- geneList$dispersion
   fit <- try(suppressMessages(suppressWarnings(
-    lme4::glmer(fullFormula, data = data, control = control, offset = offset,
-                family = MASS::negative.binomial(theta = 
-                                                   1/geneList$dispersion),
-                ...))),
-    silent = TRUE)
+    switch(method,
+           "lme4" = lme4::glmer(fullFormula, data = data, control = control,
+                                offset = offset,
+                                family = MASS::negative.binomial(theta = 1/disp),
+                                ...),
+           "glmmTMB" = glmmTMB(fullFormula, data, family,
+                               control = control, offset = offset, ...))
+  )), silent = TRUE)
   
   if (!inherits(fit, "try-error")) {
-    # intercept dropped genes
-    if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
-      return( list(stats = NA, predict = NA, optinfo = NA,
-                   tryErrors = attr(fit@pp$X, "msgRankdrop")) )
+    if (method == "lme4") {
+      # intercept dropped genes
+      if (length(attr(fit@pp$X, "msgRankdrop")) > 0)  {
+        return( list(stats = NA, predict = NA, optinfo = NA,
+                     tryErrors = attr(fit@pp$X, "msgRankdrop")) )
+      }
+      stdErr <- suppressWarnings(coef(summary(fit))[, 2])
+      singular <- as.numeric(lme4::isSingular(fit))
+      conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
+      vcov. <- suppressWarnings(as.matrix(vcov(fit, complete = FALSE)))
+      fixedEffects <- fixef(fit)
+    } else {
+      # glmmTMB
+      singular <- conv <- NA
+      stdErr <- suppressWarnings(coef(summary(fit))$cond[, 2])
+      vcov. <- vcov(fit)$cond
+      fixedEffects <- fixef(fit)$cond
+      disp <- sigma(fit)
     }
-    stats <- setNames(c(geneList$dispersion, AIC(fit),
+    stats <- setNames(c(disp, AIC(fit),
                         as.numeric(logLik(fit))),
                       c("Dispersion", "AIC", "logLik"))
-    fixedEffects <- lme4::fixef(fit)
-    stdErr <- suppressWarnings(coef(summary(fit))[, 2])
-    vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
-    vcov. <- as.matrix(vcov.)
     waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
@@ -330,9 +346,7 @@ glmerCore <- function(geneList,
     newLCI <- exp(newY - newSE * 1.96)
     newUCI <- exp(newY + newSE * 1.96)
     predictdf <- c(exp(newY), newLCI, newUCI)
-    singular <- as.numeric(lme4::isSingular(fit))
-    conv <- length(slot(fit, "optinfo")$conv$lme4$messages)
-    rm(fit, data)
+    #rm(fit, data)
     return(list(stats = stats,
                 coef = fixedEffects,
                 stdErr = stdErr,

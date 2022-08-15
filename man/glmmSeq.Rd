@@ -14,7 +14,9 @@ glmmSeq(
   reducedFormula = "",
   modelData = NULL,
   designMatrix = NULL,
-  control = glmerControl(optimizer = "bobyqa"),
+  method = c("lme4", "glmmTMB"),
+  control = NULL,
+  family = nbinom2,
   cores = 1,
   removeSingles = FALSE,
   zeroCount = 0.125,
@@ -54,7 +56,7 @@ offset is set to log(sizeFactors). For more information see``
 model predictions (estimated means & 95\% CI) for plotting via \link{modelPlot}.
 It can therefore be used to add/remove points in \link{modelPlot}.}
 
-\item{designMatrix}{custom design matrix}
+\item{designMatrix}{custom design matrix, used only for prediction}
 
 \item{control}{the \code{glmer} optimizer control (default =
 \code{glmerControl(optimizer = "bobyqa")}). See

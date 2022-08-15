@@ -182,8 +182,8 @@ formPlot <- function(object, geneName, x1var, x2var, x2shift) {
     stop("x1var must be a column name in object@modelData")}
   if (!is.null(x2var)) if (!x2var %in% colnames(object@modelData)) {
     stop("x2var must be a column name in object@modelData")}
-  if(ncol(object@modelData) > 2){
-    stop("More than 2 variables in modelData")}
+  # if(ncol(object@modelData) > 2){
+  #   stop("More than 2 variables in modelData")}
   
   maindata <- if (inherits(object, "GlmmSeq")) {
     object@countdata} else object@maindata
