@@ -43,7 +43,8 @@ sample IDs to be used in repeated samples for random effects. If not
 specified, the function defaults to using the variable after the "|" in the
 random effects term in the formula.}
 
-\item{dispersion}{a numeric vector of gene dispersion}
+\item{dispersion}{a numeric vector of gene dispersion. Not required for
+\code{glmmTMB} models, as these determine and fit dispersion for each gene.}
 
 \item{sizeFactors}{size factors (default = NULL). If provided the \code{glmer}
 offset is set to log(sizeFactors). For more information see``
@@ -58,9 +59,16 @@ It can therefore be used to add/remove points in \link{modelPlot}.}
 
 \item{designMatrix}{custom design matrix, used only for prediction}
 
-\item{control}{the \code{glmer} optimizer control (default =
-\code{glmerControl(optimizer = "bobyqa")}). See
-\code{\link[lme4:glmerControl]{lme4::glmerControl()}}.}
+\item{method}{Specifies which package to use for fitting GLMM models. Either
+"lme4" or "glmmTMB" depending on whether to use \link[lme4:glmer]{lme4::glmer} or
+\link[glmmTMB:glmmTMB]{glmmTMB::glmmTMB} to fit GLMM models.}
+
+\item{control}{the \code{glmer} optimizer control. If \code{method = "lme4"} default is
+\code{glmerControl(optimizer = "bobyqa")}). If
+\code{method = "glmmTMB"} default is \code{glmmTMBControl()}}
+
+\item{family}{Only used with \code{glmmTMB} models. Default is \code{nbinom2}. See
+\link[glmmTMB:nbinom2]{glmmTMB::nbinom2}}
 
 \item{cores}{number of cores to use. Default = 1.}
 
@@ -96,6 +104,10 @@ This function is a wrapper for \code{\link[lme4:glmer]{lme4::glmer()}}. Wald typ
 is calculated as per \code{\link[car:Anova]{car::Anova()}} optimised for speed. Parallelisation is
 provided using \link[parallel:mclapply]{parallel::mclapply} on Unix/Mac or \link[parallel:clusterApply]{parallel::parLapply} on
 PC.
+
+Note, \code{glmmTMB} negative binomial models are substantially slower to fit than
+\code{glmer} models with known dispersion due to the extra time taken by \code{glmmTMB}
+to optimise the dispersion parameter.
 }
 \examples{
 data(PEAC_minimal_load)
@@ -109,4 +121,8 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      verbose = FALSE)
 names(attributes(MS4A1glmm))
 
+}
+\seealso{
+\link[lme4:glmer]{lme4::glmer} \link[lme4:lmerControl]{lme4::glmerControl} \link[glmmTMB:glmmTMB]{glmmTMB::glmmTMB}
+\link[glmmTMB:nbinom2]{glmmTMB::nbinom2} \link[glmmTMB:glmmTMBControl]{glmmTMB::glmmTMBControl} \link[car:Anova]{car::Anova}
 }

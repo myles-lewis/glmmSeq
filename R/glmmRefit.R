@@ -12,8 +12,8 @@
 #' @param gene A character value specifying a single gene to extract a fitted
 #'   model for
 #' @param ... Optional arguments passed to either [lme4::glmer] or [lme4::lmer]
-#' @return Fitted model of class `lmerMod` in the case of LMM or `glmerMod` for
-#'   a GLMM
+#' @return Fitted model of class `lmerMod` in the case of LMM, or `glmerMod` or `glmmTMB` for
+#'   a GLMM dependent on the original method.
 #' @export
 
 glmmRefit <- function(object, gene, ...) {
@@ -43,14 +43,19 @@ glmmRefit.lmmSeq <- function(object, gene, ...) {
 
 glmmRefit.GlmmSeq <- function(object, gene, ...) {
   data <- object@metadata
-  data[, "count"] <- unlist(object@countdata[gene, ])
-  disp <- object@info$dispersion[gene]
+  data[, "count"] <- object@countdata[gene, ]
   offset <- object@info$offset
-  control <- eval(object@info$control)
-  
-  fit <- lme4::glmer(object@formula, data = data,
-                     control = control, offset = offset,
-                     family = MASS::negative.binomial(theta = 1/disp),
-                     ...)
+  control <- object@info$control
+  if (object@info$method == "lme4") {
+    disp <- object@info$dispersion[gene]
+    fit <- lme4::glmer(object@formula, data = data,
+                       control = control, offset = offset,
+                       family = MASS::negative.binomial(theta = 1/disp),
+                       ...)
+  } else {
+    family <- eval(object@info$family)
+    fit <- glmmTMB(object@formula, data, family = family,
+                   control = control, offset = offset, ...)
+  }
   fit
 }
