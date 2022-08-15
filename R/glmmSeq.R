@@ -174,29 +174,7 @@ glmmSeq <- function(modelFormula,
     designMatrix <- model.matrix(reducedFormula, modelData)
   }
   
-  # Adapted from car:::Anova.II.mer
-  reduced2 <- nobars(fullFormula)
-  fac <- attr(terms(reduced2), "factors")
-  data2 <- metadata
-  data2[,'count'] <- rep(0, nrow(data2)) 
-  dm2 <- model.matrix(reduced2, data2)
-  assign <- attr(dm2, "assign")
-  term.labels <- attr(terms(reduced2), "term.labels")
-  p <- length(assign)
-  I.p <- diag(p)
-  n.terms <- length(term.labels)
-  hyp.matrix.1 <- hyp.matrix.2 <- list()
-  for (i in seq_len(n.terms)) {
-    which.term <- i
-    subs.term <- which(assign == which.term)
-    relatives <- car_relatives(term.labels[i], term.labels, fac)
-    subs.relatives <- NULL
-    for (relative in relatives) subs.relatives <- c(subs.relatives, 
-                                                    which(assign == relative))
-    hyp.matrix.1[[i]] <- I.p[subs.relatives, , drop = FALSE]
-    hyp.matrix.2[[i]] <- I.p[c(subs.relatives, subs.term), , drop = FALSE]
-  }
-  names(hyp.matrix.1) <- term.labels
+  hyp.matrix <- hyp_matrix(fullFormula, metadata, "count")
   
   start <- Sys.time()
   fullList <- lapply(rownames(countdata), function(i) {
@@ -209,19 +187,17 @@ glmmSeq <- function(modelFormula,
     clusterExport(cl, varlist = c("glmerCore", "fullList", "fullFormula",
                                   "subsetMetadata", "control", "modelData",
                                   "offset", "designMatrix",
-                                  "hyp.matrix.1", "hyp.matrix.2", ...),
+                                  "hyp.matrix", ...),
                   envir = environment())
     if (progress) {
       resultList <- pblapply(fullList, function(geneList) {
         glmerCore(geneList, fullFormula, subsetMetadata, method, family,
-                  control, offset, modelData, designMatrix, hyp.matrix.1,
-                  hyp.matrix.2, ...)
+                  control, offset, modelData, designMatrix, hyp.matrix, ...)
       }, cl = cl)
     } else {
       resultList <- parLapply(cl = cl, fullList, function(geneList) {
         glmerCore(geneList, fullFormula, subsetMetadata, method, family,
-                  control, offset, modelData, designMatrix, hyp.matrix.1,
-                  hyp.matrix.2, ...)
+                  control, offset, modelData, designMatrix, hyp.matrix, ...)
       })
     }
     stopCluster(cl)
@@ -229,15 +205,13 @@ glmmSeq <- function(modelFormula,
     if (progress) {
       resultList <- pbmclapply(fullList, function(geneList) {
         glmerCore(geneList, fullFormula, subsetMetadata, method, family,
-                  control, offset, modelData, designMatrix, hyp.matrix.1,
-                  hyp.matrix.2, ...)
+                  control, offset, modelData, designMatrix, hyp.matrix, ...)
       }, mc.cores = cores)
       if ("value" %in% names(resultList)) resultList <- resultList$value
     } else {
       resultList <- mclapply(fullList, function(geneList) {
         glmerCore(geneList, fullFormula, subsetMetadata, method, family,
-                  control, offset, modelData, designMatrix, hyp.matrix.1,
-                  hyp.matrix.2, ...)
+                  control, offset, modelData, designMatrix, hyp.matrix, ...)
       }, mc.cores = cores)
     }
   }
@@ -299,8 +273,7 @@ glmmSeq <- function(modelFormula,
 
 
 glmerCore <- function(geneList, fullFormula, data, method, family,
-                      control, offset, modelData, designMatrix, hyp.matrix.1,
-                      hyp.matrix.2, ...) {
+                      control, offset, modelData, designMatrix, hyp.matrix, ...) {
   data[, "count"] <- geneList$y
   disp <- geneList$dispersion
   fit <- try(suppressMessages(suppressWarnings(
@@ -336,7 +309,7 @@ glmerCore <- function(geneList, fullFormula, data, method, family,
     stats <- setNames(c(disp, AIC(fit),
                         as.numeric(logLik(fit))),
                       c("Dispersion", "AIC", "logLik"))
-    waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
+    waldtest <- lmer_wald(fixedEffects, hyp.matrix, vcov.)
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.

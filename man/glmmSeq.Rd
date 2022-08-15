@@ -9,7 +9,7 @@ glmmSeq(
   countdata,
   metadata,
   id = NULL,
-  dispersion,
+  dispersion = NA,
   sizeFactors = NULL,
   reducedFormula = "",
   modelData = NULL,
