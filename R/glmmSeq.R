@@ -57,9 +57,11 @@
 #' provided using [parallel::mclapply] on Unix/Mac or [parallel::parLapply] on
 #' PC.
 #' 
-#' Note, `glmmTMB` negative binomial models are substantially slower to fit than
-#' `glmer` models with known dispersion due to the extra time taken by `glmmTMB`
-#' to optimise the dispersion parameter.
+#' Setting `method = "glmmTMB"` enables an alternative method of fitting GLMM
+#' using the `glmmTMB` package. This gives access to a variety of alternative
+#' GLM family functions. Note, `glmmTMB` negative binomial models are
+#' substantially slower to fit than `glmer` models with known dispersion due to
+#' the extra time taken by `glmmTMB` to optimise the dispersion parameter.
 #' 
 #' @seealso [lme4::glmer] [lme4::glmerControl] [glmmTMB::glmmTMB]
 #'   [glmmTMB::nbinom2] [glmmTMB::glmmTMBControl] [car::Anova]

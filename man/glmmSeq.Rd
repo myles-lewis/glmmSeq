@@ -105,9 +105,11 @@ is calculated as per \code{\link[car:Anova]{car::Anova()}} optimised for speed. 
 provided using \link[parallel:mclapply]{parallel::mclapply} on Unix/Mac or \link[parallel:clusterApply]{parallel::parLapply} on
 PC.
 
-Note, \code{glmmTMB} negative binomial models are substantially slower to fit than
-\code{glmer} models with known dispersion due to the extra time taken by \code{glmmTMB}
-to optimise the dispersion parameter.
+Setting \code{method = "glmmTMB"} enables an alternative method of fitting GLMM
+using the \code{glmmTMB} package. This gives access to a variety of alternative
+GLM family functions. Note, \code{glmmTMB} negative binomial models are
+substantially slower to fit than \code{glmer} models with known dispersion due to
+the extra time taken by \code{glmmTMB} to optimise the dispersion parameter.
 }
 \examples{
 data(PEAC_minimal_load)
