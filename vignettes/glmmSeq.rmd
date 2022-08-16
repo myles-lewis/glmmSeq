@@ -354,7 +354,7 @@ is then no longer required. The `family` argument can be used to specify
 different family functions and `glmmTMB` provides `nbinom1` and `nbinom2`
 (`glmmSeq` uses the latter by default).
 
-## Individual Genes
+# Extracting individual Genes
 
 Similarly you can run the script for an individual gene (make sure you use 
 `drop = FALSE` to maintain `countdata` as a matrix).
@@ -413,7 +413,10 @@ ggmodelPlot(results,
             modelSize = 10)
 ```
 
-Or using base graphics, with or without the model fit overlaid:
+Alternatively plots can be generated using base graphics, here with or without
+the model fit overlaid. By default p-value labels are taken from the column
+names of the `pvals` object in the `stats` slot of the S4 result object. These
+can be relabelled using the `plab` argument.
 
 ```{r, fig.height=6, warning=FALSE}
 oldpar <- par(mfrow=c(1, 2))
@@ -433,6 +436,7 @@ modelPlot(results,
           x1var = "Timepoint",
           x2var = "EULAR_6m",
           colours = plotColours,
+          plab = c("time", "response", "time:response"),
           addModel = FALSE)
 
 par(oldpar)

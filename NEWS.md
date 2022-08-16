@@ -2,9 +2,10 @@ News
 =====
 
 # glmmSeq v0.5.0
-###### 15/8/2022
+###### 16/8/2022
 * Add option to `glmmSeq()` to use `glmmTMB` package for fitting negative
-binomial GLMM (or other GLM family) models.
+binomial GLMM (or other GLM family) models
+* Add `plab` argument to `modelPlots` to customise p-value labels
 
 # glmmSeq v0.4.0
 ###### 10/8/2022
