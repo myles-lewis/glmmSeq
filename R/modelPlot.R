@@ -16,6 +16,8 @@
 #'   to 'dodge' or stagger them.
 #' @param xlab Title for the x axis
 #' @param ylab Title for the y axis
+#' @param plab Optional character vector of labels for p-values. These must
+#'   align with column names in `object@stats$pvals`.
 #' @param title Plot title. If NULL gene name is used
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shapes (default=19)
@@ -64,6 +66,7 @@ modelPlot <- function(object,
                       x2shift = NULL,
                       xlab = NA,
                       ylab = geneName,
+                      plab = NULL,
                       title = geneName,
                       logTransform = is(object, "GlmmSeq"),
                       shapes = 21,
@@ -168,8 +171,10 @@ modelPlot <- function(object,
   }
   if(title!="") mtext(title, side=3, adj=0, padj=-3, cex=fontSize)
   
+  if (is.null(plab)) plab <- colnames(pval)
+  
   ptext <- lapply(1:ncol(pval), function(i) {
-    bquote("P" [.(colnames(pval)[i])] *"="* .(pval[,i]))
+    bquote("P" [.(plab[i])] *"="* .(pval[,i]))
   })
   ptext <- bquote(.(paste(unlist(ptext), collapse = '*", "*')))
   mtext(parse(text=ptext), side=3, adj=0, cex=fontSize)
