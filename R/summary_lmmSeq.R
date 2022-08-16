@@ -17,7 +17,13 @@ summary.lmmSeq <- function(object,
   } else {
     out <- lapply(object@stats, function(i) i[gene,])
     if (is(object, "GlmmSeq")) {
-      cat("Generalised linear mixed model\nFamily: Negative Binomial\n")
+      cat("Generalised linear mixed model\n")
+      cat(paste0("Method: ", object@info$method, "\n"))
+      if (object@info$method == "lme4") {
+        cat("Family: Negative Binomial\n")
+      } else {
+        cat(paste0("Family: ", object@info$family, "\n"))
+      }
     } else {
       cat("Linear mixed model\n")
     }

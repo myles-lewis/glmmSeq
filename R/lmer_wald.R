@@ -1,5 +1,35 @@
 
-lmer_wald <- function(fixef, hyp.matrix.1, hyp.matrix.2, vcov.) {
+## Adapted from car:::Anova.II.mer
+hyp_matrix <- function(fullFormula, metadata, LHS) {
+  reduced2 <- nobars(fullFormula)
+  fac <- attr(terms(reduced2), "factors")
+  data2 <- metadata
+  data2[,LHS] <- rep(0, nrow(data2)) 
+  dm2 <- model.matrix(reduced2, data2)
+  assign <- attr(dm2, "assign")
+  term.labels <- attr(terms(reduced2), "term.labels")
+  p <- length(assign)
+  I.p <- diag(p)
+  n.terms <- length(term.labels)
+  hyp.matrix.1 <- hyp.matrix.2 <- list()
+  for (i in seq_len(n.terms)) {
+    which.term <- i
+    subs.term <- which(assign == which.term)
+    relatives <- car_relatives(term.labels[i], term.labels, fac)
+    subs.relatives <- NULL
+    for (relative in relatives) subs.relatives <- c(subs.relatives, 
+                                                    which(assign == relative))
+    hyp.matrix.1[[i]] <- I.p[subs.relatives, , drop = FALSE]
+    hyp.matrix.2[[i]] <- I.p[c(subs.relatives, subs.term), , drop = FALSE]
+  }
+  names(hyp.matrix.1) <- term.labels
+  return(list(hyp.matrix.1 = hyp.matrix.1, hyp.matrix.2 = hyp.matrix.2))
+}
+
+
+lmer_wald <- function(fixef, hyp.matrix, vcov.) {
+  hyp.matrix.1 <- hyp.matrix[[1]]
+  hyp.matrix.2 <- hyp.matrix[[2]]
   
   hyp.list <- lapply(seq_along(hyp.matrix.1), function(i) {
     # source car:::Anova.II.mer

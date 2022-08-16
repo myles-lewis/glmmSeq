@@ -14,6 +14,8 @@
 #'   default the function will arrange each level of `x2var` side by side.
 #' @param xlab Title for the x axis
 #' @param ylab Title for the y axis
+#' @param plab Optional character vector of labels for p-values. These must
+#'   align with column names in `object@stats$pvals`.
 #' @param title Plot title. If NULL gene name is used
 #' @param logTransform Whether to perform a log10 transform on the y axis
 #' @param shapes The marker shapes (default=19)
@@ -59,29 +61,30 @@
 #'            colours = c('skyblue', 'goldenrod1', 'mediumvioletred'))
 
 ggmodelPlot <- function(object,
-                         geneName = NULL,
-                         x1var = NULL,
-                         x2var = NULL,
-                         x2shift = NULL,
-                         xlab = NULL,
-                         ylab = geneName,
-                         title = geneName,
-                         logTransform = is(object, "GlmmSeq"),
-                         shapes = 19,
-                         colours = 'grey60',
-                         lineColours = 'grey60',
-                         markerSize = 1,
-                         fontSize = 12,
-                         alpha = 0.7,
-                         x2Offset = 5,
-                         addPoints = TRUE,
-                         addModel = TRUE,
-                         modelSize = 4,
-                         modelColours = "blue",
-                         modelLineSize = 1,
-                         modelLineColours = modelColours,
-                         addBox = FALSE,
-                         ...) {
+                        geneName = NULL,
+                        x1var = NULL,
+                        x2var = NULL,
+                        x2shift = NULL,
+                        xlab = NULL,
+                        ylab = geneName,
+                        plab = NULL,
+                        title = geneName,
+                        logTransform = is(object, "GlmmSeq"),
+                        shapes = 19,
+                        colours = 'grey60',
+                        lineColours = 'grey60',
+                        markerSize = 1,
+                        fontSize = 12,
+                        alpha = 0.7,
+                        x2Offset = 5,
+                        addPoints = TRUE,
+                        addModel = TRUE,
+                        modelSize = 4,
+                        modelColours = "blue",
+                        modelLineSize = 1,
+                        modelLineColours = modelColours,
+                        addBox = FALSE,
+                        ...) {
     
   if (!(is(object, "GlmmSeq") | is(object, "lmmSeq"))) {
     stop("object must be an output from glmmSeq or lmmSeq")}
@@ -167,8 +170,9 @@ ggmodelPlot <- function(object,
   
   if(logTransform) p <- p + scale_y_continuous(trans='log10')
   
+  if (is.null(plab)) plab <- colnames(pval)
   ptext <- lapply(1:ncol(pval), function(i) {
-    bquote("P" [.(colnames(pval)[i])] *"="* .(pval[,i]))
+    bquote("P" [.(plab[i])] *"="* .(pval[,i]))
   })
   ptext <- bquote(.(paste(unlist(ptext), collapse = '*", "*')))
   p <- p + labs(subtitle = parse(text = ptext))

@@ -166,29 +166,7 @@ lmmSeq <- function(modelFormula,
     lmod <- lFormula(fullFormula, subsetMetadata,
                      offset = offset, control = control, ...)
     
-    # Adapted from car:::Anova.II.mer
-    reduced2 <- nobars(fullFormula)
-    fac <- attr(terms(reduced2), "factors")
-    data2 <- metadata
-    data2[,'gene'] <- rep(0, nrow(data2)) 
-    dm2 <- model.matrix(reduced2, data2)
-    assign <- attr(dm2, "assign")
-    term.labels <- attr(terms(reduced2), "term.labels")
-    p <- length(assign)
-    I.p <- diag(p)
-    n.terms <- length(term.labels)
-    hyp.matrix.1 <- hyp.matrix.2 <- list()
-    for (i in seq_len(n.terms)) {
-      which.term <- i
-      subs.term <- which(assign == which.term)
-      relatives <- car_relatives(term.labels[i], term.labels, fac)
-      subs.relatives <- NULL
-      for (relative in relatives) subs.relatives <- c(subs.relatives, 
-                                                      which(assign == relative))
-      hyp.matrix.1[[i]] <- I.p[subs.relatives, , drop = FALSE]
-      hyp.matrix.2[[i]] <- I.p[c(subs.relatives, subs.term), , drop = FALSE]
-    }
-    names(hyp.matrix.1) <- term.labels
+    hyp.matrix <- hyp_matrix(fullFormula, metadata, "gene")
     
     # For each gene perform a fit
     # lmerFast
@@ -197,17 +175,17 @@ lmmSeq <- function(modelFormula,
       clusterExport(cl, varlist = c("lmerFast",
                                     "lmod", "control", "modelData",
                                     "designMatrix",
-                                    "hyp.matrix.1", "hyp.matrix.2"),
+                                    "hyp.matrix"),
                     envir = environment())
       if (progress) {
         resultList <- pblapply(fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
-                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+                   modelData, designMatrix, hyp.matrix)
         }, cl = cl)
       } else {
         resultList <- parLapply(cl = cl, fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
-                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+                   modelData, designMatrix, hyp.matrix)
         })
       }
       stopCluster(cl)
@@ -215,13 +193,13 @@ lmmSeq <- function(modelFormula,
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
-                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+                   modelData, designMatrix, hyp.matrix)
         }, mc.cores = cores)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
-                   modelData, designMatrix, hyp.matrix.1, hyp.matrix.2)
+                   modelData, designMatrix, hyp.matrix)
         }, mc.cores = cores)
       }
     }
@@ -330,7 +308,7 @@ lmerFast <- function(geneRow,
                      control,
                      modelData,
                      designMatrix,
-                     hyp.matrix.1, hyp.matrix.2) {
+                     hyp.matrix) {
   lmod$fr$gene <- geneRow
   devfun <- do.call(mkLmerDevfun, c(lmod, list(control=control)))
   opt <- optimizeLmer(devfun,
@@ -360,7 +338,7 @@ lmerFast <- function(geneRow,
     stdErr <- coef(summary(fit))[, 2]
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
-    waldtest <- lmer_wald(fixedEffects, hyp.matrix.1, hyp.matrix.2, vcov.)
+    waldtest <- lmer_wald(fixedEffects, hyp.matrix, vcov.)
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.

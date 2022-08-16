@@ -1,6 +1,6 @@
 Package: glmmSeq
 Title: General Linear Mixed Models for Gene-Level Differential Expression
-Version: 0.4.0
+Version: 0.5.0
 Authors@R:
     c(person(given = "Myles",family = "Lewis",
     role = c("aut"),
@@ -47,6 +47,7 @@ Imports:
     stats,
     ggplot2,
     ggpubr,
+    glmmTMB,
     graphics,
     lme4,
     lmerTest,

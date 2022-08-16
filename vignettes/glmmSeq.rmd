@@ -319,7 +319,9 @@ fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
 data) where random effects/mixed effects models are useful. For example,
 gaussian normalised DNA methylation data can be analysed using this method. In
 the example below the RNA-Seq gene expression data is log transformed so that it
-is approximately Gaussian.
+is approximately Gaussian. Alternatively variance stabilising transformation
+(VST) can be applied to count data through DESeq2 or the voom transformation in
+limma voom.
 
 ```{r, warning=FALSE}
 logtpm <- log2(tpm + 1)
@@ -329,6 +331,28 @@ lmmres <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                    progress = TRUE)
 summary(lmmres, "MS4A1")
 ```
+
+# glmmTMB models
+
+The `glmmTMB` package allows negative binomial GLMM models to be fitted. Note,
+that this package optimises the dispersion parameter for each GLMM model and is
+thus significantly slower than a negative binomial GLMM fit by `lme4::glmer`
+with family function `MASS::negative.binomial` for which the dispersion
+parameter must be pre-specified. Each `glmmTMB` model takes about 0.8 seconds,
+so that even with 8 cores, a typical transcriptome of 20,000 genes would take
+about 30 minutes, although this will vary depending on complexity of the design
+formula. In comparison, the standard `glmer` pipeline with known dispersions
+supplied takes about 2 minutes on 8 cores.
+
+Although `glmmTMB` is slower than `lme::glmer` with known dispersion, `glmmTMB`
+is still faster than the equivalent `lme4` function `glmer.nb` when the
+dispersion is unknown.
+
+Setting `method = "glmmTMB"` when calling `glmmSeq()` switches from using
+`lme4::glmer` (the default) to the `glmmTMB` package. The `dispersion` argument
+is then no longer required. The `family` argument can be used to specify
+different family functions and `glmmTMB` provides `nbinom1` and `nbinom2`
+(`glmmSeq` uses the latter by default).
 
 ## Individual Genes
 

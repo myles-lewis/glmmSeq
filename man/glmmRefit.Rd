@@ -15,8 +15,8 @@ model for}
 \item{...}{Optional arguments passed to either \link[lme4:glmer]{lme4::glmer} or \link[lme4:lmer]{lme4::lmer}}
 }
 \value{
-Fitted model of class \code{lmerMod} in the case of LMM or \code{glmerMod} for
-a GLMM
+Fitted model of class \code{lmerMod} in the case of LMM, or \code{glmerMod} or \code{glmmTMB} for
+a GLMM dependent on the original method.
 }
 \description{
 Based on a 'GlmmSeq' or 'lmmSeq' class result object, this function attempts
