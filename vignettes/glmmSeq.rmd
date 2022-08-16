@@ -316,12 +316,12 @@ results <- glmmQvals(results)
 
 An alternative to fitting negative binomial GLMM is to use transformed data and
 fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
-data) where random effects/mixed effects models are useful. For example,
-gaussian normalised DNA methylation data can be analysed using this method. In
-the example below the RNA-Seq gene expression data is log transformed so that it
-is approximately Gaussian. Alternatively variance stabilising transformation
-(VST) can be applied to count data through DESeq2 or the voom transformation in
-limma voom.
+data) where random effects/mixed effects models are useful. It is almost 3x
+faster than `glmmSeq`. For example, gaussian normalised DNA methylation data can
+be analysed using this method. In the example below the RNA-Seq gene expression
+data is log transformed so that it is approximately Gaussian. Alternatively
+variance stabilising transformation (VST) can be applied to count data through
+DESeq2 or the voom transformation in limma voom.
 
 ```{r, warning=FALSE}
 logtpm <- log2(tpm + 1)
