@@ -12,6 +12,7 @@ modelPlot(
   x2shift = NULL,
   xlab = NA,
   ylab = geneName,
+  plab = NULL,
   title = geneName,
   logTransform = is(object, "GlmmSeq"),
   shapes = 21,
@@ -52,6 +53,9 @@ to 'dodge' or stagger them.}
 \item{xlab}{Title for the x axis}
 
 \item{ylab}{Title for the y axis}
+
+\item{plab}{Optional character vector of labels for p-values. These must
+align with column names in \code{object@stats$pvals}.}
 
 \item{title}{Plot title. If NULL gene name is used}
 
