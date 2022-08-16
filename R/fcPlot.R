@@ -202,7 +202,7 @@ fcPlot <- function(object,
     # Plotly
   }else if (graphics == "plotly") {
     plotData <- plotData[order(plotData$col), ]
-    p <- plot_ly(data = plotData, x = ~x, y = ~y, type = 'scatter', 
+    p <- plot_ly(data = plotData, x = ~x, y = ~y, type = 'scattergl', 
                  mode = 'markers', ...,
                  color = ~col, colors = colours,
                  marker = list(size = 8, 

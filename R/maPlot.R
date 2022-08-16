@@ -230,7 +230,7 @@ maPlot <- function(object,
     # Plotly
   } else if(graphics == "plotly"){
     ma1 <- plot_ly(data=plotData, x=~meanexp, y=~x,
-                   type='scatter',
+                   type='scattergl',
                    mode='markers',
                    color=~col,
                    colors=colours,
