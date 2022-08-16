@@ -285,19 +285,29 @@ glmmSeq <- function(modelFormula,
   colnames(outputPredict) <- c(paste0("y_", outLabels),
                                paste0("LCI_", outLabels),
                                paste0("UCI_", outLabels))
-  
-  if (sum(!noErr) != 0) {
-    if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s): ",
-                            paste0(names(noErr)[! noErr], collapse = ", ")))
-    outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
-                           FUN.VALUE = c("test"))
-  } else {outputErrors <- c("No errors")}
-  
   optInfo <- t(vapply(resultList[noErr], function(x) {
     setNames(x$optinfo, c("Singular", "Conv"))
   }, FUN.VALUE = c(1, 1)))
   
   s <- organiseStats(resultList[noErr], "Wald")
+  
+  if (method == "lme4") {
+    if (sum(!noErr) != 0) {
+      if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s): ",
+                              paste0(names(noErr)[! noErr], collapse = ", ")))
+      outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
+                             FUN.VALUE = c("test"))
+    } else {outputErrors <- c("No errors")}
+  } else {
+    # glmmTMB
+    err <- is.na(s$res[, 'AIC'])
+    if (any(err)) {
+      if (verbose) cat(paste0("Errors in ", sum(err), " gene(s): ",
+                              paste0(names(err)[err], collapse = ", ")))
+      outputErrors <- vapply(resultList[err], function(x) {x$message},
+                             FUN.VALUE = character(1))
+    } else outputErrors <- c("No errors")
+  }
   
   # Create GlmmSeq object with results
   new("GlmmSeq",
@@ -388,6 +398,7 @@ glmmTMBcore <- function(geneList, fullFormula, data, family, control, offset,
     vcov. <- vcov(fit)$cond
     fixedEffects <- fixef(fit)$cond
     disp <- sigma(fit)
+    msg <- fit$fit$message
     
     stats <- setNames(c(disp, AIC(fit),
                         as.numeric(logLik(fit))),
@@ -410,6 +421,7 @@ glmmTMBcore <- function(geneList, fullFormula, data, family, control, offset,
                 df = waldtest$df,
                 predict = predictdf,
                 optinfo = c(singular, conv),
+                message = msg,
                 tryErrors = "") )
   } else {
     return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA,
