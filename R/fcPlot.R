@@ -67,7 +67,8 @@ fcPlot <- function(object,
   
   # Extract the data
   predict <- object@predict
-  stats <- object@stats$pvals
+  cols <- colnames(object@stats$pvals)
+  cols <- cols[grepl(":", cols)]
   if (useAdjusted) {
     stats <- object@stats$qvals
     colnames(stats) <- paste0("q_", colnames(stats))
@@ -117,8 +118,6 @@ fcPlot <- function(object,
   plotData$maxGroup <- ifelse(abs(plotData$x) > abs(plotData$y),
                               x2Values[1],
                               x2Values[2])
-  cols <- gsub("P_", "", colnames(plotData)[grepl("P_", colnames(plotData))])
-  cols <- cols[grepl(":", cols)]
 
   # Set up the colour code
   colLevels <- c('Not Significant', paste0(adj, x1var, ' < ', pCutoff),
