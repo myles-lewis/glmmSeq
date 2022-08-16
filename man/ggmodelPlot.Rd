@@ -12,6 +12,7 @@ ggmodelPlot(
   x2shift = NULL,
   xlab = NULL,
   ylab = geneName,
+  plab = NULL,
   title = geneName,
   logTransform = is(object, "GlmmSeq"),
   shapes = 19,
@@ -50,6 +51,9 @@ default the function will arrange each level of \code{x2var} side by side.}
 \item{xlab}{Title for the x axis}
 
 \item{ylab}{Title for the y axis}
+
+\item{plab}{Optional character vector of labels for p-values. These must
+align with column names in \code{object@stats$pvals}.}
 
 \item{title}{Plot title. If NULL gene name is used}
 
