@@ -293,8 +293,8 @@ glmmSeq <- function(modelFormula,
   
   if (method == "lme4") {
     if (sum(!noErr) != 0) {
-      if (verbose) cat(paste0("Errors in ", sum(!noErr), " gene(s): ",
-                              paste0(names(noErr)[! noErr], collapse = ", ")))
+      if (verbose) cat(paste("Errors in", sum(!noErr), "gene(s):",
+                              paste(names(noErr)[! noErr], collapse = ", ")))
       outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
                              FUN.VALUE = c("test"))
     } else {outputErrors <- c("No errors")}
@@ -302,8 +302,8 @@ glmmSeq <- function(modelFormula,
     # glmmTMB
     err <- is.na(s$res[, 'AIC'])
     if (any(err)) {
-      if (verbose) cat(paste0("Errors in ", sum(err), " gene(s): ",
-                              paste0(names(err)[err], collapse = ", ")))
+      if (verbose) cat(paste("Errors in", sum(err), "gene(s):",
+                              paste(names(err)[err], collapse = ", ")))
       outputErrors <- vapply(resultList[err], function(x) {x$message},
                              FUN.VALUE = character(1))
     } else outputErrors <- c("No errors")
