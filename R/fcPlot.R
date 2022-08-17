@@ -66,7 +66,6 @@ fcPlot <- function(object,
                    ...){
   
   # Extract the data
-  predict <- object@predict
   interactCol <- colnames(object@stats$pvals)
   interactCol <- interactCol[grepl(":", interactCol)]
   if (useAdjusted) {
@@ -77,17 +76,14 @@ fcPlot <- function(object,
   }
   adj <- ifelse(useAdjusted, "q_", "P_")
   modelData <- object@modelData
-  outLabels <- apply(modelData, 1, function(x) paste(x, collapse = "_"))
-  modelData$y <- paste0("y_", outLabels)
 
   # Set up the plotting data
-  plotData <- data.frame(predict[, paste0("y_", outLabels)],
-                         check.names = FALSE)
-
+  predData <- object@predict[, 1:nrow(modelData)]
+  
   if (ncol(stats) < 3) {
     stop("Incorrect p-value table structure")
   }
-  if (! all(labels %in% rownames(plotData))) {
+  if (! all(labels %in% rownames(predData))) {
     stop("Labels not found in rownames(object@predict)")
   }
 
@@ -106,16 +102,16 @@ fcPlot <- function(object,
      length(x2Values) != 2) {
     stop("x2Values must be a vector of two levels in x2var")
   }
-  xCols <- modelData$y[modelData[, x2var] == x2Values[1] &
-                         modelData[, x1var] %in% x1Values]
-  yCols <- modelData$y[modelData[, x2var] == x2Values[2] &
-                         modelData[, x1var] %in% x1Values]
-
-  plotData$x <- log2(plotData[, xCols[2]]+1) - log2(plotData[, xCols[1]]+1)
-  plotData$y <- log2(plotData[, yCols[2]]+1) - log2(plotData[, yCols[1]]+1)
+  xCols <- which(modelData[, x2var] == x2Values[1] &
+                         modelData[, x1var] %in% x1Values)
+  yCols <- which(modelData[, x2var] == x2Values[2] &
+                         modelData[, x1var] %in% x1Values)
+  
+  plotData <- data.frame(
+    x = log2(predData[, xCols[2]]+1) - log2(predData[, xCols[1]]+1),
+    y = log2(predData[, yCols[2]]+1) - log2(predData[, yCols[1]]+1))
   plotData$maxGroup <- ifelse(abs(plotData$x) > abs(plotData$y),
-                              x2Values[1],
-                              x2Values[2])
+                              x2Values[1], x2Values[2])
 
   # Set up the colour code
   colLevels <- c('Not Significant', paste0(adj, x1var, ' < ', pCutoff),
