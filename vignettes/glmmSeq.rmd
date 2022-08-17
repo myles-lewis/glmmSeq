@@ -505,7 +505,8 @@ with each point representing a gene. Genes showing an interaction between time
 and drug are coloured blue or gold depending on whether their fold change is
 greater post-rituximab (blue) or post-tocilizumab (gold). Genes without
 interaction, but changing significantly over time are coloured green and tend to
-lie along the line of identity.
+lie along the line of identity. See the Longitudinal tab in
+<https://r4ra.hpc.qmul.ac.uk> for an interactive version of the above plot.
 
 ## MA plots
 
