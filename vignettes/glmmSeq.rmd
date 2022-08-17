@@ -43,14 +43,16 @@ library(kableExtra)
 
 
 The aim of this package is to model gene expression with a general linear mixed
-model (GLMM). The most widely used mainstream differential gene expression analysis tools 
-(e.g [Limma](https://doi.org/10.1093/nar/gkv007), [DESeq2](https://doi.org/10.1186/s13059-014-0550-8), 
-[edgeR](https://doi.org/10.1093/bioinformatics/btp616)) are all unable to fit 
-mixed effects linear models. This package however fits negative binomial mixed 
+model (GLMM) as described in the R4RA study [1]. The most widely used mainstream
+differential gene expression analysis tools (e.g
+[Limma](https://doi.org/10.1093/nar/gkv007),
+[DESeq2](https://doi.org/10.1186/s13059-014-0550-8),
+[edgeR](https://doi.org/10.1093/bioinformatics/btp616)) are all unable to fit
+mixed effects linear models. This package however fits negative binomial mixed
 effects models at individual gene level using the `negative.binomial` function
-from `MASS` and the `glmer` function in 
-[`lme4`](https://CRAN.R-project.org/package=lme4) which enables random 
-effect, as as well as mixed effects, to be modelled.
+from `MASS` and the `glmer` function in
+[`lme4`](https://CRAN.R-project.org/package=lme4) which enables random effect,
+as as well as mixed effects, to be modelled.
 
 ### Installing from CRAN
 
@@ -470,57 +472,40 @@ ggarrange(p1, p2, ncol=2, common.legend = T, legend="bottom")
 ```
 
 
-## Fold Change Plots
+## Fold change plots
 
 The comparative fold change (for `x1var` variables) between conditions (`x2var`
-and `x2Values` variables) can be plotted using an fcPlot for all genes to
-highlight significance.
+and `x2Values` variables) can be plotted using an `fcPlot` for all genes to
+highlight significance. This type of plot is most suited to look for interaction
+between time (`x1var`) and a two-level factor (`x2var`), looking at change
+between two timepoints. In the example below from the R4RA study [1], gene
+expression pre- and post-drug treatment is compared between two drugs (rituximab
+& tocilizumab), using the design formula `gene_counts ~ time * drug`. By setting
+`graphics = "plotly"` this can be viewed interactively.
 
-(By setting `graphics = "plotly"` this can be viewed interactively)
-
-```{r}
-# Genes to label:
-labels = c('MS4A1', 'FGF14', 'IL2RG', 'IGHV3-23', 'ADAM12', 'IL36G', 
-           'BLK', 'SAA1', 'CILP', 'EMILIN3', 'EMILIN2', 'IGHJ6', 
-           'CXCL9', 'CXCL13')
-
-fcPlot(results,
-       x1var="Timepoint",
-       x2var="EULAR_6m",
-       x2Values=c("Good", "Non-response"),
-       pCutoff=0.1,
-       labels=labels,
-       useAdjusted = FALSE,
-       plotCutoff = 1)
+```{r, eval = FALSE}
+r4ra_glmm <- glmmSeq(~ time * drug + (1 | Patient_ID), 
+                       countdata = tpmdata, metadata,
+                       dispersion = dispersions, cores = 8, removeSingles = T)
+r4ra_glmm <- glmmQvals(r4ra_glmm)
+labels = c(..)  # Genes to label
+fcPlot(r4ra_glmm, x1var = "time", x2var = "drug", graphics = "plotly",
+       pCutoff = 0.05, useAdjusted = TRUE,
+       labels = labels,
+       colours = c('grey', 'green3', 'gold3', 'blue'))
 ```
 
-Genes on the line of identity, such as _IGHJ6_, will have associations in the
-same direction whereas genes along the opposing x=-y line have association in
-_opposite_ directions, such as _ADAM12_. This allows us to pick out genes of
-potential interest which we can have another closer look at:
-
-```{r, fig.height=6, warning=FALSE}
-p1<- ggmodelPlot(results,
-                 geneName = "ADAM12",
-                 x1var = "Timepoint",
-                 x2var="EULAR_6m",
-                 colours = "grey60",
-                 modelColour = plotColours, 
-                 modelLineColour =  plotColours) +
-  theme(plot.subtitle=element_text(size=9))
-
-p2 <- ggmodelPlot(results,
-                  geneName = "IGHJ6",
-                  x1var = "Timepoint",
-                  x2var="EULAR_6m",
-                  colours = "blue",
-                  fontSize=8,
-                  modelSize=0.1) +
-  theme(plot.subtitle=element_text(size=9))
-
-ggarrange(p1, p2, ncol=2)
+```{r fcplot, echo = FALSE, message=FALSE, fig.align='center', out.width='80%', out.extra='style="border: 0;"'}
+knitr::include_graphics("r4ra_glmm_fcplot.png")
 ```
 
+Log2 fold change between the two time points for individuals treated with
+rituximab on the x axis and individuals treated with tocilizumab on the y axis
+with each point representing a gene. Genes showing an interaction between time
+and drug are coloured blue or gold depending on whether their fold change is
+greater post-rituximab (blue) or post-tocilizumab (gold). Genes without
+interaction, but changing significantly over time are coloured green and tend to
+lie along the line of identity.
 
 ## MA plots
 
@@ -529,6 +514,9 @@ differences between measurements taken in two samples, by transforming the data
 onto M (log ratio) and A (mean average) scales, then plotting these values.
 
 ```{r, fig.height=8}
+labels = c('MS4A1', 'FGF14', 'IL2RG', 'IGHV3-23', 'ADAM12', 'IL36G', 
+           'BLK', 'SAA1', 'CILP', 'EMILIN3', 'EMILIN2', 'IGHJ6', 
+           'CXCL9', 'CXCL13')
 maPlots <- maPlot(results,
                   x1var="Timepoint",
                   x2var="EULAR_6m",
@@ -553,18 +541,20 @@ citation("glmmSeq")
 
 # References
 
+1. Felice Rivellese, Anna Surace, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Giovanni Giorli, ... Michael Barnes, Myles J. Lewis, Costantino Pitzalis, R4RA collaborative group. Rituximab versus tocilizumab in rheumatoid arthritis: synovial biopsy-based biomarker analysis of the phase 4 R4RA randomized trial. Nature medicine 2022; 28(6): 1256-68.  [doi:10.1038/s41591-022-01789-0](https://doi.org/10.1038/s41591-022-01789-0)
+
 Statistical software used in this package: 
 
-1. [lme4](https://dx.doi.org/10.18637/jss.v067.i01): Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi: 10.18637/jss.v067.i01.
+2. [lme4](https://dx.doi.org/10.18637/jss.v067.i01): Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of Statistical Software, 67(1), 1-48. doi: 10.18637/jss.v067.i01.
 
-2. [car](https://socialsciences.mcmaster.ca/jfox/Books/Companion/): John Fox and Sanford Weisberg (2019). An {R} Companion to Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL: https://socialsciences.mcmaster.ca/jfox/Books/Companion/
+3. [car](https://socialsciences.mcmaster.ca/jfox/Books/Companion/): John Fox and Sanford Weisberg (2019). An {R} Companion to Applied Regression, Third Edition. Thousand Oaks CA: Sage. URL: https://socialsciences.mcmaster.ca/jfox/Books/Companion/
   
-3. [MASS](https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf): Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
+4. [MASS](https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf): Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
 
-4. [glmmTMB](https://CRAN.R-project.org/package=glmmTMB): Mollie Brooks, Ben Bolker, Kasper Kristensen, Martin Maechler, Arni Magnusson (2022). glmmTMB: Generalized Linear Mixed Models using Template Model Builder
+5. [glmmTMB](https://CRAN.R-project.org/package=glmmTMB): Mollie Brooks, Ben Bolker, Kasper Kristensen, Martin Maechler, Arni Magnusson (2022). glmmTMB: Generalized Linear Mixed Models using Template Model Builder
 
-5. [qvalue](https://github.com/StoreyLab/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/StoreyLab/qvalue
+6. [qvalue](https://github.com/StoreyLab/qvalue): John D. Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue: Q-value estimation for false discovery rate control. R package version 2.22.0. https://github.com/StoreyLab/qvalue
 
-6. [lmerTest](https://CRAN.R-project.org/package=lmerTest): Alexandra Kuznetsova, Per Brockhoff, Rune Christensen, Sofie Jensen. lmerTest: Tests in Linear Mixed Effects Models
+7. [lmerTest](https://CRAN.R-project.org/package=lmerTest): Alexandra Kuznetsova, Per Brockhoff, Rune Christensen, Sofie Jensen. lmerTest: Tests in Linear Mixed Effects Models
 
-7. [emmeans](https://CRAN.R-project.org/package=emmeans): Russell V. Lenth, Paul Buerkner, Maxime Herve, Jonathon Love, Fernando Miguez, Hannes Riebl, Henrik Singmann. emmeans: Estimated Marginal Means, aka Least-Squares Means
+8. [emmeans](https://CRAN.R-project.org/package=emmeans): Russell V. Lenth, Paul Buerkner, Maxime Herve, Jonathon Love, Fernando Miguez, Hannes Riebl, Henrik Singmann. emmeans: Estimated Marginal Means, aka Least-Squares Means
