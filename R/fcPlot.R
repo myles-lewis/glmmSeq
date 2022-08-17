@@ -89,10 +89,10 @@ fcPlot <- function(object,
 
   # Define the comparisons
   if (is.null(x1Values)) {
-    x1Values <-  levels(factor(modelData[, x1var]))[1:2]
+    x1Values <- levels(factor(modelData[, x1var]))[1:2]
   }
   if (is.null(x2Values)) {
-    x2Values <-  levels(factor(modelData[, x2var]))[1:2]
+    x2Values <- levels(factor(modelData[, x2var]))[1:2]
   }
   if (! all(x1Values %in% levels(factor(modelData[, x1var]))) |
      length(x1Values) != 2) {
