@@ -124,7 +124,7 @@ fcPlot <- function(object,
                  paste0(adj, x1var, ":", x2var, " < ", pCutoff,
                         " (biggest FC in ", x2Values[1], ")"))
   plotData$col <- colLevels[1]
-  plotData$col[stats[, interactCol] < pCutoff &
+  plotData$col[stats[, x1var] < pCutoff &
                  ! is.na(stats[, x1var])] <- colLevels[2]
 
   plotData$col[stats[, interactCol] < pCutoff &
