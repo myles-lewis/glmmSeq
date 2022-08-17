@@ -67,14 +67,13 @@ fcPlot <- function(object,
   
   # Extract the data
   predict <- object@predict
-  cols <- colnames(object@stats$pvals)
-  cols <- cols[grepl(":", cols)]
+  interactCol <- colnames(object@stats$pvals)
+  interactCol <- interactCol[grepl(":", interactCol)]
   if (useAdjusted) {
     stats <- object@stats$qvals
-    colnames(stats) <- paste0("q_", colnames(stats))
+    if (is.null(stats)) stop("Missing q-values", call. = FALSE)
   } else {
     stats <- object@stats$pvals
-    colnames(stats) <- paste0("P_", colnames(stats))
   }
   adj <- ifelse(useAdjusted, "q_", "P_")
   modelData <- object@modelData
@@ -82,15 +81,14 @@ fcPlot <- function(object,
   modelData$y <- paste0("y_", outLabels)
 
   # Set up the plotting data
-  plotData <- data.frame(
-    cbind(predict[, paste0("y_", outLabels)], stats),
-    check.names = FALSE)
+  plotData <- data.frame(predict[, paste0("y_", outLabels)],
+                         check.names = FALSE)
 
-  if (length(grep(adj, colnames(plotData))) < 3) {
-    stop(paste("there must be at least 3", adj, "columns"))
+  if (ncol(stats) < 3) {
+    stop("Incorrect p-value table structure")
   }
   if (! all(labels %in% rownames(plotData))) {
-    stop("labels must be in rownames(object@predict)")
+    stop("Labels not found in rownames(object@predict)")
   }
 
   # Define the comparisons
@@ -126,11 +124,11 @@ fcPlot <- function(object,
                  paste0(adj, x1var, ":", x2var, " < ", pCutoff,
                         " (biggest FC in ", x2Values[1], ")"))
   plotData$col <- colLevels[1]
-  plotData$col[plotData[, paste0(adj, cols)] < pCutoff &
-                 ! is.na(plotData[, paste0(adj, x1var)])] <- colLevels[2]
+  plotData$col[stats[, interactCol] < pCutoff &
+                 ! is.na(stats[, x1var])] <- colLevels[2]
 
-  plotData$col[plotData[, paste0(adj,cols)] < pCutoff &
-                 !is.na(plotData[, paste0(adj, x2var)])] <- colLevels[3]
+  plotData$col[stats[, interactCol] < pCutoff &
+                 !is.na(stats[, x2var])] <- colLevels[3]
 
   plotData$col[plotData$col == colLevels[3] &
                  plotData$maxGroup == x2Values[1]] <- colLevels[4]
@@ -139,22 +137,22 @@ fcPlot <- function(object,
   plotData$col <- factor(plotData$col, levels = colLevels)
 
   # Genes passing the cutoff
-  plotGenes <- apply(plotData[, grep(adj, colnames(plotData))], 1, function(x) {
+  plotGenes <- apply(stats, 1, function(x) {
     any(x < plotCutoff)
   })
   plotData <- plotData[plotGenes, ]
 
   if (verbose) {
-    cat(paste("Significance\n"))
+    cat("Significance\n")
     print(table(plotData$col))
   }
 
   # Set up annotations for genes to be labelled
   if (any(! labels %in% rownames(plotData))) {
-    warning(paste(
+    warning(
       paste(labels[! labels %in% rownames(plotData)], collapse = ", "),
       "are not in the object or do not meet the plotting cutoff so",
-      "will not be included in labeling."))
+      "will not be included in labeling.")
     labels <- labels[labels %in% rownames(plotData)]
   }
   if (length(labels) != 0) {
