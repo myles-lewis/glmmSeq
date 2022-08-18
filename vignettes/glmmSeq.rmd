@@ -338,13 +338,15 @@ summary(lmmres, "MS4A1")
 
 The `glmmTMB` package is an alternative to `lme4` for fitting negative binomial
 GLMM models. Note, that this package optimises the dispersion parameter for each
-GLMM model and is thus significantly slower than a negative binomial GLMM fit by
-`lme4::glmer` with family function `MASS::negative.binomial` for which the
-dispersion parameter must be pre-specified. Each `glmmTMB` model takes about 0.8
-seconds, so that even with 8 cores, a typical transcriptome of 20,000 genes
-would take about 30 minutes, although this will vary depending on complexity of
-the design formula. In comparison, the standard `glmer` pipeline with known
-dispersions supplied takes about 2 minutes on 8 cores.
+GLMM model. This has the advantage that a predefined list of dispersions for
+each gene is not required. But it also means that model fitting is significantly
+slower than a negative binomial GLMM fit by `lme4::glmer` with family function
+`MASS::negative.binomial` for which the dispersion parameter must be
+pre-specified. Each `glmmTMB` model takes about 0.8 seconds, so that even with 8
+cores, a typical transcriptome of 20,000 genes would take about 30 minutes,
+although this will vary depending on complexity of the design formula. In
+comparison, the standard `glmer` pipeline with known dispersions supplied takes
+about 2 minutes on 8 cores.
 
 Although `glmmTMB` is slower than `lme::glmer` with known dispersion, `glmmTMB`
 is still faster than the equivalent `lme4` function `glmer.nb` when the
