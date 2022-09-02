@@ -277,6 +277,8 @@ lmmSeq <- function(modelFormula,
   }, FUN.VALUE = c(1, 1)))
   
   s <- organiseStats(resultList[noErr], test.stat)
+  meanExp <- rowMeans(maindata[noErr, ])
+  s$res <- cbind(s$res, meanExp)
   
   # Create lmmSeq object with results
   new("lmmSeq",

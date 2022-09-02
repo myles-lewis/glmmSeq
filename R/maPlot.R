@@ -136,14 +136,8 @@ maPlot <- function(object,
   plotData$col <- factor(plotData$col, levels=colLevels)
 
   # Calculate the mean expression
-  plotData$meanexp <- apply(
-    object@countdata[rownames(object@predict), ], 1, function(x) {
-      mean(log2(x+1))
-    })
-  plotData$zerocount <- apply(
-    object@countdata[rownames(object@predict), ], 1, function(x) {
-      sum(x < 1)
-    })
+  plotData$meanexp <- object@stats$res[, 'meanExp']
+  plotData$zerocount <- rowSums(object@countdata[rownames(object@predict), ] < 1)
 
   # Subset by the plotting cut-off and count cut-off
   plotGenes <- apply(plotData[, grep(adj, colnames(plotData))], 1, function(x){
