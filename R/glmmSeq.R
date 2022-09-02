@@ -290,7 +290,7 @@ glmmSeq <- function(modelFormula,
   }, FUN.VALUE = c(1, 1)))
   
   s <- organiseStats(resultList[noErr], "Wald")
-  meanExp <- rowMeans(log2(countdata[noErr, ] +1))
+  meanExp <- rowMeans(log2(countdata[noErr, , drop = FALSE] +1))
   s$res <- cbind(s$res, meanExp)
   
   if (method == "lme4") {
