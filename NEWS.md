@@ -1,19 +1,20 @@
 News
 =====
 
-# glmmSeq v0.5.0
-###### 16/8/2022
+# glmmSeq v0.5.1
+###### 02/09/2022
 * Add option to `glmmSeq()` to use `glmmTMB` package for fitting negative
 binomial GLMM (or other GLM family) models
 * Add `plab` argument to `modelPlots` to customise p-value labels
+* Add mean expression column `meanExp` to results in `@stats$res` slot
 
 # glmmSeq v0.4.0
-###### 10/8/2022
+###### 10/08/2022
 * Further speed enhancements to `lmmSeq()` using `lme4::modular` code. Speed
 increase of around 25%.
 
 # glmmSeq v0.3.0
-###### 5/8/2022
+###### 05/08/2022
 * Significant update including output of standard error on fitted coefficients
 for both `glmmSeq` and `lmmSeq`
 * Add `summary` function for glmmSeq and lmmSeq to display results for an
@@ -28,19 +29,19 @@ passed to the `emmeans` package for visualisation of more complex models.
 * Streamlined `modelPlots` to allow for simplest case `gene ~ Time + (1 | ID)`
 
 # glmmSeq v0.2.2
-###### 16/7/2022
+###### 16/07/2022
 * Fast version of `lmmSeq()`. Improves speed of calculation of type 2 Wald test.
 Overall speed increase of 25-50%.
 * Faster version of `glmmSeq()`
 * Automatically detects `id` column name from the RE term in the formula 
 
 # glmmSeq v0.2.1
-###### 11/7/2022
+###### 11/07/2022
 * Add `...` option to `fcPlot` which is passed to `plotly()` or `ggplot()`
 * set `annotationPosition=FALSE` in `fcPlot` so arrows/connectors are not moved
 
 # glmmSeq v0.2.0
-###### 09/7/2022
+###### 09/07/2022
 * Add lmmSeq function for gaussian linear mixed models
 
 # glmmSeq v0.1.2
