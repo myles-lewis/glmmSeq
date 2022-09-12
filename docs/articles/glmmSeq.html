@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="glmmSeq">
 <meta property="og:description" content="glmmSeq">
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">glmmSeq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Myles Lewis,
 Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 data-toc-skip class="date">2022-08-12</h4>
+            <h4 data-toc-skip class="date">2022-09-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/HEAD/vignettes/glmmSeq.rmd" class="external-link"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="d-none name"><code>glmmSeq.rmd</code></div>
@@ -94,14 +94,15 @@ Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
   margin-right: auto;
 }
 </style>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md" class="external-link"><img src="https://img.shields.io/badge/last%20git%20commit-2022--08--12-turquoise.svg" alt="2022-08-12"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md" class="external-link"><img src="https://img.shields.io/badge/last%20git%20commit-2022--09--12-turquoise.svg" alt="2022-09-12"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
 <div class="section level2">
 <h2 id="glmmseq">glmmSeq<a class="anchor" aria-label="anchor" href="#glmmseq"></a>
 </h2>
 <p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"></p>
 <p>The aim of this package is to model gene expression with a general
-linear mixed model (GLMM). The most widely used mainstream differential
-gene expression analysis tools (e.g <a href="https://doi.org/10.1093/nar/gkv007" class="external-link">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8" class="external-link">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616" class="external-link">edgeR</a>) are all
+linear mixed model (GLMM) as described in the R4RA study [1]. The most
+widely used mainstream differential gene expression analysis tools (e.g
+<a href="https://doi.org/10.1093/nar/gkv007" class="external-link">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8" class="external-link">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616" class="external-link">edgeR</a>) are all
 unable to fit mixed effects linear models. This package however fits
 negative binomial mixed effects models at individual gene level using
 the <code>negative.binomial</code> function from <code>MASS</code> and
@@ -3000,7 +3001,7 @@ function. Note that this analysis can take some time, with 4 cores:</p>
 <span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 3.334064 secs</span></span>
+<span><span class="co">## Time difference of 3.278562 secs</span></span>
 <span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
 <p>or alternatively using two-factor classification with
 EULAR_binary:</p>
@@ -3011,7 +3012,7 @@ EULAR_binary:</p>
 <span>                    dispersion <span class="op">=</span> <span class="va">disp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 3.082094 secs</span></span>
+<span><span class="co">## Time difference of 3.075281 secs</span></span>
 <span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
 <div class="section level3">
 <h3 id="outputs">Outputs<a class="anchor" aria-label="anchor" href="#outputs"></a>
@@ -3113,6 +3114,9 @@ AIC
 logLik
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+meanExp
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 (Intercept)
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
@@ -3189,6 +3193,9 @@ IGHV3-23
 </td>
 <td style="text-align:right;">
 -785.9775
+</td>
+<td style="text-align:right;">
+5.9461793
 </td>
 <td style="text-align:right;">
 6.8466473
@@ -3268,6 +3275,9 @@ CXCL13
 -468.7000
 </td>
 <td style="text-align:right;">
+2.8488723
+</td>
+<td style="text-align:right;">
 3.5376946
 </td>
 <td style="text-align:right;">
@@ -3343,6 +3353,9 @@ FGF14
 </td>
 <td style="text-align:right;">
 -179.5195
+</td>
+<td style="text-align:right;">
+1.0784074
 </td>
 <td style="text-align:right;">
 -0.0846561
@@ -3422,6 +3435,9 @@ IL24
 -180.4209
 </td>
 <td style="text-align:right;">
+1.0076111
+</td>
+<td style="text-align:right;">
 0.3478977
 </td>
 <td style="text-align:right;">
@@ -3497,6 +3513,9 @@ HHIP
 </td>
 <td style="text-align:right;">
 -260.5906
+</td>
+<td style="text-align:right;">
+1.4454128
 </td>
 <td style="text-align:right;">
 0.7998605
@@ -3576,6 +3595,9 @@ MS4A1
 -441.3414
 </td>
 <td style="text-align:right;">
+2.5917399
+</td>
+<td style="text-align:right;">
 2.7363666
 </td>
 <td style="text-align:right;">
@@ -3651,6 +3673,9 @@ ADAM12
 </td>
 <td style="text-align:right;">
 -309.8581
+</td>
+<td style="text-align:right;">
+1.6675082
 </td>
 <td style="text-align:right;">
 1.6569079
@@ -3730,6 +3755,9 @@ ADAM12.1
 -309.8581
 </td>
 <td style="text-align:right;">
+1.6675082
+</td>
+<td style="text-align:right;">
 1.6569079
 </td>
 <td style="text-align:right;">
@@ -3805,6 +3833,9 @@ IL2RG
 </td>
 <td style="text-align:right;">
 -530.7918
+</td>
+<td style="text-align:right;">
+4.3589131
 </td>
 <td style="text-align:right;">
 3.4913720
@@ -3884,6 +3915,9 @@ IL16
 -479.0956
 </td>
 <td style="text-align:right;">
+4.5153510
+</td>
+<td style="text-align:right;">
 3.2821832
 </td>
 <td style="text-align:right;">
@@ -3959,6 +3993,9 @@ EMILIN3
 </td>
 <td style="text-align:right;">
 -253.0765
+</td>
+<td style="text-align:right;">
+1.2381694
 </td>
 <td style="text-align:right;">
 1.0154229
@@ -4038,6 +4075,9 @@ BLK
 -258.1534
 </td>
 <td style="text-align:right;">
+1.4610649
+</td>
+<td style="text-align:right;">
 0.9405211
 </td>
 <td style="text-align:right;">
@@ -4113,6 +4153,9 @@ IGHV1-69
 </td>
 <td style="text-align:right;">
 -567.2465
+</td>
+<td style="text-align:right;">
+3.6446738
 </td>
 <td style="text-align:right;">
 4.5052838
@@ -4192,6 +4235,9 @@ PADI4
 -228.4025
 </td>
 <td style="text-align:right;">
+1.0912063
+</td>
+<td style="text-align:right;">
 0.2320863
 </td>
 <td style="text-align:right;">
@@ -4267,6 +4313,9 @@ LILRA5
 </td>
 <td style="text-align:right;">
 -385.7840
+</td>
+<td style="text-align:right;">
+2.8996321
 </td>
 <td style="text-align:right;">
 2.1304753
@@ -4346,6 +4395,9 @@ IGHV5-10-1
 -543.9651
 </td>
 <td style="text-align:right;">
+3.3881684
+</td>
+<td style="text-align:right;">
 4.8972304
 </td>
 <td style="text-align:right;">
@@ -4421,6 +4473,9 @@ IGHV3OR16-8
 </td>
 <td style="text-align:right;">
 -356.1782
+</td>
+<td style="text-align:right;">
+1.8706896
 </td>
 <td style="text-align:right;">
 2.9350507
@@ -4500,6 +4555,9 @@ PHOSPHO1
 -340.8798
 </td>
 <td style="text-align:right;">
+2.1552363
+</td>
+<td style="text-align:right;">
 1.4569268
 </td>
 <td style="text-align:right;">
@@ -4575,6 +4633,9 @@ S100B
 </td>
 <td style="text-align:right;">
 -526.4153
+</td>
+<td style="text-align:right;">
+3.4429454
 </td>
 <td style="text-align:right;">
 2.6698463
@@ -4654,6 +4715,9 @@ IGHV2-70D
 -420.5908
 </td>
 <td style="text-align:right;">
+2.3395373
+</td>
+<td style="text-align:right;">
 3.7263964
 </td>
 <td style="text-align:right;">
@@ -4729,6 +4793,9 @@ PPIL4
 </td>
 <td style="text-align:right;">
 -381.6056
+</td>
+<td style="text-align:right;">
+3.2865169
 </td>
 <td style="text-align:right;">
 2.2892504
@@ -4808,6 +4875,9 @@ IGHJ3P
 -534.6329
 </td>
 <td style="text-align:right;">
+3.4861371
+</td>
+<td style="text-align:right;">
 4.9831232
 </td>
 <td style="text-align:right;">
@@ -4883,6 +4953,9 @@ IGHV7-4-1
 </td>
 <td style="text-align:right;">
 -542.6569
+</td>
+<td style="text-align:right;">
+3.0586094
 </td>
 <td style="text-align:right;">
 5.3345103
@@ -4962,6 +5035,9 @@ LILRB3
 -464.6671
 </td>
 <td style="text-align:right;">
+3.9474519
+</td>
+<td style="text-align:right;">
 2.8953372
 </td>
 <td style="text-align:right;">
@@ -5037,6 +5113,9 @@ IL36RN
 </td>
 <td style="text-align:right;">
 -242.1254
+</td>
+<td style="text-align:right;">
+0.3962182
 </td>
 <td style="text-align:right;">
 0.9057894
@@ -5116,6 +5195,9 @@ IGHV3OR16-12
 -261.8364
 </td>
 <td style="text-align:right;">
+0.8508034
+</td>
+<td style="text-align:right;">
 1.5129747
 </td>
 <td style="text-align:right;">
@@ -5191,6 +5273,9 @@ IGHV5-78
 </td>
 <td style="text-align:right;">
 -276.9429
+</td>
+<td style="text-align:right;">
+1.1452612
 </td>
 <td style="text-align:right;">
 1.0630323
@@ -5270,6 +5355,9 @@ IGHV3-49
 -627.5845
 </td>
 <td style="text-align:right;">
+3.9774695
+</td>
+<td style="text-align:right;">
 5.7635604
 </td>
 <td style="text-align:right;">
@@ -5345,6 +5433,9 @@ IGHV1OR15-4
 </td>
 <td style="text-align:right;">
 -360.5631
+</td>
+<td style="text-align:right;">
+1.9435728
 </td>
 <td style="text-align:right;">
 2.4925095
@@ -5424,6 +5515,9 @@ IL2RA
 -264.8667
 </td>
 <td style="text-align:right;">
+1.5164121
+</td>
+<td style="text-align:right;">
 1.3234092
 </td>
 <td style="text-align:right;">
@@ -5499,6 +5593,9 @@ EMILIN2
 </td>
 <td style="text-align:right;">
 -503.4775
+</td>
+<td style="text-align:right;">
+4.8723536
 </td>
 <td style="text-align:right;">
 3.4282169
@@ -5578,6 +5675,9 @@ CXCL11
 -271.4674
 </td>
 <td style="text-align:right;">
+1.2009946
+</td>
+<td style="text-align:right;">
 1.4333300
 </td>
 <td style="text-align:right;">
@@ -5653,6 +5753,9 @@ IGHV1OR21-1
 </td>
 <td style="text-align:right;">
 -170.8994
+</td>
+<td style="text-align:right;">
+0.4791891
 </td>
 <td style="text-align:right;">
 -0.7429909
@@ -5732,6 +5835,9 @@ CXCL9
 -547.7534
 </td>
 <td style="text-align:right;">
+3.2358534
+</td>
+<td style="text-align:right;">
 4.1831440
 </td>
 <td style="text-align:right;">
@@ -5807,6 +5913,9 @@ IL36G
 </td>
 <td style="text-align:right;">
 -288.2456
+</td>
+<td style="text-align:right;">
+0.3500668
 </td>
 <td style="text-align:right;">
 0.9983391
@@ -5886,6 +5995,9 @@ SAA1
 -474.2999
 </td>
 <td style="text-align:right;">
+1.7170262
+</td>
+<td style="text-align:right;">
 3.3639676
 </td>
 <td style="text-align:right;">
@@ -5961,6 +6073,9 @@ EAF2
 </td>
 <td style="text-align:right;">
 -354.4185
+</td>
+<td style="text-align:right;">
+2.6574912
 </td>
 <td style="text-align:right;">
 2.0987532
@@ -6040,6 +6155,9 @@ IGHV7-27
 -231.2734
 </td>
 <td style="text-align:right;">
+0.5865966
+</td>
+<td style="text-align:right;">
 0.9619084
 </td>
 <td style="text-align:right;">
@@ -6115,6 +6233,9 @@ CILP
 </td>
 <td style="text-align:right;">
 -575.8462
+</td>
+<td style="text-align:right;">
+3.9198405
 </td>
 <td style="text-align:right;">
 3.5693809
@@ -6194,6 +6315,9 @@ IGHJ6
 -601.4778
 </td>
 <td style="text-align:right;">
+3.8318813
+</td>
+<td style="text-align:right;">
 6.0208224
 </td>
 <td style="text-align:right;">
@@ -6269,6 +6393,9 @@ FGFR2
 </td>
 <td style="text-align:right;">
 -234.0562
+</td>
+<td style="text-align:right;">
+0.8968766
 </td>
 <td style="text-align:right;">
 0.8562658
@@ -6348,6 +6475,9 @@ IGLV4-3
 -281.2348
 </td>
 <td style="text-align:right;">
+0.9284219
+</td>
+<td style="text-align:right;">
 1.1862192
 </td>
 <td style="text-align:right;">
@@ -6423,6 +6553,9 @@ SAA2
 </td>
 <td style="text-align:right;">
 -427.9545
+</td>
+<td style="text-align:right;">
+0.8633720
 </td>
 <td style="text-align:right;">
 2.4771413
@@ -6502,6 +6635,9 @@ FGFRL1
 -344.8264
 </td>
 <td style="text-align:right;">
+2.5933500
+</td>
+<td style="text-align:right;">
 1.8343691
 </td>
 <td style="text-align:right;">
@@ -6577,6 +6713,9 @@ FGF2
 </td>
 <td style="text-align:right;">
 -245.1434
+</td>
+<td style="text-align:right;">
+1.5782689
 </td>
 <td style="text-align:right;">
 0.6276046
@@ -6656,6 +6795,9 @@ IGHV7-40
 -238.2209
 </td>
 <td style="text-align:right;">
+0.6102728
+</td>
+<td style="text-align:right;">
 1.3965106
 </td>
 <td style="text-align:right;">
@@ -6727,9 +6869,10 @@ argument <code>gene</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, gene <span class="op">=</span> <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Generalised linear mixed model</span></span>
+<span><span class="co">## Method: lme4</span></span>
 <span><span class="co">## Family: Negative Binomial</span></span>
-<span><span class="co">##  Dispersion         AIC      logLik </span></span>
-<span><span class="co">##    3.789428  898.682864 -441.341432 </span></span>
+<span><span class="co">##  Dispersion         AIC      logLik     meanExp </span></span>
+<span><span class="co">##    3.789428  898.682864 -441.341432    2.591740 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Fixed effects:</span></span>
 <span><span class="co">##                                Estimate Std. Error</span></span>
@@ -9564,10 +9707,13 @@ to the <code>@stats</code> slot:</p>
 <p>An alternative to fitting negative binomial GLMM is to use
 transformed data and fit gaussian LMM. The <code>lmmSeq</code> function
 will fit many LMM across genes (or other data) where random
-effects/mixed effects models are useful. For example, gaussian
-normalised DNA methylation data can be analysed using this method. In
-the example below the RNA-Seq gene expression data is log transformed so
-that it is approximately Gaussian.</p>
+effects/mixed effects models are useful. It is almost 3x faster than
+<code>glmmSeq</code>. For example, gaussian normalised DNA methylation
+data can be analysed using this method. In the example below the RNA-Seq
+gene expression data is log transformed so that it is approximately
+Gaussian. Alternatively variance stabilising transformation (VST) can be
+applied to count data through DESeq2 or the voom transformation in limma
+voom.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">logtpm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">tpm</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">lmmres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lmmSeq.html">lmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,</span>
@@ -9576,12 +9722,12 @@ that it is approximately Gaussian.</p>
 <span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 0.8057461 secs</span></span></code></pre>
+<span><span class="co">## Time difference of 0.7891989 secs</span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lmmres</span>, <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Linear mixed model</span></span>
-<span><span class="co">##      AIC   logLik </span></span>
-<span><span class="co">##  503.416 -243.708 </span></span>
+<span><span class="co">##         AIC      logLik     meanExp </span></span>
+<span><span class="co">##  503.415984 -243.707992    2.590358 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Fixed effects:</span></span>
 <span><span class="co">##                                 Estimate Std. Error</span></span>
@@ -9597,9 +9743,40 @@ that it is approximately Gaussian.</p>
 <span><span class="co">## Timepoint          2.321  1    0.12767</span></span>
 <span><span class="co">## EULAR_6m           6.098  2    0.04740</span></span>
 <span><span class="co">## Timepoint:EULAR_6m 7.134  2    0.02823</span></span></code></pre>
-<div class="section level3">
-<h3 id="individual-genes">Individual Genes<a class="anchor" aria-label="anchor" href="#individual-genes"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="glmmtmb-models">glmmTMB models<a class="anchor" aria-label="anchor" href="#glmmtmb-models"></a>
+</h2>
+<p>The <code>glmmTMB</code> package is an alternative to
+<code>lme4</code> for fitting negative binomial GLMM models. Note, that
+this package optimises the dispersion parameter for each GLMM model.
+This has the advantage that a predefined list of dispersions for each
+gene is not required. But it also means that model fitting is
+significantly slower than a negative binomial GLMM fit by
+<code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">lme4::glmer</a></code> with family function
+<code><a href="https://rdrr.io/pkg/MASS/man/negative.binomial.html" class="external-link">MASS::negative.binomial</a></code> for which the dispersion parameter
+must be pre-specified. Each <code>glmmTMB</code> model takes about 0.8
+seconds, so that even with 8 cores, a typical transcriptome of 20,000
+genes would take about 30 minutes, although this will vary depending on
+the complexity of the design formula. In comparison, the standard
+<code>glmer</code> pipeline with known dispersions supplied takes about
+2 minutes on 8 cores.</p>
+<p>Although <code>glmmTMB</code> is slower than <code>lme::glmer</code>
+with known dispersion, <code>glmmTMB</code> is still faster than the
+equivalent <code>lme4</code> function <code>glmer.nb</code> when the
+dispersion is unknown.</p>
+<p>Setting <code>method = "glmmTMB"</code> when calling
+<code><a href="../reference/glmmSeq.html">glmmSeq()</a></code> switches from using <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">lme4::glmer</a></code> (the
+default) to the <code>glmmTMB</code> package. The
+<code>dispersion</code> argument is then no longer required. The
+<code>family</code> argument can be used to specify different family
+functions and <code>glmmTMB</code> provides <code>nbinom1</code> and
+<code>nbinom2</code> (<code>glmmSeq</code> uses the latter by default).
+Other family functions e.g. <code>poisson</code> can be used.</p>
+</div>
+<div class="section level2">
+<h2 id="extracting-individual-genes">Extracting individual Genes<a class="anchor" aria-label="anchor" href="#extracting-individual-genes"></a>
+</h2>
 <p>Similarly you can run the script for an individual gene (make sure
 you use <code>drop = FALSE</code> to maintain <code>countdata</code> as
 a matrix).</p>
@@ -9664,7 +9841,6 @@ these are based on the model, not directly on the data.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmip.html" class="external-link">emmip</a></span><span class="op">(</span><span class="va">fit</span>, <span class="op">~</span> <span class="va">Timepoint</span> <span class="op">|</span> <span class="va">EULAR_6m</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
 </div>
-</div>
 <div class="section level2">
 <h2 id="model-plots">Model Plots<a class="anchor" aria-label="anchor" href="#model-plots"></a>
 </h2>
@@ -9692,7 +9868,11 @@ start looking at the gene with the most significant interaction
 <span>            modelColours <span class="op">=</span> <span class="va">modColours</span>,</span>
 <span>            modelSize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
-<p>Or using base graphics, with or without the model fit overlaid:</p>
+<p>Alternatively plots can be generated using base graphics, here with
+or without the model fit overlaid. By default p-value labels are taken
+from the column names of the <code>pvals</code> object in the
+<code>stats</code> slot of the S4 result object. These can be relabelled
+using the <code>plab</code> argument.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -9711,6 +9891,7 @@ start looking at the gene with the most significant interaction
 <span>          x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
 <span>          x2var <span class="op">=</span> <span class="st">"EULAR_6m"</span>,</span>
 <span>          colours <span class="op">=</span> <span class="va">plotColours</span>,</span>
+<span>          plab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"response"</span>, <span class="st">"time:response"</span><span class="op">)</span>,</span>
 <span>          addModel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
@@ -9740,55 +9921,39 @@ start looking at the gene with the most significant interaction
 <span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span>, common.legend <span class="op">=</span> <span class="cn">T</span>, legend<span class="op">=</span><span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
 <div class="section level3">
-<h3 id="fold-change-plots">Fold Change Plots<a class="anchor" aria-label="anchor" href="#fold-change-plots"></a>
+<h3 id="fold-change-plots">Fold change plots<a class="anchor" aria-label="anchor" href="#fold-change-plots"></a>
 </h3>
 <p>The comparative fold change (for <code>x1var</code> variables)
 between conditions (<code>x2var</code> and <code>x2Values</code>
-variables) can be plotted using an fcPlot for all genes to highlight
-significance.</p>
-<p>(By setting <code>graphics = "plotly"</code> this can be viewed
-interactively)</p>
+variables) can be plotted using an <code>fcPlot</code> for all genes to
+highlight significance. This type of plot is most suited to look for
+interaction between time (<code>x1var</code>) and a two-level factor
+(<code>x2var</code>), looking at change between two timepoints. In the
+example below from the R4RA study [1], gene expression pre- and
+post-drug treatment is compared between two drugs (rituximab &amp;
+tocilizumab), using the design formula
+<code>gene_counts ~ time * drug</code>. By setting
+<code>graphics = "plotly"</code> this can be viewed interactively.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Genes to label:</span></span>
-<span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'FGF14'</span>, <span class="st">'IL2RG'</span>, <span class="st">'IGHV3-23'</span>, <span class="st">'ADAM12'</span>, <span class="st">'IL36G'</span>, </span>
-<span>           <span class="st">'BLK'</span>, <span class="st">'SAA1'</span>, <span class="st">'CILP'</span>, <span class="st">'EMILIN3'</span>, <span class="st">'EMILIN2'</span>, <span class="st">'IGHJ6'</span>, </span>
-<span>           <span class="st">'CXCL9'</span>, <span class="st">'CXCL13'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/fcPlot.html">fcPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
-<span>       x1var<span class="op">=</span><span class="st">"Timepoint"</span>,</span>
-<span>       x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
-<span>       x2Values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Non-response"</span><span class="op">)</span>,</span>
-<span>       pCutoff<span class="op">=</span><span class="fl">0.1</span>,</span>
-<span>       labels<span class="op">=</span><span class="va">labels</span>,</span>
-<span>       useAdjusted <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>       plotCutoff <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="glmmSeq_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
-<p>Genes on the line of identity, such as <em>IGHJ6</em>, will have
-associations in the same direction whereas genes along the opposing x=-y
-line have association in <em>opposite</em> directions, such as
-<em>ADAM12</em>. This allows us to pick out genes of potential interest
-which we can have another closer look at:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p1</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
-<span>                 geneName <span class="op">=</span> <span class="st">"ADAM12"</span>,</span>
-<span>                 x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
-<span>                 x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
-<span>                 colours <span class="op">=</span> <span class="st">"grey60"</span>,</span>
-<span>                 modelColour <span class="op">=</span> <span class="va">plotColours</span>, </span>
-<span>                 modelLineColour <span class="op">=</span>  <span class="va">plotColours</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
-<span>                  geneName <span class="op">=</span> <span class="st">"IGHJ6"</span>,</span>
-<span>                  x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
-<span>                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
-<span>                  colours <span class="op">=</span> <span class="st">"blue"</span>,</span>
-<span>                  fontSize<span class="op">=</span><span class="fl">8</span>,</span>
-<span>                  modelSize<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.subtitle<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="glmmSeq_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">time</span> <span class="op">*</span> <span class="va">drug</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Patient_ID</span><span class="op">)</span>, </span>
+<span>                       countdata <span class="op">=</span> <span class="va">tpmdata</span>, <span class="va">metadata</span>,</span>
+<span>                       dispersion <span class="op">=</span> <span class="va">dispersions</span>, cores <span class="op">=</span> <span class="fl">8</span>, removeSingles <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmQvals.html">glmmQvals</a></span><span class="op">(</span><span class="va">r4ra_glmm</span><span class="op">)</span></span>
+<span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">..</span><span class="op">)</span>  <span class="co"># Genes to label</span></span>
+<span><span class="fu"><a href="../reference/fcPlot.html">fcPlot</a></span><span class="op">(</span><span class="va">r4ra_glmm</span>, x1var <span class="op">=</span> <span class="st">"time"</span>, x2var <span class="op">=</span> <span class="st">"drug"</span>, graphics <span class="op">=</span> <span class="st">"plotly"</span>,</span>
+<span>       pCutoff <span class="op">=</span> <span class="fl">0.05</span>, useAdjusted <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>       labels <span class="op">=</span> <span class="va">labels</span>,</span>
+<span>       colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey'</span>, <span class="st">'green3'</span>, <span class="st">'gold3'</span>, <span class="st">'blue'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="r4ra_glmm_fcplot.png" width="80%" style="border: 0;"></p>
+<p>Log2 fold change between the two time points for individuals treated
+with rituximab on the x axis and individuals treated with tocilizumab on
+the y axis with each point representing a gene. Genes showing an
+interaction between time and drug are coloured blue or gold depending on
+whether their fold change is greater post-rituximab (blue) or
+post-tocilizumab (gold). Genes without interaction, but changing
+significantly over time are coloured green and tend to lie along the
+line of identity. See the Longitudinal tab in <a href="https://r4ra.hpc.qmul.ac.uk" class="external-link uri">https://r4ra.hpc.qmul.ac.uk</a> for an interactive version
+of the above plot.</p>
 </div>
 <div class="section level3">
 <h3 id="ma-plots">MA plots<a class="anchor" aria-label="anchor" href="#ma-plots"></a>
@@ -9797,8 +9962,11 @@ which we can have another closer look at:</p>
 visualizes the differences between measurements taken in two samples, by
 transforming the data onto M (log ratio) and A (mean average) scales,
 then plotting these values.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'FGF14'</span>, <span class="st">'IL2RG'</span>, <span class="st">'IGHV3-23'</span>, <span class="st">'ADAM12'</span>, <span class="st">'IL36G'</span>, </span>
+<span>           <span class="st">'BLK'</span>, <span class="st">'SAA1'</span>, <span class="st">'CILP'</span>, <span class="st">'EMILIN3'</span>, <span class="st">'EMILIN2'</span>, <span class="st">'IGHJ6'</span>, </span>
+<span>           <span class="st">'CXCL9'</span>, <span class="st">'CXCL13'</span><span class="op">)</span></span>
+<span><span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
 <span>                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,</span>
 <span>                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
 <span>                  x2Values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Non-response"</span><span class="op">)</span>,</span>
@@ -9808,7 +9976,7 @@ then plotting these values.</p>
 <span>                  graphics<span class="op">=</span><span class="st">"ggplot"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">maPlots</span><span class="op">$</span><span class="va">combined</span></span></code></pre></div>
-<p><img src="glmmSeq_files/figure-html/unnamed-chunk-32-1.png" width="700"></p>
+<p><img src="glmmSeq_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -9818,13 +9986,13 @@ then plotting these values.</p>
 Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/" class="external-link">Centre for Translational
 Bioinformatics</a> at Queen Mary University London.</p>
 <p>If you use this package please cite as:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## To cite package 'glmmSeq' in publications use:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##   Lewis M, Goldmann K, Sciacca E (????). _glmmSeq: General Linear Mixed Models</span></span>
-<span><span class="co">##   for Gene-Level Differential Expression_. R package version 0.4.0,</span></span>
+<span><span class="co">##   for Gene-Level Differential Expression_. R package version 0.5.1,</span></span>
 <span><span class="co">##   &lt;https://github.com/KatrionaGoldmann/glmmSeq&gt;.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## A BibTeX entry for LaTeX users is</span></span>
@@ -9832,15 +10000,24 @@ Bioinformatics</a> at Queen Mary University London.</p>
 <span><span class="co">##   @Manual{,</span></span>
 <span><span class="co">##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},</span></span>
 <span><span class="co">##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},</span></span>
-<span><span class="co">##     note = {R package version 0.4.0},</span></span>
+<span><span class="co">##     note = {R package version 0.5.1},</span></span>
 <span><span class="co">##     url = {https://github.com/KatrionaGoldmann/glmmSeq},</span></span>
 <span><span class="co">##   }</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Statistical software used in this package:</p>
 <ol style="list-style-type: decimal">
+<li>Felice Rivellese, Anna Surace, Katriona Goldmann, Elisabetta
+Sciacca, Cankut Cubuk, Giovanni Giorli, … Michael Barnes, Myles J.
+Lewis, Costantino Pitzalis, R4RA collaborative group. Rituximab versus
+tocilizumab in rheumatoid arthritis: synovial biopsy-based biomarker
+analysis of the phase 4 R4RA randomized trial. Nature medicine 2022;
+28(6): 1256-68. <a href="https://doi.org/10.1038/s41591-022-01789-0" class="external-link">doi:10.1038/s41591-022-01789-0</a>
+</li>
+</ol>
+<p>Statistical software used in this package:</p>
+<ol start="2" style="list-style-type: decimal">
 <li><p><a href="https://dx.doi.org/10.18637/jss.v067.i01" class="external-link">lme4</a>:
 Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting
 Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
@@ -9851,6 +10028,10 @@ Regression, Third Edition. Thousand Oaks CA: Sage. URL: <a href="https://socials
 <li><p><a href="https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf" class="external-link">MASS</a>:
 Venables, W. N. &amp; Ripley, B. D. (2002) Modern Applied Statistics
 with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0</p></li>
+<li><p><a href="https://CRAN.R-project.org/package=glmmTMB" class="external-link">glmmTMB</a>:
+Mollie Brooks, Ben Bolker, Kasper Kristensen, Martin Maechler, Arni
+Magnusson (2022). glmmTMB: Generalized Linear Mixed Models using
+Template Model Builder</p></li>
 <li><p><a href="https://github.com/StoreyLab/qvalue" class="external-link">qvalue</a>: John D.
 Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue:
 Q-value estimation for false discovery rate control. R package version
