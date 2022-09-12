@@ -3,11 +3,11 @@ Title: General Linear Mixed Models for Gene-Level Differential Expression
 Version: 0.5.1
 Authors@R:
     c(person(given = "Myles",family = "Lewis",
-    role = c("aut"),
+    role = c("aut", "cre"),
     email = "myles.lewis@qmul.ac.uk",
     comment = c(ORCID = "0000-0001-9365-5345")),
     person(given = "Katriona",family = "Goldmann",
-    role = c("aut", "cre"),
+    role = c("aut"),
     email = "k.goldmann@qmul.ac.uk",
     comment = c(ORCID = "0000-0002-9073-6323")),
     person(given = "Elisabetta",family = "Sciacca",
