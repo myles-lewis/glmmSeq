@@ -1,6 +1,10 @@
 News
 =====
 
+# glmmSeq v0.5.2
+###### 19/09/2022
+* Fix passing of `...` in parallelisation on windows in `glmmSeq()` & `lmmSeq()`
+
 # glmmSeq v0.5.1
 ###### 02/09/2022
 * Add option to `glmmSeq()` to use `glmmTMB` package for fitting negative
