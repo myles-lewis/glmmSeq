@@ -211,6 +211,7 @@ lmmSeq <- function(modelFormula,
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl))
+      dots <- list(...)
       varlist <- c("lmerTestCore", "fullList", "fullFormula", "subsetMetadata",
                    "control", "modelData", "offset", "designMatrix", "dots")
       clusterExport(cl, varlist = varlist, envir = environment())
