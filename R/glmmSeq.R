@@ -194,22 +194,30 @@ glmmSeq <- function(modelFormula,
     # For each gene perform a fit
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
-      clusterExport(cl, varlist = c("glmerCore", "fullList", "fullFormula",
-                                    "subsetMetadata", "control", "modelData",
-                                    "offset", "designMatrix", "hyp.matrix", ...),
-                    envir = environment())
+      on.exit(stopCluster(cl))
+      dots <- list(...)
+      varlist <- c("glmerCore", "fullList", "fullFormula",
+                   "subsetMetadata", "control", "modelData",
+                   "offset", "designMatrix", "hyp.matrix", "dots")
+      clusterExport(cl, varlist = varlist, envir = environment())
       if (progress) {
         resultList <- pblapply(fullList, function(geneList) {
-          glmerCore(geneList, fullFormula, subsetMetadata,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+          args <- c(list(geneList=geneList, fullFormula=fullFormula, 
+                         data=subsetMetadata, control=control, offset=offset,
+                         modelData=modelData, designMatrix=designMatrix,
+                         hyp.matrix=hyp.matrix), dots)
+          do.call(glmerCore, args)
         }, cl = cl)
       } else {
         resultList <- parLapply(cl = cl, fullList, function(geneList) {
-          glmerCore(geneList, fullFormula, subsetMetadata,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+          args <- c(list(geneList=geneList, fullFormula=fullFormula, 
+                         data=subsetMetadata, control=control, offset=offset,
+                         modelData=modelData, designMatrix=designMatrix,
+                         hyp.matrix=hyp.matrix), dots)
+          do.call(glmerCore, args)
         })
       }
-      stopCluster(cl)
+      
     } else{
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneList) {
@@ -233,23 +241,29 @@ glmmSeq <- function(modelFormula,
     # For each gene perform a fit
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
-      clusterExport(cl, varlist = c("glmmTMBcore", "fullList", "fullFormula",
-                                    "subsetMetadata", "family", "control",
-                                    "modelData", "offset", "designMatrix",
-                                    "hyp.matrix", ...),
-                    envir = environment())
+      on.exit(stopCluster(cl))
+      dots <- list(...)
+      varlist <- c("glmmTMBcore", "fullList", "fullFormula",
+                   "subsetMetadata", "family", "control",
+                   "modelData", "offset", "designMatrix", "hyp.matrix", "dots")
+      clusterExport(cl, varlist = varlist, envir = environment())
       if (progress) {
         resultList <- pblapply(fullList, function(geneList) {
-          glmmTMBcore(geneList, fullFormula, subsetMetadata, family,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+          args <- c(list(geneList=geneList, fullFormula=fullFormula,
+                         data=subsetMetadata, family=family, control=control,
+                         offset=offset, modelData=modelData,
+                         designMatrix=designMatrix, hyp.matrix=hyp.matrix), dots)
+          do.call(glmmTMBcore, args)
         }, cl = cl)
       } else {
         resultList <- parLapply(cl = cl, fullList, function(geneList) {
-          glmmTMBcore(geneList, fullFormula, subsetMetadata, family,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+          args <- c(list(geneList=geneList, fullFormula=fullFormula,
+                         data=subsetMetadata, family=family, control=control,
+                         offset=offset, modelData=modelData,
+                         designMatrix=designMatrix, hyp.matrix=hyp.matrix), dots)
+          do.call(glmmTMBcore, args)
         })
       }
-      stopCluster(cl)
     } else{
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneList) {
