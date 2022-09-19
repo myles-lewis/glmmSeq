@@ -78,7 +78,9 @@ object (default = FALSE). Helpful for debugging.}
 
 \item{progress}{Logical whether to display a progress bar}
 
-\item{...}{Other parameters passed to \code{\link[lme4:lmer]{lme4::lmer()}}}
+\item{...}{Other parameters passed to
+\code{\link[lmerTest:lmer]{lmerTest::lmer()}}. Only available if
+\code{test.stat = "F"}.}
 }
 \value{
 Returns an S4 class \code{lmmSeq} object with results for gene-wise

@@ -45,7 +45,9 @@
 #' @param returnList Logical whether to return results as a list or lmmSeq 
 #' object (default = FALSE). Helpful for debugging.
 #' @param progress Logical whether to display a progress bar
-#' @param ... Other parameters passed to \code{\link[lme4:lmer]{lme4::lmer()}}
+#' @param ... Other parameters passed to
+#'   \code{\link[lmerTest:lmer]{lmerTest::lmer()}}. Only available if 
+#'   `test.stat = "F"`.
 #' @return Returns an S4 class `lmmSeq` object with results for gene-wise
 #'   linear mixed models; or a list of results if `returnList` is `TRUE`.
 #'   
@@ -172,6 +174,7 @@ lmmSeq <- function(modelFormula,
     # lmerFast
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
+      on.exit(stopCluster(cl))
       clusterExport(cl, varlist = c("lmerFast",
                                     "lmod", "control", "modelData",
                                     "designMatrix",
@@ -188,7 +191,6 @@ lmmSeq <- function(modelFormula,
                    modelData, designMatrix, hyp.matrix)
         })
       }
-      stopCluster(cl)
     } else{
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneRow) {
@@ -208,24 +210,28 @@ lmmSeq <- function(modelFormula,
     # lmerTest
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
-      clusterExport(cl, varlist = c("lmerTestCore", "fullList", "fullFormula",
-                                    "subsetMetadata", "control", "modelData",
-                                    "offset", "designMatrix", ...),
-                    envir = environment())
+      on.exit(stopCluster(cl))
+      varlist <- c("lmerTestCore", "fullList", "fullFormula", "subsetMetadata",
+                   "control", "modelData", "offset", "designMatrix", "dots")
+      clusterExport(cl, varlist = varlist, envir = environment())
       if (progress) {
         resultList <- pblapply(fullList, function(geneRow) {
-          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
-                   control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+          args <- c(list(geneRow = geneRow, fullFormula = fullFormula,
+                         data = subsetMetadata, control = control,
+                         modelData = modelData, offset = offset,
+                         designMatrix = designMatrix), dots)
+          do.call(lmerTestCore, args)
         }, cl = cl)
       } else {
         resultList <- parLapply(cl = cl, fullList, function(geneRow) {
-          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
-                   control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+          args <- c(list(geneRow = geneRow, fullFormula = fullFormula,
+                         data = subsetMetadata, control = control,
+                         modelData = modelData, offset = offset,
+                         designMatrix = designMatrix), dots)
+          do.call(lmerTestCore, args)
         })
       }
-      stopCluster(cl)
+      
     } else{
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneRow) {
