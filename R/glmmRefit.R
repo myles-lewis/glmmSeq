@@ -11,9 +11,14 @@
 #' @param object A fitted results object of class `GlmmSeq` or `lmmSeq`
 #' @param gene A character value specifying a single gene to extract a fitted
 #'   model for
-#' @param ... Optional arguments passed to either [lme4::glmer] or [lme4::lmer]
-#' @return Fitted model of class `lmerMod` in the case of LMM, or `glmerMod` or `glmmTMB` for
-#'   a GLMM dependent on the original method.
+#' @param formula Optional formula to use when refitting model
+#' @param control Optional control parameters, see [lme4::lmerControl()] or
+#'   [lme4::glmerControl()]
+#' @param family Optional GLM family when refitting GLMM using [lme4::glmer()]
+#' @param ... Optional arguments passed to either [lme4::glmer()] or
+#'   [lme4::lmer()]
+#' @return Fitted model of class `lmerMod` in the case of LMM, or `glmerMod` or
+#'   `glmmTMB` for a GLMM dependent on the original method.
 #' @export
 
 glmmRefit <- function(object, gene, ...) {
@@ -21,22 +26,26 @@ glmmRefit <- function(object, gene, ...) {
 }
 
 
+#' @rdname glmmRefit
 #' @export
 
-glmmRefit.lmmSeq <- function(object, gene, ...) {
+glmmRefit.lmmSeq <- function(object, gene,
+                             formula = object@formula,
+                             ...) {
   data <- object@metadata
   data[, "gene"] <- unlist(object@maindata[gene, ])
   offset <- object@info$offset
   control <- eval(object@info$control)
   fit <- if (object@info$test.stat == "Wald") {
-    lme4::lmer(object@formula, data = data,
+    lme4::lmer(formula, data = data,
                control = control, offset = offset, ...)
   } else {
-    lmerTest::lmer(object@formula, data = data,
+    lmerTest::lmer(formula, data = data,
                    control = control, offset = offset, ...)
   }
   fit
 }
+
 
 #' @rdname glmmRefit
 #' @export

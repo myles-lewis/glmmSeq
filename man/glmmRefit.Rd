@@ -2,10 +2,13 @@
 % Please edit documentation in R/glmmRefit.R
 \name{glmmRefit}
 \alias{glmmRefit}
+\alias{glmmRefit.lmmSeq}
 \alias{glmmRefit.GlmmSeq}
 \title{Refit mixed effects model}
 \usage{
 glmmRefit(object, gene, ...)
+
+\method{glmmRefit}{lmmSeq}(object, gene, formula = object@formula, ...)
 
 \method{glmmRefit}{GlmmSeq}(
   object,
@@ -22,11 +25,19 @@ glmmRefit(object, gene, ...)
 \item{gene}{A character value specifying a single gene to extract a fitted
 model for}
 
-\item{...}{Optional arguments passed to either \link[lme4:glmer]{lme4::glmer} or \link[lme4:lmer]{lme4::lmer}}
+\item{...}{Optional arguments passed to either \code{\link[lme4:glmer]{lme4::glmer()}} or
+\code{\link[lme4:lmer]{lme4::lmer()}}}
+
+\item{formula}{Optional formula to use when refitting model}
+
+\item{control}{Optional control parameters, see \code{\link[lme4:lmerControl]{lme4::lmerControl()}} or
+\code{\link[lme4:lmerControl]{lme4::glmerControl()}}}
+
+\item{family}{Optional GLM family when refitting GLMM using \code{\link[lme4:glmer]{lme4::glmer()}}}
 }
 \value{
-Fitted model of class \code{lmerMod} in the case of LMM, or \code{glmerMod} or \code{glmmTMB} for
-a GLMM dependent on the original method.
+Fitted model of class \code{lmerMod} in the case of LMM, or \code{glmerMod} or
+\code{glmmTMB} for a GLMM dependent on the original method.
 }
 \description{
 Based on a 'GlmmSeq' or 'lmmSeq' class result object, this function attempts
