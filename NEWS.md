@@ -1,6 +1,11 @@
 News
 =====
 
+# glmmSeq v0.5.3
+###### 24/09/2022
+* Enable changing of model formula, family and control parameters when refitting
+model for a single gene in `glmmRefit()`
+
 # glmmSeq v0.5.2
 ###### 19/09/2022
 * Fix passing of `...` in parallelisation on windows in `glmmSeq()` & `lmmSeq()`
