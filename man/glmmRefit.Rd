@@ -2,9 +2,19 @@
 % Please edit documentation in R/glmmRefit.R
 \name{glmmRefit}
 \alias{glmmRefit}
+\alias{glmmRefit.GlmmSeq}
 \title{Refit mixed effects model}
 \usage{
 glmmRefit(object, gene, ...)
+
+\method{glmmRefit}{GlmmSeq}(
+  object,
+  gene,
+  formula = object@formula,
+  control = object@info$control,
+  family = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A fitted results object of class \code{GlmmSeq} or \code{lmmSeq}}

@@ -38,22 +38,30 @@ glmmRefit.lmmSeq <- function(object, gene, ...) {
   fit
 }
 
-
+#' @rdname glmmRefit
 #' @export
 
-glmmRefit.GlmmSeq <- function(object, gene, ...) {
+glmmRefit.GlmmSeq <- function(object, gene,
+                              formula = object@formula,
+                              control = object@info$control,
+                              family = NULL,
+                              ...) {
   data <- object@metadata
   data[, "count"] <- object@countdata[gene, ]
   offset <- object@info$offset
-  control <- object@info$control
   if (object@info$method == "lme4") {
     disp <- object@info$dispersion[gene]
-    fit <- lme4::glmer(object@formula, data = data,
+    if (is.null(family)) {
+      family <- MASS::negative.binomial(theta = 1/disp)
+    }
+    fit <- lme4::glmer(formula, data = data,
                        control = control, offset = offset,
-                       family = MASS::negative.binomial(theta = 1/disp),
+                       family = family,
                        ...)
   } else {
-    family <- eval(object@info$family)
+    if (is.null(family)) {
+      family <- eval(object@info$family)
+    }
     fit <- glmmTMB(object@formula, data, family = family,
                    control = control, offset = offset, ...)
   }
