@@ -15,10 +15,36 @@
 #' @param control Optional control parameters, see [lme4::lmerControl()] or
 #'   [lme4::glmerControl()]
 #' @param family Optional GLM family when refitting GLMM using [lme4::glmer()]
+#'   or [glmmTMB()]
 #' @param ... Optional arguments passed to either [lme4::glmer()] or
 #'   [lme4::lmer()]
 #' @return Fitted model of class `lmerMod` in the case of LMM, or `glmerMod` or
 #'   `glmmTMB` for a GLMM dependent on the original method.
+#'   
+#' @examples
+#' data(PEAC_minimal_load)
+#' disp <- apply(tpm, 1, function(x) {
+#'   (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
+#' })
+#' glmmtest <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+#'                      countdata = tpm[1:2, ],
+#'                      metadata = metadata,
+#'                      dispersion = disp,
+#'                      verbose = FALSE)
+#' 
+#' # show summary for single gene
+#' summary(glmmtest, "MS4A1")
+#' 
+#' # refit a single model using lme4::glmer()
+#' fit <- glmmRefit(glmmtest, "MS4A1")
+#' 
+#' # refit model with reduced formula
+#' fit2 <- glmmRefit(glmmtest, "MS4A1",
+#'                   formula = count ~ Timepoint + EULAR_6m + (1 | PATID))
+#' 
+#' # LRT
+#' anova(fit, fit2)
+#' 
 #' @export
 
 glmmRefit <- function(object, gene, ...) {

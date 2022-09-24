@@ -33,7 +33,8 @@ model for}
 \item{control}{Optional control parameters, see \code{\link[lme4:lmerControl]{lme4::lmerControl()}} or
 \code{\link[lme4:lmerControl]{lme4::glmerControl()}}}
 
-\item{family}{Optional GLM family when refitting GLMM using \code{\link[lme4:glmer]{lme4::glmer()}}}
+\item{family}{Optional GLM family when refitting GLMM using \code{\link[lme4:glmer]{lme4::glmer()}}
+or \code{\link[=glmmTMB]{glmmTMB()}}}
 }
 \value{
 Fitted model of class \code{lmerMod} in the case of LMM, or \code{glmerMod} or
@@ -46,4 +47,29 @@ parameters stored in the results object and refitting using either
 \code{\link[lme4:glmer]{lme4::glmer()}} for \code{GlmmSeq} objects or \code{lmer()} for \code{lmmSeq} objects. The
 fitted model can then be passed on to other packages such as \code{emmeans} to
 look at estimated marginal means for the model.
+}
+\examples{
+data(PEAC_minimal_load)
+disp <- apply(tpm, 1, function(x) {
+  (var(x, na.rm = TRUE)-mean(x, na.rm = TRUE))/(mean(x, na.rm = TRUE)**2)
+})
+glmmtest <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                     countdata = tpm[1:2, ],
+                     metadata = metadata,
+                     dispersion = disp,
+                     verbose = FALSE)
+
+# show summary for single gene
+summary(glmmtest, "MS4A1")
+
+# refit a single model using lme4::glmer()
+fit <- glmmRefit(glmmtest, "MS4A1")
+
+# refit model with reduced formula
+fit2 <- glmmRefit(glmmtest, "MS4A1",
+                  formula = count ~ Timepoint + EULAR_6m + (1 | PATID))
+
+# LRT
+anova(fit, fit2)
+
 }
