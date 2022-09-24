@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="glmmSeq">
 <title>glmmSeq • glmmSeq</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,12 +13,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="glmmSeq">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="glmmSeq">
 <meta property="og:description" content="glmmSeq">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -25,84 +25,64 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fa fa-home"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">glmmSeq</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/glmmSeq.html">Get started</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="../articles/glmmSeq.html">
-    <span class="fas fa-book"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/KatrionaGoldmann/glmmSeq/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
-    Get Started
-  </a>
-</li>
-<li>
-  <a href="../news/index.html">
-    <span class="fas fa-newspaper"></span>
-     
-    News
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">
-    <span class="far fa-file-code"></span>
-     
-    Reference Manual
-  </a>
-</li>
-<li>
-  <a href="https://github.com/KatrionaGoldmann/glmmSeq">
-    <span class="fab fa-github"></span>
-     
-    Github
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><script src="glmmSeq_files/header-attrs-2.11/header-attrs.js"></script><script src="glmmSeq_files/kePrint-0.0.1/kePrint.js"></script><link href="glmmSeq_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+<script src="glmmSeq_files/kePrint-0.0.1/kePrint.js"></script><link href="glmmSeq_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>glmmSeq</h1>
-                        <h4 class="author">Myles Lewis, Katriona
-Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>glmmSeq</h1>
+                        <h4 data-toc-skip class="author">Myles Lewis,
+Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 class="date">2022-09-23</h4>
+            <h4 data-toc-skip class="date">2022-09-12</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/vignettes/glmmSeq.rmd"><code>vignettes/glmmSeq.rmd</code></a></small>
-      <div class="hidden name"><code>glmmSeq.rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/HEAD/vignettes/glmmSeq.rmd" class="external-link"><code>vignettes/glmmSeq.rmd</code></a></small>
+      <div class="d-none name"><code>glmmSeq.rmd</code></div>
     </div>
 
     
@@ -114,93 +94,93 @@ Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
   margin-right: auto;
 }
 </style>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md"><img src="https://img.shields.io/badge/last%20git%20commit-2022--09--23-turquoise.svg" alt="2022-09-23"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
-<div id="glmmseq" class="section level1">
-<h1 class="hasAnchor">
-<a href="#glmmseq" class="anchor"></a>glmmSeq</h1>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md" class="external-link"><img src="https://img.shields.io/badge/last%20git%20commit-2022--09--12-turquoise.svg" alt="2022-09-12"></a> <a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/KatrionaGoldmann/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></p>
+<div class="section level2">
+<h2 id="glmmseq">glmmSeq<a class="anchor" aria-label="anchor" href="#glmmseq"></a>
+</h2>
 <p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"></p>
 <p>The aim of this package is to model gene expression with a general
 linear mixed model (GLMM) as described in the R4RA study [1]. The most
 widely used mainstream differential gene expression analysis tools (e.g
-<a href="https://doi.org/10.1093/nar/gkv007">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616">edgeR</a>) are all
+<a href="https://doi.org/10.1093/nar/gkv007" class="external-link">Limma</a>, <a href="https://doi.org/10.1186/s13059-014-0550-8" class="external-link">DESeq2</a>, <a href="https://doi.org/10.1093/bioinformatics/btp616" class="external-link">edgeR</a>) are all
 unable to fit mixed effects linear models. This package however fits
 negative binomial mixed effects models at individual gene level using
 the <code>negative.binomial</code> function from <code>MASS</code> and
-the <code>glmer</code> function in <a href="https://CRAN.R-project.org/package=lme4"><code>lme4</code></a>
+the <code>glmer</code> function in <a href="https://CRAN.R-project.org/package=lme4" class="external-link"><code>lme4</code></a>
 which enables random effect, as as well as mixed effects, to be
 modelled.</p>
-<div id="installing-from-cran" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-from-cran" class="anchor"></a>Installing from CRAN</h3>
+<div class="section level4">
+<h4 id="installing-from-cran">Installing from CRAN<a class="anchor" aria-label="anchor" href="#installing-from-cran"></a>
+</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installing-from-github" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-from-github" class="anchor"></a>Installing from Github</h3>
+<div class="section level4">
+<h4 id="installing-from-github">Installing from Github<a class="anchor" aria-label="anchor" href="#installing-from-github"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"KatrionaGoldmann/glmmSeq"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"KatrionaGoldmann/glmmSeq"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installing-locally" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-locally" class="anchor"></a>Installing Locally</h3>
+<div class="section level4">
+<h4 id="installing-locally">Installing Locally<a class="anchor" aria-label="anchor" href="#installing-locally"></a>
+</h4>
 <p>Or you can source the functions individually:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">functions</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"./R"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">functions</span>, <span class="va">source</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">functions</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"./R"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">functions</span>, <span class="va">source</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>But you will need to load in the additional libraries:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Install CRAN packages</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MASS"</span>, <span class="st">"car"</span>, <span class="st">"ggplot2"</span>, <span class="st">"ggpubr"</span>, <span class="st">"lme4"</span>,<span class="st">"lmerTest"</span>,
-                   <span class="st">"methods"</span>, <span class="st">"parallel"</span>, <span class="st">"plotly"</span>, <span class="st">"pbapply"</span>, <span class="st">"pbmcapply"</span><span class="op">)</span>,
-                 <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span>
-                   <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-                     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-                   <span class="op">}</span>
-                   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-                 <span class="op">}</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Install BioConductor packages</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"qvalue"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span>
-  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Install CRAN packages</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MASS"</span>, <span class="st">"car"</span>, <span class="st">"ggplot2"</span>, <span class="st">"ggpubr"</span>, <span class="st">"lme4"</span>,<span class="st">"lmerTest"</span>,</span>
+<span>                   <span class="st">"methods"</span>, <span class="st">"parallel"</span>, <span class="st">"plotly"</span>, <span class="st">"pbapply"</span>, <span class="st">"pbmcapply"</span><span class="op">)</span>,</span>
+<span>                 <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span></span>
+<span>                   <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>                   <span class="op">}</span></span>
+<span>                   <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                 <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install BioConductor packages</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"qvalue"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>To get started, first we load in the package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KatrionaGoldmann/glmmSeq">glmmSeq</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/KatrionaGoldmann/glmmSeq" class="external-link">glmmSeq</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></code></pre></div>
 <p>This vignette will demonstrate the power of this package using a
-minimal example from the <a href="https://peac.hpc.qmul.ac.uk/">PEAC
+minimal example from the <a href="https://peac.hpc.qmul.ac.uk/" class="external-link">PEAC
 data set</a>. Here we focus on the synovial biopsy RNA-Seq data from
 this cohort of patients with early rheumatoid arthritis.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">PEAC_minimal_load</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">PEAC_minimal_load</span><span class="op">)</span></span></code></pre></div>
 <p>This data contains:</p>
 <ul>
 <li>metadata: which describes each sample. Including patient ID, sample
-time-point, and six-month EULAR response. Where <a href="https://www.das-score.nl/en/das-and-das28/das28-why/eular-response-criteria">EULAR</a>
-is a rheumatoid arthritis response metric based on composite <a href="https://www.das-score.nl/en/">DAS28 scores</a>.</li>
+time-point, and six-month EULAR response. Where <a href="https://www.das-score.nl/en/das-and-das28/das28-why/eular-response-criteria" class="external-link">EULAR</a>
+is a rheumatoid arthritis response metric based on composite <a href="https://www.das-score.nl/en/" class="external-link">DAS28 scores</a>.</li>
 <li>tpm: the transcript per million RNA-seq count data</li>
 </ul>
 <p>These are outlined in the following subsections.</p>
-<div id="metadata" class="section level2">
-<h2 class="hasAnchor">
-<a href="#metadata" class="anchor"></a>Metadata</h2>
+<div class="section level3">
+<h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
+</h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span>  <span class="op">=</span> <span class="cn">NA</span>
-<span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span><span class="op">[</span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_6m</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span>
-                        <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Moderate"</span> <span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"responder"</span>
-<span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span><span class="op">[</span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_6m</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Non-response"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"non_responder"</span>
-
-<span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span>  <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span><span class="op">[</span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_6m</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
+<span>                        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Moderate"</span> <span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"responder"</span></span>
+<span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_binary</span><span class="op">[</span><span class="va">metadata</span><span class="op">$</span><span class="va">EULAR_6m</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Non-response"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="st">"non_responder"</span></span>
+<span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 PATID
@@ -303,14 +283,14 @@ responder
 </tbody>
 </table>
 </div>
-<div id="count-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#count-data" class="anchor"></a>Count data</h2>
+<div class="section level3">
+<h3 id="count-data">Count data<a class="anchor" aria-label="anchor" href="#count-data"></a>
+</h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span></span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
-<table class="table table">
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;">
 </th>
@@ -2933,9 +2913,9 @@ ADAM12.1
 </table>
 </div>
 </div>
-<div id="dispersion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dispersion" class="anchor"></a>Dispersion</h2>
+<div class="section level3">
+<h3 id="dispersion">Dispersion<a class="anchor" aria-label="anchor" href="#dispersion"></a>
+</h3>
 <p>Using negative binomial models requires gene dispersion estimates to
 be made. This can be achieved in a number of ways. A common way to
 calculate this for gene <em>i</em> is to use the equation:</p>
@@ -2944,51 +2924,51 @@ Dispersion<sub>i</sub> = (variance<sub>i</sub> -
 mean<sub>i</sub>)/mean<sub>i</sub><sup>2</sup></p>
 <p>This can be calculated using:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">disp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">tpm</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
-  <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">**</span><span class="fl">2</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span></code></pre></div>
-<pre><code>##     MS4A1    ADAM12 IGHV7-4-1  IGHV3-49  IGHV3-23  ADAM12.1 
-##  3.789428  2.391912 11.686420 10.863156  3.262557  2.391912</code></pre>
+<code class="sourceCode R"><span><span class="va">disp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">tpm</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">**</span><span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     MS4A1    ADAM12 IGHV7-4-1  IGHV3-49  IGHV3-23  ADAM12.1 </span></span>
+<span><span class="co">##  3.789428  2.391912 11.686420 10.863156  3.262557  2.391912</span></span></code></pre>
 <p>Alternatively, we recommend using <em>edgeR</em> to estimate of the
 common, trended and tagwise dispersions across all tags:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">disp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu">edgeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/estimateDisp.html">estimateDisp</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">$</span><span class="va">tagwise.dispersion</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">disp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu">edgeR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/estimateDisp.html" class="external-link">estimateDisp</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">$</span><span class="va">tagwise.dispersion</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span></span></code></pre></div>
 <p>or with <em>DESeq2</em> using the raw counts:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dds</span> <span class="op">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span><span class="op">(</span>txi <span class="op">=</span> <span class="va">txi</span>, colData <span class="op">=</span> <span class="va">metadata</span>, design <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">dds</span> <span class="op">&lt;-</span> <span class="fu">DESeq</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span>
-<span class="va">dispersions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu">dispersions</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">txi</span><span class="op">$</span><span class="va">counts</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dds</span> <span class="op">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span><span class="op">(</span>txi <span class="op">=</span> <span class="va">txi</span>, colData <span class="op">=</span> <span class="va">metadata</span>, design <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">dds</span> <span class="op">&lt;-</span> <span class="fu">DESeq</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span></span>
+<span><span class="va">dispersions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu">dispersions</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">txi</span><span class="op">$</span><span class="va">counts</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="size-factors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#size-factors" class="anchor"></a>Size Factors</h2>
+<div class="section level3">
+<h3 id="size-factors">Size Factors<a class="anchor" aria-label="anchor" href="#size-factors"></a>
+</h3>
 <p>There is also an option to include size factors for each gene. Again
 this can be estimated using:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span>  
-<span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="va">sizeFactors</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">sizeFactors</span><span class="op">)</span>  <span class="co"># normalise to mean = 1</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sizeFactors</span><span class="op">)</span></code></pre></div>
-<pre><code>##      S9001      S9002      S9003      S9004      S9006      S9007 
-## 0.20325747 0.09330435 0.09737100 3.13456671 0.24515015 4.19419297</code></pre>
+<code class="sourceCode R"><span><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">tpm</span><span class="op">)</span>  </span>
+<span><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="va">sizeFactors</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sizeFactors</span><span class="op">)</span>  <span class="co"># normalise to mean = 1</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sizeFactors</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      S9001      S9002      S9003      S9004      S9006      S9007 </span></span>
+<span><span class="co">## 0.20325747 0.09330435 0.09737100 3.13456671 0.24515015 4.19419297</span></span></code></pre>
 <p>Or using edgeR these can be calculated from the raw read counts:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu">calcNormFactors</span><span class="op">(</span><span class="va">counts</span>, method<span class="op">=</span><span class="st">"TMM"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu">calcNormFactors</span><span class="op">(</span><span class="va">counts</span>, method<span class="op">=</span><span class="st">"TMM"</span><span class="op">)</span></span></code></pre></div>
 <p>Similarly, with DESeq2:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu">estimateSizeFactorsForMatrix</span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sizeFactors</span> <span class="op">&lt;-</span> <span class="fu">estimateSizeFactorsForMatrix</span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span></code></pre></div>
 <p>Note the <code>sizeFactors</code> vector needs to be centred around
 1, since it used directly as an offset of form
 <code>log(sizeFactors)</code> in the GLMM model.</p>
 </div>
 </div>
-<div id="fitting-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fitting-models" class="anchor"></a>Fitting Models</h1>
+<div class="section level2">
+<h2 id="fitting-models">Fitting Models<a class="anchor" aria-label="anchor" href="#fitting-models"></a>
+</h2>
 <style>
 div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 10px; text-align:center;}
 </style>
@@ -3001,7 +2981,7 @@ random-effects part of the model, with the response on the left of a ~
 operator and the terms, separated by + operators, on the right.
 Random-effects terms are distinguished by vertical bars (“|”) separating
 expressions for design matrices from grouping factors. For more
-information see the <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html">?lme4::glmer</a></code>.</p>
+information see the <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">?lme4::glmer</a></code>.</p>
 <p>In this case study we want to use time and response as fixed effects
 and the patients as random effects:</p>
 <div class="blue">
@@ -3014,40 +2994,40 @@ function. Note that this analysis can take some time, with 4 cores:</p>
 <li>20000 genes takes about 4 mins</li>
 </ul>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
-                   countdata <span class="op">=</span> <span class="va">tpm</span>,
-                   metadata <span class="op">=</span> <span class="va">metadata</span>,
-                   dispersion <span class="op">=</span> <span class="va">disp</span>,
-                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## n = 123 samples, 82 individuals
-## Time difference of 33.25405 secs
-## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</code></pre>
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,</span>
+<span>                   countdata <span class="op">=</span> <span class="va">tpm</span>,</span>
+<span>                   metadata <span class="op">=</span> <span class="va">metadata</span>,</span>
+<span>                   dispersion <span class="op">=</span> <span class="va">disp</span>,</span>
+<span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## n = 123 samples, 82 individuals</span></span>
+<span><span class="co">## Time difference of 3.278562 secs</span></span>
+<span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
 <p>or alternatively using two-factor classification with
 EULAR_binary:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_binary</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
-                    countdata <span class="op">=</span> <span class="va">tpm</span>,
-                    metadata <span class="op">=</span> <span class="va">metadata</span>,
-                    dispersion <span class="op">=</span> <span class="va">disp</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## n = 123 samples, 82 individuals
-## Time difference of 14.83631 secs
-## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</code></pre>
-<div id="outputs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#outputs" class="anchor"></a>Outputs</h2>
+<code class="sourceCode R"><span><span class="va">results2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_binary</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,</span>
+<span>                    countdata <span class="op">=</span> <span class="va">tpm</span>,</span>
+<span>                    metadata <span class="op">=</span> <span class="va">metadata</span>,</span>
+<span>                    dispersion <span class="op">=</span> <span class="va">disp</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## n = 123 samples, 82 individuals</span></span>
+<span><span class="co">## Time difference of 3.075281 secs</span></span>
+<span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
+<div class="section level3">
+<h3 id="outputs">Outputs<a class="anchor" aria-label="anchor" href="#outputs"></a>
+</h3>
 <p>This creates a GlmmSeq object which contains the following slots:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "info"           "formula"        "stats"          "predict"       
-##  [5] "reducedFormula" "countdata"      "metadata"       "modelData"     
-##  [9] "optInfo"        "errors"         "vars"           "class"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "info"           "formula"        "stats"          "predict"       </span></span>
+<span><span class="co">##  [5] "reducedFormula" "countdata"      "metadata"       "modelData"     </span></span>
+<span><span class="co">##  [9] "optInfo"        "errors"         "vars"           "class"</span></span></code></pre>
 <p>The variables used by the model are in the
 <code>@modeldata</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">kable</span><span class="op">(</span><span class="va">results</span><span class="op">@</span><span class="va">modelData</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<table class="table table">
+<code class="sourceCode R"><span><span class="fu">kable</span><span class="op">(</span><span class="va">results</span><span class="op">@</span><span class="va">modelData</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:right;">
 Timepoint
@@ -3114,13 +3094,13 @@ model using Wald type 2 Chi square. To see the most significant
 interactions we can order <code>pvals</code> by
 <code>Timepoint:EULAR_6m</code>:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span>
-
-<span class="fu">kable</span><span class="op">(</span><span class="va">stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">stats</span><span class="op">[</span>, <span class="st">'P_Timepoint:EULAR_6m'</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"400px"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">stats</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">stats</span><span class="op">[</span>, <span class="st">'P_Timepoint:EULAR_6m'</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"400px"</span><span class="op">)</span></span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
-<table class="table table">
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 </th>
@@ -6887,37 +6867,37 @@ IGHV7-40
 <p>Summary statistics on a single gene can be shown specifying the
 argument <code>gene</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results</span>, gene <span class="op">=</span> <span class="st">"MS4A1"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Generalised linear mixed model
-## Method: lme4
-## Family: Negative Binomial
-##  Dispersion         AIC      logLik     meanExp 
-##    3.789428  898.682864 -441.341432    2.591740 
-## 
-## Fixed effects:
-##                                Estimate Std. Error
-## (Intercept)                     2.73637    0.33669
-## Timepoint                       0.04908    0.08941
-## EULAR_6mModerate                0.19330    0.51103
-## EULAR_6mNon-response           -1.72376    0.67780
-## Timepoint:EULAR_6mModerate     -0.21080    0.13478
-## Timepoint:EULAR_6mNon-response  0.17462    0.16558
-## 
-## Analysis of Deviance Table (Type II Wald chisquare tests)
-##                      Chisq Df Pr(&gt;Chisq)
-## Timepoint          0.01125  1    0.91554
-## EULAR_6m           5.68288  2    0.05834
-## Timepoint:EULAR_6m 5.43787  2    0.06594</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, gene <span class="op">=</span> <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Generalised linear mixed model</span></span>
+<span><span class="co">## Method: lme4</span></span>
+<span><span class="co">## Family: Negative Binomial</span></span>
+<span><span class="co">##  Dispersion         AIC      logLik     meanExp </span></span>
+<span><span class="co">##    3.789428  898.682864 -441.341432    2.591740 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fixed effects:</span></span>
+<span><span class="co">##                                Estimate Std. Error</span></span>
+<span><span class="co">## (Intercept)                     2.73637    0.33669</span></span>
+<span><span class="co">## Timepoint                       0.04908    0.08941</span></span>
+<span><span class="co">## EULAR_6mModerate                0.19330    0.51103</span></span>
+<span><span class="co">## EULAR_6mNon-response           -1.72376    0.67780</span></span>
+<span><span class="co">## Timepoint:EULAR_6mModerate     -0.21080    0.13478</span></span>
+<span><span class="co">## Timepoint:EULAR_6mNon-response  0.17462    0.16558</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Analysis of Deviance Table (Type II Wald chisquare tests)</span></span>
+<span><span class="co">##                      Chisq Df Pr(&gt;Chisq)</span></span>
+<span><span class="co">## Timepoint          0.01125  1    0.91554</span></span>
+<span><span class="co">## EULAR_6m           5.68288  2    0.05834</span></span>
+<span><span class="co">## Timepoint:EULAR_6m 5.43787  2    0.06594</span></span></code></pre>
 <p>Estimated means based on each gene’s fitted model to show fixed
 effects and their 95% confidence intervals can be seen in the
 <code>@predict</code> slot:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">predict</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">results</span><span class="op">@</span><span class="va">predict</span><span class="op">)</span>
-<span class="fu">kable</span><span class="op">(</span><span class="va">predict</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"400px"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">predict</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">results</span><span class="op">@</span><span class="va">predict</span><span class="op">)</span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="va">predict</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">scroll_box</span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"400px"</span><span class="op">)</span></span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
-<table class="table table">
+<table class="table table" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 </th>
@@ -9695,35 +9675,35 @@ LILRB3
 </table>
 </div>
 </div>
-<div id="q-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#q-values" class="anchor"></a>Q-values</h2>
+<div class="section level3">
+<h3 id="q-values">Q-values<a class="anchor" aria-label="anchor" href="#q-values"></a>
+</h3>
 <p>The q-values from each of the p-value columns can be calculated using
 <code>glmmQvals</code>. This will print a significance table based on
 the cut-off (default p=0.05) and add a matrix named <code>qvals</code>
 to the <code>@stats</code> slot:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmQvals.html">glmmQvals</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Timepoint
-## ---------
-## Not Significant     Significant 
-##              29              17 
-## 
-## EULAR_6m
-## --------
-## Not Significant     Significant 
-##              41               5 
-## 
-## Timepoint:EULAR_6m
-## ------------------
-## Not Significant 
-##              46</code></pre>
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmQvals.html">glmmQvals</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Timepoint</span></span>
+<span><span class="co">## ---------</span></span>
+<span><span class="co">## Not Significant     Significant </span></span>
+<span><span class="co">##              29              17 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## EULAR_6m</span></span>
+<span><span class="co">## --------</span></span>
+<span><span class="co">## Not Significant     Significant </span></span>
+<span><span class="co">##              41               5 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Timepoint:EULAR_6m</span></span>
+<span><span class="co">## ------------------</span></span>
+<span><span class="co">## Not Significant </span></span>
+<span><span class="co">##              46</span></span></code></pre>
 </div>
 </div>
-<div id="gaussian-mixed-effects-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#gaussian-mixed-effects-models" class="anchor"></a>Gaussian mixed effects models</h1>
+<div class="section level2">
+<h2 id="gaussian-mixed-effects-models">Gaussian mixed effects models<a class="anchor" aria-label="anchor" href="#gaussian-mixed-effects-models"></a>
+</h2>
 <p>An alternative to fitting negative binomial GLMM is to use
 transformed data and fit gaussian LMM. The <code>lmmSeq</code> function
 will fit many LMM across genes (or other data) where random
@@ -9735,46 +9715,46 @@ Gaussian. Alternatively variance stabilising transformation (VST) can be
 applied to count data through DESeq2 or the voom transformation in limma
 voom.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">logtpm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">tpm</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">lmmres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lmmSeq.html">lmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
-                   maindata <span class="op">=</span> <span class="va">logtpm</span>,
-                   metadata <span class="op">=</span> <span class="va">metadata</span>,
-                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## n = 123 samples, 82 individuals
-## Time difference of 4.080602 secs</code></pre>
+<code class="sourceCode R"><span><span class="va">logtpm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">tpm</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">lmmres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lmmSeq.html">lmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,</span>
+<span>                   maindata <span class="op">=</span> <span class="va">logtpm</span>,</span>
+<span>                   metadata <span class="op">=</span> <span class="va">metadata</span>,</span>
+<span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## n = 123 samples, 82 individuals</span></span>
+<span><span class="co">## Time difference of 0.7891989 secs</span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lmmres</span>, <span class="st">"MS4A1"</span><span class="op">)</span></code></pre></div>
-<pre><code>## Linear mixed model
-##         AIC      logLik     meanExp 
-##  503.415984 -243.707992    2.590358 
-## 
-## Fixed effects:
-##                                 Estimate Std. Error
-## (Intercept)                     2.614919    0.30012
-## Timepoint                       0.024789    0.06841
-## EULAR_6mModerate                0.860136    0.45592
-## EULAR_6mNon-response           -0.983157    0.58504
-## Timepoint:EULAR_6mModerate     -0.256884    0.10233
-## Timepoint:EULAR_6mNon-response -0.009612    0.12407
-## 
-## Analysis of Deviance Table (Type II Wald chisquare tests)
-##                    Chisq Df Pr(&gt;Chisq)
-## Timepoint          2.321  1    0.12767
-## EULAR_6m           6.098  2    0.04740
-## Timepoint:EULAR_6m 7.134  2    0.02823</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lmmres</span>, <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Linear mixed model</span></span>
+<span><span class="co">##         AIC      logLik     meanExp </span></span>
+<span><span class="co">##  503.415984 -243.707992    2.590358 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fixed effects:</span></span>
+<span><span class="co">##                                 Estimate Std. Error</span></span>
+<span><span class="co">## (Intercept)                     2.614919    0.30012</span></span>
+<span><span class="co">## Timepoint                       0.024789    0.06841</span></span>
+<span><span class="co">## EULAR_6mModerate                0.860136    0.45592</span></span>
+<span><span class="co">## EULAR_6mNon-response           -0.983157    0.58504</span></span>
+<span><span class="co">## Timepoint:EULAR_6mModerate     -0.256884    0.10233</span></span>
+<span><span class="co">## Timepoint:EULAR_6mNon-response -0.009612    0.12407</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Analysis of Deviance Table (Type II Wald chisquare tests)</span></span>
+<span><span class="co">##                    Chisq Df Pr(&gt;Chisq)</span></span>
+<span><span class="co">## Timepoint          2.321  1    0.12767</span></span>
+<span><span class="co">## EULAR_6m           6.098  2    0.04740</span></span>
+<span><span class="co">## Timepoint:EULAR_6m 7.134  2    0.02823</span></span></code></pre>
 </div>
-<div id="glmmtmb-models" class="section level1">
-<h1 class="hasAnchor">
-<a href="#glmmtmb-models" class="anchor"></a>glmmTMB models</h1>
+<div class="section level2">
+<h2 id="glmmtmb-models">glmmTMB models<a class="anchor" aria-label="anchor" href="#glmmtmb-models"></a>
+</h2>
 <p>The <code>glmmTMB</code> package is an alternative to
 <code>lme4</code> for fitting negative binomial GLMM models. Note, that
 this package optimises the dispersion parameter for each GLMM model.
 This has the advantage that a predefined list of dispersions for each
 gene is not required. But it also means that model fitting is
 significantly slower than a negative binomial GLMM fit by
-<code><a href="https://rdrr.io/pkg/lme4/man/glmer.html">lme4::glmer</a></code> with family function
-<code><a href="https://rdrr.io/pkg/MASS/man/negative.binomial.html">MASS::negative.binomial</a></code> for which the dispersion parameter
+<code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">lme4::glmer</a></code> with family function
+<code><a href="https://rdrr.io/pkg/MASS/man/negative.binomial.html" class="external-link">MASS::negative.binomial</a></code> for which the dispersion parameter
 must be pre-specified. Each <code>glmmTMB</code> model takes about 0.8
 seconds, so that even with 8 cores, a typical transcriptome of 20,000
 genes would take about 30 minutes, although this will vary depending on
@@ -9786,7 +9766,7 @@ with known dispersion, <code>glmmTMB</code> is still faster than the
 equivalent <code>lme4</code> function <code>glmer.nb</code> when the
 dispersion is unknown.</p>
 <p>Setting <code>method = "glmmTMB"</code> when calling
-<code><a href="../reference/glmmSeq.html">glmmSeq()</a></code> switches from using <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html">lme4::glmer</a></code> (the
+<code><a href="../reference/glmmSeq.html">glmmSeq()</a></code> switches from using <code><a href="https://rdrr.io/pkg/lme4/man/glmer.html" class="external-link">lme4::glmer</a></code> (the
 default) to the <code>glmmTMB</code> package. The
 <code>dispersion</code> argument is then no longer required. The
 <code>family</code> argument can be used to specify different family
@@ -9794,76 +9774,76 @@ functions and <code>glmmTMB</code> provides <code>nbinom1</code> and
 <code>nbinom2</code> (<code>glmmSeq</code> uses the latter by default).
 Other family functions e.g. <code>poisson</code> can be used.</p>
 </div>
-<div id="extracting-individual-genes" class="section level1">
-<h1 class="hasAnchor">
-<a href="#extracting-individual-genes" class="anchor"></a>Extracting individual Genes</h1>
+<div class="section level2">
+<h2 id="extracting-individual-genes">Extracting individual Genes<a class="anchor" aria-label="anchor" href="#extracting-individual-genes"></a>
+</h2>
 <p>Similarly you can run the script for an individual gene (make sure
 you use <code>drop = FALSE</code> to maintain <code>countdata</code> as
 a matrix).</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">MS4A1glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,
-                     countdata <span class="op">=</span> <span class="va">tpm</span><span class="op">[</span><span class="st">"MS4A1"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,
-                     metadata <span class="op">=</span> <span class="va">metadata</span>,
-                     dispersion <span class="op">=</span> <span class="va">disp</span>,
-                     verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">MS4A1glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Timepoint</span> <span class="op">*</span> <span class="va">EULAR_6m</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">PATID</span><span class="op">)</span>,</span>
+<span>                     countdata <span class="op">=</span> <span class="va">tpm</span><span class="op">[</span><span class="st">"MS4A1"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,</span>
+<span>                     metadata <span class="op">=</span> <span class="va">metadata</span>,</span>
+<span>                     dispersion <span class="op">=</span> <span class="va">disp</span>,</span>
+<span>                     verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>The (g)lmer fitted object can be obtained using the function
 <code><a href="../reference/glmmRefit.html">glmmRefit()</a></code>:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmRefit.html">glmmRefit</a></span><span class="op">(</span><span class="va">results</span>, gene <span class="op">=</span> <span class="st">"MS4A1"</span><span class="op">)</span></code></pre></div>
-<pre><code>## boundary (singular) fit: see ?isSingular</code></pre>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmRefit.html">glmmRefit</a></span><span class="op">(</span><span class="va">results</span>, gene <span class="op">=</span> <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## boundary (singular) fit: see help('isSingular')</span></span></code></pre>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span></code></pre></div>
-<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [
-## glmerMod]
-##  Family: Negative Binomial(0.2639)  ( log )
-## Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m
-##    Data: data
-##  Offset: offset
-##       AIC       BIC    logLik  deviance  df.resid 
-##  898.6829  921.1803 -441.3414  882.6829       115 
-## Random effects:
-##  Groups Name        Std.Dev.
-##  PATID  (Intercept) 0       
-## Number of obs: 123, groups:  PATID, 82
-## Fixed Effects:
-##                    (Intercept)                       Timepoint  
-##                        2.73637                         0.04908  
-##               EULAR_6mModerate            EULAR_6mNon-response  
-##                        0.19330                        -1.72376  
-##     Timepoint:EULAR_6mModerate  Timepoint:EULAR_6mNon-response  
-##                       -0.21080                         0.17462  
-## optimizer (bobyqa) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings</code></pre>
+<code class="sourceCode R"><span><span class="va">fit</span></span></code></pre></div>
+<pre><code><span><span class="co">## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [</span></span>
+<span><span class="co">## glmerMod]</span></span>
+<span><span class="co">##  Family: Negative Binomial(0.2639)  ( log )</span></span>
+<span><span class="co">## Formula: count ~ Timepoint + EULAR_6m + (1 | PATID) + Timepoint:EULAR_6m</span></span>
+<span><span class="co">##    Data: data</span></span>
+<span><span class="co">##  Offset: offset</span></span>
+<span><span class="co">##       AIC       BIC    logLik  deviance  df.resid </span></span>
+<span><span class="co">##  898.6829  921.1803 -441.3414  882.6829       115 </span></span>
+<span><span class="co">## Random effects:</span></span>
+<span><span class="co">##  Groups Name        Std.Dev.</span></span>
+<span><span class="co">##  PATID  (Intercept) 0       </span></span>
+<span><span class="co">## Number of obs: 123, groups:  PATID, 82</span></span>
+<span><span class="co">## Fixed Effects:</span></span>
+<span><span class="co">##                    (Intercept)                       Timepoint  </span></span>
+<span><span class="co">##                        2.73637                         0.04908  </span></span>
+<span><span class="co">##               EULAR_6mModerate            EULAR_6mNon-response  </span></span>
+<span><span class="co">##                        0.19330                        -1.72376  </span></span>
+<span><span class="co">##     Timepoint:EULAR_6mModerate  Timepoint:EULAR_6mNon-response  </span></span>
+<span><span class="co">##                       -0.21080                         0.17462  </span></span>
+<span><span class="co">## optimizer (bobyqa) convergence code: 0 (OK) ; 0 optimizer warnings; 1 lme4 warnings</span></span></code></pre>
 <p>These (g)lmer objects can be passed to other packages notably
 <code>emmeans</code> for visualising estimated marginal means. Note
 these are based on the model, not directly on the data.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans">emmeans</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="op">~</span> <span class="va">Timepoint</span> <span class="op">|</span> <span class="va">EULAR_6m</span><span class="op">)</span></code></pre></div>
-<pre><code>## EULAR_6m = Good:
-##  Timepoint emmean    SE  df asymp.LCL asymp.UCL
-##          0   2.74 0.337 Inf      2.08      3.40
-##          6   3.03 0.418 Inf      2.21      3.85
-## 
-## EULAR_6m = Moderate:
-##  Timepoint emmean    SE  df asymp.LCL asymp.UCL
-##          0   2.93 0.384 Inf      2.18      3.68
-##          6   1.96 0.467 Inf      1.04      2.88
-## 
-## EULAR_6m = Non-response:
-##  Timepoint emmean    SE  df asymp.LCL asymp.UCL
-##          0   1.01 0.588 Inf     -0.14      2.17
-##          6   2.35 0.594 Inf      1.19      3.52
-## 
-## Results are given on the log (not the response) scale. 
-## Confidence level used: 0.95</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans" class="external-link">emmeans</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">fit</span>, <span class="op">~</span> <span class="va">Timepoint</span> <span class="op">|</span> <span class="va">EULAR_6m</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## EULAR_6m = Good:</span></span>
+<span><span class="co">##  Timepoint emmean    SE  df asymp.LCL asymp.UCL</span></span>
+<span><span class="co">##          0   2.74 0.337 Inf      2.08      3.40</span></span>
+<span><span class="co">##          6   3.03 0.418 Inf      2.21      3.85</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## EULAR_6m = Moderate:</span></span>
+<span><span class="co">##  Timepoint emmean    SE  df asymp.LCL asymp.UCL</span></span>
+<span><span class="co">##          0   2.93 0.384 Inf      2.18      3.68</span></span>
+<span><span class="co">##          6   1.96 0.467 Inf      1.04      2.88</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## EULAR_6m = Non-response:</span></span>
+<span><span class="co">##  Timepoint emmean    SE  df asymp.LCL asymp.UCL</span></span>
+<span><span class="co">##          0   1.01 0.588 Inf     -0.14      2.17</span></span>
+<span><span class="co">##          6   2.35 0.594 Inf      1.19      3.52</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results are given on the log (not the response) scale. </span></span>
+<span><span class="co">## Confidence level used: 0.95</span></span></code></pre>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmip.html">emmip</a></span><span class="op">(</span><span class="va">fit</span>, <span class="op">~</span> <span class="va">Timepoint</span> <span class="op">|</span> <span class="va">EULAR_6m</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmip.html" class="external-link">emmip</a></span><span class="op">(</span><span class="va">fit</span>, <span class="op">~</span> <span class="va">Timepoint</span> <span class="op">|</span> <span class="va">EULAR_6m</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
 </div>
-<div id="model-plots" class="section level1">
-<h1 class="hasAnchor">
-<a href="#model-plots" class="anchor"></a>Model Plots</h1>
+<div class="section level2">
+<h2 id="model-plots">Model Plots<a class="anchor" aria-label="anchor" href="#model-plots"></a>
+</h2>
 <p>For variables such as time, which are matched according to an ID (the
 random effect), we can examine the fitted model using plots which show
 estimated means and confidence intervals based on coefficients for the
@@ -9873,20 +9853,20 @@ the samples are matched longitudinally over time.</p>
 start looking at the gene with the most significant interaction
 <em>IGHV3-23</em>:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plotColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"skyblue"</span>, <span class="st">"goldenrod1"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>
-<span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dodgerblue3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"seagreen4"</span><span class="op">)</span>
-<span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">17</span>, <span class="fl">19</span>, <span class="fl">18</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,
-            geneName <span class="op">=</span> <span class="st">"IGHV3-23"</span>,
-            x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,
-            x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,
-            xlab<span class="op">=</span><span class="st">"Time"</span>,
-            colours <span class="op">=</span> <span class="va">plotColours</span>,
-            shapes <span class="op">=</span> <span class="va">shapes</span>,
-            lineColours <span class="op">=</span> <span class="va">plotColours</span>, 
-            modelColours <span class="op">=</span> <span class="va">modColours</span>,
-            modelSize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plotColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"skyblue"</span>, <span class="st">"goldenrod1"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span></span>
+<span><span class="va">modColours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dodgerblue3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"seagreen4"</span><span class="op">)</span></span>
+<span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">17</span>, <span class="fl">19</span>, <span class="fl">18</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>            geneName <span class="op">=</span> <span class="st">"IGHV3-23"</span>,</span>
+<span>            x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
+<span>            x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
+<span>            xlab<span class="op">=</span><span class="st">"Time"</span>,</span>
+<span>            colours <span class="op">=</span> <span class="va">plotColours</span>,</span>
+<span>            shapes <span class="op">=</span> <span class="va">shapes</span>,</span>
+<span>            lineColours <span class="op">=</span> <span class="va">plotColours</span>, </span>
+<span>            modelColours <span class="op">=</span> <span class="va">modColours</span>,</span>
+<span>            modelSize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
 <p>Alternatively plots can be generated using base graphics, here with
 or without the model fit overlaid. By default p-value labels are taken
@@ -9894,55 +9874,55 @@ from the column names of the <code>pvals</code> object in the
 <code>stats</code> slot of the S4 result object. These can be relabelled
 using the <code>plab</code> argument.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/modelPlot.html">modelPlot</a></span><span class="op">(</span><span class="va">results2</span>,
-          geneName <span class="op">=</span> <span class="st">"FGF14"</span>,
-          x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,
-          x2var<span class="op">=</span><span class="st">"EULAR_binary"</span>,
-          fontSize<span class="op">=</span><span class="fl">0.65</span>,
-          colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
-          modelColours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,
-          modelLineColours <span class="op">=</span> <span class="st">"black"</span>,
-          modelSize <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/modelPlot.html">modelPlot</a></span><span class="op">(</span><span class="va">results</span>,
-          geneName <span class="op">=</span> <span class="st">"EMILIN3"</span>,
-          x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,
-          x2var <span class="op">=</span> <span class="st">"EULAR_6m"</span>,
-          colours <span class="op">=</span> <span class="va">plotColours</span>,
-          plab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"response"</span>, <span class="st">"time:response"</span><span class="op">)</span>,
-          addModel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/modelPlot.html">modelPlot</a></span><span class="op">(</span><span class="va">results2</span>,</span>
+<span>          geneName <span class="op">=</span> <span class="st">"FGF14"</span>,</span>
+<span>          x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
+<span>          x2var<span class="op">=</span><span class="st">"EULAR_binary"</span>,</span>
+<span>          fontSize<span class="op">=</span><span class="fl">0.65</span>,</span>
+<span>          colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,</span>
+<span>          modelColours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coral"</span>, <span class="st">"mediumseagreen"</span><span class="op">)</span>,</span>
+<span>          modelLineColours <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>          modelSize <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/modelPlot.html">modelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>          geneName <span class="op">=</span> <span class="st">"EMILIN3"</span>,</span>
+<span>          x1var <span class="op">=</span> <span class="st">"Timepoint"</span>,</span>
+<span>          x2var <span class="op">=</span> <span class="st">"EULAR_6m"</span>,</span>
+<span>          colours <span class="op">=</span> <span class="va">plotColours</span>,</span>
+<span>          plab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span>, <span class="st">"response"</span>, <span class="st">"time:response"</span><span class="op">)</span>,</span>
+<span>          addModel <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-28-1.png" width="700"></p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>To plot the model fits alone set <code>addPoints = FALSE</code>.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a></span><span class="op">)</span>
-
-<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,
-                  <span class="st">"ADAM12"</span>,
-                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,
-                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,
-                  xlab<span class="op">=</span><span class="st">"Time"</span>,
-                  addPoints <span class="op">=</span> <span class="cn">FALSE</span>,
-                  colours <span class="op">=</span> <span class="va">plotColours</span><span class="op">)</span>
-
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,
-                  <span class="st">"EMILIN3"</span>,
-                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,
-                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,
-                  xlab<span class="op">=</span><span class="st">"Time"</span>,
-                  fontSize<span class="op">=</span><span class="fl">8</span>,
-                  x2Offset<span class="op">=</span><span class="fl">1</span>,
-                  addPoints <span class="op">=</span> <span class="cn">FALSE</span>,
-                  colours <span class="op">=</span> <span class="va">plotColours</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span>, common.legend <span class="op">=</span> <span class="cn">T</span>, legend<span class="op">=</span><span class="st">"bottom"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>                  <span class="st">"ADAM12"</span>,</span>
+<span>                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,</span>
+<span>                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
+<span>                  xlab<span class="op">=</span><span class="st">"Time"</span>,</span>
+<span>                  addPoints <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                  colours <span class="op">=</span> <span class="va">plotColours</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmodelPlot.html">ggmodelPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>                  <span class="st">"EMILIN3"</span>,</span>
+<span>                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,</span>
+<span>                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
+<span>                  xlab<span class="op">=</span><span class="st">"Time"</span>,</span>
+<span>                  fontSize<span class="op">=</span><span class="fl">8</span>,</span>
+<span>                  x2Offset<span class="op">=</span><span class="fl">1</span>,</span>
+<span>                  addPoints <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                  colours <span class="op">=</span> <span class="va">plotColours</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol<span class="op">=</span><span class="fl">2</span>, common.legend <span class="op">=</span> <span class="cn">T</span>, legend<span class="op">=</span><span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
-<div id="fold-change-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fold-change-plots" class="anchor"></a>Fold change plots</h2>
+<div class="section level3">
+<h3 id="fold-change-plots">Fold change plots<a class="anchor" aria-label="anchor" href="#fold-change-plots"></a>
+</h3>
 <p>The comparative fold change (for <code>x1var</code> variables)
 between conditions (<code>x2var</code> and <code>x2Values</code>
 variables) can be plotted using an <code>fcPlot</code> for all genes to
@@ -9955,15 +9935,15 @@ tocilizumab), using the design formula
 <code>gene_counts ~ time * drug</code>. By setting
 <code>graphics = "plotly"</code> this can be viewed interactively.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">time</span> <span class="op">*</span> <span class="va">drug</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Patient_ID</span><span class="op">)</span>, 
-                       countdata <span class="op">=</span> <span class="va">tpmdata</span>, <span class="va">metadata</span>,
-                       dispersion <span class="op">=</span> <span class="va">dispersions</span>, cores <span class="op">=</span> <span class="fl">8</span>, removeSingles <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmQvals.html">glmmQvals</a></span><span class="op">(</span><span class="va">r4ra_glmm</span><span class="op">)</span>
-<span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">..</span><span class="op">)</span>  <span class="co"># Genes to label</span>
-<span class="fu"><a href="../reference/fcPlot.html">fcPlot</a></span><span class="op">(</span><span class="va">r4ra_glmm</span>, x1var <span class="op">=</span> <span class="st">"time"</span>, x2var <span class="op">=</span> <span class="st">"drug"</span>, graphics <span class="op">=</span> <span class="st">"plotly"</span>,
-       pCutoff <span class="op">=</span> <span class="fl">0.05</span>, useAdjusted <span class="op">=</span> <span class="cn">TRUE</span>,
-       labels <span class="op">=</span> <span class="va">labels</span>,
-       colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'grey'</span>, <span class="st">'green3'</span>, <span class="st">'gold3'</span>, <span class="st">'blue'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmSeq.html">glmmSeq</a></span><span class="op">(</span><span class="op">~</span> <span class="va">time</span> <span class="op">*</span> <span class="va">drug</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">Patient_ID</span><span class="op">)</span>, </span>
+<span>                       countdata <span class="op">=</span> <span class="va">tpmdata</span>, <span class="va">metadata</span>,</span>
+<span>                       dispersion <span class="op">=</span> <span class="va">dispersions</span>, cores <span class="op">=</span> <span class="fl">8</span>, removeSingles <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">r4ra_glmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmmQvals.html">glmmQvals</a></span><span class="op">(</span><span class="va">r4ra_glmm</span><span class="op">)</span></span>
+<span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">..</span><span class="op">)</span>  <span class="co"># Genes to label</span></span>
+<span><span class="fu"><a href="../reference/fcPlot.html">fcPlot</a></span><span class="op">(</span><span class="va">r4ra_glmm</span>, x1var <span class="op">=</span> <span class="st">"time"</span>, x2var <span class="op">=</span> <span class="st">"drug"</span>, graphics <span class="op">=</span> <span class="st">"plotly"</span>,</span>
+<span>       pCutoff <span class="op">=</span> <span class="fl">0.05</span>, useAdjusted <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>       labels <span class="op">=</span> <span class="va">labels</span>,</span>
+<span>       colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey'</span>, <span class="st">'green3'</span>, <span class="st">'gold3'</span>, <span class="st">'blue'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r4ra_glmm_fcplot.png" width="80%" style="border: 0;"></p>
 <p>Log2 fold change between the two time points for individuals treated
 with rituximab on the x axis and individuals treated with tocilizumab on
@@ -9972,184 +9952,121 @@ interaction between time and drug are coloured blue or gold depending on
 whether their fold change is greater post-rituximab (blue) or
 post-tocilizumab (gold). Genes without interaction, but changing
 significantly over time are coloured green and tend to lie along the
-line of identity. See the Longitudinal tab in <a href="https://r4ra.hpc.qmul.ac.uk" class="uri">https://r4ra.hpc.qmul.ac.uk</a> for an interactive version
+line of identity. See the Longitudinal tab in <a href="https://r4ra.hpc.qmul.ac.uk" class="external-link uri">https://r4ra.hpc.qmul.ac.uk</a> for an interactive version
 of the above plot.</p>
 </div>
-<div id="ma-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ma-plots" class="anchor"></a>MA plots</h2>
+<div class="section level3">
+<h3 id="ma-plots">MA plots<a class="anchor" aria-label="anchor" href="#ma-plots"></a>
+</h3>
 <p>An MA plot is an application of a Bland–Altman plot. The plot
 visualizes the differences between measurements taken in two samples, by
 transforming the data onto M (log ratio) and A (mean average) scales,
 then plotting these values.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'FGF14'</span>, <span class="st">'IL2RG'</span>, <span class="st">'IGHV3-23'</span>, <span class="st">'ADAM12'</span>, <span class="st">'IL36G'</span>, 
-           <span class="st">'BLK'</span>, <span class="st">'SAA1'</span>, <span class="st">'CILP'</span>, <span class="st">'EMILIN3'</span>, <span class="st">'EMILIN2'</span>, <span class="st">'IGHJ6'</span>, 
-           <span class="st">'CXCL9'</span>, <span class="st">'CXCL13'</span><span class="op">)</span>
-<span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,
-                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,
-                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,
-                  x2Values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Non-response"</span><span class="op">)</span>,
-                  colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'grey'</span>, <span class="st">'midnightblue'</span>,
-                             <span class="st">'mediumseagreen'</span>, <span class="st">'goldenrod'</span><span class="op">)</span>,
-                  labels<span class="op">=</span><span class="va">labels</span>,
-                  graphics<span class="op">=</span><span class="st">"ggplot"</span><span class="op">)</span>
-
-<span class="va">maPlots</span><span class="op">$</span><span class="va">combined</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'MS4A1'</span>, <span class="st">'FGF14'</span>, <span class="st">'IL2RG'</span>, <span class="st">'IGHV3-23'</span>, <span class="st">'ADAM12'</span>, <span class="st">'IL36G'</span>, </span>
+<span>           <span class="st">'BLK'</span>, <span class="st">'SAA1'</span>, <span class="st">'CILP'</span>, <span class="st">'EMILIN3'</span>, <span class="st">'EMILIN2'</span>, <span class="st">'IGHJ6'</span>, </span>
+<span>           <span class="st">'CXCL9'</span>, <span class="st">'CXCL13'</span><span class="op">)</span></span>
+<span><span class="va">maPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/maPlot.html">maPlot</a></span><span class="op">(</span><span class="va">results</span>,</span>
+<span>                  x1var<span class="op">=</span><span class="st">"Timepoint"</span>,</span>
+<span>                  x2var<span class="op">=</span><span class="st">"EULAR_6m"</span>,</span>
+<span>                  x2Values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Non-response"</span><span class="op">)</span>,</span>
+<span>                  colours<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey'</span>, <span class="st">'midnightblue'</span>,</span>
+<span>                             <span class="st">'mediumseagreen'</span>, <span class="st">'goldenrod'</span><span class="op">)</span>,</span>
+<span>                  labels<span class="op">=</span><span class="va">labels</span>,</span>
+<span>                  graphics<span class="op">=</span><span class="st">"ggplot"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">maPlots</span><span class="op">$</span><span class="va">combined</span></span></code></pre></div>
 <p><img src="glmmSeq_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
 </div>
 </div>
-<div id="citing-glmmseq" class="section level1">
-<h1 class="hasAnchor">
-<a href="#citing-glmmseq" class="anchor"></a>Citing glmmSeq</h1>
-<p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/">Experimental Medicine &amp;
-Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/">Centre for Translational
+<div class="section level2">
+<h2 id="citing-glmmseq">Citing glmmSeq<a class="anchor" aria-label="anchor" href="#citing-glmmseq"></a>
+</h2>
+<p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/" class="external-link">Experimental Medicine &amp;
+Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/" class="external-link">Centre for Translational
 Bioinformatics</a> at Queen Mary University London.</p>
 <p>If you use this package please cite as:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## To cite package 'glmmSeq' in publications use:
-## 
-##   Myles Lewis, Katriona Goldmann and Elisabetta Sciacca (NA). glmmSeq: General
-##   Linear Mixed Models for Gene-Level Differential Expression. R package
-##   version 0.5.2. https://github.com/KatrionaGoldmann/glmmSeq
-## 
-## A BibTeX entry for LaTeX users is
-## 
-##   @Manual{,
-##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},
-##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},
-##     note = {R package version 0.5.2},
-##     url = {https://github.com/KatrionaGoldmann/glmmSeq},
-##   }</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## To cite package 'glmmSeq' in publications use:</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   Lewis M, Goldmann K, Sciacca E (????). _glmmSeq: General Linear Mixed Models</span></span>
+<span><span class="co">##   for Gene-Level Differential Expression_. R package version 0.5.1,</span></span>
+<span><span class="co">##   &lt;https://github.com/KatrionaGoldmann/glmmSeq&gt;.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   @Manual{,</span></span>
+<span><span class="co">##     title = {glmmSeq: General Linear Mixed Models for Gene-Level Differential Expression},</span></span>
+<span><span class="co">##     author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca},</span></span>
+<span><span class="co">##     note = {R package version 0.5.1},</span></span>
+<span><span class="co">##     url = {https://github.com/KatrionaGoldmann/glmmSeq},</span></span>
+<span><span class="co">##   }</span></span></code></pre>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li>Felice Rivellese, Anna Surace, Katriona Goldmann, Elisabetta
 Sciacca, Cankut Cubuk, Giovanni Giorli, … Michael Barnes, Myles J.
 Lewis, Costantino Pitzalis, R4RA collaborative group. Rituximab versus
 tocilizumab in rheumatoid arthritis: synovial biopsy-based biomarker
 analysis of the phase 4 R4RA randomized trial. Nature medicine 2022;
-28(6): 1256-68. <a href="https://doi.org/10.1038/s41591-022-01789-0">doi:10.1038/s41591-022-01789-0</a>
+28(6): 1256-68. <a href="https://doi.org/10.1038/s41591-022-01789-0" class="external-link">doi:10.1038/s41591-022-01789-0</a>
 </li>
 </ol>
 <p>Statistical software used in this package:</p>
 <ol start="2" style="list-style-type: decimal">
-<li><p><a href="https://dx.doi.org/10.18637/jss.v067.i01">lme4</a>:
+<li><p><a href="https://dx.doi.org/10.18637/jss.v067.i01" class="external-link">lme4</a>:
 Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting
 Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 67(1), 1-48. doi: 10.18637/jss.v067.i01.</p></li>
-<li><p><a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/">car</a>:
+<li><p><a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/" class="external-link">car</a>:
 John Fox and Sanford Weisberg (2019). An {R} Companion to Applied
-Regression, Third Edition. Thousand Oaks CA: Sage. URL: <a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/" class="uri">https://socialsciences.mcmaster.ca/jfox/Books/Companion/</a></p></li>
-<li><p><a href="https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf">MASS</a>:
+Regression, Third Edition. Thousand Oaks CA: Sage. URL: <a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/" class="external-link uri">https://socialsciences.mcmaster.ca/jfox/Books/Companion/</a></p></li>
+<li><p><a href="https://www.stats.ox.ac.uk/pub/MASS4/VR4stat.pdf" class="external-link">MASS</a>:
 Venables, W. N. &amp; Ripley, B. D. (2002) Modern Applied Statistics
 with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0</p></li>
-<li><p><a href="https://CRAN.R-project.org/package=glmmTMB">glmmTMB</a>:
+<li><p><a href="https://CRAN.R-project.org/package=glmmTMB" class="external-link">glmmTMB</a>:
 Mollie Brooks, Ben Bolker, Kasper Kristensen, Martin Maechler, Arni
 Magnusson (2022). glmmTMB: Generalized Linear Mixed Models using
 Template Model Builder</p></li>
-<li><p><a href="https://github.com/StoreyLab/qvalue">qvalue</a>: John D.
+<li><p><a href="https://github.com/StoreyLab/qvalue" class="external-link">qvalue</a>: John D.
 Storey, Andrew J. Bass, Alan Dabney and David Robinson (2020). qvalue:
 Q-value estimation for false discovery rate control. R package version
-2.22.0. <a href="https://github.com/StoreyLab/qvalue" class="uri">https://github.com/StoreyLab/qvalue</a></p></li>
-<li><p><a href="https://CRAN.R-project.org/package=lmerTest">lmerTest</a>:
+2.22.0. <a href="https://github.com/StoreyLab/qvalue" class="external-link uri">https://github.com/StoreyLab/qvalue</a></p></li>
+<li><p><a href="https://CRAN.R-project.org/package=lmerTest" class="external-link">lmerTest</a>:
 Alexandra Kuznetsova, Per Brockhoff, Rune Christensen, Sofie Jensen.
 lmerTest: Tests in Linear Mixed Effects Models</p></li>
-<li><p><a href="https://CRAN.R-project.org/package=emmeans">emmeans</a>:
+<li><p><a href="https://CRAN.R-project.org/package=emmeans" class="external-link">emmeans</a>:
 Russell V. Lenth, Paul Buerkner, Maxime Herve, Jonathon Love, Fernando
 Miguez, Hannes Riebl, Henrik Singmann. emmeans: Estimated Marginal
 Means, aka Least-Squares Means</p></li>
 </ol>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-<style>
-  #left {
-    float:left;
-  }
-  #right {
-    width:100%;
-    position:relative;
-    text-align:right;
-    align:right;
-    float:right;
-  }
-  *.icon-grey {color: lightgrey}
-  j {
-    text-align:center;
-    vertical-align:middle;
-    position: relative;
-    padding-bottom: 12px;
-  }
-  .smadge:after{
-    content:"EMR";
-    position: absolute;
-    background: lightgrey;
-    height:1.2rem;
-    top:1rem;
-    right:-1rem;
-    width:2.3rem;
-    text-align: center;
-    line-height: 1rem;;
-    font-size: 1rem;
-    color: #ff3333;
-    border-radius: 10%;
-  }
-  .bladge:after{
-    content:"C4TB";
-    position: absolute;
-    background: lightgrey;
-    height:1.2rem;
-    top:1rem;
-    right:-1rem;
-    width:2.7rem;
-    text-align: center;
-    line-height: 1rem;;
-    font-size: 1rem;
-    color: #ff3333;
-    border-radius: 10%;
-  }
-</style>
-<div id="left">
-Developed by the <a href="https://www.qmul.ac.uk/whri/emr/">Centre for Experimental Medicine &amp; Rheumatology</a>, QMUL
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Myles Lewis, Katriona Goldmann, Elisabetta Sciacca.</p>
 </div>
 
-<div id="right">
-<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff3333"></j></a>
-<span style="margin-left:1rem"></span>
-
-<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff3333"></j></a>
-<span style="margin-left:1rem"></span>
-
-<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff3333">
-</a><span style="margin-left:1rem"></span>
-
-<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff3333"></i></a>
-<span style="margin-left:1rem"></span>
-
-<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff3333"></i></a>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>

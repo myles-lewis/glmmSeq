@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Using mixed effects models to analyse longitudinal gene expression can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, and are less optimal for analysing longitudinal data. This package provides negative binomial and Gaussian mixed effects models to fit gene expression and other biological data across repeated samples. This is particularly useful for investigating changes in RNA-Sequencing gene expression between groups of individuals over time, as described in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Cubuk, C., Giorli, G., ... Lewis, M. J., &amp; Pitzalis, C. (2022) Nature medicine &lt;doi:10.1038/s41591-022-01789-0&gt;.">
 <title>General Linear Mixed Models for Gene-Level Differential Expression • glmmSeq</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -12,12 +13,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="General Linear Mixed Models for Gene-Level Differential Expression">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="General Linear Mixed Models for Gene-Level Differential Expression">
 <meta property="og:description" content="Using mixed effects models to analyse longitudinal gene expression can highlight differences between sample groups over time. The most widely used differential gene expression tools are unable to fit linear mixed effect models, and are less optimal for analysing longitudinal data. This package provides negative binomial and Gaussian mixed effects models to fit gene expression and other biological data across repeated samples. This is particularly useful for investigating changes in RNA-Sequencing gene expression between groups of individuals over time, as described in: Rivellese, F., Surace, A. E., Goldmann, K., Sciacca, E., Cubuk, C., Giorli, G., ... Lewis, M. J., &amp; Pitzalis, C. (2022) Nature medicine &lt;doi:10.1038/s41591-022-01789-0&gt;.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -25,284 +25,200 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">glmmSeq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fa fa-home"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="index.html">glmmSeq</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="articles/glmmSeq.html">Get started</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="articles/glmmSeq.html">
-    <span class="fas fa-book"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/KatrionaGoldmann/glmmSeq/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
-    Get Started
-  </a>
-</li>
-<li>
-  <a href="news/index.html">
-    <span class="fas fa-newspaper"></span>
-     
-    News
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">
-    <span class="far fa-file-code"></span>
-     
-    Reference Manual
-  </a>
-</li>
-<li>
-  <a href="https://github.com/KatrionaGoldmann/glmmSeq">
-    <span class="fab fa-github"></span>
-     
-    Github
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9">
+<div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="glmmseq">glmmSeq<a class="anchor" aria-label="anchor" href="#glmmseq"></a>
+</h1>
 </div>
-<!--/.navbar -->
-
-      
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-
-
-<div id="glmmseq" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#glmmseq" class="anchor"></a>glmmSeq</h1></div>
 <p><img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20"></p>
-<p>This R package is designed to model gene expression with a general
-linear mixed model (GLMM). This allows us to include random effects as
-well as fixed effects. For the purpose of the package we use the
-<code>glmer</code> function from the <a href="https://CRAN.R-project.org/package=lme4"><code>lme4</code></a>
-package which fits a GLMM.</p>
-<p>This package focuses in particular on changes in genes expression
-between different response or treatment groups over time.</p>
+<p>This R package is designed to model gene expression with a general linear mixed model (GLMM). This allows us to include random effects as well as fixed effects. For the purpose of the package we use the <code>glmer</code> function from the <a href="https://CRAN.R-project.org/package=lme4" class="external-link"><code>lme4</code></a> package which fits a GLMM.</p>
+<p>This package focuses in particular on changes in genes expression between different response or treatment groups over time.</p>
 </div>
-<div id="loading-the-package" class="section level1">
-<h1 class="hasAnchor">
-<a href="#loading-the-package" class="anchor"></a>Loading the package</h1>
-<div id="from-cran" class="section level3">
-<h3 class="hasAnchor">
-<a href="#from-cran" class="anchor"></a>From CRAN</h3>
-<pre><code>install.packages("glmmSeq")</code></pre>
+<div class="section level1">
+<h1 id="loading-the-package">Loading the package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
+</h1>
+<div class="section level3">
+<h3 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
+</h3>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="from-github" class="section level3">
-<h3 class="hasAnchor">
-<a href="#from-github" class="anchor"></a>From Github</h3>
-<pre><code>devtools::install_github("KatrionaGoldmann/glmmSeq")</code></pre>
+<div class="section level3">
+<h3 id="from-github">From Github<a class="anchor" aria-label="anchor" href="#from-github"></a>
+</h3>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"KatrionaGoldmann/glmmSeq"</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="locally" class="section level3">
-<h3 class="hasAnchor">
-<a href="#locally" class="anchor"></a>Locally</h3>
-<p>You can also download the source directory and load the functions
-individually:</p>
-<pre><code>functions = list.files("./R", full.names = TRUE)
-invisible(lapply(functions, source))</code></pre>
+<div class="section level3">
+<h3 id="locally">Locally<a class="anchor" aria-label="anchor" href="#locally"></a>
+</h3>
+<p>You can also download the source directory and load the functions individually:</p>
+<pre><code><span><span class="va">functions</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"./R"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">functions</span>, <span class="va">source</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 <p>But you will need to load in the additional libraries then:</p>
-<pre><code># Install CRAN packages
-invisible(lapply(c("MASS", "car", "ggplot2", "ggpubr", "lme4", 
-                   "lmerTest", "methods", "parallel", "plotly", 
-                   "pbapply", "pbmcapply"),
-                 function(p){
-                   if(! p %in% rownames(installed.packages())) {
-                     install.packages(p)
-                   }
-                   library(p, character.only=TRUE)
-                 }))
-
-# Install BioConductor packages
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-invisible(lapply(c("qvalue"), function(p){
-  if(! p %in% rownames(installed.packages())) BiocManager::install(p)
-  library(p, character.only=TRUE)
-}))</code></pre>
+<pre><code><span><span class="co"># Install CRAN packages</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MASS"</span>, <span class="st">"car"</span>, <span class="st">"ggplot2"</span>, <span class="st">"ggpubr"</span>, <span class="st">"lme4"</span>, </span>
+<span>                   <span class="st">"lmerTest"</span>, <span class="st">"methods"</span>, <span class="st">"parallel"</span>, <span class="st">"plotly"</span>, </span>
+<span>                   <span class="st">"pbapply"</span>, <span class="st">"pbmcapply"</span><span class="op">)</span>,</span>
+<span>                 <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span></span>
+<span>                   <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>                   <span class="op">}</span></span>
+<span>                   <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                 <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install BioConductor packages</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"qvalue"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="va">p</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">p</span>, character.only<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
-<div id="example-script" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-script" class="anchor"></a>Example script</h1>
-<p>For examples see the <a href="https://katrionagoldmann.github.io/glmmSeq/articles/glmmSeq.html">vignette</a>.</p>
+<div class="section level1">
+<h1 id="example-script">Example script<a class="anchor" aria-label="anchor" href="#example-script"></a>
+</h1>
+<p>For examples see the <a href="https://katrionagoldmann.github.io/glmmSeq/articles/glmmSeq.html" class="external-link">vignette</a>.</p>
 </div>
-<div id="reference" class="section level1">
-<h1 class="hasAnchor">
-<a href="#reference" class="anchor"></a>Reference</h1>
-<p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/">Experimental Medicine &amp;
-Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/">Centre for Translational
-Bioinformatics</a> at Queen Mary University London.</p>
+<div class="section level1">
+<h1 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h1>
+<p>glmmSeq was developed by the bioinformatics team at the <a href="https://www.qmul.ac.uk/whri/emr/" class="external-link">Experimental Medicine &amp; Rheumatology department</a> and <a href="https://www.qmul.ac.uk/c4tb/" class="external-link">Centre for Translational Bioinformatics</a> at Queen Mary University London.</p>
 <p>If you use this package please cite as:</p>
-<pre><code>citation("glmmSeq")
-
-## To cite package ‘glmmSeq’ in publications use:
-##
-##  Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk and Anna Surace (2021). 
-##  glmmSeq: General Linear Mixed Models for Gene-level Differential Expression. 
-##  R package version 0.3.0. https://github.com/KatrionaGoldmann/glmmSeq
-##
-## A BibTeX entry for LaTeX users is
-##
-##  @Manual{,
-##    title = {glmmSeq: General Linear Mixed Models for Gene-level Differential Expression},
-##    author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca and Cankut Cubuk and Anna Surace},
-##    year = {2021},
-##    note = {R package version 0.3.0},
-##    url = {https://github.com/KatrionaGoldmann/glmmSeq},
-##  }</code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"glmmSeq"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## To cite package ‘glmmSeq’ in publications use:</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##  Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk and Anna Surace (2021). </span></span>
+<span><span class="co">##  glmmSeq: General Linear Mixed Models for Gene-level Differential Expression. </span></span>
+<span><span class="co">##  R package version 0.3.0. https://github.com/KatrionaGoldmann/glmmSeq</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##  @Manual{,</span></span>
+<span><span class="co">##    title = {glmmSeq: General Linear Mixed Models for Gene-level Differential Expression},</span></span>
+<span><span class="co">##    author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca and Cankut Cubuk and Anna Surace},</span></span>
+<span><span class="co">##    year = {2021},</span></span>
+<span><span class="co">##    note = {R package version 0.3.0},</span></span>
+<span><span class="co">##    url = {https://github.com/KatrionaGoldmann/glmmSeq},</span></span>
+<span><span class="co">##  }</span></span></code></pre>
 </div>
 
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
-<h2>Links</h2>
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=glmmSeq">https://​cloud.r-project.org/​package=glmmSeq</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/KatrionaGoldmann/glmmSeq/">https://​github.com/​KatrionaGoldmann/​glmmSeq/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/KatrionaGoldmann/glmmSeq/issues">https://​github.com/​KatrionaGoldmann/​glmmSeq/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=glmmSeq" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/KatrionaGoldmann/glmmSeq/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/KatrionaGoldmann/glmmSeq/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing glmmSeq</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/myles-lewis.html">Myles Lewis</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9365-5345" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>
-<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/goldmann-katriona.html">Katriona Goldmann</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-9073-6323" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>
-<a href="https://www.qmul.ac.uk/c4tb/our-team/profiles/sciacca-elisabetta-.html">Elisabetta Sciacca</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-7525-1558" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li>Myles Lewis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9365-5345" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Katriona Goldmann <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-9073-6323" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Elisabetta Sciacca <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-7525-1558" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a></li>
-<li><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a></li>
-<li><a href="https://cran.r-project.org/package=glmmSeq"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a></li>
-<li><a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKatrionaGoldmann%2FglmmSeq&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a></li>
-<li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a></li>
-<li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/"><img src="https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg" alt="GitHub tag"></a></li>
-<li><a href="https://CRAN.R-project.org/package=glmmSeq"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a></li>
-<li><a href="https://github.com/KatrionaGoldmann/glmmSeq"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a></li>
+<li><a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a></li>
+<li><a href="https://cran.r-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a></li>
+<li><a href="https://hits.seeyoufarm.com" class="external-link"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKatrionaGoldmann%2FglmmSeq&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a></li>
+<li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg" alt="GitHub issues"></a></li>
+<li><a href="https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/" class="external-link"><img src="https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg" alt="GitHub tag"></a></li>
+<li><a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a></li>
+<li><a href="https://github.com/KatrionaGoldmann/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg" alt="Travis"></a></li>
 </ul>
 </div>
-</div>
-</div>
 
-
-      <footer><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-<style>
-  #left {
-    float:left;
-  }
-  #right {
-    width:100%;
-    position:relative;
-    text-align:right;
-    align:right;
-    float:right;
-  }
-  *.icon-grey {color: lightgrey}
-  j {
-    text-align:center;
-    vertical-align:middle;
-    position: relative;
-    padding-bottom: 12px;
-  }
-  .smadge:after{
-    content:"EMR";
-    position: absolute;
-    background: lightgrey;
-    height:1.2rem;
-    top:1rem;
-    right:-1rem;
-    width:2.3rem;
-    text-align: center;
-    line-height: 1rem;;
-    font-size: 1rem;
-    color: #ff3333;
-    border-radius: 10%;
-  }
-  .bladge:after{
-    content:"C4TB";
-    position: absolute;
-    background: lightgrey;
-    height:1.2rem;
-    top:1rem;
-    right:-1rem;
-    width:2.7rem;
-    text-align: center;
-    line-height: 1rem;;
-    font-size: 1rem;
-    color: #ff3333;
-    border-radius: 10%;
-  }
-</style>
-<div id="left">
-Developed by the <a href="https://www.qmul.ac.uk/whri/emr/">Centre for Experimental Medicine &amp; Rheumatology</a>, QMUL
+  </aside>
 </div>
 
-<div id="right">
-<a href="https://www.qmul.ac.uk/whri/emr/"><j class="fa fa-university fa-2x  icon-grey smadge" aria-hidden="false" style="color:#ff3333"></j></a>
-<span style="margin-left:1rem"></span>
 
-<a href="https://www.qmul.ac.uk/c4tb/"><j class="fa fa-university fa-2x  icon-grey bladge" aria-hidden="false" style="color:#ff3333"></j></a>
-<span style="margin-left:1rem"></span>
-
-<a href="mailto:k.goldmann@qmul.ac.uk" class="fas fa-envelope fa-2x" style="color:#ff3333">
-</a><span style="margin-left:1rem"></span>
-
-<a href="https://github.com/KatrionaGoldmann"><i class="fab fa-github fa-2x" style="color:#ff3333"></i></a>
-<span style="margin-left:1rem"></span>
-
-<a href="https://twitter.com/EMR_QMUL"><i class="fab fa-twitter fa-2x" style="color:#ff3333"></i></a>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Myles Lewis, Katriona Goldmann, Elisabetta Sciacca.</p>
 </div>
 
-      </footer>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+</div>
+
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>
