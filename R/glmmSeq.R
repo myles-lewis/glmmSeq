@@ -4,7 +4,6 @@
 #' Fits many generalised linear mixed effects models (GLMM) with negative
 #' binomial distribution for analysis of overdispersed count data with random
 #' effects. Designed for longitudinal analysis of RNA-Sequencing count data.
-#' Wald type 2 Chi-squared test is used to calculate p-values.
 #'
 #' @param modelFormula the model formula. This must be of the form `"~ ..."`
 #'   where the structure is assumed to be `"counts ~ ..."`. The formula must
@@ -55,10 +54,11 @@
 #'   is `TRUE` which is useful for debugging.
 #' @details
 #' This function is a wrapper for [lme4::glmer()]. By default, p-values for each
-#' model terms is computed using Wald type 2 Chi-squared test as per
+#' model term are computed using Wald type 2 Chi-squared test as per
 #' [car::Anova()]. The underlying code for this has been optimised for speed.
 #' However, if a reduced model formula is specified by setting `reduced`, then a
-#' likelihood ratio test is performed instead using [stats::anova].
+#' likelihood ratio test is performed instead using [stats::anova]. This will
+#' double computation time since two GLMM have to be fitted.
 #' 
 #' Parallelisation is provided using [parallel::mclapply] on Unix/Mac or
 #' [parallel::parLapply] on PC.
@@ -455,7 +455,22 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
     stats <- setNames(c(disp, AIC(fit),
                         as.numeric(logLik(fit))),
                       c("Dispersion", "AIC", "logLik"))
-    waldtest <- lmer_wald(fixedEffects, hyp.matrix, vcov.)
+    
+    if (is.null(reduced)) {
+      test <- lmer_wald(fixedEffects, hyp.matrix, vcov.)
+    } else {
+      # LRT
+      fit2 <- try(suppressMessages(suppressWarnings(
+        glmmTMB(reduced, data, family, control = control, offset = offset, ...)
+      )), silent = TRUE)
+      
+      if (!inherits(fit2, "try-error")) {
+        lrt <- anova(fit, fit2)
+        test <- list(chisq = setNames(lrt$Chisq[2], "LRT"), df = lrt$Df[2])
+      } else {
+        test <- list(chisq = NA, df = NA)
+      }
+    }
     
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.
@@ -469,8 +484,8 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
     return(list(stats = stats,
                 coef = fixedEffects,
                 stdErr = stdErr,
-                chisq = waldtest$chisq,
-                df = waldtest$df,
+                chisq = test$chisq,
+                df = test$df,
                 predict = predictdf,
                 optinfo = c(singular, conv),
                 message = msg,
