@@ -508,6 +508,7 @@ organiseStats <- function(resultList, test.stat) {
     chisq <- LRT[,1, drop = FALSE]
     df <- LRT[,2, drop = FALSE]
     pvals <- LRT[,3, drop = FALSE]
+    colnames(chisq) <- colnames(df) <- colnames(pvals) <- "LRT"
     s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
               pvals = pvals)
   }
