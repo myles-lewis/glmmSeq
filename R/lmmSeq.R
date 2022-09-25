@@ -437,8 +437,7 @@ lmerTestCore <- function(geneRow,
       # LRT
       fit2 <- try(suppressMessages(suppressWarnings(
         lmerTest::lmer(reduced, data = data, control = control, offset = offset,
-                       REML = FALSE,
-                       ...))),
+                       REML = FALSE, ...))),
         silent = TRUE)
       if (!inherits(fit2, "try-error")) {
         lrt <- suppressMessages(anova(fit, fit2))

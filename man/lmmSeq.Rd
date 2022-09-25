@@ -10,7 +10,7 @@ lmmSeq(
   metadata,
   id = NULL,
   offset = NULL,
-  test.stat = c("Wald", "F"),
+  test.stat = c("Wald", "F", "LRT"),
   reduced = NULL,
   modelData = NULL,
   designMatrix = NULL,
@@ -92,6 +92,13 @@ suitable for longitudinal analysis of high dimensional data. Wald type 2
 Chi-squared test is used to calculate p-values.
 }
 \details{
+By default, p-values for each model term are computed using Wald type 2
+Chi-squared test as per \code{\link[car:Anova]{car::Anova()}}. The underlying code for this has been
+optimised for speed. However, if a reduced model formula is specified by
+setting \code{reduced}, then a likelihood ratio test is performed instead using
+\link[stats:anova]{stats::anova}. This will double computation time since two LMM have to be
+fitted.
+
 Two key methods are used to speed up computation above and beyond simple
 parallelisation. The first is to speed up \code{\link[lme4:lmer]{lme4::lmer()}} by calling
 \link[lme4:modular]{lme4::lFormula} once at the start and then updating the \code{lFormula} output
