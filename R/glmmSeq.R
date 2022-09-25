@@ -471,7 +471,8 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
       
       if (!inherits(fit2, "try-error")) {
         lrt <- anova(fit, fit2)
-        test <- list(chisq = setNames(lrt$Chisq[2], "LRT"), df = lrt$Df[2])
+        test <- list(chisq = setNames(lrt$Chisq[2], "LRT"),
+                     df = lrt[2, 'Chi Df'])
       } else {
         test <- list(chisq = NA, df = NA)
       }
