@@ -3,6 +3,7 @@
 setClassUnion("character_or_list", c("character", "list"))
 setClassUnion("df_or_matrix", c("data.frame", "matrix"))
 setClassUnion("list_or_matrix", c("list", "matrix"))
+setClassUnion("formulaOrNULL", c("formula", "NULL"))
 
 #' An S4 class to define the glmmSeq output
 #'
@@ -23,7 +24,7 @@ setClass("GlmmSeq", slots = list(
   formula = "formula",
   stats = "list_or_matrix",
   predict = "df_or_matrix",
-  reduced = "formula",
+  reduced = "formulaOrNULL",
   countdata = "df_or_matrix",
   metadata = "df_or_matrix",
   modelData = "df_or_matrix",
@@ -52,7 +53,7 @@ setClass("lmmSeq", slots = list(
   formula = "formula",
   stats = "list_or_matrix",
   predict = "df_or_matrix",
-  reduced = "formula",
+  reduced = "formulaOrNULL",
   maindata = "df_or_matrix",
   metadata = "df_or_matrix",
   modelData = "df_or_matrix",
