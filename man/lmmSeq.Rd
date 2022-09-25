@@ -95,9 +95,10 @@ Chi-squared test is used to calculate p-values.
 By default, p-values for each model term are computed using Wald type 2
 Chi-squared test as per \code{\link[car:Anova]{car::Anova()}}. The underlying code for this has been
 optimised for speed. However, if a reduced model formula is specified by
-setting \code{reduced}, then a likelihood ratio test is performed instead using
-\link[stats:anova]{stats::anova}. This will double computation time since two LMM have to be
-fitted.
+setting \code{reduced}, then a likelihood ratio test (LRT) is performed instead
+using \link[stats:anova]{stats::anova}. This will double computation time since two LMM have to
+be fitted for each gene. For LRT, models being compared are optimised by
+maximum likelihood and not REML (\code{REML=FALSE}).
 
 Two key methods are used to speed up computation above and beyond simple
 parallelisation. The first is to speed up \code{\link[lme4:lmer]{lme4::lmer()}} by calling
