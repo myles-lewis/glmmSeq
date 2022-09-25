@@ -99,14 +99,14 @@ is \code{TRUE} which is useful for debugging.
 Fits many generalised linear mixed effects models (GLMM) with negative
 binomial distribution for analysis of overdispersed count data with random
 effects. Designed for longitudinal analysis of RNA-Sequencing count data.
-Wald type 2 Chi-squared test is used to calculate p-values.
 }
 \details{
 This function is a wrapper for \code{\link[lme4:glmer]{lme4::glmer()}}. By default, p-values for each
-model terms is computed using Wald type 2 Chi-squared test as per
+model term are computed using Wald type 2 Chi-squared test as per
 \code{\link[car:Anova]{car::Anova()}}. The underlying code for this has been optimised for speed.
 However, if a reduced model formula is specified by setting \code{reduced}, then a
-likelihood ratio test is performed instead using \link[stats:anova]{stats::anova}.
+likelihood ratio test is performed instead using \link[stats:anova]{stats::anova}. This will
+double computation time since two GLMM have to be fitted.
 
 Parallelisation is provided using \link[parallel:mclapply]{parallel::mclapply} on Unix/Mac or
 \link[parallel:clusterApply]{parallel::parLapply} on PC.
