@@ -51,6 +51,13 @@
 #'   linear mixed models; or a list of results if `returnList` is `TRUE`.
 #'   
 #' @details
+#' By default, p-values for each model term are computed using Wald type 2
+#' Chi-squared test as per [car::Anova()]. The underlying code for this has been
+#' optimised for speed. However, if a reduced model formula is specified by
+#' setting `reduced`, then a likelihood ratio test is performed instead using
+#' [stats::anova]. This will double computation time since two LMM have to be
+#' fitted.
+#' 
 #' Two key methods are used to speed up computation above and beyond simple
 #' parallelisation. The first is to speed up [lme4::lmer()] by calling
 #' [lme4::lFormula] once at the start and then updating the `lFormula` output
@@ -91,7 +98,7 @@ lmmSeq <- function(modelFormula,
                    metadata,
                    id = NULL,
                    offset = NULL,
-                   test.stat = c("Wald", "F"),
+                   test.stat = c("Wald", "F", "LRT"),
                    reduced = NULL,
                    modelData = NULL,
                    designMatrix = NULL,
@@ -161,6 +168,20 @@ lmmSeq <- function(modelFormula,
   start <- Sys.time()
   fullList <- lapply(rownames(maindata), function(i) maindata[i, ])
   
+  if (!is.null(reduced)) {
+    # LRT
+    if (length(findbars(reduced)) == 0) {
+      stop("No random effects terms specified in reduced formula")
+    }
+    subReduced <- subbars(reduced)
+    redvars <- rownames(attr(terms(subReduced), "factors"))
+    if (any(!redvars %in% variables)) {
+      stop("Extra terms in reduced formula not found full formula")
+    }
+    reduced <- update.formula(reduced, gene ~ ., simplify = FALSE)
+    test.stat <- "LRT"
+  }
+  
   if (test.stat == "Wald") {
     # Adapted from lme4::modular / lme4::lmer
     subsetMetadata$gene <- maindata[1, ]
@@ -206,17 +227,19 @@ lmmSeq <- function(modelFormula,
     }
     
   } else {
-    # lmerTest
+    # lmerTest or LRT
     if (Sys.info()["sysname"] == "Windows" & cores > 1) {
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl))
       dots <- list(...)
-      varlist <- c("lmerTestCore", "fullList", "fullFormula", "subsetMetadata",
-                   "control", "modelData", "offset", "designMatrix", "dots")
+      varlist <- c("lmerTestCore", "fullList", "fullFormula", "reduced",
+                   "subsetMetadata", "control", "modelData", "offset",
+                   "designMatrix", "dots")
       clusterExport(cl, varlist = varlist, envir = environment())
       if (progress) {
         resultList <- pblapply(fullList, function(geneRow) {
           args <- c(list(geneRow = geneRow, fullFormula = fullFormula,
+                         reduced = reduced,
                          data = subsetMetadata, control = control,
                          modelData = modelData, offset = offset,
                          designMatrix = designMatrix), dots)
@@ -225,6 +248,7 @@ lmmSeq <- function(modelFormula,
       } else {
         resultList <- parLapply(cl = cl, fullList, function(geneRow) {
           args <- c(list(geneRow = geneRow, fullFormula = fullFormula,
+                         reduced = reduced,
                          data = subsetMetadata, control = control,
                          modelData = modelData, offset = offset,
                          designMatrix = designMatrix), dots)
@@ -235,16 +259,18 @@ lmmSeq <- function(modelFormula,
     } else{
       if (progress) {
         resultList <- pbmclapply(fullList, function(geneRow) {
-          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
-                   control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+          lmerTestCore(geneRow, fullFormula = fullFormula, reduced = reduced, 
+                       data = subsetMetadata, control = control,
+                       modelData = modelData, offset = offset,
+                       designMatrix = designMatrix, ...)
         }, mc.cores = cores)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneRow) {
-          lmerTestCore(geneRow, fullFormula = fullFormula, data = subsetMetadata,
-                   control = control, modelData = modelData, offset = offset,
-                   designMatrix = designMatrix, ...)
+          lmerTestCore(geneRow, fullFormula = fullFormula, reduced = reduced, 
+                       data = subsetMetadata, control = control,
+                       modelData = modelData, offset = offset,
+                       designMatrix = designMatrix, ...)
         }, mc.cores = cores)
       }
     }
@@ -376,6 +402,7 @@ lmerFast <- function(geneRow,
 
 lmerTestCore <- function(geneRow,
                          fullFormula,
+                         reduced,
                          data,
                          control,
                          modelData,
@@ -383,9 +410,12 @@ lmerTestCore <- function(geneRow,
                          offset,
                          ...) {
   data[, "gene"] <- geneRow
+  dots <- list(...)
+  REML <- if (is.null(dots$REML)) TRUE else dots$REML
+  if (!is.null(reduced)) REML <- FALSE
   fit <- try(suppressMessages(suppressWarnings(
     lmerTest::lmer(fullFormula, data = data, control = control, offset = offset,
-                   ...))),
+                   REML = REML, ...))),
     silent = TRUE)
   if (!inherits(fit, "try-error")) {
     # intercept dropped genes
@@ -399,8 +429,24 @@ lmerTestCore <- function(geneRow,
     stdErr <- coef(summary(fit))[, 2]
     vcov. <- suppressWarnings(vcov(fit, complete = FALSE))
     vcov. <- as.matrix(vcov.)
-    Ftest <- as.matrix(anova(fit)[, -c(1,2)])
     
+    if (is.null(reduced)) {
+      # F test
+      test <- as.matrix(anova(fit)[, -c(1,2)])
+    } else {
+      # LRT
+      fit2 <- try(suppressMessages(suppressWarnings(
+        lmerTest::lmer(reduced, data = data, control = control, offset = offset,
+                       REML = FALSE,
+                       ...))),
+        silent = TRUE)
+      if (!inherits(fit2, "try-error")) {
+        lrt <- suppressMessages(anova(fit, fit2))
+        test <- unlist(lrt[2, c("Chisq", "Df", "Pr(>Chisq)")])
+      } else {
+        test <- setnames(c(NA, NA, NA), c("Chisq", "Df", "Pr(>Chisq)"))
+      }
+    }
     newY <- predict(fit, newdata = modelData, re.form = NA)
     a <- designMatrix %*% vcov.
     b <- as.matrix(a %*% t(designMatrix))
@@ -415,13 +461,13 @@ lmerTestCore <- function(geneRow,
     ret <- list(stats = stats,
                 coef = fixedEffects,
                 stdErr = stdErr,
-                Ftest = Ftest,
+                test = test,
                 predict = predictdf,
                 optinfo = c(singular, conv),
                 tryErrors = "")
     return(ret)
   } else {
-    return(list(stats = NA, coef = NA, stdErr = NA, Ftest = NA,
+    return(list(stats = NA, coef = NA, stdErr = NA, test = NA,
                 predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
 }
@@ -444,16 +490,25 @@ organiseStats <- function(resultList, test.stat) {
     colnames(pvals) <- colnames(chisq)
     s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
               pvals = pvals)
-  } else {
-    NumDF <- lapply(resultList, function(x) x$Ftest[,1])
+  } else if (test.stat == "F") {
+    NumDF <- lapply(resultList, function(x) x$test[,1])
     NumDF <- do.call(rbind, NumDF)
-    DenDF <- lapply(resultList, function(x) x$Ftest[,2])
+    DenDF <- lapply(resultList, function(x) x$test[,2])
     DenDF <- do.call(rbind, DenDF)
-    Fval <- lapply(resultList, function(x) x$Ftest[,3])
+    Fval <- lapply(resultList, function(x) x$test[,3])
     Fval <- do.call(rbind, Fval)
-    pvals <- lapply(resultList, function(x) x$Ftest[,4])
+    pvals <- lapply(resultList, function(x) x$test[,4])
     pvals <- do.call(rbind, pvals)
     s <- list(res = s, coef = cf, stdErr = stdErr, NumDF = NumDF, DenDF = DenDF, 
               Fval = Fval, pvals = pvals)
+  } else {
+    # LRT
+    LRT <- lapply(resultList, "[[", "test")
+    LRT <- do.call(rbind, LRT)
+    chisq <- LRT[,1, drop = FALSE]
+    df <- LRT[,2, drop = FALSE]
+    pvals <- LRT[,3, drop = FALSE]
+    s <- list(res = s, coef = cf, stdErr = stdErr, Chisq = chisq, Df = df,
+              pvals = pvals)
   }
 }
