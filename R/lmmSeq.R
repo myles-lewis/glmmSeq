@@ -54,9 +54,10 @@
 #' By default, p-values for each model term are computed using Wald type 2
 #' Chi-squared test as per [car::Anova()]. The underlying code for this has been
 #' optimised for speed. However, if a reduced model formula is specified by
-#' setting `reduced`, then a likelihood ratio test is performed instead using
-#' [stats::anova]. This will double computation time since two LMM have to be
-#' fitted.
+#' setting `reduced`, then a likelihood ratio test (LRT) is performed instead
+#' using [stats::anova]. This will double computation time since two LMM have to
+#' be fitted for each gene. For LRT, models being compared are optimised by
+#' maximum likelihood and not REML (`REML=FALSE`).
 #' 
 #' Two key methods are used to speed up computation above and beyond simple
 #' parallelisation. The first is to speed up [lme4::lmer()] by calling
