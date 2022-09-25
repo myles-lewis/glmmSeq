@@ -1,4 +1,19 @@
 
+#' Summarise a 'glmmSeq'/'lmmSeq' object
+#' 
+#' Summarise results from [glmmSeq] or [lmmSeq] analysis
+#' 
+#' @param object an object of class `"GlmmSeq"` or `"lmmSeq"`
+#' @param gene an optional character value specifying a single gene whose
+#'   results are summarised
+#' @param digits integer, used for number formatting
+#' @param ... arguments to be passed to other methods
+#' @return
+#' If `gene=NULL` a dataframe of results for all genes is returned. Otherwise
+#' the output of GLMM or LMM model results for a single gene including
+#' coefficients, test statistics, p-values is printed and the dataframe for all
+#' genes is returned invisibly.
+#' @seealso [glmmSeq()], [lmmSeq()]
 #' @export
 
 summary.lmmSeq <- function(object,
@@ -55,9 +70,9 @@ summary.lmmSeq <- function(object,
   }
 }
 
-
+#' @rdname summary.lmmSeq
 #' @export
 
-summary.GlmmSeq <- function(object, ...) {
-  summary.lmmSeq(object, ...)
+summary.GlmmSeq <- function(object, gene = NULL, ...) {
+  summary.lmmSeq(object, gene, ...)
 }
