@@ -18,7 +18,7 @@ An S4 class to define the glmmSeq output
 
 \item{\code{predict}}{Predicted values}
 
-\item{\code{reducedFormula}}{The reduced formula with removed random effects}
+\item{\code{reduced}}{Optional reduced formula for LRT}
 
 \item{\code{countdata}}{The input expression data with count data in rows}
 
