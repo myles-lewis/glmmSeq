@@ -194,6 +194,11 @@ glmmSeq <- function(modelFormula,
     if (length(findbars(reduced)) == 0) {
       stop("No random effects terms specified in reduced formula")
     }
+    subReduced <- subbars(reduced)
+    redvars <- rownames(attr(terms(subReduced), "factors"))
+    if (any(!redvars %in% variables)) {
+      stop("Extra terms in reduced formula not found full formula")
+    }
     reduced <- update.formula(reduced, count ~ ., simplify = FALSE)
     test.stat <- "LRT"
     hyp.matrix <- NULL
