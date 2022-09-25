@@ -15,7 +15,7 @@ summary.lmmSeq <- function(object,
     })
     do.call(cbind, gp)
   } else {
-    out <- lapply(object@stats, function(i) i[gene,])
+    out <- lapply(object@stats, function(i) i[gene, ])
     if (is(object, "GlmmSeq")) {
       cat("Generalised linear mixed model\n")
       cat(paste0("Method: ", object@info$method, "\n"))
@@ -37,6 +37,12 @@ summary.lmmSeq <- function(object,
       testdf <- data.frame(Chisq = out$Chisq,
                            Df = out$Df,
                            `Pr(>Chisq)` = out$pvals, check.names = FALSE)
+    } else if (object@info$test.stat == "LRT") {
+      cat("\nLikelihood ratio test\n")
+      testdf <- data.frame(Chisq = out$Chisq,
+                           Df = out$Df,
+                           `Pr(>Chisq)` = out$pvals, row.names = " ",
+                           check.names = FALSE)
     } else {
       cat("\nType III Analysis of Variance Table with Satterthwaite's method\n")
       testdf <- data.frame(NumDF = out$NumDF,

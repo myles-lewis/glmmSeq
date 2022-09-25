@@ -10,7 +10,7 @@ setClassUnion("list_or_matrix", c("list", "matrix"))
 #' @slot formula The model formula
 #' @slot stats Statistics from fitted models
 #' @slot predict Predicted values
-#' @slot reducedFormula The reduced formula with removed random effects
+#' @slot reduced Optional reduced formula for LRT
 #' @slot countdata The input expression data with count data in rows
 #' @slot metadata The input metadata
 #' @slot modelData Model data for predictions
@@ -23,7 +23,7 @@ setClass("GlmmSeq", slots = list(
   formula = "formula",
   stats = "list_or_matrix",
   predict = "df_or_matrix",
-  reducedFormula = "formula",
+  reduced = "formula",
   countdata = "df_or_matrix",
   metadata = "df_or_matrix",
   modelData = "df_or_matrix",
@@ -39,7 +39,7 @@ setClass("GlmmSeq", slots = list(
 #' @slot formula The model formula
 #' @slot stats Statistics from fitted models
 #' @slot predict Predicted values
-#' @slot reducedFormula The reduced formula with removed random effects
+#' @slot reduced Optional reduced formula for LRT
 #' @slot maindata The input expression data with variables in rows
 #' @slot metadata The input metadata
 #' @slot modelData Model data for predictions
@@ -52,7 +52,7 @@ setClass("lmmSeq", slots = list(
   formula = "formula",
   stats = "list_or_matrix",
   predict = "df_or_matrix",
-  reducedFormula = "formula",
+  reduced = "formula",
   maindata = "df_or_matrix",
   metadata = "df_or_matrix",
   modelData = "df_or_matrix",
