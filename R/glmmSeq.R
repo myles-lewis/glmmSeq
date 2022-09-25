@@ -141,8 +141,8 @@ glmmSeq <- function(modelFormula,
   
   # Manipulate formulae
   fullFormula <- update.formula(modelFormula, count ~ ., simplify = FALSE)
-  nonRandomFormula <- subbars(modelFormula)
-  variables <- rownames(attr(terms(nonRandomFormula), "factors"))
+  subFormula <- subbars(modelFormula)
+  variables <- rownames(attr(terms(subFormula), "factors"))
   subsetMetadata <- metadata[, variables]
   if (is.null(id)) {
     fb <- findbars(modelFormula)
