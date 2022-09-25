@@ -443,7 +443,7 @@ lmerTestCore <- function(geneRow,
         lrt <- suppressMessages(anova(fit, fit2))
         test <- unlist(lrt[2, c("Chisq", "Df", "Pr(>Chisq)")])
       } else {
-        test <- setnames(c(NA, NA, NA), c("Chisq", "Df", "Pr(>Chisq)"))
+        test <- setNames(c(NA, NA, NA), c("Chisq", "Df", "Pr(>Chisq)"))
       }
     }
     newY <- predict(fit, newdata = modelData, re.form = NA)
