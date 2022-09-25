@@ -1,8 +1,9 @@
 News
 =====
 
-# glmmSeq v0.5.3
-###### 24/09/2022
+# glmmSeq v0.5.4
+###### 25/09/2022
+* Add option for likelihood ratio test (LRT) in `glmmSeq()` and `lmmSeq()`
 * Enable changing of model formula, family and control parameters when refitting
 model for a single gene in `glmmRefit()`
 
