@@ -314,26 +314,6 @@ p=0.05) and add a matrix named `qvals` to the `@stats` slot:
 results <- glmmQvals(results)
 ```
 
-# Gaussian mixed effects models
-
-An alternative to fitting negative binomial GLMM is to use transformed data and
-fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
-data) where random effects/mixed effects models are useful. It is almost 3x
-faster than `glmmSeq`. For example, gaussian normalised DNA methylation data can
-be analysed using this method. In the example below the RNA-Seq gene expression
-data is log transformed so that it is approximately Gaussian. Alternatively
-variance stabilising transformation (VST) can be applied to count data through
-DESeq2 or the voom transformation in limma voom.
-
-```{r, warning=FALSE}
-logtpm <- log2(tpm + 1)
-lmmres <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
-                   maindata = logtpm,
-                   metadata = metadata,
-                   progress = TRUE)
-summary(lmmres, "MS4A1")
-```
-
 # glmmTMB models
 
 The `glmmTMB` package is an alternative to `lme4` for fitting negative binomial
@@ -359,6 +339,53 @@ different family functions and `glmmTMB` provides `nbinom1` and `nbinom2`
 (`glmmSeq` uses the latter by default). Other family functions e.g. `poisson`
 can be used.
 
+# Gaussian mixed effects models
+
+An alternative to fitting negative binomial GLMM is to use transformed data and
+fit gaussian LMM. The `lmmSeq` function will fit many LMM across genes (or other
+data) where random effects/mixed effects models are useful. It is almost 3x
+faster than `glmmSeq`. For example, gaussian normalised DNA methylation data can
+be analysed using this method. In the example below the RNA-Seq gene expression
+data is log transformed so that it is approximately Gaussian. Alternatively
+variance stabilising transformation (VST) can be applied to count data through
+DESeq2 or the voom transformation in limma voom.
+
+```{r, warning=FALSE}
+logtpm <- log2(tpm + 1)
+lmmres <- lmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                   maindata = logtpm,
+                   metadata = metadata,
+                   progress = TRUE)
+summary(lmmres, "MS4A1")
+```
+
+# Hypothesis testing
+
+By default, p-values for each model term are computed using Wald type 2
+Chi-squared test as per `car::Anova()`. The underlying code for this has been
+optimised for speed.
+
+For LMM via `lmmSeq()`, an alternative to the Wald type 2 Chi-squared test is an
+F-test with Satterthwaite denominator degrees of freedom, which has been
+implemented using the `lmerTest` package and is enabled using `test.stat = "F"`.
+This is not available for GLMM.
+
+However, if a reduced model formula is specified by setting `reduced`, then a
+likelihood ratio test is performed instead using `anova`. This will double
+computation time since two (G)LMM have to be fitted for each gene. For further
+information on inference testing on GLMM, we recommend
+[Ben Bolker's GLMM FAQ page](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html).
+
+```{r, warning=FALSE}
+glmmLRT <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                   reduced = ~ Timepoint + EULAR_6m + (1 | PATID),
+                   countdata = tpm,
+                   metadata = metadata,
+                   dispersion = disp, verbose = FALSE)
+
+summary(glmmLRT, "MS4A1")
+```
+
 # Extracting individual Genes
 
 Similarly you can run the script for an individual gene (make sure you use 
@@ -372,7 +399,8 @@ MS4A1glmm <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                      verbose = FALSE)
 ```
 
-The (g)lmer fitted object can be obtained using the function `glmmRefit()`:
+The (g)lmer or glmmTMB fitted object for a single gene can be obtained using the
+function `glmmRefit()`:
 
 ```{r, warning=FALSE}
 fit <- glmmRefit(results, gene = "MS4A1")
@@ -388,6 +416,21 @@ library(emmeans)
 
 emmeans(fit, ~ Timepoint | EULAR_6m)
 emmip(fit, ~ Timepoint | EULAR_6m)
+```
+
+## Refitting a different model
+
+`glmmRefit()` allows a different model to be fitted using the original data. The
+example below shows how to refit the model without the interaction term and then
+perform a likelihood ratio test using `anova`. Note for `glmmSeq()` objects the
+LHS of the reduced formula must be `"count"`, while for `lmmSeq()` objects the
+LHS must be `"gene"`. For glmmTMB analyses, the GLM family can also be changed.
+
+```{r, warning=FALSE}
+fit2 <- glmmRefit(results, gene = "MS4A1",
+                  formula = count ~ Timepoint + EULAR_6m + (1 | PATID))
+
+anova(fit, fit2)
 ```
 
 # Model Plots
