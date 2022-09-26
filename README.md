@@ -83,15 +83,15 @@ citation("glmmSeq")
 ##
 ##  Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk and Anna Surace (2021). 
 ##  glmmSeq: General Linear Mixed Models for Gene-level Differential Expression. 
-##  R package version 0.3.0. https://github.com/KatrionaGoldmann/glmmSeq
+##  R package version 0.5.4. https://github.com/KatrionaGoldmann/glmmSeq
 ##
 ## A BibTeX entry for LaTeX users is
 ##
 ##  @Manual{,
 ##    title = {glmmSeq: General Linear Mixed Models for Gene-level Differential Expression},
 ##    author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca and Cankut Cubuk and Anna Surace},
-##    year = {2021},
-##    note = {R package version 0.3.0},
+##    year = {2022},
+##    note = {R package version 0.5.4},
 ##    url = {https://github.com/KatrionaGoldmann/glmmSeq},
 ##  }
 ```
