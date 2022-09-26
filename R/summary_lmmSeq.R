@@ -42,6 +42,8 @@ summary.lmmSeq <- function(object,
     } else {
       cat("Linear mixed model\n")
     }
+    cat("Formula: ")
+    print(object@formula)
     print(out$res)
     cat("\nFixed effects:\n")
     cfdf <- data.frame(Estimate = out$coef,
@@ -49,21 +51,23 @@ summary.lmmSeq <- function(object,
     print(cfdf, digits = digits)
     if (object@info$test.stat == "Wald") {
       cat("\nAnalysis of Deviance Table (Type II Wald chisquare tests)\n")
-      testdf <- data.frame(Chisq = out$Chisq,
-                           Df = out$Df,
-                           `Pr(>Chisq)` = out$pvals, check.names = FALSE)
+      testdf <- data.frame(Chisq = out$Chisq, Df = out$Df,
+                           `Pr(>Chisq)` = out$pvals,
+                           row.names = colnames(object@stats$Chisq),
+                           check.names = FALSE)
     } else if (object@info$test.stat == "LRT") {
-      cat("\nLikelihood ratio test\n")
-      testdf <- data.frame(Chisq = out$Chisq,
-                           Df = out$Df,
-                           `Pr(>Chisq)` = out$pvals, row.names = " ",
+      cat("\nLikelihood ratio test\nReduced formula: ")
+      print(object@reduced)
+      testdf <- data.frame(Chisq = out$Chisq, Df = out$Df,
+                           `Pr(>Chisq)` = out$pvals,
+                           row.names = " ",
                            check.names = FALSE)
     } else {
       cat("\nType III Analysis of Variance Table with Satterthwaite's method\n")
-      testdf <- data.frame(NumDF = out$NumDF,
-                           DenDF = out$DenDF,
-                           `F value` = out$Fval,
-                           `Pr(>F)` = out$pvals, check.names = FALSE)
+      testdf <- data.frame(NumDF = out$NumDF, DenDF = out$DenDF,
+                           `F value` = out$Fval, `Pr(>F)` = out$pvals,
+                           row.names = colnames(object@stats$Fval),
+                           check.names = FALSE)
     }
     print(testdf, digits = digits)
     invisible(out)

@@ -499,6 +499,10 @@ organiseStats <- function(resultList, test.stat) {
     Fval <- do.call(rbind, Fval)
     pvals <- lapply(resultList, function(x) x$test[,4])
     pvals <- do.call(rbind, pvals)
+    if (ncol(NumDF) == 1) {
+      colnames(NumDF) <- colnames(DenDF) <- colnames(Fval) <- 
+        colnames(pvals) <- rownames(resultList[[1]]$test)
+    }
     s <- list(res = s, coef = cf, stdErr = stdErr, NumDF = NumDF, DenDF = DenDF, 
               Fval = Fval, pvals = pvals)
   } else {
