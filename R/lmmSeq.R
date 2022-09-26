@@ -55,13 +55,13 @@
 #' Chi-squared test as per [car::Anova()]. The underlying code for this has been
 #' optimised for speed. However, if a reduced model formula is specified by
 #' setting `reduced`, then a likelihood ratio test (LRT) is performed instead
-#' using [stats::anova]. This will double computation time since two LMM have to
-#' be fitted for each gene. For LRT, models being compared are optimised by
-#' maximum likelihood and not REML (`REML=FALSE`).
+#' using \code{\link[lme4:anova.merMod]{anova}}. This will double computation
+#' time since two LMM have to be fitted for each gene. For LRT, models being
+#' compared are optimised by maximum likelihood and not REML (`REML=FALSE`).
 #' 
 #' Two key methods are used to speed up computation above and beyond simple
 #' parallelisation. The first is to speed up [lme4::lmer()] by calling
-#' [lme4::lFormula] once at the start and then updating the `lFormula` output
+#' [lme4::lFormula()] once at the start and then updating the `lFormula` output
 #' with new data. The 2nd speed up is through optimised code for repeated type 2
 #' Wald Chi-squared tests (original code was derived from [car::Anova]). For
 #' example, elements such as the hypothesis matrices are generated only once to
