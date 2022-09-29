@@ -575,6 +575,36 @@ maPlots <- maPlot(results,
 maPlots$combined
 ```
 
+# Troubleshooting
+
+Mixed effects models are tricky to fit and `lme4::glmer` sometimes returns
+errors. In fact, a significant amount of code in `glmmSeq` is devoted to
+catching and handling errors to allow parallelisation to continue. Errors in
+genes are stored in the `errors` slot.
+
+```{r}
+results@errors[1]   # first gene error
+```
+
+Sometimes `glmmSeq` returns errors in all genes. This usually means a problem
+with not enough samples in each timepoint or a mistake in the formula. Since
+version 0.5.5 `glmmSeq` now returns a vector of the error messages for all
+genes, which can be useful for debugging. In the example below, only timepoint 0
+is specified.
+
+```{r}
+results3 <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
+                    countdata = tpm[, metadata$Timepoint == 0],
+                    metadata = metadata[metadata$Timepoint == 0, ],
+                    dispersion = disp)
+```
+
+If there are errors which are not caught by the error checking core mechanism,
+this can lead to problems with grouping results after the core models have been
+fit. Setting `returnList=TRUE` when calling `glmmSeq` returns the list output
+direct from `mclapply` (or `parLapply` on windows). This can be helpful for
+debugging unforeseeen problems in the core loop.
+
 # Citing glmmSeq
 
 glmmSeq was developed by the bioinformatics team at the [Experimental Medicine & Rheumatology department](https://www.qmul.ac.uk/whri/emr/) and [Centre for Translational Bioinformatics](https://www.qmul.ac.uk/c4tb/) at Queen Mary University London.
