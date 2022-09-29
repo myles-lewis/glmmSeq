@@ -312,7 +312,11 @@ glmmSeq <- function(modelFormula,
   names(resultList) <- rownames(countdata)
   noErr <- vapply(resultList, function(x) x$tryErrors == "", FUN.VALUE = TRUE)
   if (sum(noErr) == 0) { 
-    stop("All genes returned an error. Check call. Check sufficient data in each group")
+    message("All genes returned an error. Check call. Check sufficient data in each group")
+    outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
+                           FUN.VALUE = c("test"))
+    print(outputErrors[1])
+    return(outputErrors)
   }
   # Print timing if verbose
   end <- Sys.time()
