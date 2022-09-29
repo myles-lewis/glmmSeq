@@ -51,7 +51,9 @@
 #' \code{\link[lme4:glmer]{lme4::glmer()}}
 #' @return Returns an S4 class `GlmmSeq` object with results for gene-wise
 #'   general linear mixed models. A list of results is returned if `returnList`
-#'   is `TRUE` which is useful for debugging.
+#'   is `TRUE` which is useful for debugging. If all genes return errors from
+#'   `glmer`, then an error message is shown and a character vector containing
+#'   error messages for all genes is returned.
 #' @details
 #' This function is a wrapper for [lme4::glmer()]. By default, p-values for each
 #' model term are computed using Wald type 2 Chi-squared test as per

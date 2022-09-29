@@ -93,7 +93,9 @@ object (default = FALSE). Useful for debugging.}
 \value{
 Returns an S4 class \code{GlmmSeq} object with results for gene-wise
 general linear mixed models. A list of results is returned if \code{returnList}
-is \code{TRUE} which is useful for debugging.
+is \code{TRUE} which is useful for debugging. If all genes return errors from
+\code{glmer}, then an error message is shown and a character vector containing
+error messages for all genes is returned.
 }
 \description{
 Fits many generalised linear mixed effects models (GLMM) with negative
