@@ -1,6 +1,10 @@
 News
 =====
 
+# glmmSeq v0.5.5
+###### 29/09/2022
+* Improve error handling if all genes give errors
+
 # glmmSeq v0.5.4
 ###### 25/09/2022
 * Add option for likelihood ratio test (LRT) in `glmmSeq()` and `lmmSeq()`
