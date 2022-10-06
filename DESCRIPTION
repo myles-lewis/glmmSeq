@@ -30,8 +30,8 @@ biocViews:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Language: en-gb
-URL: https://github.com/KatrionaGoldmann/glmmSeq
-BugReports: https://github.com/KatrionaGoldmann/glmmSeq/issues
+URL: https://github.com/myles-lewis/glmmSeq
+BugReports: https://github.com/myles-lewis/glmmSeq/issues
 Suggests:
     knitr,
     rmarkdown,
