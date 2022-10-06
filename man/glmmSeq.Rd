@@ -118,6 +118,16 @@ using the \code{glmmTMB} package. This gives access to a variety of alternative
 GLM family functions. Note, \code{glmmTMB} negative binomial models are
 substantially slower to fit than \code{glmer} models with known dispersion due to
 the extra time taken by \code{glmmTMB} to optimise the dispersion parameter.
+
+The \code{id} argument is usually optional. By default the \code{id} column in the
+metadata is determined as the term after the bar in the random effects term
+of the model. Note that \code{id} is not passed to \code{glmer} or \code{glmmTMB}. It is
+only really used to remove singletons from the \code{countdata} matrix and
+\code{metadata} dataframe. The \code{id} is also stored in the output from \code{glmmSeq}
+and used by plotting function \code{\link[=modelPlot]{modelPlot()}}. However, due to its flexible
+nature, in theory \code{glmmSeq} should allow for more than one random effect
+term, although this has not been tested formally. In this case, it is
+probably prudent to specify a value for \code{id}.
 }
 \examples{
 data(PEAC_minimal_load)

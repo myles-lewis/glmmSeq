@@ -30,6 +30,8 @@ An S4 class to define the glmmSeq output
 
 \item{\code{errors}}{Any errors}
 
-\item{\code{vars}}{List of variables stored from the original call}
+\item{\code{vars}}{List of variables stored from the original call, including the
+\code{id} variable (by default automatically identified from the random effect
+term in the model) and \code{removeSingles} argument}
 }}
 

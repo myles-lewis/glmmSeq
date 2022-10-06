@@ -71,6 +71,16 @@
 #' substantially slower to fit than `glmer` models with known dispersion due to
 #' the extra time taken by `glmmTMB` to optimise the dispersion parameter.
 #' 
+#' The `id` argument is usually optional. By default the `id` column in the
+#' metadata is determined as the term after the bar in the random effects term
+#' of the model. Note that `id` is not passed to `glmer` or `glmmTMB`. It is
+#' only really used to remove singletons from the `countdata` matrix and
+#' `metadata` dataframe. The `id` is also stored in the output from `glmmSeq`
+#' and used by plotting function [modelPlot()]. However, due to its flexible
+#' nature, in theory `glmmSeq` should allow for more than one random effect
+#' term, although this has not been tested formally. In this case, it is
+#' probably prudent to specify a value for `id`.
+#' 
 #' @seealso [lme4::glmer] [lme4::glmerControl] [glmmTMB::glmmTMB]
 #'   [glmmTMB::nbinom2] [glmmTMB::glmmTMBControl] [car::Anova]
 #' 

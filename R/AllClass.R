@@ -17,7 +17,9 @@ setClassUnion("formulaOrNULL", c("formula", "NULL"))
 #' @slot modelData Model data for predictions
 #' @slot optInfo Information on whether the model was singular or converged
 #' @slot errors Any errors
-#' @slot vars List of variables stored from the original call
+#' @slot vars List of variables stored from the original call, including the
+#'   `id` variable (by default automatically identified from the random effect
+#'   term in the model) and `removeSingles` argument
 
 setClass("GlmmSeq", slots = list(
   info = "list",
