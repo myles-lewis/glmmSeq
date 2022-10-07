@@ -1,16 +1,16 @@
 [![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-mediumpurple.svg)](https://choosealicense.com/licenses/mit/)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://cran.r-project.org/package=glmmSeq)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKatrionaGoldmann%2FglmmSeq&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
-[![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fmyles-lewis%2FglmmSeq&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![GitHub issues](https://img.shields.io/github/issues/myles-lewis/glmmSeq.svg)](https://GitHub.com/myles-lewis/glmmSeq/issues/)
 [![GitHub
-tag](https://img.shields.io/github/tag/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/tags/)
+tag](https://img.shields.io/github/tag/myles-lewis/glmmSeq.svg)](https://GitHub.com/myles-lewis/glmmSeq/tags/)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://CRAN.R-project.org/package=glmmSeq)
-[![Travis](https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg)](https://github.com/KatrionaGoldmann/glmmSeq)
+[![Travis](https://img.shields.io/travis/myles-lewis/glmmSeq.svg)](https://github.com/myles-lewis/glmmSeq)
 
 # glmmSeq 
 
-<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20" />
+<img src="https://myles-lewis.github.io/glmmSeq/logo.png" align="right" alt="" width="200" hspace="20" />
 
 
 
@@ -31,7 +31,7 @@ install.packages("glmmSeq")
 ### From Github
 
 ```
-devtools::install_github("KatrionaGoldmann/glmmSeq")
+devtools::install_github("myles-lewis/glmmSeq")
 ```
 
 ### Locally
@@ -68,7 +68,7 @@ invisible(lapply(c("qvalue"), function(p){
 
 # Example script
 
-For examples see the [vignette](https://katrionagoldmann.github.io/glmmSeq/articles/glmmSeq.html). 
+For examples see the [vignette](https://myles-lewis.github.io/glmmSeq/articles/glmmSeq.html). 
 
 # Reference
 
@@ -83,7 +83,7 @@ citation("glmmSeq")
 ##
 ##  Myles Lewis, Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk and Anna Surace (2021). 
 ##  glmmSeq: General Linear Mixed Models for Gene-level Differential Expression. 
-##  R package version 0.5.4. https://github.com/KatrionaGoldmann/glmmSeq
+##  R package version 0.5.4. https://github.com/myles-lewis/glmmSeq
 ##
 ## A BibTeX entry for LaTeX users is
 ##
@@ -92,7 +92,7 @@ citation("glmmSeq")
 ##    author = {Myles Lewis and Katriona Goldmann and Elisabetta Sciacca and Cankut Cubuk and Anna Surace},
 ##    year = {2022},
 ##    note = {R package version 0.5.4},
-##    url = {https://github.com/KatrionaGoldmann/glmmSeq},
+##    url = {https://github.com/myles-lewis/glmmSeq},
 ##  }
 ```
 
