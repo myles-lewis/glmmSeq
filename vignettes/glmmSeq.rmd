@@ -32,14 +32,14 @@ library(kableExtra)
 [![License: MIT](https://img.shields.io/badge/License-MIT-mediumpurple.svg)](https://choosealicense.com/licenses/mit/)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://CRAN.R-project.org/package=glmmSeq)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://CRAN.R-project.org/package=glmmSeq)
-`r paste0("[![", Sys.Date(),"]","(",paste0("https://img.shields.io/badge/last%20git%20commit-", gsub('-', '--', Sys.Date()),"-turquoise.svg"), ")]","(",'https://github.com/KatrionaGoldmann/glmmSeq/blob/master/NEWS.md',")")`
-[![GitHub issues](https://img.shields.io/github/issues/KatrionaGoldmann/glmmSeq.svg)](https://GitHub.com/KatrionaGoldmann/glmmSeq/issues/)
-[![Travis](https://img.shields.io/travis/KatrionaGoldmann/glmmSeq.svg)](https://github.com/KatrionaGoldmann/glmmSeq)
+`r paste0("[![", Sys.Date(),"]","(",paste0("https://img.shields.io/badge/last%20git%20commit-", gsub('-', '--', Sys.Date()),"-turquoise.svg"), ")]","(",'https://github.com/myles-lewis/glmmSeq/blob/master/NEWS.md',")")`
+[![GitHub issues](https://img.shields.io/github/issues/myles-lewis/glmmSeq.svg)](https://GitHub.com/myles-lewis/glmmSeq/issues/)
+[![Travis](https://img.shields.io/travis/myles-lewis/glmmSeq.svg)](https://github.com/myles-lewis/glmmSeq)
 
 
 # glmmSeq 
 
-<img src="https://katrionagoldmann.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"/>
+<img src="https://myles-lewis.github.io/glmmSeq/logo.png" align="right" alt="glmmSeq logo" width="200" hspace="20" border="0"/>
 
 
 The aim of this package is to model gene expression with a general linear mixed
@@ -64,7 +64,7 @@ install.packages("glmmSeq")
 ### Installing from Github
 
 ```{r, eval=FALSE}
-devtools::install_github("KatrionaGoldmann/glmmSeq")
+devtools::install_github("myles-lewis/glmmSeq")
 ```
 
 ### Installing Locally
@@ -592,7 +592,7 @@ version 0.5.5 `glmmSeq` now returns a vector of the error messages for all
 genes, which can be useful for debugging. In the example below, only timepoint 0
 is specified.
 
-```{r}
+```{r, error=TRUE}
 results3 <- glmmSeq(~ Timepoint * EULAR_6m + (1 | PATID),
                     countdata = tpm[, metadata$Timepoint == 0],
                     metadata = metadata[metadata$Timepoint == 0, ],
