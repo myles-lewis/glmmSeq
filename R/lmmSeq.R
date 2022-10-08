@@ -47,8 +47,11 @@
 #' @param ... Other parameters passed to
 #'   \code{\link[lmerTest:lmer]{lmerTest::lmer()}}. Only available if 
 #'   `test.stat = "F"`.
-#' @return Returns an S4 class `lmmSeq` object with results for gene-wise
-#'   linear mixed models; or a list of results if `returnList` is `TRUE`.
+#' @return Returns an S4 class `lmmSeq` object with results for gene-wise linear
+#'   mixed models; or a list of results if `returnList` is `TRUE`, which is
+#'   useful for debugging. If all genes return errors from `lmer`, then an error
+#'   message is shown and a character vector containing error messages for all
+#'   genes is returned.
 #'   
 #' @details
 #' By default, p-values for each model term are computed using Wald type 2
@@ -72,7 +75,16 @@
 #' Parallelisation is performed using [parallel::mclapply] on unix/mac and
 #' [parallel::parLapply] on windows. Progress bars use [pbmcapply::pbmclapply]
 #' on unix/mac and [pbapply::pblapply] on windows.
-#'   
+#' 
+#' The `id` argument is usually optional. By default the `id` column in the
+#' metadata is determined as the term after the bar in the random effects term
+#' of the model. Note that `id` is not passed to `lmer`. It is only really used
+#' to remove singletons from the `maindata` matrix and `metadata` dataframe. The
+#' `id` is also stored in the output from `lmmSeq` and used by plotting function
+#' [modelPlot()]. However, due to its flexible nature, in theory `lmmSeq` should
+#' allow for more than one random effect term, although this has not been tested
+#' formally. In this case, it is probably prudent to specify a value for `id`.
+#' 
 #' @importFrom lme4 subbars findbars fixef lmerControl nobars isSingular
 #'   lFormula
 #' @importFrom lmerTest lmer
@@ -279,16 +291,19 @@ lmmSeq <- function(modelFormula,
   
   if(returnList) return(resultList)
   
-  # Print timing if verbose
-  end <- Sys.time()
-  if (verbose) print(end - start)
-  
   # Output
   names(resultList) <- rownames(maindata)
   noErr <- vapply(resultList, function(x) x$tryErrors == "", FUN.VALUE = TRUE)
-  if (length(which(noErr)) == 0) { 
-    stop("All genes returned an error. Check sufficient data in each group")
+  if (sum(noErr) == 0) { 
+    message("All genes returned an error. Check call. Check sufficient data in each group")
+    outputErrors <- vapply(resultList[!noErr], function(x) {x$tryErrors},
+                           FUN.VALUE = c("test"))
+    print(outputErrors[1])
+    return(outputErrors)
   }
+  # Print timing if verbose
+  end <- Sys.time()
+  if (verbose) print(end - start)
   
   predList <- lapply(resultList[noErr], "[[", "predict")
   outputPredict <- do.call(rbind, predList)

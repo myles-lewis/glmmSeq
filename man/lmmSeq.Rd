@@ -82,8 +82,11 @@ object (default = FALSE). Helpful for debugging.}
 \code{test.stat = "F"}.}
 }
 \value{
-Returns an S4 class \code{lmmSeq} object with results for gene-wise
-linear mixed models; or a list of results if \code{returnList} is \code{TRUE}.
+Returns an S4 class \code{lmmSeq} object with results for gene-wise linear
+mixed models; or a list of results if \code{returnList} is \code{TRUE}, which is
+useful for debugging. If all genes return errors from \code{lmer}, then an error
+message is shown and a character vector containing error messages for all
+genes is returned.
 }
 \description{
 Fits many linear mixed effects models for analysis of gaussian data with
@@ -113,6 +116,15 @@ the \code{lmerTest} package have not been optimised and are therefore slower.
 Parallelisation is performed using \link[parallel:mclapply]{parallel::mclapply} on unix/mac and
 \link[parallel:clusterApply]{parallel::parLapply} on windows. Progress bars use \link[pbmcapply:pbmclapply]{pbmcapply::pbmclapply}
 on unix/mac and \link[pbapply:pbapply]{pbapply::pblapply} on windows.
+
+The \code{id} argument is usually optional. By default the \code{id} column in the
+metadata is determined as the term after the bar in the random effects term
+of the model. Note that \code{id} is not passed to \code{lmer}. It is only really used
+to remove singletons from the \code{maindata} matrix and \code{metadata} dataframe. The
+\code{id} is also stored in the output from \code{lmmSeq} and used by plotting function
+\code{\link[=modelPlot]{modelPlot()}}. However, due to its flexible nature, in theory \code{lmmSeq} should
+allow for more than one random effect term, although this has not been tested
+formally. In this case, it is probably prudent to specify a value for \code{id}.
 }
 \examples{
 data(PEAC_minimal_load)
