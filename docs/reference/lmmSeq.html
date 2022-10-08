@@ -178,8 +178,11 @@ object (default = FALSE). Helpful for debugging.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns an S4 class <code>lmmSeq</code> object with results for gene-wise
-linear mixed models; or a list of results if <code>returnList</code> is <code>TRUE</code>.</p>
+<p>Returns an S4 class <code>lmmSeq</code> object with results for gene-wise linear
+mixed models; or a list of results if <code>returnList</code> is <code>TRUE</code>, which is
+useful for debugging. If all genes return errors from <code>lmer</code>, then an error
+message is shown and a character vector containing error messages for all
+genes is returned.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -202,6 +205,14 @@ the <code>lmerTest</code> package have not been optimised and are therefore slow
 <p>Parallelisation is performed using <a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">parallel::mclapply</a> on unix/mac and
 <a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::parLapply</a> on windows. Progress bars use <a href="https://rdrr.io/pkg/pbmcapply/man/pbmclapply.html" class="external-link">pbmcapply::pbmclapply</a>
 on unix/mac and <a href="https://rdrr.io/pkg/pbapply/man/pbapply.html" class="external-link">pbapply::pblapply</a> on windows.</p>
+<p>The <code>id</code> argument is usually optional. By default the <code>id</code> column in the
+metadata is determined as the term after the bar in the random effects term
+of the model. Note that <code>id</code> is not passed to <code>lmer</code>. It is only really used
+to remove singletons from the <code>maindata</code> matrix and <code>metadata</code> dataframe. The
+<code>id</code> is also stored in the output from <code>lmmSeq</code> and used by plotting function
+<code><a href="modelPlot.html">modelPlot()</a></code>. However, due to its flexible nature, in theory <code>lmmSeq</code> should
+allow for more than one random effect term, although this has not been tested
+formally. In this case, it is probably prudent to specify a value for <code>id</code>.</p>
     </div>
 
     <div class="section level2">

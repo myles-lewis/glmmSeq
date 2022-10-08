@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Myles Lewis,
 Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
             
-            <h4 data-toc-skip class="date">2022-10-07</h4>
+            <h4 data-toc-skip class="date">2022-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/myles-lewis/glmmSeq/blob/HEAD/vignettes/glmmSeq.rmd" class="external-link"><code>vignettes/glmmSeq.rmd</code></a></small>
       <div class="d-none name"><code>glmmSeq.rmd</code></div>
@@ -94,7 +94,7 @@ Katriona Goldmann, Elisabetta Sciacca, Cankut Cubuk, Anna Surace</h4>
   margin-right: auto;
 }
 </style>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/myles-lewis/glmmSeq/blob/master/NEWS.md" class="external-link"><img src="https://img.shields.io/badge/last%20git%20commit-2022--10--07-turquoise.svg" alt="2022-10-07"></a> <a href="https://GitHub.com/myles-lewis/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/myles-lewis/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/myles-lewis/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/myles-lewis/glmmSeq.svg" alt="Travis"></a></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="Lifecycle: Maturing"></a> <a href="https://choosealicense.com/licenses/mit/" class="external-link"><img src="https://img.shields.io/badge/License-MIT-mediumpurple.svg" alt="License: MIT"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://www.r-pkg.org/badges/version/glmmSeq" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=glmmSeq" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange" alt="Downloads"></a> <a href="https://github.com/myles-lewis/glmmSeq/blob/master/NEWS.md" class="external-link"><img src="https://img.shields.io/badge/last%20git%20commit-2022--10--08-turquoise.svg" alt="2022-10-08"></a> <a href="https://GitHub.com/myles-lewis/glmmSeq/issues/" class="external-link"><img src="https://img.shields.io/github/issues/myles-lewis/glmmSeq.svg" alt="GitHub issues"></a> <a href="https://github.com/myles-lewis/glmmSeq" class="external-link"><img src="https://img.shields.io/travis/myles-lewis/glmmSeq.svg" alt="Travis"></a></p>
 <div class="section level2">
 <h2 id="glmmseq">glmmSeq<a class="anchor" aria-label="anchor" href="#glmmseq"></a>
 </h2>
@@ -3001,7 +3001,7 @@ function. Note that this analysis can take some time, with 4 cores:</p>
 <span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 3.224622 secs</span></span>
+<span><span class="co">## Time difference of 3.376793 secs</span></span>
 <span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
 <p>or alternatively using two-factor classification with
 EULAR_binary:</p>
@@ -3012,7 +3012,7 @@ EULAR_binary:</p>
 <span>                    dispersion <span class="op">=</span> <span class="va">disp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 3.004652 secs</span></span>
+<span><span class="co">## Time difference of 3.077382 secs</span></span>
 <span><span class="co">## Errors in 4 gene(s): IL12A, FGF12, VIL1, IL26</span></span></code></pre>
 <div class="section level3">
 <h3 id="outputs">Outputs<a class="anchor" aria-label="anchor" href="#outputs"></a>
@@ -9752,7 +9752,7 @@ voom.</p>
 <span>                   progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## n = 123 samples, 82 individuals</span></span>
-<span><span class="co">## Time difference of 0.7843871 secs</span></span></code></pre>
+<span><span class="co">## Time difference of 0.813952 secs</span></span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lmmres</span>, <span class="st">"MS4A1"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Linear mixed model</span></span>
