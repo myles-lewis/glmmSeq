@@ -200,7 +200,8 @@ fcPlot <- function(object,
                  color = ~col, colors = colours,
                  marker = list(size = 8, 
                                line = list(width = 0.75, color = 'white')),
-                 text = rownames(plotData), hoverinfo = 'text') %>%
+                 text = rownames(plotData), hoverinfo = 'text',
+                 key = rownames(plotData), ...) %>%
       layout(annotations = annot,
              xaxis = list(title = paste0("log<sub>2</sub>Fold change ",
                                      x1Values[2], " vs ", x1Values[1],
