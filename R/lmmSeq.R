@@ -73,7 +73,7 @@
 #' the `lmerTest` package have not been optimised and are therefore slower.
 #' 
 #' Parallelisation is performed using [parallel::mclapply] on unix/mac and
-#' [parallel::parLapply] on windows. Progress bars use [pbmcapply::pbmclapply]
+#' [parallel::parLapply] on windows. Progress bars use [mcprogress::pmclapply]
 #' on unix/mac and [pbapply::pblapply] on windows.
 #' 
 #' The `id` argument is usually optional. By default the `id` column in the
@@ -90,7 +90,7 @@
 #' @importFrom lmerTest lmer
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #'   clusterExport stopCluster
-#' @importFrom pbmcapply pbmclapply
+#' @importFrom mcprogress pmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
@@ -226,7 +226,7 @@ lmmSeq <- function(modelFormula,
       }
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneRow) {
+        resultList <- pmclapply(fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
                    modelData, designMatrix, hyp.matrix)
         }, mc.cores = cores)
@@ -271,7 +271,7 @@ lmmSeq <- function(modelFormula,
       
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneRow) {
+        resultList <- pmclapply(fullList, function(geneRow) {
           lmerTestCore(geneRow, fullFormula = fullFormula, reduced = reduced, 
                        data = subsetMetadata, control = control,
                        modelData = modelData, offset = offset,

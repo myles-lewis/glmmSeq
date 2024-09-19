@@ -100,7 +100,7 @@
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #' clusterExport stopCluster
-#' @importFrom pbmcapply pbmclapply
+#' @importFrom mcprogress pmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom car Anova
 #' @importFrom glmmTMB glmmTMB glmmTMBControl nbinom2 sigma
@@ -256,10 +256,10 @@ glmmSeq <- function(modelFormula,
       
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneList) {
+        resultList <- pmclapply(fullList, function(geneList) {
           glmerCore(geneList, fullFormula, reduced, subsetMetadata,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores)
+        }, mc.cores = cores, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
@@ -304,10 +304,10 @@ glmmSeq <- function(modelFormula,
       }
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneList) {
+        resultList <- pmclapply(fullList, function(geneList) {
           glmmTMBcore(geneList, fullFormula, reduced, subsetMetadata, family,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores)
+        }, mc.cores = cores, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
