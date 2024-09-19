@@ -259,7 +259,7 @@ glmmSeq <- function(modelFormula,
         resultList <- pmclapply(fullList, function(geneList) {
           glmerCore(geneList, fullFormula, reduced, subsetMetadata,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores, eta = TRUE)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
@@ -307,7 +307,7 @@ glmmSeq <- function(modelFormula,
         resultList <- pmclapply(fullList, function(geneList) {
           glmmTMBcore(geneList, fullFormula, reduced, subsetMetadata, family,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores, eta = TRUE)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {

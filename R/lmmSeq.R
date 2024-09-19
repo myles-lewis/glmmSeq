@@ -229,7 +229,7 @@ lmmSeq <- function(modelFormula,
         resultList <- pmclapply(fullList, function(geneRow) {
           lmerFast(geneRow, lmod, control,
                    modelData, designMatrix, hyp.matrix)
-        }, mc.cores = cores)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneRow) {
@@ -276,7 +276,7 @@ lmmSeq <- function(modelFormula,
                        data = subsetMetadata, control = control,
                        modelData = modelData, offset = offset,
                        designMatrix = designMatrix, ...)
-        }, mc.cores = cores)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneRow) {
