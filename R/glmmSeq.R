@@ -38,6 +38,9 @@
 #'   `method = "glmmTMB"` default is `glmmTMBControl()`
 #' @param family Only used with `glmmTMB` models. Default is `nbinom2`. See
 #'   [glmmTMB::nbinom2]
+#' @param ci_type Type of confidence intervals. Either "FE" for confidence
+#'   intervals based on fixed-effects only, or "all" for CI based on fixed and
+#'   random effects variance.
 #' @param cores number of cores to use. Default = 1.
 #' @param removeSingles whether to remove individuals without repeated measures
 #' (default = FALSE)
@@ -123,6 +126,7 @@ glmmSeq <- function(modelFormula,
                     method = c("lme4", "glmmTMB"),
                     control = NULL,
                     family = nbinom2,
+                    ci_type = c("FE", "all"),
                     cores = 1,
                     removeSingles = FALSE,
                     zeroCount = 0.125,
@@ -132,6 +136,7 @@ glmmSeq <- function(modelFormula,
                     ...) {
   glmmcall <- match.call(expand.dots = TRUE)
   method <- match.arg(method)
+  ci_type <- match.arg(ci_type)
   if (is.null(control)) {
     control <- switch(method,
                       "lme4" = glmerControl(optimizer = "bobyqa"),
@@ -241,7 +246,7 @@ glmmSeq <- function(modelFormula,
                          reduced=reduced,
                          data=subsetMetadata, control=control, offset=offset,
                          modelData=modelData, designMatrix=designMatrix,
-                         hyp.matrix=hyp.matrix), dots)
+                         hyp.matrix=hyp.matrix, ci_type=ci_type), dots)
           do.call(glmerCore, args)
         }, cl = cl)
       } else {
@@ -250,7 +255,7 @@ glmmSeq <- function(modelFormula,
                          reduced=reduced,
                          data=subsetMetadata, control=control, offset=offset,
                          modelData=modelData, designMatrix=designMatrix,
-                         hyp.matrix=hyp.matrix), dots)
+                         hyp.matrix=hyp.matrix, ci_type=ci_type), dots)
           do.call(glmerCore, args)
         })
       }
@@ -259,13 +264,15 @@ glmmSeq <- function(modelFormula,
       if (progress) {
         resultList <- pmclapply(fullList, function(geneList) {
           glmerCore(geneList, fullFormula, reduced, subsetMetadata,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+                    control, offset, modelData, designMatrix, hyp.matrix,
+                    ci_type=ci_type, ...)
         }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
           glmerCore(geneList, fullFormula, reduced, subsetMetadata,
-                    control, offset, modelData, designMatrix, hyp.matrix, ...)
+                    control, offset, modelData, designMatrix, hyp.matrix,
+                    ci_type=ci_type, ...)
         }, mc.cores = cores)
       }
     }
@@ -395,7 +402,7 @@ glmmSeq <- function(modelFormula,
 
 
 glmerCore <- function(geneList, fullFormula, reduced, data, control, offset,
-                      modelData, designMatrix, hyp.matrix, ...) {
+                      modelData, designMatrix, hyp.matrix, ci_type, ...) {
   data[, "count"] <- geneList$y
   disp <- geneList$dispersion
   fit <- try(suppressMessages(suppressWarnings(
@@ -441,6 +448,7 @@ glmerCore <- function(geneList, fullFormula, reduced, data, control, offset,
     predVar <- diag(b)
     reVar <- as.data.frame(VarCorr(fit))$vcov[1]
     newSE <- sqrt(predVar)
+    if (ci_type == "all") newSE <- sqrt(predVar + reVar)
     newLCI <- exp(newY - newSE * 1.96)
     newUCI <- exp(newY + newSE * 1.96)
     predictdf <- c(exp(newY), newLCI, newUCI, reVar)

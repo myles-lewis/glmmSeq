@@ -17,6 +17,7 @@ glmmSeq(
   method = c("lme4", "glmmTMB"),
   control = NULL,
   family = nbinom2,
+  ci_type = c("FE", "all"),
   cores = 1,
   removeSingles = FALSE,
   zeroCount = 0.125,
@@ -71,6 +72,10 @@ It can therefore be used to add/remove points in \link{modelPlot}.}
 
 \item{family}{Only used with \code{glmmTMB} models. Default is \code{nbinom2}. See
 \link[glmmTMB:nbinom2]{glmmTMB::nbinom2}}
+
+\item{ci_type}{Type of confidence intervals. Either "FE" for confidence
+intervals based on fixed-effects only, or "all" for CI based on fixed and
+random effects variance.}
 
 \item{cores}{number of cores to use. Default = 1.}
 
