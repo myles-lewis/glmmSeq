@@ -114,7 +114,7 @@ from Chi-squared values is vectorised and performed at the end. F-tests using
 the \code{lmerTest} package have not been optimised and are therefore slower.
 
 Parallelisation is performed using \link[parallel:mclapply]{parallel::mclapply} on unix/mac and
-\link[parallel:clusterApply]{parallel::parLapply} on windows. Progress bars use \link[pbmcapply:pbmclapply]{pbmcapply::pbmclapply}
+\link[parallel:clusterApply]{parallel::parLapply} on windows. Progress bars use \link[mcprogress:pmclapply]{mcprogress::pmclapply}
 on unix/mac and \link[pbapply:pbapply]{pbapply::pblapply} on windows.
 
 The \code{id} argument is usually optional. By default the \code{id} column in the

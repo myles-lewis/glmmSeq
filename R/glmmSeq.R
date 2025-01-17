@@ -98,9 +98,10 @@
 #' 
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
+#' VarCorr
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
 #' clusterExport stopCluster
-#' @importFrom pbmcapply pbmclapply
+#' @importFrom mcprogress pmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom car Anova
 #' @importFrom glmmTMB glmmTMB glmmTMBControl nbinom2 sigma
@@ -256,10 +257,10 @@ glmmSeq <- function(modelFormula,
       
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneList) {
+        resultList <- pmclapply(fullList, function(geneList) {
           glmerCore(geneList, fullFormula, reduced, subsetMetadata,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
@@ -304,10 +305,10 @@ glmmSeq <- function(modelFormula,
       }
     } else{
       if (progress) {
-        resultList <- pbmclapply(fullList, function(geneList) {
+        resultList <- pmclapply(fullList, function(geneList) {
           glmmTMBcore(geneList, fullFormula, reduced, subsetMetadata, family,
                     control, offset, modelData, designMatrix, hyp.matrix, ...)
-        }, mc.cores = cores)
+        }, mc.cores = cores, spinner = FALSE, eta = TRUE)
         if ("value" %in% names(resultList)) resultList <- resultList$value
       } else {
         resultList <- mclapply(fullList, function(geneList) {
@@ -340,7 +341,8 @@ glmmSeq <- function(modelFormula,
   outLabels <- apply(modelData, 1, function(x) paste(x, collapse = "_"))
   colnames(outputPredict) <- c(paste0("y_", outLabels),
                                paste0("LCI_", outLabels),
-                               paste0("UCI_", outLabels))
+                               paste0("UCI_", outLabels),
+                               "RE_var")
   optInfo <- t(vapply(resultList[noErr], function(x) {
     setNames(x$optinfo, c("Singular", "Conv"))
   }, FUN.VALUE = c(1, 1)))
@@ -437,10 +439,11 @@ glmerCore <- function(geneList, fullFormula, reduced, data, control, offset,
     a <- designMatrix %*% vcov.
     b <- as.matrix(a %*% t(designMatrix))
     predVar <- diag(b)
+    reVar <- as.data.frame(VarCorr(fit))$vcov[1]
     newSE <- sqrt(predVar)
     newLCI <- exp(newY - newSE * 1.96)
     newUCI <- exp(newY + newSE * 1.96)
-    predictdf <- c(exp(newY), newLCI, newUCI)
+    predictdf <- c(exp(newY), newLCI, newUCI, reVar)
     # rm(fit, data)
     return(list(stats = stats,
                 coef = fixedEffects,

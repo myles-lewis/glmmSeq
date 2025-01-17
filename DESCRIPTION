@@ -1,6 +1,6 @@
 Package: glmmSeq
 Title: General Linear Mixed Models for Gene-Level Differential Expression
-Version: 0.5.5
+Version: 0.5.6
 Authors@R:
     c(person(given = "Myles",family = "Lewis",
     role = c("aut", "cre"),
@@ -28,7 +28,7 @@ Encoding: UTF-8
 LazyData: true
 biocViews:
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Language: en-gb
 URL: https://myles-lewis.github.io/glmmSeq/, https://github.com/myles-lewis/glmmSeq
 BugReports: https://github.com/myles-lewis/glmmSeq/issues
@@ -51,8 +51,8 @@ Imports:
     graphics,
     lme4,
     lmerTest,
+    mcprogress,
     methods,
     plotly,
     qvalue,
-    pbapply,
-    pbmcapply
+    pbapply
