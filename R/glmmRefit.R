@@ -15,7 +15,7 @@
 #' @param control Optional control parameters, see [lme4::lmerControl()] or
 #'   [lme4::glmerControl()]
 #' @param family Optional GLM family when refitting GLMM using [lme4::glmer()]
-#'   or [glmmTMB()]
+#'   or [`glmmTMB()`]
 #' @param ... Optional arguments passed to either [lme4::glmer()] or
 #'   [lme4::lmer()]
 #' @return Fitted model of class `lmerMod` in the case of LMM, or `glmerMod` or
