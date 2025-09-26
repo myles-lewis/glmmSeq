@@ -1,12 +1,10 @@
 [![Lifecycle: Maturing](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-mediumpurple.svg)](https://choosealicense.com/licenses/mit/)
 [![CRAN status](https://www.r-pkg.org/badges/version/glmmSeq)](https://cran.r-project.org/package=glmmSeq)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fmyles-lewis%2FglmmSeq&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![GitHub issues](https://img.shields.io/github/issues/myles-lewis/glmmSeq.svg)](https://GitHub.com/myles-lewis/glmmSeq/issues/)
 [![GitHub
 tag](https://img.shields.io/github/tag/myles-lewis/glmmSeq.svg)](https://GitHub.com/myles-lewis/glmmSeq/tags/)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/glmmSeq?color=orange)](https://CRAN.R-project.org/package=glmmSeq)
-[![Travis](https://img.shields.io/travis/myles-lewis/glmmSeq.svg)](https://github.com/myles-lewis/glmmSeq)
 
 # glmmSeq 
 
@@ -72,7 +70,7 @@ For examples see the [vignette](https://myles-lewis.github.io/glmmSeq/articles/g
 
 # Reference
 
-glmmSeq was developed by the bioinformatics team at the [Experimental Medicine & Rheumatology department](https://www.qmul.ac.uk/whri/emr/) and [Centre for Translational Bioinformatics](https://www.qmul.ac.uk/c4tb/) at Queen Mary University London.
+glmmSeq was developed by the bioinformatics team at the [Experimental Medicine & Rheumatology department](https://www.qmul.ac.uk/whri/emr/) at Queen Mary University London.
 
 If you use this package please cite as:
 

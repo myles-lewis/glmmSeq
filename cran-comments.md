@@ -2,6 +2,4 @@
 
 0 errors | 0 warnings | 0 note
 
-* This is a resubmission
-* Mainly bug fixes
-* Switched github host site
+* This is a resubmission to fix broken links in documetation 
