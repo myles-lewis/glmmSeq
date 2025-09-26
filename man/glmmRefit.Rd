@@ -34,7 +34,7 @@ model for}
 \code{\link[lme4:lmerControl]{lme4::glmerControl()}}}
 
 \item{family}{Optional GLM family when refitting GLMM using \code{\link[lme4:glmer]{lme4::glmer()}}
-or \code{\link[=glmmTMB]{glmmTMB()}}}
+or \code{glmmTMB()}}
 }
 \value{
 Fitted model of class \code{lmerMod} in the case of LMM, or \code{glmerMod} or
