@@ -35,7 +35,6 @@ BugReports: https://github.com/myles-lewis/glmmSeq/issues
 Suggests:
     knitr,
     rmarkdown,
-    kableExtra,
     DESeq2,
     edgeR,
     emmeans
@@ -51,6 +50,7 @@ Imports:
     graphics,
     lme4,
     lmerTest,
+    kableExtra,
     mcprogress,
     methods,
     plotly,

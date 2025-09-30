@@ -63,3 +63,8 @@ setClass("lmmSeq", slots = list(
   errors = "character_or_list",
   vars = "list"
 ))
+
+
+ignore_unused_imports <- function() {
+  kableExtra::kable_styling()
+}
