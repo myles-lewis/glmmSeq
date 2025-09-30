@@ -3,7 +3,7 @@ News
 
 # glmmSeq 0.5.7
 ###### 29/09/2025
-* Fixing broken links in documetation.
+* Fixing broken links in documetation and adding kableExtra to Imports.
 
 # glmmSeq v0.5.6
 ###### 17/01/2025
