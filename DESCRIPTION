@@ -36,18 +36,18 @@ Suggests:
     knitr,
     rmarkdown,
     DESeq2,
-    edgeR,
-    emmeans
+    edgeR
 VignetteBuilder: knitr
 Depends: R (>= 3.6.0)
 Imports:
-    MASS,
     car,
+    emmeans,
     stats,
     ggplot2,
     ggpubr,
     glmmTMB,
     graphics,
+    MASS,
     lme4,
     lmerTest,
     kableExtra,

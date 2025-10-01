@@ -67,4 +67,5 @@ setClass("lmmSeq", slots = list(
 
 ignore_unused_imports <- function() {
   kableExtra::kable_styling()
+  emmeans::emmeans()
 }
