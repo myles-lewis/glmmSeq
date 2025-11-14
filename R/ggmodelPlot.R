@@ -126,7 +126,8 @@ ggmodelPlot <- function(object,
     labs(x=xlab, y=ylab, title=title) +
     theme(legend.position = "none", plot.margin=margin(7,4,14+x2Offset,4),
           text=element_text(size=fontSize),
-          axis.text = element_text(colour = "black", size=fontSize-1), ...) +
+          axis.text = element_text(colour = "black", size=fontSize-1),
+          axis.ticks = element_line(color = "black"), ...) +
     scale_x_continuous(labels=modelData[, x1var],
                        breaks=if(x2shift < xdiff) {
                          modelData[, x1var]
