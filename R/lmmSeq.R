@@ -198,6 +198,7 @@ lmmSeq <- function(modelFormula,
   if (test.stat == "Wald") {
     # Adapted from lme4::modular / lme4::lmer
     subsetMetadata$gene <- maindata[1, ]
+    fullFormula <- setFormulaEnv(fullFormula, offset = offset)
     lmod <- lFormula(fullFormula, subsetMetadata,
                      offset = offset, control = control, ...)
     
@@ -429,6 +430,7 @@ lmerTestCore <- function(geneRow,
   dots <- list(...)
   REML <- if (is.null(dots$REML)) TRUE else dots$REML
   if (!is.null(reduced)) REML <- FALSE
+  fullFormula <- setFormulaEnv(fullFormula, offset = offset)
   fit <- try(suppressMessages(suppressWarnings(
     lmerTest::lmer(fullFormula, data = data, control = control, offset = offset,
                    REML = REML, ...))),
@@ -451,6 +453,7 @@ lmerTestCore <- function(geneRow,
       test <- as.matrix(anova(fit)[, -c(1,2)])
     } else {
       # LRT
+      reduced <- setFormulaEnv(reduced, offset = offset)
       fit2 <- try(suppressMessages(suppressWarnings(
         lmerTest::lmer(reduced, data = data, control = control, offset = offset,
                        REML = FALSE, ...))),

@@ -398,6 +398,7 @@ glmerCore <- function(geneList, fullFormula, reduced, data, control, offset,
                       modelData, designMatrix, hyp.matrix, ...) {
   data[, "count"] <- geneList$y
   disp <- geneList$dispersion
+  fullFormula <- setFormulaEnv(fullFormula, offset = offset)
   fit <- try(suppressMessages(suppressWarnings(
     lme4::glmer(fullFormula, data = data, control = control, offset = offset,
                 family = MASS::negative.binomial(theta = 1/disp), ...)
@@ -422,6 +423,7 @@ glmerCore <- function(geneList, fullFormula, reduced, data, control, offset,
       test <- lmer_wald(fixedEffects, hyp.matrix, vcov.)
     } else {
       # LRT
+      reduced <- setFormulaEnv(reduced, offset = offset)
       fit2 <- try(suppressMessages(suppressWarnings(
         lme4::glmer(reduced, data = data, control = control, offset = offset,
                     family = MASS::negative.binomial(theta = 1/disp), ...)
@@ -519,4 +521,11 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
     return(list(stats = NA, coef = NA, stdErr = NA, chisq = NA, df = NA,
                 predict = NA, optinfo = NA, tryErrors = fit[1]))
   }
+}
+
+# Attach variables to a formula without modifying its original environment
+setFormulaEnv <- function(formula, ...) {
+  fEnv <- list2env(list(...), parent = environment(formula))
+  environment(formula) <- fEnv
+  formula
 }
