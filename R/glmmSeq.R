@@ -98,16 +98,15 @@
 #' 
 #' @importFrom MASS negative.binomial
 #' @importFrom lme4 subbars findbars glmer fixef glmerControl nobars isSingular
-#' VarCorr
+#' @importFrom lme4 VarCorr
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
-#' clusterExport stopCluster
+#' @importFrom parallel clusterExport stopCluster
 #' @importFrom mcprogress pmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom car Anova
-#' @importFrom glmmTMB glmmTMB glmmTMBControl nbinom2 sigma
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
-#'   update.formula model.matrix predict setNames coef
+#' @importFrom stats update.formula model.matrix predict setNames coef
 #' @export
 
 
@@ -122,7 +121,7 @@ glmmSeq <- function(modelFormula,
                     designMatrix = NULL,
                     method = c("lme4", "glmmTMB"),
                     control = NULL,
-                    family = nbinom2,
+                    family = glmmTMB::nbinom2,
                     cores = 1,
                     removeSingles = FALSE,
                     zeroCount = 0.125,
@@ -132,10 +131,13 @@ glmmSeq <- function(modelFormula,
                     ...) {
   glmmcall <- match.call(expand.dots = TRUE)
   method <- match.arg(method)
+  if (method == "glmmTMB" && !requireNamespace("glmmTMB", quietly = TRUE)) {
+    stop("method = \"glmmTMB\" requires the 'glmmTMB' package", call. = FALSE)
+  }
   if (is.null(control)) {
     control <- switch(method,
                       "lme4" = glmerControl(optimizer = "bobyqa"),
-                      "glmmTMB" = glmmTMBControl())
+                      "glmmTMB" = glmmTMB::glmmTMBControl())
   }
   countdata <- as.matrix(countdata)
   # Catch errors
@@ -467,7 +469,7 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
   data[, "count"] <- geneList
   
   fit <- try(suppressMessages(suppressWarnings(
-    glmmTMB(fullFormula, data, family, control = control, offset = offset, ...)
+    glmmTMB::glmmTMB(fullFormula, data, family, control = control, offset = offset, ...)
   )), silent = TRUE)
   
   if (!inherits(fit, "try-error")) {
@@ -475,7 +477,7 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
     stdErr <- suppressWarnings(coef(summary(fit))$cond[, 2])
     vcov. <- vcov(fit)$cond
     fixedEffects <- fixef(fit)$cond
-    disp <- sigma(fit)
+    disp <- glmmTMB::sigma(fit)
     msg <- fit$fit$message
     
     stats <- setNames(c(disp, AIC(fit),
@@ -487,7 +489,7 @@ glmmTMBcore <- function(geneList, fullFormula, reduced, data, family, control,
     } else {
       # LRT
       fit2 <- try(suppressMessages(suppressWarnings(
-        glmmTMB(reduced, data, family, control = control, offset = offset, ...)
+        glmmTMB::glmmTMB(reduced, data, family, control = control, offset = offset, ...)
       )), silent = TRUE)
       
       if (!inherits(fit2, "try-error")) {

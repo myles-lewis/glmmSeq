@@ -6,6 +6,11 @@ News
 inside the calling function when fitting models. This fix applies to `glmmSeq()`,
 `lmmSeq()` and `glmmRefit()`.
 
+# glmmSeq 0.5.8
+###### 15/10/2026
+* `glmmTMB` is now in Suggests rather than Imports. `glmmSeq()` and
+`glmmRefit()` only require it when `method = "glmmTMB"`.
+
 # glmmSeq 0.5.7
 ###### 29/09/2025
 * Fixing broken links in documetation and adding kableExtra to Imports.

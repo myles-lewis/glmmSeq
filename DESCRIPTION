@@ -28,7 +28,6 @@ Encoding: UTF-8
 LazyData: true
 biocViews:
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Language: en-gb
 URL: https://myles-lewis.github.io/glmmSeq/, https://github.com/myles-lewis/glmmSeq
 BugReports: https://github.com/myles-lewis/glmmSeq/issues
@@ -36,7 +35,8 @@ Suggests:
     knitr,
     rmarkdown,
     DESeq2,
-    edgeR
+    edgeR,
+    glmmTMB
 VignetteBuilder: knitr
 Depends: R (>= 3.6.0)
 Imports:
@@ -45,7 +45,6 @@ Imports:
     stats,
     ggplot2,
     ggpubr,
-    glmmTMB,
     graphics,
     MASS,
     lme4,
@@ -56,3 +55,4 @@ Imports:
     plotly,
     qvalue,
     pbapply
+Config/roxygen2/version: 8.0.0
