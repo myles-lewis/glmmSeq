@@ -1,15 +1,13 @@
 News
 =====
-# glmmSeq 0.5.8
-###### 13/10/2026
-* Fix compatibility with lme4 2.1.0, which no longer finds variables defined
-inside the calling function when fitting models. This fix applies to `glmmSeq()`,
-`lmmSeq()` and `glmmRefit()`.
 
 # glmmSeq 0.5.8
 ###### 15/10/2026
 * `glmmTMB` is now in Suggests rather than Imports. `glmmSeq()` and
 `glmmRefit()` only require it when `method = "glmmTMB"`.
+* Fix compatibility with lme4 2.1.0, which no longer finds variables defined
+inside the calling function when fitting models. This fix applies to `glmmSeq()`,
+`lmmSeq()` and `glmmRefit()`.
 
 # glmmSeq 0.5.7
 ###### 29/09/2025
