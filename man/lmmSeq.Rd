@@ -105,7 +105,7 @@ compared are optimised by maximum likelihood and not REML (\code{REML=FALSE}).
 
 Two key methods are used to speed up computation above and beyond simple
 parallelisation. The first is to speed up \code{\link[lme4:lmer]{lme4::lmer()}} by calling
-\code{\link[lme4:modular]{lme4::lFormula()}} once at the start and then updating the \code{lFormula} output
+\code{\link[lme4:lFormula]{lme4::lFormula()}} once at the start and then updating the \code{lFormula} output
 with new data. The 2nd speed up is through optimised code for repeated type 2
 Wald Chi-squared tests (original code was derived from \link[car:Anova]{car::Anova}). For
 example, elements such as the hypothesis matrices are generated only once to
@@ -114,8 +114,8 @@ from Chi-squared values is vectorised and performed at the end. F-tests using
 the \code{lmerTest} package have not been optimised and are therefore slower.
 
 Parallelisation is performed using \link[parallel:mclapply]{parallel::mclapply} on unix/mac and
-\link[parallel:clusterApply]{parallel::parLapply} on windows. Progress bars use \link[mcprogress:pmclapply]{mcprogress::pmclapply}
-on unix/mac and \link[pbapply:pbapply]{pbapply::pblapply} on windows.
+\link[parallel:parLapply]{parallel::parLapply} on windows. Progress bars use \link[mcprogress:pmclapply]{mcprogress::pmclapply}
+on unix/mac and \link[pbapply:pblapply]{pbapply::pblapply} on windows.
 
 The \code{id} argument is usually optional. By default the \code{id} column in the
 metadata is determined as the term after the bar in the random effects term

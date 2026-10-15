@@ -36,9 +36,10 @@
 #' \code{\link[ggplot2:theme]{ggplot2::theme()}}.
 #' @return Returns a paired plot for matched samples.
 #' @importFrom ggplot2 ggplot geom_boxplot geom_point geom_line theme_classic
-#' scale_fill_manual scale_shape_manual labs geom_text scale_x_discrete
-#' coord_cartesian aes scale_color_manual theme geom_boxplot scale_y_continuous
-#' scale_x_continuous aes_string annotate margin element_text rel geom_errorbar
+#' @importFrom ggplot2 scale_fill_manual scale_shape_manual labs geom_text
+#' @importFrom ggplot2 scale_x_discrete coord_cartesian aes scale_color_manual
+#' @importFrom ggplot2 theme geom_boxplot scale_y_continuous scale_x_continuous
+#' @importFrom ggplot2 aes_string annotate margin element_text rel geom_errorbar
 #' @importFrom methods is
 #' @export
 #' @examples

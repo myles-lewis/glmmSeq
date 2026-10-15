@@ -86,15 +86,15 @@
 #' formally. In this case, it is probably prudent to specify a value for `id`.
 #' 
 #' @importFrom lme4 subbars findbars fixef lmerControl nobars isSingular
-#'   lFormula
+#' @importFrom lme4 lFormula
 #' @importFrom lmerTest lmer
 #' @importFrom parallel mclapply detectCores parLapply makeCluster clusterEvalQ
-#'   clusterExport stopCluster
+#' @importFrom parallel clusterExport stopCluster
 #' @importFrom mcprogress pmclapply
 #' @importFrom pbapply pblapply
 #' @importFrom methods slot new
 #' @importFrom stats AIC complete.cases logLik reshape terms vcov pchisq
-#'   update.formula model.matrix predict setNames anova coef
+#' @importFrom stats update.formula model.matrix predict setNames anova coef
 #' @export
 #' @examples
 #' data(PEAC_minimal_load)

@@ -24,7 +24,7 @@
 #' subset on x axis and fold change in the other x2Value on the y axis.
 #' @importFrom plotly layout config plot_ly
 #' @importFrom ggplot2 ggplot geom_point theme_minimal scale_color_manual labs
-#' theme element_rect geom_vline unit
+#' @importFrom ggplot2 theme element_rect geom_vline unit
 #' @keywords hplot
 #' @export
 #' @examples

@@ -97,7 +97,7 @@ glmmRefit.GlmmSeq <- function(object, gene,
     if (is.null(family)) {
       family <- eval(object@info$family)
     }
-    fit <- glmmTMB(formula, data, family = family,
+    fit <- glmmTMB::glmmTMB(formula, data, family = family,
                    control = control, offset = offset, ...)
   }
   fit
