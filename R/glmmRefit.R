@@ -96,6 +96,10 @@ glmmRefit.GlmmSeq <- function(object, gene,
                        family = family,
                        ...)
   } else {
+    if (!requireNamespace("glmmTMB", quietly = TRUE)) {
+      stop("glmmRefit requires the 'glmmTMB' package",
+           call. = FALSE)
+    }
     if (is.null(family)) {
       family <- eval(object@info$family)
     }
