@@ -62,6 +62,7 @@ glmmRefit.lmmSeq <- function(object, gene,
   data[, "gene"] <- unlist(object@maindata[gene, ])
   offset <- object@info$offset
   control <- eval(object@info$control)
+  formula <- setFormulaEnv(formula, offset = offset)
   fit <- if (object@info$test.stat == "Wald") {
     lme4::lmer(formula, data = data,
                control = control, offset = offset, ...)
@@ -89,15 +90,20 @@ glmmRefit.GlmmSeq <- function(object, gene,
     if (is.null(family)) {
       family <- MASS::negative.binomial(theta = 1/disp)
     }
+    formula <- setFormulaEnv(formula, offset = offset)
     fit <- lme4::glmer(formula, data = data,
                        control = control, offset = offset,
                        family = family,
                        ...)
   } else {
+    if (!requireNamespace("glmmTMB", quietly = TRUE)) {
+      stop("glmmRefit requires the 'glmmTMB' package",
+           call. = FALSE)
+    }
     if (is.null(family)) {
       family <- eval(object@info$family)
     }
-    fit <- glmmTMB(formula, data, family = family,
+    fit <- glmmTMB::glmmTMB(formula, data, family = family,
                    control = control, offset = offset, ...)
   }
   fit

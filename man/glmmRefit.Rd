@@ -31,7 +31,7 @@ model for}
 \item{formula}{Optional formula to use when refitting model}
 
 \item{control}{Optional control parameters, see \code{\link[lme4:lmerControl]{lme4::lmerControl()}} or
-\code{\link[lme4:lmerControl]{lme4::glmerControl()}}}
+\code{\link[lme4:glmerControl]{lme4::glmerControl()}}}
 
 \item{family}{Optional GLM family when refitting GLMM using \code{\link[lme4:glmer]{lme4::glmer()}}
 or \code{glmmTMB()}}

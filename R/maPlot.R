@@ -24,7 +24,7 @@
 #' figure
 #' @importFrom plotly layout config plot_ly subplot %>%
 #' @importFrom ggplot2 ggplot geom_point theme_minimal scale_color_manual labs
-#' geom_hline theme element_rect annotate
+#' @importFrom ggplot2 geom_hline theme element_rect annotate
 #' @importFrom ggpubr ggarrange
 #' @keywords hplot
 #' @export

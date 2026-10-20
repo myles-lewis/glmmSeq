@@ -16,7 +16,7 @@ glmmSeq(
   designMatrix = NULL,
   method = c("lme4", "glmmTMB"),
   control = NULL,
-  family = nbinom2,
+  family = glmmTMB::nbinom2,
   cores = 1,
   removeSingles = FALSE,
   zeroCount = 0.125,
@@ -111,7 +111,7 @@ likelihood ratio test is performed instead using \link[stats:anova]{stats::anova
 double computation time since two GLMM have to be fitted.
 
 Parallelisation is provided using \link[parallel:mclapply]{parallel::mclapply} on Unix/Mac or
-\link[parallel:clusterApply]{parallel::parLapply} on PC.
+\link[parallel:parLapply]{parallel::parLapply} on PC.
 
 Setting \code{method = "glmmTMB"} enables an alternative method of fitting GLMM
 using the \code{glmmTMB} package. This gives access to a variety of alternative
@@ -143,6 +143,6 @@ names(attributes(MS4A1glmm))
 
 }
 \seealso{
-\link[lme4:glmer]{lme4::glmer} \link[lme4:lmerControl]{lme4::glmerControl} \link[glmmTMB:glmmTMB]{glmmTMB::glmmTMB}
+\link[lme4:glmer]{lme4::glmer} \link[lme4:glmerControl]{lme4::glmerControl} \link[glmmTMB:glmmTMB]{glmmTMB::glmmTMB}
 \link[glmmTMB:nbinom2]{glmmTMB::nbinom2} \link[glmmTMB:glmmTMBControl]{glmmTMB::glmmTMBControl} \link[car:Anova]{car::Anova}
 }
