@@ -2,4 +2,4 @@
 
 0 errors | 0 warnings | 0 note
 
-* This is a resubmission to fix broken links in documetation 
+* Fix issues relating to glmmTMB and lme4
